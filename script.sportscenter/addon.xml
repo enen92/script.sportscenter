@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon
+  id="script.sportscenter"
+  version="0.0.01"
+  name="Sports Center"
+  provider-name="carabalb, jimyx17, malte, redkiller">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+    <import addon="script.module.thesportsdb"/>
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>game</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Sports for Kodi</summary>
+    <description lang="en">Centralized sports information</description> 
+    <language></language>
+    <platform>all</platform>
+    <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
+    <forum></forum>
+    <website></website>
+    <source></source>
+  </extension>
+</addon>
