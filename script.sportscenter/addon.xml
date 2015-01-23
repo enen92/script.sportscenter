@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="script.sportscenter"
-  version="0.0.02"
+  version="0.0.03"
   name="Sports Center"
   provider-name="enen92">
   <requires>

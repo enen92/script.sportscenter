@@ -18,6 +18,7 @@
 
 import xbmcplugin,xbmcgui,xbmc,xbmcaddon,os,sys
 from resources.lib import homemenu as home
+from resources.lib.centerutils.common_variables import *
 
 
 
@@ -82,7 +83,12 @@ print "Iconimage: "+str(iconimage)
 
 if mode==None or url==None or len(url)<1:
 	print ""
-	home.start(None)
+	skin = xbmc.getSkinDir()
+	if skin == 'skin.aeon.nox.5' or skin == 'skin.mimic' or skin == 'skin.confluence':
+		home.start(None)
+	else:
+		mensagemok('Sports Center', 'Only available for Confluence,Aeon Nox and Mimic')
+		sys.exit(0)
 
 elif mode==1:
 	calendar()
