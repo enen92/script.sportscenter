@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="script.sportscenter"
-  version="0.0.01"
+  version="0.0.02"
   name="Sports Center"
-  provider-name="carabalb, jimyx17, malte, redkiller">
+  provider-name="enen92">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
     <import addon="script.module.thesportsdb"/>
