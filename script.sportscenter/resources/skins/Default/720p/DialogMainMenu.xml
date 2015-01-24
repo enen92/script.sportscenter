@@ -102,23 +102,6 @@
 		</control>
 		
 
-		
-		<!--<control type="image">
-			<description>LOGO</description>
-			<left>10</left>
-			<top>5</top>
-			<width>120</width>
-			<height>49</height>
-			<aspectratio aligny="top" align="left">keep</aspectratio>
-			<texture>kodi-logo.png</texture>
-			<include>VisibleFadeEffect</include>
-			<include>Window_OpenClose_Animation</include>
-			<visible>!Skin.HasSetting(homepageWeatherinfo)</visible>
-		</control>-->
-		
-
-		
-		
 		<control type="group">
 			<top>400</top>
 			<animation type="WindowOpen" reversible="false">
@@ -292,35 +275,6 @@
 			</control>
 		</control>
 
-		<control type="group">
-			<left>20</left>
-			<top>0</top>
-			<visible>Skin.HasSetting(homepageWeatherinfo) + !IsEmpty(Weather.Plugin)</visible>
-			<include>Window_OpenClose_Animation</include>
-			<control type="image">
-				<description>Weather image</description>
-				<left>0</left>
-				<top>0</top>
-				<width>60</width>
-				<height>60</height>
-				<aspectratio>keep</aspectratio>
-				<texture>$INFO[Weather.Conditions]</texture>
-			</control>
-			<control type="label">
-				<description>Location label</description>
-				<left>65</left>
-				<top>5</top>
-				<width>500</width>
-				<height>15</height>
-				<align>left</align>
-				<aligny>center</aligny>
-				<font>font10</font>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-				<label>$INFO[Window(Weather).Property(Location)]</label>
-			</control>
-			
-		</control>
 		<include>Clock</include>
 		<control type="label">
 			<description>Date label</description>
