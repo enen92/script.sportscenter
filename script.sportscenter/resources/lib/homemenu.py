@@ -13,7 +13,7 @@ class dialog_home(xbmcgui.WindowXMLDialog):
 		self.sport = args[3]
 
 	def onInit(self):
-		table = [('Football','football.png','soccer'),('Rugby','Rugby.png','rugby'),('MotorSport','Racing.png','motorsport'),('Basketball','Basketball.png','basketball'),('AM Football','americanfootball.png','american%20football'),('Ice Hockey','IceHockey.png','ice%20hockey')]
+		table = [('Football','football.png','soccer'),('Rugby','Rugby.png','rugby'),('MotorSport','Racing.png','motorsport'),('Basketball','Basketball.png','basketball'),('AM Football','americanfootball.png','american%20football'),('Ice Hockey','IceHockey.png','ice%20hockey'),('Baseball','baseball.png','baseball'),('Golf','golf.png','golf')]
 			   
 		for sport,img,sport_name in table:
 			item = xbmcgui.ListItem(sport, iconImage = os.path.join(addonpath,art,img),path='ActivateWindow(Videos)')

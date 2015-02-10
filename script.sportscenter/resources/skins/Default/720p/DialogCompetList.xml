@@ -13,6 +13,12 @@
 		<control type="group">
 			<!--<animation effect="fade" time="600">WindowOpen</animation>-->
 			<animation effect="fade" time="600">WindowClose</animation>
+			<control type="image" id="907">
+				<width>1280</width>
+				<height>720</height>
+				<texture></texture>
+				<include>VisibleFadeEffect</include>
+			</control>
 			<control type="image" id="912">
 				<width>1280</width>
 				<height>720</height>

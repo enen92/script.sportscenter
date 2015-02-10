@@ -1,7 +1,6 @@
 <window>
 	<onload>SetProperty(Window.HasSettings,True,home)</onload>
 	<onload>ClearProperty(MediaMenu,Home)</onload>
-	<onunload>ClearProperty(Window.HasSettings,Home)</onunload>
 	<onunload>ClearProperty(bannerview,Home)</onunload>
 	<onunload>ClearProperty(infoview,Home)</onunload>
 	<onunload>ClearProperty(listview,Home)</onunload>
@@ -13,6 +12,11 @@
 		<control type="group">
 			<!--<animation effect="fade" time="600">WindowOpen</animation>-->
 			<animation effect="fade" time="600">WindowClose</animation>
+			<control type="image" id="907">
+				<width>1920</width>
+				<height>1080</height>
+				<texture></texture>
+			</control>
 			<control type="image" id="912">
 				<width>1920</width>
 				<height>1080</height>
@@ -23,7 +27,6 @@
 		<control type="group">
 			<visible>true</visible>
 			<include>Window_OpenClose_Animation</include>
-			<visible>![Control.IsVisible(59) | Control.IsVisible(501) | Control.IsVisible(502)]</visible>
 			<include>ViewAnimation</include>
 			<animation effect="slide" start="0,0" end="0,80" time="720" tween="cubic" easing="inout" condition="![[Control.isVisible(52) + !Window.IsActive(systeminfo)] | Control.IsVisible(53) | Control.IsVisible(54) | Control.IsVisible(55)  | Control.IsVisible(56) | Control.IsVisible(500) | Control.IsVisible(57)]">Conditional</animation>
 			<animation effect="slide" start="0,0" end="0,-20" time="720" tween="cubic" easing="inout" condition="[Control.IsVisible(58) | Control.IsVisible(510)]">Conditional</animation>
@@ -620,6 +623,7 @@
 		<control type="group">
 			<left>1308</left>
 			<top>438</top>
+			<include>ViewAnimation</include>
 			<visible>!IsEmpty(Window(home).Property(listview))</visible>
 			<control type="image">
 				<left>-15</left>
@@ -630,6 +634,7 @@
 				<fadetime>IconCrossfadeTime</fadetime>
 			</control>
 			<control type="image" id="938">
+				<include>ViewAnimation</include>
 				<top>20</top>
 				<left>10</left>
 				<width>500</width>
@@ -639,6 +644,7 @@
 				<fadetime>IconCrossfadeTime</fadetime>
 			</control>
 			<control type="image" id="939">
+				<include>ViewAnimation</include>
 				<top>535</top>
 				<left>10</left>
 				<width>500</width>
@@ -915,7 +921,6 @@
 				<onup>9050</onup>
 				<ondown>9050</ondown>
 				<onback>ClearProperty(MediaMenu,Home)</onback>
-				<onback>50</onback>
 				<itemgap>0</itemgap>
 				<control type="label" id="200">
 					<width>400</width>

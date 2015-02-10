@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+ 	<setting id="view_type_leaguelist" type="text" default="" visible="false"/>
+  	<setting id="view_type_league" type="text" default="" visible="false"/>
+</settings>

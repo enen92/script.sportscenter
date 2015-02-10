@@ -101,7 +101,6 @@
 			<label>enen92</label>
 		</control>
 		
-
 		<control type="group">
 			<top>400</top>
 			<animation type="WindowOpen" reversible="false">
