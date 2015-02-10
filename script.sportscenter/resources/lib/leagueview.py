@@ -61,6 +61,10 @@ class dialog_league(xbmcgui.WindowXML):
 		#set league name
 		self.league_name = thesportsdb.Leagues().get_name(self.league)
 		self.getControl(427).setLabel('[COLOR labelheader]League:[CR][/COLOR]' + self.league_name)
+		
+		self.getControl(980).reset()
+		self.getControl(984).reset()
+		self.getControl(985).reset()
 			
 		teams_list = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
 		for team in teams_list:
