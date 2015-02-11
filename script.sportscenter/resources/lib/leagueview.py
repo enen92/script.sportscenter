@@ -200,6 +200,7 @@ class dialog_league(xbmcgui.WindowXML):
 					home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
 					home_team_name = thesportsdb.Events().get_hometeamname(event)
 					home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
+					stadium_fanart = thesportsdb.Teams().get_stadium_thumb(home_team_dict)
 					away_team_id = thesportsdb.Events().get_awayteamid(event)
 					away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
 					away_team_name = thesportsdb.Events().get_awayteamname(event)
@@ -221,6 +222,7 @@ class dialog_league(xbmcgui.WindowXML):
 					game.setProperty('HomeTeam',home_team_name)
 					game.setProperty('AwayTeamLogo',away_team_logo)
 					game.setProperty('AwayTeam',away_team_name)
+					game.setProperty('StadiumThumb',stadium_fanart)
 					game.setProperty('vs','VS')
 				game.setProperty('date',event_date)
 				if event_race: 
@@ -260,6 +262,7 @@ class dialog_league(xbmcgui.WindowXML):
 					home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
 					home_team_name = thesportsdb.Events().get_hometeamname(event)
 					home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
+					stadium_fanart = thesportsdb.Teams().get_stadium_thumb(home_team_dict)
 					away_team_id = thesportsdb.Events().get_awayteamid(event)
 					away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
 					away_team_name = thesportsdb.Events().get_awayteamname(event)
@@ -283,6 +286,7 @@ class dialog_league(xbmcgui.WindowXML):
 				if not event_race:
 					game.setProperty('HomeTeam',home_team_name)
 					game.setProperty('AwayTeamLogo',away_team_logo)
+					game.setProperty('StadiumThumb',stadium_fanart)
 					game.setProperty('AwayTeam',away_team_name)
 					game.setProperty('match_result',result)
 					if event_round: game.setProperty('round',round_label)
@@ -344,13 +348,21 @@ class dialog_league(xbmcgui.WindowXML):
 			checkbadge = xbmc.getCondVisibility("Control.HasFocus(985)")
 			checkplot = xbmc.getCondVisibility("Control.HasFocus(980)")
 			checkbanner = xbmc.getCondVisibility("Control.HasFocus(984)")
-			if checkbadge or checkplot or checkbanner:
+			checklastmatch = xbmc.getCondVisibility("Control.HasFocus(988)")
+			checknextmatch = xbmc.getCondVisibility("Control.HasFocus(987)")
+			if checkbadge or checkplot or checkbanner or checklastmatch or checknextmatch:
 				if checkbadge:
 					fanart = self.getControl(985).getSelectedItem().getProperty('team_fanart')
 				elif checkplot:
 					fanart = self.getControl(980).getSelectedItem().getProperty('team_fanart')
 				elif checkbanner:
 					fanart = self.getControl(984).getSelectedItem().getProperty('team_fanart')
+				elif checklastmatch:
+					fanart = self.getControl(988).getSelectedItem().getProperty('StadiumThumb')
+					if not fanart: fanart = self.league_fanart
+				elif checknextmatch:
+					fanart = self.getControl(987).getSelectedItem().getProperty('StadiumThumb')
+					if not fanart: fanart = self.league_fanart
 				self.getControl(912).setImage(fanart)
 			else: 
 				if self.league_fanart: self.getControl(912).setImage(self.league_fanart)
