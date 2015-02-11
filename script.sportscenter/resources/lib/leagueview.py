@@ -359,10 +359,10 @@ class dialog_league(xbmcgui.WindowXML):
 					fanart = self.getControl(984).getSelectedItem().getProperty('team_fanart')
 				elif checklastmatch:
 					fanart = self.getControl(988).getSelectedItem().getProperty('StadiumThumb')
-					if not fanart: fanart = self.league_fanart
+					if not fanart or fanart == 'None': fanart = self.league_fanart
 				elif checknextmatch:
 					fanart = self.getControl(987).getSelectedItem().getProperty('StadiumThumb')
-					if not fanart: fanart = self.league_fanart
+					if not fanart or fanart == 'None': fanart = self.league_fanart
 				self.getControl(912).setImage(fanart)
 			else: 
 				if self.league_fanart: self.getControl(912).setImage(self.league_fanart)
