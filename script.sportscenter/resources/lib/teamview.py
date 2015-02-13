@@ -5,13 +5,12 @@ from random import randint
 from centerutils.common_variables import *
 from centerutils.youtube import *
 import competlist as competlist
-import teamview as teamview
 
 def start(data_list):
-	window = dialog_league('DialogLeague.xml',addonpath,'Default',str(data_list))
+	window = dialog_team('DialogTeam.xml',addonpath,'Default',str(data_list))
 	window.doModal()
 	
-class dialog_league(xbmcgui.WindowXML):
+class dialog_team(xbmcgui.WindowXML):
 	def __init__( self, *args, **kwargs ):
 		xbmcgui.WindowXML.__init__(self)
 		self.league = eval(eval(args[3])[0])
@@ -27,7 +26,7 @@ class dialog_league(xbmcgui.WindowXML):
 		self.getControl(911).setImage(os.path.join(addonpath,art,"sports",self.sport + '.jpg'))
 		
 		#populate panel left
-		menu = [('Home','home'),('News','news'),('Videos','videos'),('League Tables','tables'),('Fixtures','fixtures'),('Teams','teams'),('Latest Matches','lastmatch'),('Next Matches','nextmatch')]
+		menu = [('Home','home'),('Team Details','details'),('News','news'),('Videos','videos'),('Players','players'),('Latest Matches','lastmatch'),('Next Matches','nextmatch')]
 			   
 		for entry,entry_id in menu:
 			menu_entry = xbmcgui.ListItem(entry)
@@ -64,17 +63,14 @@ class dialog_league(xbmcgui.WindowXML):
 		self.getControl(427).setLabel('[COLOR labelheader]League:[CR][/COLOR]' + self.league_name)
 		
 		self.getControl(980).reset()
-		self.getControl(981).reset()
 		self.getControl(984).reset()
 		self.getControl(985).reset()
 			
 		teams_list = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
 		for team in teams_list:
 			team_name = thesportsdb.Teams().get_name(team)
-			team_id = thesportsdb.Teams().get_id(team)
 			team_badge = thesportsdb.Teams().get_badge(team)
 			team_banner = thesportsdb.Teams().get_banner(team)
-			team_jersey = thesportsdb.Teams().get_team_jersey(team)
 			team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
 			if team_fanart_general_list:
 				team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
@@ -83,15 +79,12 @@ class dialog_league(xbmcgui.WindowXML):
 			teamitem.setProperty('team_name',team_name)
 			teamitem.setProperty('team_banner',team_banner)
 			teamitem.setProperty('team_logo',team_badge)
-			teamitem.setProperty('team_jersey',team_jersey)
 			teamitem.setProperty('team_fanart',team_fanart)
-			teamitem.setProperty('team_id',team_id)
 			self.getControl(980).addItem(teamitem)
 			
 		for team in teams_list:
 			team_name = thesportsdb.Teams().get_name(team)
 			team_banner = thesportsdb.Teams().get_banner(team)
-			team_jersey = thesportsdb.Teams().get_team_jersey(team)
 			team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
 			if team_fanart_general_list:
 				team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
@@ -99,13 +92,11 @@ class dialog_league(xbmcgui.WindowXML):
 			teamitem = xbmcgui.ListItem(team_name,iconImage=team_badge)
 			teamitem.setProperty('team_banner',team_banner)
 			teamitem.setProperty('team_fanart',team_fanart)
-			teamitem.setProperty('team_jersey',team_jersey)
 			self.getControl(984).addItem(teamitem)
 			
 		for team in teams_list:
 			team_name = thesportsdb.Teams().get_name(team)
 			team_badge = thesportsdb.Teams().get_badge(team)
-			team_jersey = thesportsdb.Teams().get_team_jersey(team)
 			team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
 			if team_fanart_general_list:
 				team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
@@ -113,22 +104,7 @@ class dialog_league(xbmcgui.WindowXML):
 			teamitem = xbmcgui.ListItem(team_name,iconImage=team_badge)
 			teamitem.setProperty('team_badge',team_badge)
 			teamitem.setProperty('team_fanart',team_fanart)
-			teamitem.setProperty('team_jersey',team_jersey)
 			self.getControl(985).addItem(teamitem)
-			
-		for team in teams_list:
-			team_name = thesportsdb.Teams().get_name(team)
-			team_badge = thesportsdb.Teams().get_badge(team)
-			team_jersey = thesportsdb.Teams().get_team_jersey(team)
-			team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
-			if team_fanart_general_list:
-				team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
-			else: team_fanart = self.league_fanart
-			teamitem = xbmcgui.ListItem(team_name,iconImage=team_badge)
-			teamitem.setProperty('team_badge',team_badge)
-			teamitem.setProperty('team_fanart',team_fanart)
-			teamitem.setProperty('team_jersey',team_jersey)
-			self.getControl(981).addItem(teamitem)
 		return
 		
 	def setplotview(self):
@@ -140,7 +116,6 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
-		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("SetProperty(plotview,1,home)")
@@ -160,29 +135,11 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
-		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
 		xbmc.executebuiltin("SetProperty(badgeview,1,home)")
 		settings.setSetting("view_type_league",'badgeview')
 
-		self.getControl(2).setLabel("League: BadgeView")
-		
-	def setjerseyview(self):
-		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
-		xbmc.executebuiltin("SetProperty(loading,1,home)")
-		self.setleagueinfo()
-		xbmc.executebuiltin("ClearProperty(loading,Home)")
-		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
-		xbmc.executebuiltin("ClearProperty(plotview,Home)")
-		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
-		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
-		xbmc.executebuiltin("ClearProperty(newsview,Home)")
-		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
-		xbmc.executebuiltin("ClearProperty(videosview,Home)")
-		xbmc.executebuiltin("SetProperty(jerseyview,1,home)")
-		settings.setSetting("view_type_league",'jerseyview')
-
-		self.getControl(2).setLabel("League: JerseyView")
+		self.getControl(2).setLabel("League: PlotView")
 		
 	def setbannerview(self):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
@@ -192,7 +149,6 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
 		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
-		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
@@ -216,13 +172,12 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
-		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
 		xbmc.executebuiltin("SetProperty(newsview,1,home)")
 		settings.setSetting("view_type_league",'newsview')
 
-		self.getControl(2).setLabel("League: NewsView")	
+		self.getControl(2).setLabel("League: LastMatchView")	
 		
 			
 	def setnextmatchview(self):
@@ -281,13 +236,12 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextview,Home)")
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
-		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
 		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("SetProperty(nextmatchview,1,home)")
 		settings.setSetting("view_type_league",'nextmatchview')
 
-		self.getControl(2).setLabel("League: NextMatchView")
+		self.getControl(2).setLabel("League: LastMatchView")
 
 	def setlastmatchview(self):	
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
@@ -347,7 +301,6 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
-		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextview,Home)")
 		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
@@ -376,7 +329,6 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextview,Home)")
 		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
-		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("SetProperty(videosview,1,home)")
 		settings.setSetting("view_type_league",'videosview')
@@ -395,22 +347,18 @@ class dialog_league(xbmcgui.WindowXML):
 				self.close()
 				#competlist.start(self.sport)
 		else:
-			checkjersey = xbmc.getCondVisibility("Control.HasFocus(981)")
 			checkbadge = xbmc.getCondVisibility("Control.HasFocus(985)")
 			checkplot = xbmc.getCondVisibility("Control.HasFocus(980)")
 			checkbanner = xbmc.getCondVisibility("Control.HasFocus(984)")
 			checklastmatch = xbmc.getCondVisibility("Control.HasFocus(988)")
 			checknextmatch = xbmc.getCondVisibility("Control.HasFocus(987)")
-			
-			if checkbadge or checkplot or checkbanner or checklastmatch or checknextmatch or checkjersey:
+			if checkbadge or checkplot or checkbanner or checklastmatch or checknextmatch:
 				if checkbadge:
 					fanart = self.getControl(985).getSelectedItem().getProperty('team_fanart')
 				elif checkplot:
 					fanart = self.getControl(980).getSelectedItem().getProperty('team_fanart')
 				elif checkbanner:
 					fanart = self.getControl(984).getSelectedItem().getProperty('team_fanart')
-				elif checkjersey:
-					fanart = self.getControl(981).getSelectedItem().getProperty('team_fanart')
 				elif checklastmatch:
 					fanart = self.getControl(988).getSelectedItem().getProperty('StadiumThumb')
 					if not fanart or fanart == 'None': fanart = self.league_fanart
@@ -435,8 +383,6 @@ class dialog_league(xbmcgui.WindowXML):
 				if settings.getSetting('view_type_league') == 'bannerview':
 					self.setbadgeview()
 				elif settings.getSetting('view_type_league')=='badgeview':
-					self.setjerseyview()
-				elif settings.getSetting('view_type_league')=='jerseyview':
 					self.setbannerview()
 				else:
 					self.setbadgeview()
@@ -448,12 +394,6 @@ class dialog_league(xbmcgui.WindowXML):
 					self.setlastmatchview()
 			elif seleccionado == 'videos':
 					self.setvideosview()
-					
-		if controlId == 980 or controlId == 984 or controlId == 985:
-			self.team = self.getControl(controlId).getSelectedItem().getProperty('video_id')
-			teamview.start([self.team,self.sport])
-		
-
 
 		if controlId == 2:
 			active_view_type = self.getControl(controlId).getLabel()
@@ -464,9 +404,7 @@ class dialog_league(xbmcgui.WindowXML):
 			elif active_view_type == "League: BannerView":
 				self.setbadgeview()	
 			elif active_view_type == "League: BadgeView":
-				self.setjerseyview()
-			elif active_view_type == "League: JerseyView":
-				self.setnewsview()
+				self.newsview()
 			elif active_view_type == "League: NewsView":
 				self.setnextmatchview()
 			elif active_view_type == "League: NextMatchView":

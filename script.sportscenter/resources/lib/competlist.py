@@ -14,7 +14,7 @@ def start(sportname):
 	
 def removeNonAscii(s): return "".join(filter(lambda x: ord(x)<128, s))
 	
-class dialog_compet(xbmcgui.WindowXMLDialog):
+class dialog_compet(xbmcgui.WindowXML):
     
 
 	def __init__( self, *args, **kwargs ):
@@ -209,6 +209,6 @@ class dialog_compet(xbmcgui.WindowXMLDialog):
 			listControl = self.getControl(controlId)
 			seleccionado=listControl.getSelectedItem()
 			league_object = seleccionado.getProperty('league_object')
-			self.close()
+			#self.close()
 			leagueview.start([league_object,self.sport])
 			

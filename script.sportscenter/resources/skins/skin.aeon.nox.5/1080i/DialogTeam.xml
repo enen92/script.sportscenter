@@ -3,7 +3,6 @@
 	<onload>ClearProperty(MediaMenu,Home)</onload>
 	<onunload>ClearProperty(Window.HasSettings,Home)</onunload>
 	<onunload>ClearProperty(bannerview,Home)</onunload>
-	<onunload>ClearProperty(jerseyview,Home)</onunload>
 	<onunload>ClearProperty(infoview,Home)</onunload>
 	<onunload>ClearProperty(listview,Home)</onunload>
 	<onunload>ClearProperty(plotview,Home)</onunload>
@@ -144,7 +143,6 @@
 			
 			<onright condition="!IsEmpty(Window(home).Property(nextmatchview))">987</onright>
 			<onright condition="!IsEmpty(Window(home).Property(lastmatchview))">988</onright>
-			<onright condition="!IsEmpty(Window(home).Property(jerseyview))">981</onright>
 			<showonepage>false</showonepage>
 			<texturesliderbackground>-</texturesliderbackground>
 			<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
@@ -619,83 +617,6 @@
 				<onright>SetProperty(MediaMenu,True,home)</onright>
 				<onright>SetFocus(9050)</onright>
 				<onleft>985</onleft>
-				<texturesliderbackground>-</texturesliderbackground>
-				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
-				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
-			</control>
-		</control>
-		
-		<!-- START LEAGUE Jersey VIEW -->
-		<control type="group">
-			<visible>!IsEmpty(Window(home).Property(jerseyview))+IsEmpty(Window(home).Property(loading))+!Player.HasMedia</visible>
-			<include>Window_OpenClose_Animation</include>
-			<control type="image">
-				<description>background image</description>
-				<left>5590</left>
-				<top>1070</top>
-				<width>1243</width>
-				<height>884</height>
-				<texture border="40">panel_reflect.png</texture>
-			</control>
-			<control type="image">
-				<description>background image</description>
-				<left>590</left>
-				<top>129</top>
-				<width>1243</width>
-				<height>884</height>
-				<texture border="40">listpanel_back.png</texture>
-			</control>
-			<control type="panel" id="981">
-				<left>620</left>
-				<top>160</top>
-				<width>1330</width>
-				<height>824</height>
-				<onleft>983</onleft>
-				<onright>65</onright>
-				<onup>51</onup>
-				<ondown>51</ondown>
-				<pagecontrol>31</pagecontrol>
-				<preloaditems>2</preloaditems>
-				<scrolltime tween="quadratic" easing="out">300</scrolltime>
-				<!--<visible>!IsEmpty(Window(home).Property(bannerview))</visible>-->
-				<itemlayout height="300" width="300">
-					<control type="image">
-						<width>280</width>
-						<height>280</height>
-						<aspectratio>scale</aspectratio>
-						<texture background="true">$INFO[ListItem.Property(team_jersey)]</texture>
-						<fadetime>400</fadetime>
-						<bordertexture border="2">thumbs/panel_border3.png</bordertexture>
-						<bordersize>2</bordersize>
-						<colordiffuse>BAffffff</colordiffuse>
-					</control>
-				</itemlayout>
-				<focusedlayout height="300" width="300">
-					<control type="group">
-						<animation type="Focus" reversible="false">
-							<effect type="zoom" start="95" end="100" time="200" tween="sine" easing="inout" center="auto" />
-							<effect type="fade" start="80" end="100" time="200" tween="sine" easing="in" />
-						</animation>
-						<control type="image">
-							<width>280</width>
-							<height>280</height>
-							<aspectratio>scale</aspectratio>
-							<texture background="true">$INFO[ListItem.Property(team_jersey)]</texture>
-							<fadetime>400</fadetime>
-							<bordertexture border="8">thumbs/thumbnail_focused.png</bordertexture>
-							<bordersize>8</bordersize>
-						</control>
-					</control>
-				</focusedlayout>
-			</control>
-			<control type="scrollbar" id="31">
-				<left>1800</left>
-				<top>162</top>
-				<width>14</width>
-				<height>805</height>
-				<onright>SetProperty(MediaMenu,True,home)</onright>
-				<onright>SetFocus(9050)</onright>
-				<onleft>982</onleft>
 				<texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
 				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
