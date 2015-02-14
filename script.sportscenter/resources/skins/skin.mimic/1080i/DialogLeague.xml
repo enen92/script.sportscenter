@@ -1264,9 +1264,9 @@
 					</control>
 					<control type="label" id="318">
 						<description>vs tag</description>
-						<posx>560</posx>
+						<posx>520</posx>
 						<posy>115</posy>
-						<width>80</width>
+						<width>150</width>
 						<height>20</height>
 						<label>$INFO[ListItem.Property(match_result)]</label>
 						<font>font48</font>
@@ -1372,9 +1372,9 @@
 					</control>
 					<control type="label" id="318">
 						<description>vs tag</description>
-						<posx>560</posx>
+						<posx>520</posx>
 						<posy>115</posy>
-						<width>80</width>
+						<width>150</width>
 						<height>20</height>
 						<label>$INFO[ListItem.Property(match_result)]</label>
 						<font>font48</font>
