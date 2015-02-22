@@ -84,10 +84,11 @@ print "Iconimage: "+str(iconimage)
 if mode==None or url==None or len(url)<1:
 	print ""
 	skin = xbmc.getSkinDir()
-	if skin == 'skin.aeon.nox.5' or skin == 'skin.mimic' or skin == 'skin.confluence':
+	if skin == 'skin.aeon.nox.5':# or skin == 'skin.mimic' or skin == 'skin.confluence':
 		home.start(None)
 	else:
-		mensagemok('Sports Center', 'Only available for Confluence,Aeon Nox and Mimic')
+		#mensagemok('Sports Center', 'Only available for Confluence,Aeon Nox and Mimic')
+		mensagemok('Sports Center', 'Only available for Aeon Nox 5 and Helix for now...')
 		sys.exit(0)
 
 elif mode==1:
