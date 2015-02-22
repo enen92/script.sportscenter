@@ -1,10 +1,144 @@
 import xbmc,xbmcgui,xbmcaddon,xbmcplugin
-import urllib
-import thesportsdb
+import urllib,re,datetime
+import thesportsdb,feedparser
 from random import randint
 from centerutils.common_variables import *
 from centerutils.youtube import *
+from centerutils.rssparser import *
+from centerutils.datemanipulation import *
 import competlist as competlist
+import stadium as stadium
+import tweetbuild as tweetbuild
+
+
+def teamdetails(team_id):
+	window = dialog_teamdetails('DialogTeamInfo.xml',addonpath,'Default',team_id)
+	window.doModal()
+
+class dialog_teamdetails(xbmcgui.WindowXMLDialog):
+	def __init__( self, *args, **kwargs ):
+		xbmcgui.WindowXML.__init__(self)
+		self.team_id = str(args[3])
+		self.event_last_list = thesportsdb.Schedules().eventslast(self.team_id)['results']
+		self.event_next_list = thesportsdb.Schedules().eventsnext(self.team_id)['events']
+
+	def onInit(self):
+		self.team = thesportsdb.Lookups().lookupteam(self.team_id)['teams'][0]
+		self.team_name = thesportsdb.Teams().get_name(self.team)
+		self.team_badge = thesportsdb.Teams().get_badge(self.team)
+		self.team_fanart = thesportsdb.Teams().get_fanart_general1(self.team)
+		self.team_stadiumfanart = thesportsdb.Teams().get_stadium_thumb(self.team)
+		self.team_clear = thesportsdb.Teams().get_logo(self.team)
+		self.team_jersey = thesportsdb.Teams().get_team_jersey(self.team)
+		self.founded = thesportsdb.Teams().get_formedyear(self.team)
+		self.plot = thesportsdb.Teams().get_plot_en(self.team)
+		self.sport = thesportsdb.Teams().get_sport(self.team)
+		self.manager = thesportsdb.Teams().get_manager(self.team)
+		self.stadium_name = thesportsdb.Teams().get_stadium(self.team)
+		self.location = thesportsdb.Teams().get_stadium_location(self.team)
+		self.league = thesportsdb.Teams().get_league(self.team)
+		self.likes = thesportsdb.Teams().get_likes(self.team)
+		if self.likes == 'None': self.likes = '0'
+		
+		self.getControl(1).setLabel(self.team_name)
+		self.getControl(2).setImage(self.team_badge)
+		self.getControl(3).setImage(self.team_fanart)
+		self.getControl(4).setImage(self.team_stadiumfanart)
+		self.getControl(5).setImage(self.team_clear)
+		self.getControl(6).setImage(self.team_jersey)
+		self.getControl(7).setLabel('[COLOR labelheader]Founded:[CR][/COLOR]'+self.founded)
+		self.getControl(430).setText(self.plot)
+		self.getControl(8).setLabel('[COLOR labelheader]Sport:[CR][/COLOR]'+self.sport)
+		self.getControl(9).setLabel('[COLOR labelheader]Manager:[CR][/COLOR]'+self.manager)
+		self.getControl(10).setLabel('[COLOR labelheader]Stadium:[CR][/COLOR]'+self.stadium_name)
+		self.getControl(11).setLabel('[COLOR labelheader]Location:[CR][/COLOR]'+self.location)
+		self.getControl(12).setLabel('[COLOR labelheader]League:[CR][/COLOR]'+self.league)
+		
+		self.getControl(18).setImage(os.path.join(addonpath,'resources','img','like.png'))
+		self.getControl(19).setLabel(str(self.likes)+' Users')
+		
+		#Next match information
+		if self.event_next_list:
+			self.nextevent = self.event_next_list[0]
+			self.hometeam = thesportsdb.Events().get_hometeamname(self.nextevent)
+			self.awayteam = thesportsdb.Events().get_awayteamname(self.nextevent)
+			self.home_away = ''
+			if self.team_name == self.hometeam:
+				self.home_away = 'HOME'
+				self.searchid = thesportsdb.Events().get_awayteamid(self.nextevent)
+			else:
+				self.home_away = 'AWAY'
+				self.searchid = thesportsdb.Events().get_hometeamid(self.nextevent)
+			self.getControl(41).setLabel(self.home_away)
+			self.nexteam = thesportsdb.Lookups().lookupteam(self.searchid)['teams'][0]
+			self.nextlogo = thesportsdb.Teams().get_badge(self.nexteam)
+			self.getControl(40).setImage(self.nextlogo)
+			self.nextdate = thesportsdb.Events().get_eventdate(self.nextevent).split('-')
+			if len(self.nextdate) == 3:
+				now = datetime.datetime.now()
+				datenow = datetime.datetime(int(now.year), int(now.month), int(now.day))
+				eventdate = datetime.datetime(int(self.nextdate[0]), int(self.nextdate[1]), int(self.nextdate[2]))
+				day_difference = abs(eventdate - datenow).days
+				if day_difference == 0:
+					string = 'Today'
+				elif day_difference == 1:
+					string = 'Tomorrow'
+				else:
+					string = 'In ' + str(day_difference) + ' days'
+				
+				self.getControl(42).setLabel(string)
+
+
+		
+		i = 0
+		controlinicial = 30
+		winnumber = 0
+		for event in reversed(self.event_last_list):
+			awayteam = thesportsdb.Events().get_awayteamname(event)
+			hometeam = thesportsdb.Events().get_hometeamname(event)
+			awayscore = thesportsdb.Events().get_awayscore(event)
+			homescore = thesportsdb.Events().get_homescore(event)
+			if hometeam == self.team_name:
+				if int(homescore) > int(awayscore):
+					self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','greensquare.png'))
+					self.getControl(controlinicial+i+1).setLabel('W')
+					winnumber += 1
+				elif int(homescore) < int(awayscore):
+					self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','redsquare.png'))
+					self.getControl(controlinicial+i+1).setLabel('L')
+				else:
+					self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','greysquare.png'))
+					self.getControl(controlinicial+i+1).setLabel('D')
+			else:
+				if int(homescore) > int(awayscore):
+					self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','redsquare.png'))
+					self.getControl(controlinicial+i+1).setLabel('L')
+				elif int(homescore) < int(awayscore):
+					self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','greensquare.png'))
+					self.getControl(controlinicial+i+1).setLabel('W')
+					winnumber += 1
+				else:
+					self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','greysquare.png'))
+					self.getControl(controlinicial+i+1).setLabel('D')
+			i += 2
+		winpercentage = float(winnumber)/5*100 
+		self.getControl(43).setLabel(str(int(winpercentage))+'% WINS')
+		self.getControl(44).setPercent(int(winpercentage))
+			
+		
+			
+		#self.getControl(13).setImage(os.path.join((addonpath,art,'redsquare.png'))
+		
+	def onClick(self,controlId):
+		if controlId == 210:
+			stadium.start(self.team)
+		elif controlId == 211:
+			twitter_name = thesportsdb.Teams().get_team_twitter(self.team)
+			if twitter_name: 
+				twitter_name = twitter_name.split('/')[-1]
+				tweetbuild.tweets(twitter_name)
+
+
 
 def start(data_list):
 	window = dialog_team('DialogTeam.xml',addonpath,'Default',str(data_list))
@@ -13,20 +147,27 @@ def start(data_list):
 class dialog_team(xbmcgui.WindowXML):
 	def __init__( self, *args, **kwargs ):
 		xbmcgui.WindowXML.__init__(self)
-		self.league = eval(eval(args[3])[0])
+		self.team_id = eval(args[3])[0]
 		self.sport = eval(args[3])[1]
+		self.team = thesportsdb.Lookups().lookupteam(self.team_id)['teams'][0]
+		
 
 	def onInit(self):	
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		
 		xbmc.executebuiltin("SetProperty(loading,1,home)")
 		
-		self.league_id = thesportsdb.Leagues().get_id(self.league)
+		#self.league_id = thesportsdb.Leagues().get_id(self.league)
 		
 		self.getControl(911).setImage(os.path.join(addonpath,art,"sports",self.sport + '.jpg'))
 		
+		#set team badge
+		self.team_badge = thesportsdb.Teams().get_badge(self.team)
+		if self.team_badge: self.getControl(934).setImage(self.team_badge)
+		
+		self.getControl(983).reset()
 		#populate panel left
-		menu = [('Home','home'),('Team Details','details'),('News','news'),('Videos','videos'),('Players','players'),('Latest Matches','lastmatch'),('Next Matches','nextmatch')]
+		menu = [('Home','home'),('Team Details','details'),('News','news'),('Tweets','tweets'),('Videos','videos'),('Players','players'),('Stadium','stadium'),('Fixtures','nextmatch'),('Results','lastmatch')]
 			   
 		for entry,entry_id in menu:
 			menu_entry = xbmcgui.ListItem(entry)
@@ -34,14 +175,19 @@ class dialog_team(xbmcgui.WindowXML):
 			menu_entry.setProperty('entryid', entry_id)
 			self.getControl(983).addItem(menu_entry)
 			
-		#set league fanart
-		self.league_fanartlist = thesportsdb.Leagues().get_fanart(self.league)
-		if self.league_fanartlist:
-			self.league_fanart = self.league_fanartlist[randint(0,len(self.league_fanartlist)-1)]
-			self.getControl(912).setImage(self.league_fanart)
-			self.getControl(429).setImage(self.league_fanart)
-		else: self.league_fanart = None
-			
+		#set team fanart
+		self.team_fanartlist = thesportsdb.Teams().get_fanart_general_list(self.team)
+		if self.team_fanartlist:
+			self.team_fanart = self.team_fanartlist[randint(0,len(self.team_fanartlist)-1)]
+			self.getControl(912).setImage(self.team_fanart)
+		else: self.team_fanart = os.path.join(addonpath,art,'sports',self.sport+'.jpg')
+
+		self.player_fanart = thesportsdb.Teams().get_fanart_player(self.team)
+		if self.player_fanart:
+			self.getControl(429).setImage(self.player_fanart)
+		else:
+			self.getControl(429).setImage(self.team_fanart)
+
 		self.setplotview()
 		
 	def setleagueinfo(self):
@@ -74,7 +220,7 @@ class dialog_team(xbmcgui.WindowXML):
 			team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
 			if team_fanart_general_list:
 				team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
-			else: team_fanart = self.league_fanart
+			else: team_fanart = ''
 			teamitem = xbmcgui.ListItem(team_name,iconImage=team_badge)
 			teamitem.setProperty('team_name',team_name)
 			teamitem.setProperty('team_banner',team_banner)
@@ -88,7 +234,7 @@ class dialog_team(xbmcgui.WindowXML):
 			team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
 			if team_fanart_general_list:
 				team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
-			else: team_fanart = self.league_fanart
+			else: team_fanart = ''
 			teamitem = xbmcgui.ListItem(team_name,iconImage=team_badge)
 			teamitem.setProperty('team_banner',team_banner)
 			teamitem.setProperty('team_fanart',team_fanart)
@@ -100,7 +246,7 @@ class dialog_team(xbmcgui.WindowXML):
 			team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
 			if team_fanart_general_list:
 				team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
-			else: team_fanart = self.league_fanart
+			else: team_fanart = ''
 			teamitem = xbmcgui.ListItem(team_name,iconImage=team_badge)
 			teamitem.setProperty('team_badge',team_badge)
 			teamitem.setProperty('team_fanart',team_fanart)
@@ -110,7 +256,21 @@ class dialog_team(xbmcgui.WindowXML):
 	def setplotview(self):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")
-		self.setleagueinfo()
+		#self.setleagueinfo()
+		
+		#set team plot
+		#set league plot
+		self.team_plot = thesportsdb.Teams().get_plot_en(self.team)
+		self.getControl(430).setText(self.team_plot)
+		
+		#set team formed year
+		self.team_formedyear = thesportsdb.Teams().get_formedyear(self.team)
+		self.getControl(428).setLabel('[COLOR labelheader]Established:[CR][/COLOR]' + self.team_formedyear)
+		
+		#set team name
+		self.team_name = thesportsdb.Teams().get_name(self.team)
+		self.getControl(427).setLabel('[COLOR labelheader]Team Name:[CR][/COLOR]' + self.team_name)
+		#		
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
@@ -160,12 +320,21 @@ class dialog_team(xbmcgui.WindowXML):
 		
 	def setnewsview(self):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
+		
 		xbmc.executebuiltin("SetProperty(loading,1,home)")	
-		#news stuff
-		titles = ['No compromise on Cuadrado','Bale dismisses United link','Bojan out for the season','PSG interested in Adebayor','Mourinho hit with FA fine',]
-		for title in titles:
-			newsitem = xbmcgui.ListItem(title)
-			self.getControl(986).addItem(newsitem)
+		self.feedurl = thesportsdb.Teams().get_rssurl(self.team)
+		rssitems = return_rsslist(self.feedurl)
+		if rssitems:
+			for title,date,content,img in rssitems:
+				newsitem = xbmcgui.ListItem(title)
+				newsitem.setProperty('content',content)
+				newsitem.setProperty('news_img',img)
+				newsitem.setProperty('date',date)
+				newsitem.setProperty('title',title)
+				self.getControl(986).addItem(newsitem)
+			self.getControl(939).setImage(rssitems[0][3])
+			self.getControl(937).setText(rssitems[0][2])
+			self.getControl(938).setLabel(rssitems[0][0])
 			
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
@@ -178,17 +347,28 @@ class dialog_team(xbmcgui.WindowXML):
 		settings.setSetting("view_type_league",'newsview')
 
 		self.getControl(2).setLabel("League: LastMatchView")	
-		
+		try:self.getControl(986).selectItem(0)
+		except:pass
 			
 	def setnextmatchview(self):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")	
 		#next matches stuff
-		print self.league_id
-		event_next_list = thesportsdb.Schedules().eventsnextleague(self.league_id)["events"]
+		event_next_list = thesportsdb.Schedules().eventsnext(self.team_id)['events']
+		self.getControl(987).reset()
 		if event_next_list:
 			for event in event_next_list:
 				event_date = thesportsdb.Events().get_eventdate(event)
+				event_date_parsed = event_date.split('-')
+				if event_date_parsed:
+					now = datetime.datetime.now()
+					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day))
+					eventdate = datetime.datetime(int(event_date_parsed[0]), int(event_date_parsed[1]), int(event_date_parsed[2]))
+					day_difference = abs(eventdate - datenow).days
+					if day_difference == 0: presented_date='Today'
+					elif day_difference == 1: presented_date='Tomorrow'
+					else: presented_date = event_date_parsed[2] + '-' + get_month_short(event_date_parsed[1]) +'   '+str(day_difference)+' days'
+				else: presented_date = event_date_parsed[2] + '-' + get_month_short(event_date_parsed[1])
 				event_fullname = thesportsdb.Events().get_eventtitle(event)
 				event_race = thesportsdb.Events().get_racelocation(event)
 				if event_race:
@@ -219,12 +399,10 @@ class dialog_team(xbmcgui.WindowXML):
 				game = xbmcgui.ListItem(event_fullname)
 				game.setProperty('HomeTeamLogo',home_team_logo)
 				if not event_race:
-					game.setProperty('HomeTeam',home_team_name)
 					game.setProperty('AwayTeamLogo',away_team_logo)
-					game.setProperty('AwayTeam',away_team_name)
 					game.setProperty('StadiumThumb',stadium_fanart)
 					game.setProperty('vs','VS')
-				game.setProperty('date',event_date)
+				game.setProperty('date',presented_date)
 				if event_race: 
 					game.setProperty('EventName',event_name) 
 				if event_round: game.setProperty('round',round_label)
@@ -245,12 +423,44 @@ class dialog_team(xbmcgui.WindowXML):
 
 	def setlastmatchview(self):	
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
-		xbmc.executebuiltin("SetProperty(loading,1,home)")	
+		xbmc.executebuiltin("SetProperty(loading,1,home)")
+		
+		i = 0
+		controlinicial = 30
+		winnumber = 0
+		
 		#last matches stuff
-		event_last_list = thesportsdb.Schedules().eventspastleague(self.league_id)["events"]
+		event_last_list = thesportsdb.Schedules().eventslast(self.team_id)['results']
 		if event_last_list:
 			for event in event_last_list:
-
+				awayteam = thesportsdb.Events().get_awayteamname(event)
+				hometeam = thesportsdb.Events().get_hometeamname(event)
+				awayscore = thesportsdb.Events().get_awayscore(event)
+				homescore = thesportsdb.Events().get_homescore(event)
+				if hometeam == self.team_name:
+					if int(homescore) > int(awayscore):
+						self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','greensquare.png'))
+						self.getControl(controlinicial+i+1).setLabel('W')
+						winnumber += 1
+					elif int(homescore) < int(awayscore):
+						self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','redsquare.png'))
+						self.getControl(controlinicial+i+1).setLabel('L')
+					else:
+						self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','greysquare.png'))
+						self.getControl(controlinicial+i+1).setLabel('D')
+				else:
+					if int(homescore) > int(awayscore):
+						self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','redsquare.png'))
+						self.getControl(controlinicial+i+1).setLabel('L')
+					elif int(homescore) < int(awayscore):
+						self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','greensquare.png'))
+						self.getControl(controlinicial+i+1).setLabel('W')
+						winnumber += 1
+					else:
+						self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','greysquare.png'))
+						self.getControl(controlinicial+i+1).setLabel('D')
+				i += 2
+				
 				event_date = thesportsdb.Events().get_eventdate(event)
 				event_fullname = thesportsdb.Events().get_eventtitle(event)
 				event_race = thesportsdb.Events().get_racelocation(event)
@@ -296,6 +506,11 @@ class dialog_team(xbmcgui.WindowXML):
 				game.setProperty('date',event_date)
 				self.getControl(988).addItem(game)
 		
+		#Set percentage		
+		winpercentage = float(winnumber)/5*100 
+		self.getControl(43).setLabel(str(int(winpercentage))+'% WINS')
+		self.getControl(44).setPercent(int(winpercentage))
+		
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
@@ -313,14 +528,20 @@ class dialog_team(xbmcgui.WindowXML):
 	
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")
+		self.youtubeurl = thesportsdb.Teams().get_team_youtube(self.team)
+		if self.youtubeurl:
+			ytuser = self.youtubeurl.split('/')[-1]
+		else: ytuser = None
+		
 			
 		#videos stuff
-		video_list = return_youtubevideos('NBA')
-		for video_name,video_id,video_thumb in video_list:
-			video = xbmcgui.ListItem(video_name)
-			video.setProperty('thumb',video_thumb)
-			video.setProperty('video_id',video_id)
-			self.getControl(989).addItem(video)
+		if ytuser:
+			video_list = return_youtubevideos(ytuser)
+			for video_name,video_id,video_thumb in video_list:
+				video = xbmcgui.ListItem(video_name)
+				video.setProperty('thumb',video_thumb)
+				video.setProperty('video_id',video_id)
+				self.getControl(989).addItem(video)
 			
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
@@ -361,18 +582,19 @@ class dialog_team(xbmcgui.WindowXML):
 					fanart = self.getControl(984).getSelectedItem().getProperty('team_fanart')
 				elif checklastmatch:
 					fanart = self.getControl(988).getSelectedItem().getProperty('StadiumThumb')
-					if not fanart or fanart == 'None': fanart = self.league_fanart
+					if not fanart or fanart == 'None': fanart = self.team_fanart
 				elif checknextmatch:
 					fanart = self.getControl(987).getSelectedItem().getProperty('StadiumThumb')
-					if not fanart or fanart == 'None': fanart = self.league_fanart
+					if not fanart or fanart == 'None': fanart = self.team_fanart
 				self.getControl(912).setImage(fanart)
 			else: 
-				if self.league_fanart: self.getControl(912).setImage(self.league_fanart)
+				self.getControl(912).setImage(self.team_fanart)
+
 
 			
 	def onClick(self,controlId):
 	
-		print controlId
+		#print controlId
 	
 		if controlId == 983:
 			listControl = self.getControl(controlId)
@@ -387,15 +609,27 @@ class dialog_team(xbmcgui.WindowXML):
 				else:
 					self.setbadgeview()
 			elif seleccionado == 'home':
-					self.setplotview()
+				self.setplotview()
 			elif seleccionado == 'nextmatch':
-					self.setnextmatchview()
+				self.setnextmatchview()
 			elif seleccionado == 'lastmatch':
-					self.setlastmatchview()
+				self.setlastmatchview()
 			elif seleccionado == 'videos':
-					self.setvideosview()
+				self.setvideosview()
+			elif seleccionado == 'stadium':
+				stadium.start(self.team)	
+			elif seleccionado == 'details':
+				teamdetails(self.team_id)
+			elif seleccionado == 'tweets':
+				twitter_name = thesportsdb.Teams().get_team_twitter(self.team)
+				if twitter_name: 
+					twitter_name = twitter_name.split('/')[-1]
+					tweetbuild.tweets(twitter_name)
+				else: pass
+					
+					
 
-		if controlId == 2:
+		elif controlId == 2:
 			active_view_type = self.getControl(controlId).getLabel()
 			if active_view_type == "League: PlotView":
 				self.setvideosview()
@@ -412,8 +646,17 @@ class dialog_team(xbmcgui.WindowXML):
 			elif active_view_type == "League: LastMatchView":
 				self.setplotview()
 				
-		if controlId == 989:
+		elif controlId == 989:
 			youtube_id = self.getControl(989).getSelectedItem().getProperty('video_id')
 			xbmc.executebuiltin('PlayMedia(plugin://plugin.video.youtube/play/?video_id='+youtube_id+')')
+			
+		elif controlId == 986:
+			news_content = self.getControl(986).getSelectedItem().getProperty('content')
+			news_title = self.getControl(986).getSelectedItem().getProperty('title')
+			news_image = self.getControl(986).getSelectedItem().getProperty('news_img')
+			self.getControl(939).setImage(news_image)
+			self.getControl(937).setText(news_content)
+			self.getControl(938).setLabel(news_title)
+			
 	
 		

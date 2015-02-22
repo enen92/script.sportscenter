@@ -2,11 +2,9 @@
 	<onload>SetProperty(Window.HasSettings,True,home)</onload>
 	<onload>ClearProperty(MediaMenu,Home)</onload>
 	<onunload>ClearProperty(Window.HasSettings,Home)</onunload>
-	<onunload>ClearProperty(bannerview,Home)</onunload>
 	<onunload>ClearProperty(infoview,Home)</onunload>
 	<onunload>ClearProperty(listview,Home)</onunload>
 	<onunload>ClearProperty(plotview,Home)</onunload>
-	<onunload>ClearProperty(badgeview,Home)</onunload>
 	<onunload>ClearProperty(newsview,Home)</onunload>
 	<onunload>ClearProperty(videosview,Home)</onunload>
 	<onunload>ClearProperty(nextmatchview,Home)</onunload>
@@ -105,28 +103,28 @@
 			<include>Window_OpenClose_Animation</include>
 			<visible>IsEmpty(Window(home).Property(loading))+!Player.HasMedia</visible>
 			<control type="image">
-				<left>60</left>
+				<left>1370</left>
 				<top>130</top>
 				<width>480</width>
 				<height>804</height>
 				<texture border="40">panel_reflect.png</texture>
 			</control>
 			<control type="image">
-				<left>60</left>
+				<left>1370</left>
 				<top>130</top>
 				<width>480</width>
 				<height>884</height>
 				<texture border="40">listpanel_back.png</texture>
 			</control>
 			<control type="image" id="934">
-				<left>120</left>
-				<top>160</top>
-				<width>355</width>
-				<height>334</height>
+				<left>1425</left>
+				<top>165</top>
+				<width>350</width>
+				<height>330</height>
 				<texture></texture>
 			</control>
 		<control type="scrollbar" id="62">
-			<left>507</left>
+			<left>1817</left>
 			<top>494</top>
 			<width>14</width>
 			<height>490</height>
@@ -134,35 +132,35 @@
 			<onright>Dialog.Close(textviewer)</onright>
 			<ondown>61</ondown>
 			<onup>61</onup>-->
+			<onright>SetProperty(MediaMenu,True,home)</onright>
+			<onright>SetFocus(9050)</onright>
 			<onleft>983</onleft>
-			<onright condition="!IsEmpty(Window(home).Property(plotview))">63</onright>
-			<onright condition="!IsEmpty(Window(home).Property(videosview))">989</onright>
-			<onright condition="!IsEmpty(Window(home).Property(newsview))">986</onright>
-			<onright condition="!IsEmpty(Window(home).Property(badgeview))">985</onright>
-			<onright condition="!IsEmpty(Window(home).Property(bannerview))">984</onright>
 			
-			<onright condition="!IsEmpty(Window(home).Property(nextmatchview))">987</onright>
-			<onright condition="!IsEmpty(Window(home).Property(lastmatchview))">988</onright>
-			<showonepage>false</showonepage>
+			<showonepage>true</showonepage>
 			<texturesliderbackground>-</texturesliderbackground>
 			<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
 			<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
 			<orientation>vertical</orientation>
 		</control>
 		<control type="panel" id="983">
-				<posx>83</posx>
+				<posx>1393</posx>
 				<posy>485</posy>
 				<width>425</width>
 				<height>490</height>
-				<onleft>SetProperty(MediaMenu,True,home)</onleft>
-				<onleft>SetFocus(9050)</onleft>
+				
+				<onleft condition="!IsEmpty(Window(home).Property(plotview))">69</onleft>
+				<onleft condition="!IsEmpty(Window(home).Property(videosview))">989</onleft>
+				<onleft condition="!IsEmpty(Window(home).Property(newsview))">986</onleft>
+			
+				<onleft condition="!IsEmpty(Window(home).Property(nextmatchview))">987</onleft>
+				<onleft condition="!IsEmpty(Window(home).Property(lastmatchview))">988</onleft>
 				<onright>62</onright>
 				<onup>600</onup>
 				<ondown>500</ondown>
-				<viewtype>icon</viewtype>
+				<viewtype>list</viewtype>
 				<pagecontrol>62</pagecontrol>
 				<scrolltime>100</scrolltime>
-				<preloaditems>1</preloaditems>
+				<preloaditems>0</preloaditems>
 				<orientation>vertical</orientation>
 
 				<itemlayout height="103" width="650">
@@ -226,50 +224,50 @@
 			<include>Window_OpenClose_Animation</include>
 			<visible>!IsEmpty(Window(home).Property(plotview))+IsEmpty(Window(home).Property(loading))+!Player.HasMedia</visible>
 			<control type="image">
-				<left>557</left>
+				<left>170</left>
 				<top>130</top>
-				<width>734</width>
+				<width>1104</width>
 				<height>804</height>
 				<texture border="40">panel_reflect.png</texture>
 			</control>
 			<control type="image">
-				<left>557</left>
+				<left>170</left>
 				<top>130</top>
-				<width>734</width>
+				<width>1104</width>
 				<height>884</height>
 				<texture border="40">listpanel_back.png</texture>
 			</control>
 			<control type="image" id="429">
-				<left>589</left>
+				<left>202</left>
 				<top>160</top>
-				<width>670</width>
-				<height>384</height>
+				<width>1040</width>
+				<height>544</height>
 				<texture></texture>
 			</control>
 			<control type="button" id="427">
-				<left>586</left>
-				<top>545</top>
+				<left>206</left>
+				<top>705</top>
 				<label></label>
-				<width>675</width>
+				<width>1037</width>
 				<align>left</align>
 				<include>ShowCaseInfoPanelButtonsValues</include>
 				<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
 			</control>
 			<control type="button" id="428">
-				<left>586</left>
-				<top>545</top>
+				<left>206</left>
+				<top>705</top>
 				<label></label>
-				<width>675</width>
+				<width>1037</width>
 				<align>right</align>
 				<include>ShowCaseInfoPanelButtonsValues</include>
 				<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
 			</control>
 			<control type="textbox" id="430">
 				<description>Plot</description>
-				<left>600</left>
-				<top>645</top>
-				<width>636</width>
-				<height>332</height>
+				<left>210</left>
+				<top>795</top>
+				<width>1036</width>
+				<height>182</height>
 				<font>font15_textbox</font>
 				<align>left</align>
 				<label></label>
@@ -280,16 +278,17 @@
 				<visible>!Control.HasFocus(50)</visible>
 			</control>
 			<control type="scrollbar" id="69">
-				<left>1258</left>
-				<top>636</top>
+				<left>1241</left>
+				<top>796</top>
 				<width>14</width>
-				<height>346</height>
+				<height>196</height>
 				<!--<onleft>Dialog.Close(textviewer)</onleft>
 				<onright>Dialog.Close(textviewer)</onright>
 				<ondown>61</ondown>
 				<onup>61</onup>-->
-				<onleft>980</onleft>
-				<onright>2</onright>
+				<onright>983</onright>
+				<onleft>SetProperty(MediaMenu,True,home)</onleft>
+				<onleft>SetFocus(9050)</onleft>
 				<showonepage>false</showonepage>
 				<texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
@@ -297,254 +296,9 @@
 				<orientation>vertical</orientation>
 			</control>
 		</control>
-		<!-- Right panel -->
-
-		<control type="group">
-			<include>Window_OpenClose_Animation</include>
-			<visible>!IsEmpty(Window(home).Property(plotview))+IsEmpty(Window(home).Property(loading))+!Player.HasMedia</visible>
-			<control type="image">
-				<left>1307</left>
-				<top>130</top>
-				<width>564</width>
-				<height>804</height>
-				<texture border="40">panel_reflect.png</texture>
-			</control>
-			<control type="image">
-				<left>1307</left>
-				<top>130</top>
-				<width>564</width>
-				<height>884</height>
-				<texture border="40">listpanel_back.png</texture>
-			</control>
-			<control type="button">
-				<left>1336</left>
-				<top>165</top>
-				<label>[COLOR labelheader]Team[/COLOR]</label>
-				<height>50</height>
-				<width>505</width>
-				<align>left</align>
-				<include>ShowCaseInfoPanelButtonsValues</include>
-				<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
-			</control>
-			<control type="button">
-				<left>1336</left>
-				<top>165</top>
-				<label>[COLOR labelheader]PTS[/COLOR]</label>
-				<height>50</height>
-				<width>505</width>
-				<align>right</align>
-				<include>ShowCaseInfoPanelButtonsValues</include>
-				<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
-			</control>
-			
-			<control type="scrollbar" id="61">
-				<left>1838</left>
-				<top>220</top>
-				<width>14</width>
-				<height>720</height>
-				<!--<onleft>Dialog.Close(textviewer)</onleft>
-				<onright>Dialog.Close(textviewer)</onright>
-				<ondown>61</ondown>
-				<onup>61</onup>-->
-				<onleft>980</onleft>
-				<onright>2</onright>
-				<showonepage>false</showonepage>
-				<texturesliderbackground>-</texturesliderbackground>
-				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
-				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
-				<orientation>vertical</orientation>
-			</control>
-			<control type="panel" id="980">
-				<posx>1328</posx>
-				<posy>210</posy>
-				<width>510</width>
-				<height>762</height>
-				<onleft>983</onleft>
-				<onright>61</onright>
-				<onup>600</onup>
-				<ondown>500</ondown>
-				<viewtype>icon</viewtype>
-				<pagecontrol>61</pagecontrol>
-				<scrolltime>100</scrolltime>
-				<preloaditems>1</preloaditems>
-				<orientation>vertical</orientation>
-				
-
-				<itemlayout height="90" width="512">
-					<control type="image">
-						<posx>10</posx>
-						<posy>10</posy>
-						<width>512</width>
-						<height>90</height>
-						<texture border="1">separator2.png</texture>
-					</control>
-					<control type="label" id="305">
-						<description>Team name presented on panel right</description>
-						<posx>110</posx>
-						<posy>30</posy>
-						<width>280</width>
-						<height>40</height>
-						<label>$INFO[ListItem.Property(team_name)]</label>
-						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
-						<align>left</align>
-						<textcolor>grey2</textcolor>
-						<shadowcolor>AA000000</shadowcolor>
-					</control>
-					<control type="image" id="306">
-            				<posx>12</posx>
-            				<posy>12</posy>
-            				<width>80</width>
-            				<height>80</height>
-            				<align>left</align>
-            				<texture>$INFO[ListItem.Property(team_logo)]</texture>
-						<visible>true</visible>
-        				</control>
-        				<control type="label" id="305">
-						<description>Team pontuation</description>
-						<posx>280</posx>
-						<posy>30</posy>
-						<width>220</width>
-						<height>40</height>
-						<label>$INFO[ListItem.Property(team_points)]</label>
-						<wrapmultiline>true</wrapmultiline>
-						<font>font30</font>
-						<align>right</align>
-						<textcolor>grey2</textcolor>
-						<shadowcolor>AA000000</shadowcolor>
-					</control>
-				</itemlayout>	
-				<focusedlayout height="239" width="512">
-					<control type="image">
-						<posx>10</posx>
-						<posy>10</posy>
-						<width>512</width>
-						<height>90</height>
-						<texture border="1">separator2.png</texture>
-					</control>
-					<control type="image">
-						<posx>10</posx>
-						<posy>10</posy>
-						<width>512</width>
-						<height>90</height>
-						<texture border="5">listselect_fo.png</texture>
-					</control>
-					<control type="label" id="305">
-						<description>Team name presented on panel right</description>
-						<posx>110</posx>
-						<posy>30</posy>
-						<width>280</width>
-						<height>40</height>
-						<label>$INFO[ListItem.Property(team_name)]</label>
-						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
-						<align>left</align>
-						<textcolor>white</textcolor>
-						<shadowcolor>AA000000</shadowcolor>
-					</control>
-					<control type="image" id="306">
-            				<posx>12</posx>
-            				<posy>12</posy>
-            				<width>80</width>
-            				<height>80</height>
-            				<align>left</align>
-            				<texture>$INFO[ListItem.Property(team_logo)]</texture>
-						<visible>true</visible>
-        				</control>
-        				<control type="label" id="305">
-						<description>Team pontuation</description>
-						<posx>280</posx>
-						<posy>30</posy>
-						<width>220</width>
-						<height>40</height>
-						<label>$INFO[ListItem.Property(team_points)]</label>
-						<wrapmultiline>true</wrapmultiline>
-						<font>font30</font>
-						<align>right</align>
-						<textcolor>white</textcolor>
-						<shadowcolor>AA000000</shadowcolor>
-					</control>
-				</focusedlayout>
-			</control>
-		</control>
-		<!-- End right panel -->
 		
-		<!-- START LEAGUE BANNER VIEW -->
-		<control type="group">
-			<visible>!IsEmpty(Window(home).Property(bannerview))+IsEmpty(Window(home).Property(loading))+!Player.HasMedia</visible>
-			<include>Window_OpenClose_Animation</include>
-			<control type="image">
-				<description>background image</description>
-				<left>700</left>
-				<top>1070</top>
-				<width>1060</width>
-				<height>884</height>
-				<texture border="40">panel_reflect.png</texture>
-			</control>
-			<control type="image">
-				<description>background image</description>
-				<left>700</left>
-				<top>129</top>
-				<width>1060</width>
-				<height>884</height>
-				<texture border="40">listpanel_back.png</texture>
-			</control>
-			<control type="panel" id="984">
-				<left>730</left>
-				<top>157</top>
-				<width>1000</width>
-				<height>824</height>
-				<onleft>983</onleft>
-				<onright>64</onright>
-				<onup>51</onup>
-				<ondown>51</ondown>
-				<pagecontrol>64</pagecontrol>
-				<preloaditems>2</preloaditems>
-				<scrolltime tween="quadratic" easing="out">300</scrolltime>
-				<!--<visible>!IsEmpty(Window(home).Property(bannerview))</visible>-->
-				<itemlayout height="185" width="1000">
-					<control type="image">
-						<width>1000</width>
-						<height>185</height>
-						<aspectratio>scale</aspectratio>
-						<texture background="true">$INFO[ListItem.Property(team_banner)]</texture>
-						<fadetime>400</fadetime>
-						<bordertexture border="2">thumbs/panel_border3.png</bordertexture>
-						<bordersize>2</bordersize>
-						<colordiffuse>BAffffff</colordiffuse>
-					</control>
-				</itemlayout>
-				<focusedlayout height="185" width="1000">
-					<control type="group">
-						<animation type="Focus" reversible="false">
-							<effect type="zoom" start="95" end="100" time="200" tween="sine" easing="inout" center="auto" />
-							<effect type="fade" start="80" end="100" time="200" tween="sine" easing="in" />
-						</animation>
-						<control type="image">
-							<width>1000</width>
-							<height>185</height>
-							<aspectratio>scale</aspectratio>
-							<texture background="true">$INFO[ListItem.Property(team_banner)]</texture>
-							<fadetime>400</fadetime>
-							<bordertexture border="8">thumbs/thumbnail_focused.png</bordertexture>
-							<bordersize>8</bordersize>
-						</control>
-					</control>
-				</focusedlayout>
-			</control>
-			<control type="scrollbar" id="64">
-				<left>1730</left>
-				<top>162</top>
-				<width>14</width>
-				<height>805</height>
-				<onright>SetProperty(MediaMenu,True,home)</onright>
-				<onright>SetFocus(9050)</onright>
-				<onleft>985</onleft>
-				<texturesliderbackground>-</texturesliderbackground>
-				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
-				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
-			</control>
-		</control>
+		
+		
 
 		<!-- START LEAGUE BADGE VIEW -->
 		<control type="group">
@@ -578,7 +332,6 @@
 				<pagecontrol>65</pagecontrol>
 				<preloaditems>2</preloaditems>
 				<scrolltime tween="quadratic" easing="out">300</scrolltime>
-				<!--<visible>!IsEmpty(Window(home).Property(bannerview))</visible>-->
 				<itemlayout height="300" width="300">
 					<control type="image">
 						<width>280</width>
@@ -623,7 +376,7 @@
 			</control>
 		</control>
 		
-		<!-- START LEAGUE NEWS VIEW -->
+		<!-- START TEAM NEWS VIEW -->
 		<control type="group">
 			<visible>!IsEmpty(Window(home).Property(newsview))+IsEmpty(Window(home).Property(loading))+!Player.HasMedia</visible>
 			<include>Window_OpenClose_Animation</include>
@@ -637,21 +390,21 @@
 			</control>
 			<control type="image">
 				<description>background image</description>
-				<left>540</left>
+				<left>40</left>
 				<top>129</top>
 				<width>1343</width>
 				<height>884</height>
 				<texture border="40">listpanel_back.png</texture>
 			</control>
-			<control type="image" id="429">
-				<left>572</left>
+			<control type="image" id="939">
+				<left>622</left>
 				<top>162</top>
 				<width>730</width>
 				<height>514</height>
-				<texture>feedexample.jpg</texture>
+				<texture></texture>
 			</control>
-			<control type="label" id="934">
-				<left>580</left>
+			<control type="label" id="938">
+				<left>640</left>
 				<top>690</top>
 				<width>700</width>
 				<height>60</height>
@@ -659,27 +412,27 @@
 				<textcolor>grey</textcolor>
 				<scroll>true</scroll>
 				<align>center</align>
-				<label>No compromise on Cuadrado</label>
+				<label></label>
 				<textoffsetx>15</textoffsetx>
 			</control>
 			<control type="textbox" id="937">
-				<label>Sky sources say Fiorentina will not sell Juan Cuadrado to Chelsea this month unless their full 35m euro asking price is met.</label>
+				<label></label>
 				<top>764</top>
-				<left>605</left>
+				<left>645</left>
 				<width>700</width>
-				<height>372</height>
+				<height>202</height>
 				<font>font14_textbox</font>
 				<autoscroll time="3000" delay="4000" repeat="5000">Skin.HasSetting(Enable.AutoScroll) + !Control.HasFocus(68)</autoscroll>
 				<pagecontrol>68</pagecontrol>
 				<include>ShowCaseInfoPanelButtonsValues</include>
 			</control>
 			<control type="panel" id="986">
-				<posx>1293</posx>
+				<posx>61</posx>
 				<posy>150</posy>
 				<width>610</width>
 				<height>830</height>
-				<onleft>983</onleft>
-				<onright>67</onright>
+				<onleft>67</onleft>
+				<onright>983</onright>
 				<onup>600</onup>
 				<ondown>500</ondown>
 				<viewtype>icon</viewtype>
@@ -708,7 +461,7 @@
 					</control>
 
 					
-					<control type="label" id="343">
+					<control type="textbox" id="343">
 						<description>News title right panel</description>
 						<posx>50</posx>
 						<posy>10</posy>
@@ -724,10 +477,10 @@
 					<control type="label" id="309">
 						<description>news date</description>
 						<posx>290</posx>
-						<posy>155</posy>
+						<posy>165</posy>
 						<width>260</width>
 						<height>30</height>
-						<label>Wed, 28 Jan 2015</label>
+						<label>$INFO[ListItem.Property(date)]</label>
 						<font>font15_textbox</font>
 						<align>right</align>
 						<textcolor>labelheader</textcolor>
@@ -759,7 +512,7 @@
 						<info>100</info>
 						<texturebg border="2">osd/texturebg2.png</texturebg>
 					</control>
-					<control type="label" id="343">
+					<control type="textbox" id="343">
 						<description>competition tag</description>
 						<posx>50</posx>
 						<posy>10</posy>
@@ -775,10 +528,10 @@
 					<control type="label" id="309">
 						<description>news date</description>
 						<posx>290</posx>
-						<posy>155</posy>
+						<posy>165</posy>
 						<width>260</width>
 						<height>30</height>
-						<label>Wed, 28 Jan 2015</label>
+						<label>$INFO[ListItem.Property(date)]</label>
 						<font>font15_textbox</font>
 						<align>right</align>
 						<textcolor>labelheader</textcolor>
@@ -787,13 +540,13 @@
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="67">
-				<left>1850</left>
+				<left>54</left>
 				<top>162</top>
 				<width>14</width>
 				<height>810</height>
-				<onright>SetProperty(MediaMenu,True,home)</onright>
-				<onright>SetFocus(9050)</onright>
-				<onleft>986</onleft>
+				<onleft>SetProperty(MediaMenu,True,home)</onleft>
+				<onleft>SetFocus(9050)</onleft>
+				<onright>986</onright>
 				<texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
 				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
@@ -808,7 +561,7 @@
 			<include>Window_OpenClose_Animation</include>
 			<control type="image">
 				<description>background image</description>
-				<left>590</left>
+				<left>80</left>
 				<top>1070</top>
 				<width>1243</width>
 				<height>884</height>
@@ -816,18 +569,19 @@
 			</control>
 			<control type="image">
 				<description>background image</description>
-				<left>590</left>
+				<left>80</left>
 				<top>129</top>
 				<width>1243</width>
 				<height>884</height>
 				<texture border="40">listpanel_back.png</texture>
 			</control>
 			<control type="panel" id="987">
-				<posx>612</posx>
+				<posx>101</posx>
 				<posy>150</posy>
 				<width>1330</width>
 				<height>825</height>
-				<onleft>983</onleft>
+				<onleft>SetProperty(MediaMenu,True,home)</onleft>
+				<onleft>SetFocus(9050)</onleft>
 				<onright>49</onright>
 				<onup>600</onup>
 				<ondown>500</ondown>
@@ -838,12 +592,12 @@
 				<orientation>vertical</orientation>
 				
 
-				<itemlayout height="239" width="1200">
+				<itemlayout height="280" width="600">
 					<control type="image">
 						<posx>10</posx>
 						<posy>10</posy>
-						<width>1180</width>
-						<height>244</height>
+						<width>580</width>
+						<height>280</height>
 						<texture border="1">separator2.png</texture>
 					</control>
 					<control type="image" id="304">
@@ -854,32 +608,6 @@
             				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="label" id="305">
-						<description>competition tag</description>
-						<posx>235</posx>
-						<posy>105</posy>
-						<width>250</width>
-						<height>40</height>
-						<label>$INFO[ListItem.Property(HomeTeam)]</label>
-						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
-						<align>center</align>
-						<textcolor>grey2</textcolor>
-						<shadowcolor>AA000000</shadowcolor>
-					</control>
-					<control type="label" id="315">
-						<description>competition tag</description>
-						<posx>235</posx>
-						<posy>105</posy>
-						<width>250</width>
-						<height>40</height>
-						<label>$INFO[ListItem.Property(HomeTeam)]</label>
-						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
-						<align>center</align>
-						<textcolor>grey2</textcolor>
-						<shadowcolor>AA000000</shadowcolor>
-					</control>
 					<control type="label" id="310">
 						<description>competition tag</description>
 						<posx>235</posx>
@@ -894,29 +622,16 @@
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
 					<control type="image" id="306">
-            				<posx>980</posx>
+            				<posx>380</posx>
             				<posy>30</posy>
             				<width>200</width>
             				<height>200</height>
             				<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="label" id="307">
-						<description>competition tag</description>
-						<posx>700</posx>
-						<posy>105</posy>
-						<width>260</width>
-						<height>40</height>
-						<label>$INFO[ListItem.Property(AwayTeam)]</label>
-						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
-						<align>center</align>
-						<textcolor>grey2</textcolor>
-						<shadowcolor>AA000000</shadowcolor>
-					</control>
 					<control type="label" id="318">
 						<description>vs tag</description>
-						<posx>560</posx>
+						<posx>270</posx>
 						<posy>115</posy>
 						<width>80</width>
 						<height>20</height>
@@ -928,14 +643,15 @@
 					</control>
 					<control type="label" id="303">
 						<description>date of the event</description>
-						<posx>200</posx>
-						<posy>200</posy>
-						<width>800</width>
+						<posx>140</posx>
+						<posy>244</posy>
+						<width>340</width>
 						<height>20</height>
 						<label>$INFO[ListItem.Property(date)]</label>
-						<font>font12_title</font>
+						<wrapmultiline>true</wrapmultiline>
+						<font>Icontiny</font>
 						<align>center</align>
-						<textcolor>FFB2D4F5</textcolor>
+						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
 					<control type="label" id="309">
@@ -955,15 +671,15 @@
 					<control type="image">
 						<posx>10</posx>
 						<posy>10</posy>
-						<width>1180</width>
-						<height>240</height>
+						<width>580</width>
+						<height>280</height>
 						<texture border="1">separator2.png</texture>
 					</control>
 					<control type="image">
 						<posx>10</posx>
 						<posy>10</posy>
-						<width>1180</width>
-						<height>240</height>
+						<width>580</width>
+						<height>280</height>
 						<texture border="5">listselect_fo.png</texture>
 					</control>
 					<control type="image" id="304">
@@ -974,32 +690,7 @@
             				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="label" id="305">
-						<description>competition tag</description>
-						<posx>235</posx>
-						<posy>105</posy>
-						<width>250</width>
-						<height>40</height>
-						<label>$INFO[ListItem.Property(HomeTeam)]</label>
-						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
-						<align>center</align>
-						<textcolor>white</textcolor>
-						<shadowcolor>AA000000</shadowcolor>
-					</control>
-					<control type="label" id="315">
-						<description>competition tag</description>
-						<posx>235</posx>
-						<posy>105</posy>
-						<width>250</width>
-						<height>40</height>
-						<label>$INFO[ListItem.Property(HomeTeam)]</label>
-						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
-						<align>center</align>
-						<textcolor>white</textcolor>
-						<shadowcolor>AA000000</shadowcolor>
-					</control>
+
 					<control type="label" id="310">
 						<description>competition tag</description>
 						<posx>235</posx>
@@ -1014,29 +705,17 @@
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
 					<control type="image" id="306">
-            				<posx>980</posx>
+            				<posx>380</posx>
             				<posy>30</posy>
             				<width>200</width>
             				<height>200</height>
             				<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="label" id="307">
-						<description>competition tag</description>
-						<posx>700</posx>
-						<posy>105</posy>
-						<width>260</width>
-						<height>40</height>
-						<label>$INFO[ListItem.Property(AwayTeam)]</label>
-						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
-						<align>center</align>
-						<textcolor>white</textcolor>
-						<shadowcolor>AA000000</shadowcolor>
-					</control>
+
 					<control type="label" id="318">
 						<description>vs tag</description>
-						<posx>560</posx>
+						<posx>270</posx>
 						<posy>115</posy>
 						<width>80</width>
 						<height>20</height>
@@ -1048,25 +727,25 @@
 					</control>
 					<control type="label" id="303">
 						<description>date of the event</description>
-						<posx>200</posx>
-						<posy>200</posy>
-						<width>800</width>
+						<posx>140</posx>
+						<posy>244</posy>
+						<width>340</width>
 						<height>20</height>
 						<label>$INFO[ListItem.Property(date)]</label>
-						<font>font12_title</font>
+						<wrapmultiline>true</wrapmultiline>
+						<font>Icontiny</font>
 						<align>center</align>
-						<textcolor>FFB2D4F5</textcolor>
+						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="49">
-				<left>1800</left>
+				<left>1290</left>
 				<top>162</top>
 				<width>14</width>
 				<height>805</height>
-				<onright>SetProperty(MediaMenu,True,home)</onright>
-				<onright>SetFocus(9050)</onright>
+				<onright>983</onright>
 				<onleft>987</onleft>
 				<texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
@@ -1080,25 +759,171 @@
 			<include>Window_OpenClose_Animation</include>
 			<control type="image">
 				<description>background image</description>
-				<left>590</left>
+				<left>90</left>
 				<top>1070</top>
 				<width>1243</width>
-				<height>884</height>
+				<height>284</height>
 				<texture border="40">panel_reflect.png</texture>
 			</control>
 			<control type="image">
 				<description>background image</description>
-				<left>590</left>
+				<left>90</left>
 				<top>129</top>
 				<width>1243</width>
-				<height>884</height>
+				<height>184</height>
+				<texture border="40">listpanel_back.png</texture>
+			</control>
+			
+			<control type="image" id="30">
+            		<posx>840</posx>
+            		<posy>190</posy>
+            		<width>70</width>
+            		<height>70</height>
+            		<texture></texture>
+				<visible>true</visible>
+        		</control>
+        		<control type="label" id="31">
+				<description>Win</description>
+				<posx>855</posx>
+            		<posy>205</posy>
+				<width>260</width>
+				<height>40</height>
+				<label></label>
+				<font>IconMedium</font>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+        		<control type="image" id="32">
+            		<posx>920</posx>
+            		<posy>190</posy>
+            		<width>70</width>
+            		<height>70</height>
+            		<texture></texture>
+				<visible>true</visible>
+        		</control>
+        		<control type="label" id="33">
+				<description>Win</description>
+				<posx>935</posx>
+            		<posy>205</posy>
+				<width>260</width>
+				<height>40</height>
+				<font>IconMedium</font>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<label></label>
+			</control>
+        		<control type="image" id="34">
+            		<posx>1000</posx>
+            		<posy>190</posy>
+            		<width>70</width>
+            		<height>70</height>
+            		<texture></texture>
+				<visible>true</visible>
+        		</control>
+        		<control type="label" id="35">
+				<description>Win</description>
+				<posx>1015</posx>
+            		<posy>205</posy>
+				<width>260</width>
+				<height>40</height>
+				<label></label>
+				<font>IconMedium</font>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+        		<control type="image" id="36">
+            		<posx>1080</posx>
+            		<posy>190</posy>
+            		<width>70</width>
+            		<height>70</height>
+            		<texture></texture>
+				<visible>true</visible>
+        		</control>
+        		<control type="label" id="37">
+				<description>Win</description>
+				<posx>1095</posx>
+            		<posy>205</posy>
+				<width>260</width>
+				<height>40</height>
+				<label></label>
+				<font>IconMedium</font>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+        		<control type="image" id="38">
+            		<posx>1160</posx>
+            		<posy>190</posy>
+            		<width>70</width>
+            		<height>70</height>
+            		<texture></texture>
+            		<label></label>
+				<visible>true</visible>
+        		</control>
+        		<control type="label" id="39">
+				<description>Win</description>
+				<posx>1175</posx>
+            		<posy>205</posy>
+				<width>260</width>
+				<height>40</height>
+				<label></label>
+				<font>IconMedium</font>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+        		<control type="progress" id="44">
+				<description>Progressbar</description>
+				<posx>566</posx>
+				<posy>205</posy>
+				<width>230</width>
+				<height>46</height>
+				<colordiffuse>88FFFFFF</colordiffuse>
+				<!--<visible>ListItem.HasStarted</visible>-->
+				<info>$INFO[ListItem.Property(Progress)]</info>
+				<texturebg border="2">osd/texturebg2.png</texturebg>
+			</control>
+			<control type="label" id="43">
+				<description>winning %</description>
+				<posx>130</posx>
+				<posy>210</posy>
+				<width>400</width>
+				<height>20</height>
+				<label></label>
+				<font>font_MainMenu</font>
+				<align>center</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			
+		</control>
+		<control type="group">
+			<visible>!IsEmpty(Window(home).Property(lastmatchview))+IsEmpty(Window(home).Property(loading))+!Player.HasMedia</visible>
+			<include>Window_OpenClose_Animation</include>
+			<control type="image">
+				<description>background image</description>
+				<left>90</left>
+				<top>1370</top>
+				<width>1243</width>
+				<height>705</height>
+				<texture border="40">panel_reflect.png</texture>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<left>90</left>
+				<top>309</top>
+				<width>1243</width>
+				<height>705</height>
 				<texture border="40">listpanel_back.png</texture>
 			</control>
 			<control type="panel" id="988">
-				<posx>612</posx>
-				<posy>150</posy>
+				<posx>112</posx>
+				<posy>330</posy>
 				<width>1330</width>
-				<height>825</height>
+				<height>645</height>
 				<onleft>983</onleft>
 				<onright>65</onright>
 				<onup>600</onup>
@@ -1319,12 +1144,11 @@
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="65">
-				<left>1800</left>
-				<top>162</top>
+				<left>1301</left>
+				<top>342</top>
 				<width>14</width>
-				<height>810</height>
-				<onright>SetProperty(MediaMenu,True,home)</onright>
-				<onright>SetFocus(9050)</onright>
+				<height>640</height>
+				<onright>983</onright>
 				<onleft>988</onleft>
 				<texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
@@ -1348,25 +1172,25 @@
 			</control>
 			<control type="image">
 				<description>background image</description>
-				<left>540</left>
+				<left>50</left>
 				<top>129</top>
 				<width>1323</width>
 				<height>884</height>
 				<texture border="40">listpanel_back.png</texture>
 			</control>
 			<control type="panel" id="989">
-				<left>570</left>
+				<left>80</left>
 				<top>160</top>
 				<width>1360</width>
 				<height>824</height>
-				<onleft>983</onleft>
+				<onleft>SetProperty(MediaMenu,True,home)</onleft>
+				<onleft>SetFocus(9050)</onleft>
 				<onright>66</onright>
 				<onup>51</onup>
 				<ondown>51</ondown>
 				<pagecontrol>66</pagecontrol>
 				<preloaditems>2</preloaditems>
 				<scrolltime tween="quadratic" easing="out">300</scrolltime>
-				<!--<visible>!IsEmpty(Window(home).Property(bannerview))</visible>-->
 				<itemlayout height="350" width="420">
 					<control type="image">
 						<width>420</width>
@@ -1432,13 +1256,12 @@
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="66">
-				<left>1830</left>
+				<left>1338</left>
 				<top>162</top>
 				<width>14</width>
 				<height>805</height>
-				<onright>SetProperty(MediaMenu,True,home)</onright>
-				<onright>SetFocus(9050)</onright>
 				<onleft>989</onleft>
+				<onright>983</onright>
 				<texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
 				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
@@ -1548,9 +1371,14 @@
 				<control type="button" id="2">
 					<description>View As button</description>
 					<textwidth>352</textwidth>
-					<onright>983</onright>
-					<onright>SetFocus(983)</onright>
+					<!--<onright>983</onright>
+					<onright>SetFocus(983)</onright>-->
 					<onright>ClearProperty(MediaMenu,Home)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(plotview))">69</onright>
+					<onright condition="!IsEmpty(Window(home).Property(videosview))">989</onright>
+					<onright condition="!IsEmpty(Window(home).Property(newsview))">986</onright>	
+					<onright condition="!IsEmpty(Window(home).Property(nextmatchview))">987</onright>
+					<onright condition="!IsEmpty(Window(home).Property(lastmatchview))">988</onright>
 
 
 

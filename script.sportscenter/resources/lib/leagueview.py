@@ -4,6 +4,8 @@ import thesportsdb
 from random import randint
 from centerutils.common_variables import *
 from centerutils.youtube import *
+from centerutils.rssparser import *
+from centerutils.datemanipulation import *
 import competlist as competlist
 import teamview as teamview
 
@@ -26,6 +28,7 @@ class dialog_league(xbmcgui.WindowXML):
 		
 		self.getControl(911).setImage(os.path.join(addonpath,art,"sports",self.sport + '.jpg'))
 		
+		self.getControl(983).reset()
 		#populate panel left
 		menu = [('Home','home'),('News','news'),('Videos','videos'),('League Tables','tables'),('Fixtures','fixtures'),('Teams','teams'),('Latest Matches','lastmatch'),('Next Matches','nextmatch')]
 			   
@@ -92,6 +95,7 @@ class dialog_league(xbmcgui.WindowXML):
 			team_name = thesportsdb.Teams().get_name(team)
 			team_banner = thesportsdb.Teams().get_banner(team)
 			team_jersey = thesportsdb.Teams().get_team_jersey(team)
+			team_id = thesportsdb.Teams().get_id(team)
 			team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
 			if team_fanart_general_list:
 				team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
@@ -100,12 +104,14 @@ class dialog_league(xbmcgui.WindowXML):
 			teamitem.setProperty('team_banner',team_banner)
 			teamitem.setProperty('team_fanart',team_fanart)
 			teamitem.setProperty('team_jersey',team_jersey)
+			teamitem.setProperty('team_id',team_id)
 			self.getControl(984).addItem(teamitem)
 			
 		for team in teams_list:
 			team_name = thesportsdb.Teams().get_name(team)
 			team_badge = thesportsdb.Teams().get_badge(team)
 			team_jersey = thesportsdb.Teams().get_team_jersey(team)
+			team_id = thesportsdb.Teams().get_id(team)
 			team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
 			if team_fanart_general_list:
 				team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
@@ -114,11 +120,13 @@ class dialog_league(xbmcgui.WindowXML):
 			teamitem.setProperty('team_badge',team_badge)
 			teamitem.setProperty('team_fanart',team_fanart)
 			teamitem.setProperty('team_jersey',team_jersey)
+			teamitem.setProperty('team_id',team_id)
 			self.getControl(985).addItem(teamitem)
 			
 		for team in teams_list:
 			team_name = thesportsdb.Teams().get_name(team)
 			team_badge = thesportsdb.Teams().get_badge(team)
+			team_id = thesportsdb.Teams().get_id(team)
 			team_jersey = thesportsdb.Teams().get_team_jersey(team)
 			team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
 			if team_fanart_general_list:
@@ -128,6 +136,7 @@ class dialog_league(xbmcgui.WindowXML):
 			teamitem.setProperty('team_badge',team_badge)
 			teamitem.setProperty('team_fanart',team_fanart)
 			teamitem.setProperty('team_jersey',team_jersey)
+			teamitem.setProperty('team_id',team_id)
 			self.getControl(981).addItem(teamitem)
 		return
 		
@@ -206,10 +215,19 @@ class dialog_league(xbmcgui.WindowXML):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")	
 		#news stuff
-		titles = ['No compromise on Cuadrado','Bale dismisses United link','Bojan out for the season','PSG interested in Adebayor','Mourinho hit with FA fine',]
-		for title in titles:
-			newsitem = xbmcgui.ListItem(title)
-			self.getControl(986).addItem(newsitem)
+		self.feedurl = thesportsdb.Leagues().get_rssurl(self.league)
+		rssitems = return_rsslist(self.feedurl)
+		if rssitems:
+			for title,date,content,img in rssitems:
+				newsitem = xbmcgui.ListItem(title)
+				newsitem.setProperty('content',content)
+				newsitem.setProperty('news_img',img)
+				newsitem.setProperty('date',date)
+				newsitem.setProperty('title',title)
+				self.getControl(986).addItem(newsitem)
+			self.getControl(939).setImage(rssitems[0][3])
+			self.getControl(937).setText(rssitems[0][2])
+			self.getControl(938).setLabel(rssitems[0][0])
 			
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
@@ -229,7 +247,6 @@ class dialog_league(xbmcgui.WindowXML):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")	
 		#next matches stuff
-		print self.league_id
 		event_next_list = thesportsdb.Schedules().eventsnextleague(self.league_id)["events"]
 		if event_next_list:
 			for event in event_next_list:
@@ -361,13 +378,20 @@ class dialog_league(xbmcgui.WindowXML):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")
 			
+		self.youtubeurl = thesportsdb.Leagues().get_youtube(self.league)
+		if self.youtubeurl:
+			ytuser = self.youtubeurl.split('/')[-1]
+		else: ytuser = None
+		
+			
 		#videos stuff
-		video_list = return_youtubevideos('NBA')
-		for video_name,video_id,video_thumb in video_list:
-			video = xbmcgui.ListItem(video_name)
-			video.setProperty('thumb',video_thumb)
-			video.setProperty('video_id',video_id)
-			self.getControl(989).addItem(video)
+		if ytuser:
+			video_list = return_youtubevideos(ytuser)
+			for video_name,video_id,video_thumb in video_list:
+				video = xbmcgui.ListItem(video_name)
+				video.setProperty('thumb',video_thumb)
+				video.setProperty('video_id',video_id)
+				self.getControl(989).addItem(video)
 			
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
@@ -424,7 +448,7 @@ class dialog_league(xbmcgui.WindowXML):
 			
 	def onClick(self,controlId):
 	
-		print controlId
+		#print controlId
 	
 		if controlId == 983:
 			listControl = self.getControl(controlId)
@@ -449,13 +473,13 @@ class dialog_league(xbmcgui.WindowXML):
 			elif seleccionado == 'videos':
 					self.setvideosview()
 					
-		if controlId == 980 or controlId == 984 or controlId == 985:
-			self.team = self.getControl(controlId).getSelectedItem().getProperty('video_id')
-			teamview.start([self.team,self.sport])
+		elif controlId == 980 or controlId == 984 or controlId == 985 or controlId == 981:
+			self.team = self.getControl(controlId).getSelectedItem().getProperty('team_id')
+			teamview.start([self.team,self.sport,'',''])
 		
 
 
-		if controlId == 2:
+		elif controlId == 2:
 			active_view_type = self.getControl(controlId).getLabel()
 			if active_view_type == "League: PlotView":
 				self.setvideosview()
@@ -474,8 +498,16 @@ class dialog_league(xbmcgui.WindowXML):
 			elif active_view_type == "League: LastMatchView":
 				self.setplotview()
 				
-		if controlId == 989:
+		elif controlId == 989:
 			youtube_id = self.getControl(989).getSelectedItem().getProperty('video_id')
 			xbmc.executebuiltin('PlayMedia(plugin://plugin.video.youtube/play/?video_id='+youtube_id+')')
+			
+		elif controlId == 986:
+			news_content = self.getControl(986).getSelectedItem().getProperty('content')
+			news_title = self.getControl(986).getSelectedItem().getProperty('title')
+			news_image = self.getControl(986).getSelectedItem().getProperty('news_img')
+			self.getControl(939).setImage(news_image)
+			self.getControl(937).setText(news_content)
+			self.getControl(938).setLabel(news_title)
 	
 		

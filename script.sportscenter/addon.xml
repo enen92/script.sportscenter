@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="script.sportscenter" version="0.0.07" name="Sports Center" provider-name="enen92">
+<addon id="script.sportscenter" version="0.0.08" name="Sports Center" provider-name="enen92">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
     <import addon="script.module.thesportsdb"/>
+    <import addon="script.module.twitter"/>
   </requires>
   <extension point="xbmc.python.script" library="default.py">
     <provides>game</provides>

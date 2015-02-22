@@ -7,7 +7,7 @@ def start(focus_sport):
 	window = dialog_home('DialogMainMenu.xml',addonpath,'Default',focus_sport)
 	window.doModal()
 	
-class dialog_home(xbmcgui.WindowXMLDialog):
+class dialog_home(xbmcgui.WindowXML):
 	def __init__( self, *args, **kwargs ):
 		xbmcgui.WindowXML.__init__(self)
 		self.sport = args[3]
@@ -34,7 +34,7 @@ class dialog_home(xbmcgui.WindowXMLDialog):
 		if controlId == 980:
 			listControl = self.getControl(controlId)
 			seleccionado=listControl.getSelectedItem()
-			self.close()
+			#self.close()
 			competlist.start(seleccionado.getProperty('sport_name'))
 			
 			

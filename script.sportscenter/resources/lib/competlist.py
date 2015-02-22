@@ -101,7 +101,7 @@ class dialog_compet(xbmcgui.WindowXML):
 				self.setFocusId(self.controler)
 			else: 
 				self.close()
-				home.start(self.sport)		
+				#home.start(self.sport)		
 		else:
 			self.set_info()
 		
