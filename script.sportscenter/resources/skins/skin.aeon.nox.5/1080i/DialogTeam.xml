@@ -3,6 +3,7 @@
 	<onload>ClearProperty(MediaMenu,Home)</onload>
 	<onunload>ClearProperty(Window.HasSettings,Home)</onunload>
 	<onunload>ClearProperty(infoview,Home)</onunload>
+	<onunload>ClearProperty(playersview,Home)</onunload>
 	<onunload>ClearProperty(listview,Home)</onunload>
 	<onunload>ClearProperty(plotview,Home)</onunload>
 	<onunload>ClearProperty(newsview,Home)</onunload>
@@ -61,6 +62,14 @@
 				<width>1920</width>
 				<height>680</height>
 				<texture>floor.png</texture>
+			</control>
+			<control type="image">
+				<visible>!IsEmpty(Window(home).Property(playersview))</visible>
+				<width>1920</width>
+				<height>1080</height>
+				<texture border="1">logo_back.png</texture>
+				<visible>true</visible>
+				<include>ViewAnimation</include>
 			</control>
 		</control>
 		<!--End of background-->
@@ -151,7 +160,7 @@
 				<onleft condition="!IsEmpty(Window(home).Property(plotview))">69</onleft>
 				<onleft condition="!IsEmpty(Window(home).Property(videosview))">989</onleft>
 				<onleft condition="!IsEmpty(Window(home).Property(newsview))">986</onleft>
-			
+				<onleft condition="!IsEmpty(Window(home).Property(playersview))">985</onleft>
 				<onleft condition="!IsEmpty(Window(home).Property(nextmatchview))">987</onleft>
 				<onleft condition="!IsEmpty(Window(home).Property(lastmatchview))">988</onleft>
 				<onright>62</onright>
@@ -300,51 +309,176 @@
 		
 		
 
-		<!-- START LEAGUE BADGE VIEW -->
+		<!-- START LEAGUE PLAYERS VIEW -->
 		<control type="group">
-			<visible>!IsEmpty(Window(home).Property(badgeview))+IsEmpty(Window(home).Property(loading))+!Player.HasMedia</visible>
+			<visible>!IsEmpty(Window(home).Property(playersview))+IsEmpty(Window(home).Property(loading))+!Player.HasMedia</visible>
 			<include>Window_OpenClose_Animation</include>
 			<control type="image">
 				<description>background image</description>
-				<left>5590</left>
+				<left>40</left>
 				<top>1070</top>
-				<width>1243</width>
+				<width>1283</width>
 				<height>884</height>
 				<texture border="40">panel_reflect.png</texture>
 			</control>
 			<control type="image">
+				<description>grass</description>
+				<left>70</left>
+				<top>659</top>
+				<width>1263</width>
+				<height>324</height>
+				<texture>grass.png</texture>
+			</control>
+			<control type="image">
 				<description>background image</description>
-				<left>590</left>
+				<left>40</left>
 				<top>129</top>
-				<width>1243</width>
+				<width>1323</width>
 				<height>884</height>
 				<texture border="40">listpanel_back.png</texture>
 			</control>
-			<control type="panel" id="985">
-				<left>620</left>
-				<top>160</top>
-				<width>1330</width>
+			<control type="image">
+				<visible>true</visible>
+				<width>1350</width>
+				<height>1080</height>
+				<texture border="1">logo_back.png</texture>
+				<visible>true</visible>
+				<include>ViewAnimation</include>
+			</control>
+			<control type="image" id="426">
+				<description>playerfanart</description>
+				<left>729</left>
+				<top>162</top>
+				<width>603</width>
+				<height>353</height>
+				<texture></texture>
+			</control>
+			<control type="label" id="931">
+				<left>70</left>
+				<top>170</top>
+				<width>657</width>
+				<height>60</height>
+				<font>font16_title</font>
+				<textcolor>grey</textcolor>
+				<scroll>true</scroll>
+				<align>center</align>
+				<label></label>
+				<textoffsetx>15</textoffsetx>
+			</control>
+			<control type="button" id="428">
+				<left>71</left>
+				<top>150</top>
+				<label></label>
+				<width>657</width>
+				<align>left</align>
+				<include>ShowCaseInfoPanelButtonsValues</include>
+				<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
+			</control>
+			<control type="button" id="932">
+				<left>71</left>
+				<top>246</top>
+				<label></label>
+				<width>340</width>
+				<align>left</align>
+				<include>ShowCaseInfoPanelButtonsValues</include>
+				<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
+			</control>
+			<control type="button" id="933">
+				<left>387</left>
+				<top>246</top>
+				<label></label>
+				<width>340</width>
+				<align>right</align>
+				<include>ShowCaseInfoPanelButtonsValues</include>
+				<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
+			</control>
+			<control type="button" id="929">
+				<left>71</left>
+				<top>336</top>
+				<label></label>
+				<width>340</width>
+				<align>left</align>
+				<include>ShowCaseInfoPanelButtonsValues</include>
+				<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
+			</control>
+			<control type="button" id="935">
+				<left>327</left>
+				<top>336</top>
+				<label></label>
+				<width>400</width>
+				<align>right</align>
+				<include>ShowCaseInfoPanelButtonsValues</include>
+				<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
+			</control>
+			<control type="button" id="936">
+				<left>71</left>
+				<top>426</top>
+				<label></label>
+				<width>340</width>
+				<align>left</align>
+				<include>ShowCaseInfoPanelButtonsValues</include>
+				<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
+			</control>
+			<control type="button" id="927">
+				<left>387</left>
+				<top>426</top>
+				<label></label>
+				<width>340</width>
+				<align>right</align>
+				<include>ShowCaseInfoPanelButtonsValues</include>
+				<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
+			</control>
+			<control type="textbox" id="928">
+				<description>Plot</description>
+				<left>90</left>
+				<top>525</top>
+				<width>1226</width>
+				<height>162</height>
+				<font>font15_textbox</font>
+				<align>left</align>
+				<label></label>
+				<textcolor>white</textcolor>
+				<pagecontrol>69</pagecontrol>
+				<autoscroll time="3000" delay="4000" repeat="5000">Skin.HasSetting(Enable.AutoScroll)</autoscroll>
+				<animation effect="fade" start="100" end="78" time="300" tween="sine" easing="inout" condition="!Control.HasFocus(60)">Conditional</animation>
+				<visible>!Control.HasFocus(50)</visible>
+			</control>
+			
+			<control type="wraplist" id="985">
+				<left>70</left>
+				<top>702</top>
+				<width>1260</width>
 				<height>824</height>
-				<onleft>983</onleft>
-				<onright>65</onright>
-				<onup>51</onup>
-				<ondown>51</ondown>
+				<onup>983</onup>
+				<ondown>983</ondown>
 				<pagecontrol>65</pagecontrol>
 				<preloaditems>2</preloaditems>
+				<viewtype label="Logo">list</viewtype>
 				<scrolltime tween="quadratic" easing="out">300</scrolltime>
-				<itemlayout height="300" width="300">
+				<visible>true</visible>
+				<orientation>horizontal</orientation>
+				<itemlayout height="600" width="320">
 					<control type="image">
 						<width>280</width>
 						<height>280</height>
 						<aspectratio>scale</aspectratio>
-						<texture background="true">$INFO[ListItem.Property(team_badge)]</texture>
+						<texture background="true">$INFO[ListItem.Property(player_cutout)]</texture>
 						<fadetime>400</fadetime>
 						<bordertexture border="2">thumbs/panel_border3.png</bordertexture>
 						<bordersize>2</bordersize>
 						<colordiffuse>BAffffff</colordiffuse>
 					</control>
+					<control type="image">
+						<left>0</left>
+						<top>280</top>
+						<width>280</width>
+						<height>280</height>
+						<aspectratio aligny="top">keep</aspectratio>
+						<texture background="true" flipy="true">$INFO[ListItem.Property(player_cutout)]</texture>
+						<animation effect="fade" start="10" end="10" time="160" tween="cubic" easing="inout" condition="true">Conditional</animation>
+					</control>
 				</itemlayout>
-				<focusedlayout height="300" width="300">
+				<focusedlayout height="600" width="320">
 					<control type="group">
 						<animation type="Focus" reversible="false">
 							<effect type="zoom" start="95" end="100" time="200" tween="sine" easing="inout" center="auto" />
@@ -354,25 +488,22 @@
 							<width>280</width>
 							<height>280</height>
 							<aspectratio>scale</aspectratio>
-							<texture background="true">$INFO[ListItem.Property(team_badge)]</texture>
+							<texture background="true">$INFO[ListItem.Property(player_cutout)]</texture>
 							<fadetime>400</fadetime>
 							<bordertexture border="8">thumbs/thumbnail_focused.png</bordertexture>
 							<bordersize>8</bordersize>
 						</control>
+						<control type="image">
+							<left>0</left>
+							<top>280</top>
+							<width>280</width>
+							<height>280</height>
+							<aspectratio aligny="top">keep</aspectratio>
+							<texture background="true" flipy="true">$INFO[ListItem.Property(player_cutout)]</texture>
+							<animation effect="fade" start="10" end="10" time="160" tween="cubic" easing="inout" condition="true">Conditional</animation>
+					</control>
 					</control>
 				</focusedlayout>
-			</control>
-			<control type="scrollbar" id="65">
-				<left>1800</left>
-				<top>162</top>
-				<width>14</width>
-				<height>805</height>
-				<onright>SetProperty(MediaMenu,True,home)</onright>
-				<onright>SetFocus(9050)</onright>
-				<onleft>985</onleft>
-				<texturesliderbackground>-</texturesliderbackground>
-				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
-				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
 			</control>
 		</control>
 		
@@ -1000,9 +1131,9 @@
 					</control>
 					<control type="label" id="318">
 						<description>vs tag</description>
-						<posx>560</posx>
+						<posx>515</posx>
 						<posy>115</posy>
-						<width>80</width>
+						<width>160</width>
 						<height>20</height>
 						<label>$INFO[ListItem.Property(match_result)]</label>
 						<font>font48</font>
@@ -1107,9 +1238,9 @@
 					</control>
 					<control type="label" id="318">
 						<description>vs tag</description>
-						<posx>560</posx>
+						<posx>515</posx>
 						<posy>115</posy>
-						<width>80</width>
+						<width>160</width>
 						<height>20</height>
 						<label>$INFO[ListItem.Property(match_result)]</label>
 						<font>font48</font>
@@ -1379,6 +1510,7 @@
 					<onright condition="!IsEmpty(Window(home).Property(newsview))">986</onright>	
 					<onright condition="!IsEmpty(Window(home).Property(nextmatchview))">987</onright>
 					<onright condition="!IsEmpty(Window(home).Property(lastmatchview))">988</onright>
+					<onright condition="!IsEmpty(Window(home).Property(playersview))">985</onright>
 
 
 
