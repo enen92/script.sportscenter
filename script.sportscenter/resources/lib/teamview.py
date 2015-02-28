@@ -156,6 +156,7 @@ class dialog_team(xbmcgui.WindowXML):
 		self.team_id = eval(args[3])[0]
 		self.sport = eval(args[3])[1]
 		self.team = thesportsdb.Lookups().lookupteam(self.team_id)['teams'][0]
+		self.event_next_list = thesportsdb.Schedules().eventsnext(self.team_id)['events']
 		
 
 	def onInit(self):	
@@ -196,69 +197,6 @@ class dialog_team(xbmcgui.WindowXML):
 
 		self.setplotview()
 		
-	def setleagueinfo(self):
-		
-		#set league badge
-		self.league_badge = thesportsdb.Leagues().get_badge(self.league)
-		self.getControl(934).setImage(os.path.join(self.league_badge))
-		
-		#set league plot
-		self.league_plot = thesportsdb.Leagues().get_plot_en(self.league)
-		self.getControl(430).setText(self.league_plot)
-		
-		#set league formed year
-		self.league_formedyear = thesportsdb.Leagues().get_formedyear(self.league)
-		self.getControl(428).setLabel('[COLOR labelheader]Established:[CR][/COLOR]' + self.league_formedyear)
-		
-		#set league name
-		self.league_name = thesportsdb.Leagues().get_name(self.league)
-		self.getControl(427).setLabel('[COLOR labelheader]League:[CR][/COLOR]' + self.league_name)
-		
-		self.getControl(980).reset()
-		self.getControl(984).reset()
-		self.getControl(985).reset()
-			
-		teams_list = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
-		for team in teams_list:
-			team_name = thesportsdb.Teams().get_name(team)
-			team_badge = thesportsdb.Teams().get_badge(team)
-			team_banner = thesportsdb.Teams().get_banner(team)
-			team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
-			if team_fanart_general_list:
-				team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
-			else: team_fanart = ''
-			teamitem = xbmcgui.ListItem(team_name,iconImage=team_badge)
-			teamitem.setProperty('team_name',team_name)
-			teamitem.setProperty('team_banner',team_banner)
-			teamitem.setProperty('team_logo',team_badge)
-			teamitem.setProperty('team_fanart',team_fanart)
-			self.getControl(980).addItem(teamitem)
-			
-		for team in teams_list:
-			team_name = thesportsdb.Teams().get_name(team)
-			team_banner = thesportsdb.Teams().get_banner(team)
-			team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
-			if team_fanart_general_list:
-				team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
-			else: team_fanart = ''
-			teamitem = xbmcgui.ListItem(team_name,iconImage=team_badge)
-			teamitem.setProperty('team_banner',team_banner)
-			teamitem.setProperty('team_fanart',team_fanart)
-			self.getControl(984).addItem(teamitem)
-			
-		for team in teams_list:
-			team_name = thesportsdb.Teams().get_name(team)
-			team_badge = thesportsdb.Teams().get_badge(team)
-			team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
-			if team_fanart_general_list:
-				team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
-			else: team_fanart = ''
-			teamitem = xbmcgui.ListItem(team_name,iconImage=team_badge)
-			teamitem.setProperty('team_badge',team_badge)
-			teamitem.setProperty('team_fanart',team_fanart)
-			self.getControl(985).addItem(teamitem)
-		return
-		
 	def setplotview(self):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")
@@ -276,6 +214,40 @@ class dialog_team(xbmcgui.WindowXML):
 		self.team_name = thesportsdb.Teams().get_name(self.team)
 		self.getControl(427).setLabel('[COLOR labelheader]Team Name:[CR][/COLOR]' + self.team_name)
 		#		
+		#set next match information
+		if self.event_next_list:
+			self.nextevent = self.event_next_list[0]
+			self.hometeam = thesportsdb.Events().get_hometeamname(self.nextevent)
+			self.awayteam = thesportsdb.Events().get_awayteamname(self.nextevent)
+			self.home_away = ''
+			if self.team_name == self.hometeam:
+				self.home_away = 'HOME'
+				self.searchid = thesportsdb.Events().get_awayteamid(self.nextevent)
+			else:
+				self.home_away = 'AWAY'
+				self.searchid = thesportsdb.Events().get_hometeamid(self.nextevent)
+			self.getControl(41).setLabel(self.home_away)
+			try:
+				self.nexteam = thesportsdb.Lookups().lookupteam(self.searchid)['teams'][0]
+				self.nextlogo = thesportsdb.Teams().get_badge(self.nexteam)
+				self.getControl(40).setImage(self.nextlogo)
+				self.nextdate = thesportsdb.Events().get_eventdate(self.nextevent).split('-')
+				if len(self.nextdate) == 3:
+					now = datetime.datetime.now()
+					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day))
+					eventdate = datetime.datetime(int(self.nextdate[0]), int(self.nextdate[1]), int(self.nextdate[2]))
+					day_difference = abs(eventdate - datenow).days
+					if day_difference == 0:
+						string = 'Today'
+					elif day_difference == 1:
+						string = 'Tomorrow'
+					else:
+						string = 'In ' + str(day_difference) + ' days'
+				
+					self.getControl(42).setLabel(string)
+			except: pass
+		
+		
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")

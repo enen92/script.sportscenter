@@ -271,11 +271,47 @@
 				<include>ShowCaseInfoPanelButtonsValues</include>
 				<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
 			</control>
+			
+			<control type="image" id="40">
+            		<posx>210</posx>
+            		<posy>820</posy>
+            		<width>150</width>
+            		<height>150</height>
+            		<texture></texture>
+				<visible>true</visible>
+        		</control>
+        		<control type="label" id="41">
+				<description>home or away</description>
+				<posx>407</posx>
+            		<posy>840</posy>
+				<width>260</width>
+				<height>40</height>
+				<label></label>
+				<font>IconMedium</font>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			<control type="label" id="42">
+				<description>date</description>
+				<posx>327</posx>
+				<posy>910</posy>
+				<width>300</width>
+				<height>20</height>
+				<label></label>
+				<font>font15</font>
+				<align>center</align>
+				<textcolor>grey2</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			
+			
+			
 			<control type="textbox" id="430">
 				<description>Plot</description>
-				<left>210</left>
+				<left>610</left>
 				<top>795</top>
-				<width>1036</width>
+				<width>636</width>
 				<height>182</height>
 				<font>font15_textbox</font>
 				<align>left</align>
