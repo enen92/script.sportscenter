@@ -13,7 +13,23 @@ class dialog_home(xbmcgui.WindowXML):
 		self.sport = args[3]
 
 	def onInit(self):
-		table = [('Football','football.png','soccer'),('Rugby','Rugby.png','rugby'),('MotorSport','Racing.png','motorsport'),('Basketball','Basketball.png','basketball'),('AM Football','americanfootball.png','american%20football'),('Ice Hockey','IceHockey.png','ice%20hockey'),('Baseball','baseball.png','baseball'),('Golf','golf.png','golf')]
+		table = []
+		if settings.getSetting('enable-football') == 'true':
+			table.append(('Football','football.png','soccer'))
+		if settings.getSetting('enable-rugby') == 'true':
+			table.append(('Rugby','Rugby.png','rugby'))
+		if settings.getSetting('enable-motorsport') == 'true':
+			table.append(('MotorSport','Racing.png','motorsport'))
+		if settings.getSetting('enable-basketball') == 'true':
+			table.append(('Basketball','Basketball.png','basketball'))
+		if settings.getSetting('enable-amfootball') == 'true':
+			table.append(('AM Football','americanfootball.png','american%20football'))
+		if settings.getSetting('enable-icehockey') == 'true':
+			table.append(('Ice Hockey','IceHockey.png','ice%20hockey'))
+		if settings.getSetting('enable-baseball') == 'true':
+			table.append(('Baseball','baseball.png','baseball'))
+		if settings.getSetting('enable-golf') == 'true':
+			table.append(('Golf','golf.png','golf'))
 			   
 		for sport,img,sport_name in table:
 			item = xbmcgui.ListItem(sport, iconImage = os.path.join(addonpath,art,img),path='ActivateWindow(Videos)')

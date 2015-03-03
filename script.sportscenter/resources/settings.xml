@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
+	<category label="Home Menu">
+		<setting id="enable-football" type="bool" label="Enable Football" default="true"/>
+		<setting id="enable-basketball" type="bool" label="Enable Basketball" default="true"/>
+		<setting id="enable-icehockey" type="bool" label="Enable Ice Hockey" default="true"/>
+		<setting id="enable-baseball" type="bool" label="Enable Baseball" default="true"/>
+		<setting id="enable-motorsport" type="bool" label="Enable Motosport" default="true"/>
+		<setting id="enable-rugby" type="bool" label="Enable Rugby" default="true"/>
+		<setting id="enable-golf" type="bool" label="Enable Golf" default="true"/>
+		<setting id="enable-amfootball" type="bool" label="Enable American Football" default="true"/>
+		<setting id="enable-motorsport" type="bool" label="Enable Motosport" default="true"/>
+	</category>
  	<setting id="view_type_leaguelist" type="text" default="" visible="false"/>
   	<setting id="view_type_league" type="text" default="" visible="false"/>
 </settings>
