@@ -40,7 +40,6 @@ class wizzard:
 					for equipa in favourite_teams:
 						team_dict = thesportsdb.Lookups().lookupteam(equipa)['teams'][0]
 						team_sport = thesportsdb.Teams().get_sport(team_dict)
-						print team_sport
 						team_name = thesportsdb.Teams().get_name(team_dict)
 						team_badge = thesportsdb.Teams().get_badge(team_dict)
 						team_fan_fanart = thesportsdb.Teams().get_fanart_fans(team_dict)
@@ -422,9 +421,9 @@ class wizzard:
 					try:t8logo.join()
 					except:pass
 					
-					#FUTURE SCRAPPER CODE GOES HERE
-					xbmc.executebuiltin( "Dialog.Close(busydialog)" )					
-					settings.setSetting('wizzard_check','false')
+					#FUTURE SCRAPPER CODE GOES HERE			
+				settings.setSetting('wizzard_check','false')
+				xbmc.executebuiltin( "Dialog.Close(busydialog)" )	
 							
 	
 			else:

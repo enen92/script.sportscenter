@@ -19,6 +19,7 @@ class dialog_home(xbmcgui.WindowXML):
 
 	def onInit(self):
 		self.lasttime = datetime.datetime.now()
+		self.focused_sport = 'soccer'
 		table = []
 		if settings.getSetting('enable-football') == 'true':
 			table.append(('Football','football.png','soccer'))
