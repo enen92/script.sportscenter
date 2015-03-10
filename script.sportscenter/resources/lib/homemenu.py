@@ -1,5 +1,5 @@
 import xbmc,xbmcgui,xbmcaddon,xbmcplugin
-import os
+import os,time,datetime,urllib
 from centerutils.common_variables import *
 from centerutils.iofile import *
 import competlist as competlist
@@ -18,6 +18,7 @@ class dialog_home(xbmcgui.WindowXML):
 		self.sport = args[3]
 
 	def onInit(self):
+		self.lasttime = datetime.datetime.now()
 		table = []
 		if settings.getSetting('enable-football') == 'true':
 			table.append(('Football','football.png','soccer'))
@@ -43,20 +44,24 @@ class dialog_home(xbmcgui.WindowXML):
 			self.getControl(980).addItem(item)
 		
 		self.getControl(912).setImage(os.path.join(addonpath,'fanart.jpg'))
+		
+		
+		
+		#set top panel visible false before running the wizzard
+		self.getControl(501).setVisible(False)
+		self.getControl(502).setVisible(False)
+		wizzard()
+		
+		xbmc.sleep(100)
 		self.setFocusId(980)
 		i=0
 		for sport,img,sport_name in table:
 			if sport_name == self.sport:
 				index = i
 			else: i+=1
-
-		xbmc.sleep(100)
 		try:self.getControl(980).selectItem(index)
 		except: pass
-		#set top panel visible false before running the wizzard
-		self.getControl(501).setVisible(False)
-		self.getControl(502).setVisible(False)
-		wizzard()
+		
 		self.set_fanart()
 		self.set_favourite_data()
 		
@@ -66,10 +71,8 @@ class dialog_home(xbmcgui.WindowXML):
 		
 		if os.path.exists(sport_fav_file):
 			#Set top panel visible
-			print "starting visible"
 			self.getControl(501).setVisible(True)
 			self.getControl(502).setVisible(True)
-			print "end viible"
 			
 			
 			self.focused_sport = ''
@@ -112,22 +115,59 @@ class dialog_home(xbmcgui.WindowXML):
 					favourite_team_name = sport_data[1]
 					favourite_team_id = sport_data[0]
 					favourite_logo = sport_data[2]
+					favourite_team_sport = sport_data[3]
 					favourite_team_fan_fanart = sport_data[4]
 					favourite_team_logo_fanart = sport_data[5]
 					if os.path.exists(os.path.join(favlogos,favourite_logo.split('/')[-1])):
 						favourite_logo = os.path.join(favlogos,favourite_logo.split('/')[-1])
-
+					#set fan fanart or logo fanart for favourite teams
+					now_focused = self.getControl(980).getSelectedItem().getProperty('sport_name').lower()
+					if settings.getSetting('football-background') == '2':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_fan_fanart and favourite_team_fan_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])):
+									favourite_team_fan_fanart = os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])
+								self.getControl(913).setImage(favourite_team_fan_fanart)
+						
+					elif settings.getSetting('football-background') == '3':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
+									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
+							self.getControl(913).setImage(favourite_team_logo_fanart)
+					else: 
+						#fallback to general addon fanart
+						self.getControl(913).setImage(addon_fanart)
+						
 			elif self.focused_sport.lower() == 'basketball':
 				if os.path.isfile(basketball_fav_file):
 					sport_data = eval(readfile(basketball_fav_file))
-					print sport_data
 					favourite_team_name = sport_data[1]
 					favourite_team_id = sport_data[0]
 					favourite_logo = sport_data[2]
+					favourite_team_sport = sport_data[3]
 					favourite_team_fan_fanart = sport_data[4]
 					favourite_team_logo_fanart = sport_data[5]
 					if os.path.exists(os.path.join(favlogos,favourite_logo.split('/')[-1])):
 						favourite_logo = os.path.join(favlogos,favourite_logo.split('/')[-1])
+					#set fan fanart or logo fanart for favourite teams
+					now_focused = self.getControl(980).getSelectedItem().getProperty('sport_name').lower()
+					if settings.getSetting('basketball-background') == '2':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_fan_fanart and favourite_team_fan_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])):
+									favourite_team_fan_fanart = os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])
+								self.getControl(913).setImage(favourite_team_fan_fanart)
+						
+					elif settings.getSetting('basketball-background') == '3':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
+									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
+							self.getControl(913).setImage(favourite_team_logo_fanart)
+					else: 
+						#fallback to general addon fanart
+						self.getControl(913).setImage(addon_fanart)
 			
 			elif self.focused_sport.lower() == 'rugby':
 				if os.path.isfile(rugby_fav_file):
@@ -135,10 +175,29 @@ class dialog_home(xbmcgui.WindowXML):
 					favourite_team_name = sport_data[1]
 					favourite_team_id = sport_data[0]
 					favourite_logo = sport_data[2]
+					favourite_team_sport = sport_data[3]
 					favourite_team_fan_fanart = sport_data[4]
 					favourite_team_logo_fanart = sport_data[5]
 					if os.path.exists(os.path.join(favlogos,favourite_logo.split('/')[-1])):
 						favourite_logo = os.path.join(favlogos,favourite_logo.split('/')[-1])
+					#set fan fanart or logo fanart for favourite teams
+					now_focused = self.getControl(980).getSelectedItem().getProperty('sport_name').lower()
+					if settings.getSetting('rugby-background') == '2':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_fan_fanart and favourite_team_fan_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])):
+									favourite_team_fan_fanart = os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])
+								self.getControl(913).setImage(favourite_team_fan_fanart)
+						
+					elif settings.getSetting('rugby-background') == '3':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
+									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
+							self.getControl(913).setImage(favourite_team_logo_fanart)
+					else: 
+						#fallback to general addon fanart
+						self.getControl(913).setImage(addon_fanart)
 					
 			elif self.focused_sport.lower() == 'american%20football':
 				if os.path.isfile(amfootball_fav_file):
@@ -146,10 +205,29 @@ class dialog_home(xbmcgui.WindowXML):
 					favourite_team_name = sport_data[1]
 					favourite_team_id = sport_data[0]
 					favourite_logo = sport_data[2]
+					favourite_team_sport = sport_data[3]
 					favourite_team_fan_fanart = sport_data[4]
 					favourite_team_logo_fanart = sport_data[5]
 					if os.path.exists(os.path.join(favlogos,favourite_logo.split('/')[-1])):
 						favourite_logo = os.path.join(favlogos,favourite_logo.split('/')[-1])
+					#set fan fanart or logo fanart for favourite teams
+					now_focused = self.getControl(980).getSelectedItem().getProperty('sport_name').lower()
+					if settings.getSetting('amfootball-background') == '2':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_fan_fanart and favourite_team_fan_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])):
+									favourite_team_fan_fanart = os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])
+								self.getControl(913).setImage(favourite_team_fan_fanart)
+						
+					elif settings.getSetting('amfootball-background') == '3':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
+									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
+							self.getControl(913).setImage(favourite_team_logo_fanart)
+					else: 
+						#fallback to general addon fanart
+						self.getControl(913).setImage(addon_fanart)
 					
 			elif self.focused_sport.lower() == 'motorsport':
 				if os.path.isfile(motorsport_fav_file):
@@ -157,10 +235,29 @@ class dialog_home(xbmcgui.WindowXML):
 					favourite_team_name = sport_data[1]
 					favourite_team_id = sport_data[0]
 					favourite_logo = sport_data[2]
+					favourite_team_sport = sport_data[3]
 					favourite_team_fan_fanart = sport_data[4]
 					favourite_team_logo_fanart = sport_data[5]
 					if os.path.exists(os.path.join(favlogos,favourite_logo.split('/')[-1])):
 						favourite_logo = os.path.join(favlogos,favourite_logo.split('/')[-1])
+					#set fan fanart or logo fanart for favourite teams
+					now_focused = self.getControl(980).getSelectedItem().getProperty('sport_name').lower()
+					if settings.getSetting('motorsport-background') == '2':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_fan_fanart and favourite_team_fan_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])):
+									favourite_team_fan_fanart = os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])
+								self.getControl(913).setImage(favourite_team_fan_fanart)
+						
+					elif settings.getSetting('motorsport-background') == '3':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
+									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
+							self.getControl(913).setImage(favourite_team_logo_fanart)
+					else: 
+						#fallback to general addon fanart
+						self.getControl(913).setImage(addon_fanart)
 					
 			elif self.focused_sport.lower() == 'ice%20hockey':
 				if os.path.isfile(icehockey_fav_file):
@@ -168,10 +265,29 @@ class dialog_home(xbmcgui.WindowXML):
 					favourite_team_name = sport_data[1]
 					favourite_team_id = sport_data[0]
 					favourite_logo = sport_data[2]
+					favourite_team_sport = sport_data[3].lower()
 					favourite_team_fan_fanart = sport_data[4]
 					favourite_team_logo_fanart = sport_data[5]
 					if os.path.exists(os.path.join(favlogos,favourite_logo.split('/')[-1])):
 						favourite_logo = os.path.join(favlogos,favourite_logo.split('/')[-1])
+					#set fan fanart or logo fanart for favourite teams
+					now_focused = self.getControl(980).getSelectedItem().getProperty('sport_name').lower()
+					if settings.getSetting('icehockey-background') == '2':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_fan_fanart and favourite_team_fan_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])):
+									favourite_team_fan_fanart = os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])
+								self.getControl(913).setImage(favourite_team_fan_fanart)
+						
+					elif settings.getSetting('icehockey-background') == '3':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
+									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
+							self.getControl(913).setImage(favourite_team_logo_fanart)
+					else: 
+						#fallback to general addon fanart
+						self.getControl(913).setImage(addon_fanart)
 					
 			elif self.focused_sport.lower() == 'baseball':
 				if os.path.isfile(baseball_fav_file):
@@ -179,10 +295,29 @@ class dialog_home(xbmcgui.WindowXML):
 					favourite_team_name = sport_data[1]
 					favourite_team_id = sport_data[0]
 					favourite_logo = sport_data[2]
+					favourite_team_sport = sport_data[3]
 					favourite_team_fan_fanart = sport_data[4]
 					favourite_team_logo_fanart = sport_data[5]
 					if os.path.exists(os.path.join(favlogos,favourite_logo.split('/')[-1])):
 						favourite_logo = os.path.join(favlogos,favourite_logo.split('/')[-1])
+					#set fan fanart or logo fanart for favourite teams
+					now_focused = self.getControl(980).getSelectedItem().getProperty('sport_name').lower()
+					if settings.getSetting('baseball-background') == '2':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_fan_fanart and favourite_team_fan_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])):
+									favourite_team_fan_fanart = os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])
+								self.getControl(913).setImage(favourite_team_fan_fanart)
+						
+					elif settings.getSetting('baseball-background') == '3':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
+									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
+							self.getControl(913).setImage(favourite_team_logo_fanart)
+					else: 
+						#fallback to general addon fanart
+						self.getControl(913).setImage(addon_fanart)
 					
 			elif self.focused_sport.lower() == 'golf':
 				if os.path.isfile(golf_fav_file):
@@ -190,10 +325,29 @@ class dialog_home(xbmcgui.WindowXML):
 					favourite_team_name = sport_data[1]
 					favourite_team_id = sport_data[0]
 					favourite_logo = sport_data[2]
+					favourite_team_sport = sport_data[3]
 					favourite_team_fan_fanart = sport_data[4]
 					favourite_team_logo_fanart = sport_data[5]
 					if os.path.exists(os.path.join(favlogos,favourite_logo.split('/')[-1])):
 						favourite_logo = os.path.join(favlogos,favourite_logo.split('/')[-1])
+					#set fan fanart or logo fanart for favourite teams
+					now_focused = self.getControl(980).getSelectedItem().getProperty('sport_name').lower()
+					if settings.getSetting('golf-background') == '2':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_fan_fanart and favourite_team_fan_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])):
+									favourite_team_fan_fanart = os.path.join(favlogos,favourite_team_fan_fanart.split('/')[-1])
+								self.getControl(913).setImage(favourite_team_fan_fanart)
+						
+					elif settings.getSetting('golf-background') == '3':
+						if now_focused.lower() == self.focused_sport.lower():
+							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
+								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
+									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
+							self.getControl(913).setImage(favourite_team_logo_fanart)
+					else: 
+						#fallback to general addon fanart
+						self.getControl(913).setImage(addon_fanart)
 				
 
 			#set favourite info
@@ -207,6 +361,7 @@ class dialog_home(xbmcgui.WindowXML):
 					item.setProperty('favourite_name_short', '[B]'+favourite_team_name+'[/B]')
 				if favourite_logo: item.setProperty('favourite_logo', favourite_logo)
 				if favourite_team_id: item.setProperty('favourite_id',favourite_team_id)
+				if favourite_team_sport: item.setProperty('favourite_team_sport',favourite_team_sport)
 				if settings.getSetting('username') != '': item.setProperty('username',settings.getSetting('username'))
 				self.getControl(983).addItem(item)		
 		return
@@ -322,12 +477,21 @@ class dialog_home(xbmcgui.WindowXML):
 			competlist.start(seleccionado.getProperty('sport_name'))
 		elif controlId == 983:
 			self.team_id = self.getControl(983).getSelectedItem().getProperty('favourite_id')
-			teamview.start([self.team_id,self.sport,'',''])
+			self.favteam_sport = urllib.quote(self.getControl(983).getSelectedItem().getProperty('favourite_team_sport').lower())
+			teamview.start([self.team_id,self.favteam_sport,'',''])
 
 			
 	def onAction(self,action):
-		if action == 92 or action == 'PreviousMenu':
+		if action.getId() == 92 or action == 'PreviousMenu':
 			self.close()
+		elif action.getId() == 107:
+			if not xbmc.getCondVisibility("Control.HasFocus(983)"):
+				now = datetime.datetime.now()
+				dif = (now - self.lasttime).microseconds
+				if dif > 83712:
+					self.set_fanart()
+					self.set_favourite_data()
+				self.lasttime = now
 		else:
 			if not xbmc.getCondVisibility("Control.HasFocus(983)"):
 				self.set_fanart()

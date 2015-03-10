@@ -76,20 +76,32 @@ class wizzard:
 						ret = dialog.select("Football favourite?", foot_names)
 						save(football_fav_file,str(football_favs[ret]))
 						if football_favs[ret][2]:
-							t1 = threading.Thread(name='logodown1', target=Downloader , args=(football_favs[ret][2],os.path.join(favlogos,football_favs[ret][2].split('/')[-1]),))
-							t1.start()
-							t1fan = threading.Thread(name='logodownfan1', target=Downloader , args=(football_favs[ret][4],os.path.join(favlogos,football_favs[ret][4].split('/')[-1]),))
-							t1fan.start()
-							t1logo = threading.Thread(name='logodownlogo1', target=Downloader , args=(football_favs[ret][5],os.path.join(favlogos,football_favs[ret][5].split('/')[-1]),))
-							t1logo.start()
+							try:
+								t1 = threading.Thread(name='logodown1', target=Downloader , args=(football_favs[ret][2],os.path.join(favlogos,football_favs[ret][2].split('/')[-1]),))
+								t1.start()
+							except: pass
+							try:
+								t1fan = threading.Thread(name='logodownfan1', target=Downloader , args=(football_favs[ret][4],os.path.join(favlogos,football_favs[ret][4].split('/')[-1]),))
+								t1fan.start()
+							except: pass
+							try:
+								t1logo = threading.Thread(name='logodownlogo1', target=Downloader , args=(football_favs[ret][5],os.path.join(favlogos,football_favs[ret][5].split('/')[-1]),))
+								t1logo.start()
+							except: pass
 					elif len(football_favs) == 1 and settings.getSetting('enable-football') == 'true':
 						save(football_fav_file,str(football_favs[0]))
-						t1 = threading.Thread(name='logodown1', target=Downloader , args=(football_favs[0][2],os.path.join(self.favlogos,football_favs[0][2].split('/')[-1]),))
-						t1.start()
-						t1fan = threading.Thread(name='logodownfan1', target=Downloader , args=(football_favs[0][4],os.path.join(favlogos,football_favs[0][4].split('/')[-1]),))
-						t1fan.start()
-						t1logo = threading.Thread(name='logodownlogo1', target=Downloader , args=(football_favs[0][5],os.path.join(favlogos,football_favs[0][5].split('/')[-1]),))
-						t1logo.start()
+						try:
+							t1 = threading.Thread(name='logodown1', target=Downloader , args=(football_favs[0][2],os.path.join(self.favlogos,football_favs[0][2].split('/')[-1]),))
+							t1.start()
+						except: pass
+						try:
+							t1fan = threading.Thread(name='logodownfan1', target=Downloader , args=(football_favs[0][4],os.path.join(favlogos,football_favs[0][4].split('/')[-1]),))
+							t1fan.start()
+						except: pass
+						try:
+							t1logo = threading.Thread(name='logodownlogo1', target=Downloader , args=(football_favs[0][5],os.path.join(favlogos,football_favs[0][5].split('/')[-1]),))
+							t1logo.start()
+						except: pass
 					else: pass
 					#rugby
 					if rugby_favs:
@@ -101,20 +113,32 @@ class wizzard:
 							rugby_names.append(team_name)
 						ret = dialog.select("Rugby favourite?", rugby_names)
 						save(rugby_fav_file,str(rugby_favs[ret]))
-						t2 = threading.Thread(name='logodown2', target=Downloader , args=(rugby_favs[ret][2],os.path.join(favlogos,rugby_favs[ret][2].split('/')[-1]),))
-						t2.start()
-						t2fan = threading.Thread(name='logodownfan2', target=Downloader , args=(rugby_favs[ret][4],os.path.join(favlogos,rugby_favs[ret][4].split('/')[-1]),))
-						t2fan.start()
-						t2logo = threading.Thread(name='logodownlogo2', target=Downloader , args=(rugby_favs[ret][5],os.path.join(favlogos,rugby_favs[ret][5].split('/')[-1]),))
-						t2logo.start()
+						try:
+							t2 = threading.Thread(name='logodown2', target=Downloader , args=(rugby_favs[ret][2],os.path.join(favlogos,rugby_favs[ret][2].split('/')[-1]),))
+							t2.start()
+						except: pass
+						try:
+							t2fan = threading.Thread(name='logodownfan2', target=Downloader , args=(rugby_favs[ret][4],os.path.join(favlogos,rugby_favs[ret][4].split('/')[-1]),))
+							t2fan.start()
+						except: pass
+						try:
+							t2logo = threading.Thread(name='logodownlogo2', target=Downloader , args=(rugby_favs[ret][5],os.path.join(favlogos,rugby_favs[ret][5].split('/')[-1]),))
+							t2logo.start()
+						except: pass
 					elif len(rugby_favs) == 1 and settings.getSetting('enable-rugby') == 'true':
 						save(rugby_fav_file,str(rugby_favs[0]))
-						t2 = threading.Thread(name='logodown2', target=Downloader , args=(rugby_favs[0][2],os.path.join(favlogos,rugby_favs[0][2].split('/')[-1]),))
-						t2.start()
-						t2fan = threading.Thread(name='logodownfan2', target=Downloader , args=(rugby_favs[0][4],os.path.join(favlogos,rugby_favs[0][4].split('/')[-1]),))
-						t2fan.start()
-						t2logo = threading.Thread(name='logodownlogo2', target=Downloader , args=(rugby_favs[0][5],os.path.join(favlogos,rugby_favs[0][5].split('/')[-1]),))
-						t2logo.start()
+						try:
+							t2 = threading.Thread(name='logodown2', target=Downloader , args=(rugby_favs[0][2],os.path.join(favlogos,rugby_favs[0][2].split('/')[-1]),))
+							t2.start()
+						except: pass
+						try:
+							t2fan = threading.Thread(name='logodownfan2', target=Downloader , args=(rugby_favs[0][4],os.path.join(favlogos,rugby_favs[0][4].split('/')[-1]),))
+							t2fan.start()
+						except: pass
+						try:
+							t2logo = threading.Thread(name='logodownlogo2', target=Downloader , args=(rugby_favs[0][5],os.path.join(favlogos,rugby_favs[0][5].split('/')[-1]),))
+							t2logo.start()
+						except: pass
 					else: pass
 					#motorsport
 					if motorsport_favs:
@@ -126,20 +150,32 @@ class wizzard:
 							motorsport_names.append(team_name)
 						ret = dialog.select("Motorsport favourite?", motorsport_names)
 						save(motorsport_fav_file,str(motorsport_favs[ret]))
-						t3 = threading.Thread(name='logodown3', target=Downloader , args=(motorsport_favs[ret][2],os.path.join(favlogos,motorsport_favs[ret][2].split('/')[-1]),))
-						t3.start()
-						t3fan = threading.Thread(name='logodownfan3', target=Downloader , args=(motorsport_favs[ret][4],os.path.join(favlogos,motorsport_favs[ret][4].split('/')[-1]),))
-						t3fan.start()
-						t3logo = threading.Thread(name='logodownlogo3', target=Downloader , args=(motorsport_favs[ret][5],os.path.join(favlogos,motorsport_favs[ret][5].split('/')[-1]),))
-						t3logo.start()
+						try:
+							t3 = threading.Thread(name='logodown3', target=Downloader , args=(motorsport_favs[ret][2],os.path.join(favlogos,motorsport_favs[ret][2].split('/')[-1]),))
+							t3.start()
+						except: pass
+						try:
+							t3fan = threading.Thread(name='logodownfan3', target=Downloader , args=(motorsport_favs[ret][4],os.path.join(favlogos,motorsport_favs[ret][4].split('/')[-1]),))
+							t3fan.start()
+						except: pass
+						try:
+							t3logo = threading.Thread(name='logodownlogo3', target=Downloader , args=(motorsport_favs[ret][5],os.path.join(favlogos,motorsport_favs[ret][5].split('/')[-1]),))
+							t3logo.start()
+						except: pass
 					elif len(motorsport_favs) == 1 and settings.getSetting('enable-motorsport') == 'true':
 						save(motorsport_fav_file,str(motorsport_favs[0]))
-						t3 = threading.Thread(name='logodown3', target=Downloader , args=(motorsport_favs[0][2],os.path.join(favlogos,motorsport_favs[0][2].split('/')[-1]),))
-						t3.start()
-						t3fan = threading.Thread(name='logodownfan3', target=Downloader , args=(motorsport_favs[0][4],os.path.join(favlogos,motorsport_favs[0][4].split('/')[-1]),))
-						t3fan.start()
-						t3logo = threading.Thread(name='logodownlogo3', target=Downloader , args=(motorsport_favs[0][5],os.path.join(favlogos,motorsport_favs[0][5].split('/')[-1]),))
-						t3logo.start()
+						try:
+							t3 = threading.Thread(name='logodown3', target=Downloader , args=(motorsport_favs[0][2],os.path.join(favlogos,motorsport_favs[0][2].split('/')[-1]),))
+							t3.start()
+						except: pass
+						try:
+							t3fan = threading.Thread(name='logodownfan3', target=Downloader , args=(motorsport_favs[0][4],os.path.join(favlogos,motorsport_favs[0][4].split('/')[-1]),))
+							t3fan.start()
+						except: pass
+						try:
+							t3logo = threading.Thread(name='logodownlogo3', target=Downloader , args=(motorsport_favs[0][5],os.path.join(favlogos,motorsport_favs[0][5].split('/')[-1]),))
+							t3logo.start()
+						except: pass
 					else: pass
 					#basketball
 					if basketball_favs:
@@ -151,21 +187,33 @@ class wizzard:
 							basketball_names.append(team_name)
 						ret = dialog.select("Basketball favourite?", basketball_names)
 						save(basketball_fav_file,str(basketball_favs[ret]))
-						t4 = threading.Thread(name='logodown4', target=Downloader , args=(basketball_favs[ret][2],os.path.join(favlogos,basketball_favs[ret][2].split('/')[-1]),))
-						t4.start()
-						t4fan = threading.Thread(name='logodownfan4', target=Downloader , args=(basketball_favs[ret][4],os.path.join(favlogos,basketball_favs[ret][4].split('/')[-1]),))
-						t4fan.start()
-						t4logo = threading.Thread(name='logodownfan4', target=Downloader , args=(basketball_favs[ret][5],os.path.join(favlogos,basketball_favs[ret][5].split('/')[-1]),))
-						t4logo.start()
+						try:
+							t4 = threading.Thread(name='logodown4', target=Downloader , args=(basketball_favs[ret][2],os.path.join(favlogos,basketball_favs[ret][2].split('/')[-1]),))
+							t4.start()
+						except: pass
+						try:
+							t4fan = threading.Thread(name='logodownfan4', target=Downloader , args=(basketball_favs[ret][4],os.path.join(favlogos,basketball_favs[ret][4].split('/')[-1]),))
+							t4fan.start()
+						except: pass
+						try:
+							t4logo = threading.Thread(name='logodownfan4', target=Downloader , args=(basketball_favs[ret][5],os.path.join(favlogos,basketball_favs[ret][5].split('/')[-1]),))
+							t4logo.start()
+						except: pass
 						
 					elif len(basketball_favs) == 1 and settings.getSetting('enable-basketball') == 'true':
 						save(basketball_fav_file,str(basketball_favs[0]))
-						t4 = threading.Thread(name='logodown4', target=Downloader , args=(basketball_favs[0][2],os.path.join(favlogos,basketball_favs[0][2].split('/')[-1]),))
-						t4.start()
-						t4fan = threading.Thread(name='logodownfan4', target=Downloader , args=(basketball_favs[0][4],os.path.join(favlogos,basketball_favs[0][4].split('/')[-1]),))
-						t4fan.start()
-						t4logo = threading.Thread(name='logodownfan4', target=Downloader , args=(basketball_favs[0][5],os.path.join(favlogos,basketball_favs[0][5].split('/')[-1]),))
-						t4logo.start()
+						try:
+							t4 = threading.Thread(name='logodown4', target=Downloader , args=(basketball_favs[0][2],os.path.join(favlogos,basketball_favs[0][2].split('/')[-1]),))
+							t4.start()
+						except: pass
+						try:
+							t4fan = threading.Thread(name='logodownfan4', target=Downloader , args=(basketball_favs[0][4],os.path.join(favlogos,basketball_favs[0][4].split('/')[-1]),))
+							t4fan.start()
+						except: pass
+						try:
+							t4logo = threading.Thread(name='logodownfan4', target=Downloader , args=(basketball_favs[0][5],os.path.join(favlogos,basketball_favs[0][5].split('/')[-1]),))
+							t4logo.start()
+						except: pass
 					else: pass
 					#amfootball
 					if amfootball_favs:
@@ -177,20 +225,32 @@ class wizzard:
 							amfootball_names.append(team_name)
 						ret = dialog.select("AM Football favourite?", amfootball_names)
 						save(amfootball_fav_file,str(amfootball_favs[ret]))
-						t5 = threading.Thread(name='logodown5', target=Downloader , args=(amfootball_favs[ret][2],os.path.join(favlogos,amfootball_favs[ret][2].split('/')[-1]),))
-						t5.start()
-						t5fan = threading.Thread(name='logodownfan5', target=Downloader , args=(amfootball_favs[ret][4],os.path.join(favlogos,amfootball_favs[ret][4].split('/')[-1]),))
-						t5fan.start()
-						t5logo = threading.Thread(name='logodownlogo5', target=Downloader , args=(amfootball_favs[ret][5],os.path.join(favlogos,amfootball_favs[ret][5].split('/')[-1]),))
-						t5logo.start()
+						try:
+							t5 = threading.Thread(name='logodown5', target=Downloader , args=(amfootball_favs[ret][2],os.path.join(favlogos,amfootball_favs[ret][2].split('/')[-1]),))
+							t5.start()
+						except: pass
+						try:
+							t5fan = threading.Thread(name='logodownfan5', target=Downloader , args=(amfootball_favs[ret][4],os.path.join(favlogos,amfootball_favs[ret][4].split('/')[-1]),))
+							t5fan.start()
+						except: pass
+						try:
+							t5logo = threading.Thread(name='logodownlogo5', target=Downloader , args=(amfootball_favs[ret][5],os.path.join(favlogos,amfootball_favs[ret][5].split('/')[-1]),))
+							t5logo.start()
+						except: pass
 					elif len(amfootball_favs) == 1 and settings.getSetting('enable-amfootball') == 'true':
 						save(amfootball_fav_file,str(amfootball_favs[0]))
-						t5 = threading.Thread(name='logodown5', target=Downloader , args=(amfootball_favs[0][2],os.path.join(favlogos,amfootball_favs[0][2].split('/')[-1]),))
-						t5.start()
-						t5fan = threading.Thread(name='logodownfan5', target=Downloader , args=(amfootball_favs[0][4],os.path.join(favlogos,amfootball_favs[0][4].split('/')[-1]),))
-						t5fan.start()
-						t5logo = threading.Thread(name='logodownlogo5', target=Downloader , args=(amfootball_favs[0][5],os.path.join(favlogos,amfootball_favs[0][5].split('/')[-1]),))
-						t5logo.start()
+						try:
+							t5 = threading.Thread(name='logodown5', target=Downloader , args=(amfootball_favs[0][2],os.path.join(favlogos,amfootball_favs[0][2].split('/')[-1]),))
+							t5.start()
+						except: pass
+						try:
+							t5fan = threading.Thread(name='logodownfan5', target=Downloader , args=(amfootball_favs[0][4],os.path.join(favlogos,amfootball_favs[0][4].split('/')[-1]),))
+							t5fan.start()
+						except: pass
+						try:
+							t5logo = threading.Thread(name='logodownlogo5', target=Downloader , args=(amfootball_favs[0][5],os.path.join(favlogos,amfootball_favs[0][5].split('/')[-1]),))
+							t5logo.start()
+						except: pass
 					else: pass
 					#icehockey
 					if icehockey_favs:
@@ -202,20 +262,32 @@ class wizzard:
 							icehockey_names.append(team_name)
 						ret = dialog.select("Ice Hockey favourite?", icehockey_names)
 						save(icehockey_fav_file,str(icehockey_favs[ret]))
-						t6 = threading.Thread(name='logodown6', target=Downloader , args=(icehockey_favs[ret][2],os.path.join(favlogos,icehockey_favs[ret][2].split('/')[-1]),))
-						t6.start()
-						t6fan = threading.Thread(name='logodownfan6', target=Downloader , args=(icehockey_favs[ret][4],os.path.join(favlogos,icehockey_favs[ret][4].split('/')[-1]),))
-						t6fan.start()
-						t6logo = threading.Thread(name='logodownlogo6', target=Downloader , args=(icehockey_favs[ret][5],os.path.join(favlogos,icehockey_favs[ret][5].split('/')[-1]),))
-						t6logo.start()
+						try:
+							t6 = threading.Thread(name='logodown6', target=Downloader , args=(icehockey_favs[ret][2],os.path.join(favlogos,icehockey_favs[ret][2].split('/')[-1]),))
+							t6.start()
+						except: pass
+						try:
+							t6fan = threading.Thread(name='logodownfan6', target=Downloader , args=(icehockey_favs[ret][4],os.path.join(favlogos,icehockey_favs[ret][4].split('/')[-1]),))
+							t6fan.start()
+						except: pass
+						try:
+							t6logo = threading.Thread(name='logodownlogo6', target=Downloader , args=(icehockey_favs[ret][5],os.path.join(favlogos,icehockey_favs[ret][5].split('/')[-1]),))
+							t6logo.start()
+						except: pass
 					elif len(icehockey_favs) == 1 and settings.getSetting('enable-icehockey') == 'true':
 						save(icehockey_fav_file,str(icehockey_favs[0]))
-						t6 = threading.Thread(name='logodown6', target=Downloader , args=(icehockey_favs[0][2],os.path.join(favlogos,icehockey_favs[0][2].split('/')[-1]),))
-						t6.start()
-						t6fan = threading.Thread(name='logodownfan6', target=Downloader , args=(icehockey_favs[0][4],os.path.join(favlogos,icehockey_favs[0][4].split('/')[-1]),))
-						t6fan.start()
-						t6logo = threading.Thread(name='logodownlogo6', target=Downloader , args=(icehockey_favs[0][5],os.path.join(favlogos,icehockey_favs[0][5].split('/')[-1]),))
-						t6logo.start()
+						try:
+							t6 = threading.Thread(name='logodown6', target=Downloader , args=(icehockey_favs[0][2],os.path.join(favlogos,icehockey_favs[0][2].split('/')[-1]),))
+							t6.start()
+						except: pass
+						try:
+							t6fan = threading.Thread(name='logodownfan6', target=Downloader , args=(icehockey_favs[0][4],os.path.join(favlogos,icehockey_favs[0][4].split('/')[-1]),))
+							t6fan.start()
+						except: pass
+						try:
+							t6logo = threading.Thread(name='logodownlogo6', target=Downloader , args=(icehockey_favs[0][5],os.path.join(favlogos,icehockey_favs[0][5].split('/')[-1]),))
+							t6logo.start()
+						except: pass
 					else: pass
 					#baseball
 					if baseball_favs:
@@ -227,20 +299,32 @@ class wizzard:
 							baseball_names.append(team_name)
 						ret = dialog.select("Baseball favourite?", baseball_names)
 						save(baseball_fav_file,str(baseball_favs[ret]))
-						t7 = threading.Thread(name='logodown7', target=Downloader , args=(baseball_favs[ret][2],os.path.join(favlogos,baseball_favs[ret][2].split('/')[-1]),))
-						t7.start()
-						t7fan = threading.Thread(name='logodownfan7', target=Downloader , args=(baseball_favs[ret][4],os.path.join(favlogos,baseball_favs[ret][4].split('/')[-1]),))
-						t7fan.start()
-						t7logo = threading.Thread(name='logodownlogo7', target=Downloader , args=(baseball_favs[ret][5],os.path.join(favlogos,baseball_favs[ret][5].split('/')[-1]),))
-						t7logo.start()
+						try:
+							t7 = threading.Thread(name='logodown7', target=Downloader , args=(baseball_favs[ret][2],os.path.join(favlogos,baseball_favs[ret][2].split('/')[-1]),))
+							t7.start()
+						except: pass
+						try:
+							t7fan = threading.Thread(name='logodownfan7', target=Downloader , args=(baseball_favs[ret][4],os.path.join(favlogos,baseball_favs[ret][4].split('/')[-1]),))
+							t7fan.start()
+						except: pass
+						try:
+							t7logo = threading.Thread(name='logodownlogo7', target=Downloader , args=(baseball_favs[ret][5],os.path.join(favlogos,baseball_favs[ret][5].split('/')[-1]),))
+							t7logo.start()
+						except: pass
 					elif len(baseball_favs) == 1 and settings.getSetting('enable-baseball') == 'true':
 						save(baseball_fav_file,str(baseball_favs[0]))
-						t7 = threading.Thread(name='logodown7', target=Downloader , args=(baseball_favs[0][2],os.path.join(favlogos,baseball_favs[0][2].split('/')[-1]),))
-						t7.start()
-						t7fan = threading.Thread(name='logodownfan7', target=Downloader , args=(baseball_favs[0][4],os.path.join(favlogos,baseball_favs[0][4].split('/')[-1]),))
-						t7fan.start()
-						t7logo = threading.Thread(name='logodownlogo7', target=Downloader , args=(baseball_favs[0][5],os.path.join(favlogos,baseball_favs[0][5].split('/')[-1]),))
-						t7logo.start()
+						try:
+							t7 = threading.Thread(name='logodown7', target=Downloader , args=(baseball_favs[0][2],os.path.join(favlogos,baseball_favs[0][2].split('/')[-1]),))
+							t7.start()
+						except: pass
+						try:
+							t7fan = threading.Thread(name='logodownfan7', target=Downloader , args=(baseball_favs[0][4],os.path.join(favlogos,baseball_favs[0][4].split('/')[-1]),))
+							t7fan.start()
+						except: pass
+						try:
+							t7logo = threading.Thread(name='logodownlogo7', target=Downloader , args=(baseball_favs[0][5],os.path.join(favlogos,baseball_favs[0][5].split('/')[-1]),))
+							t7logo.start()
+						except: pass
 					else: pass
 					#golf
 					if golf_favs:
@@ -252,20 +336,32 @@ class wizzard:
 							golf_names.append(team_name)
 						ret = dialog.select("Favourite golfer?", golf_names)
 						save(golf_fav_file,str(golf_favs[ret]))
-						t8 = threading.Thread(name='logodown8', target=Downloader , args=(golf_favs[ret][2],os.path.join(favlogos,golf_favs[ret][2].split('/')[-1]),))
-						t8.start()
-						t8fan = threading.Thread(name='logodownfan8', target=Downloader , args=(golf_favs[ret][4],os.path.join(favlogos,golf_favs[ret][4].split('/')[-1]),))
-						t8fan.start()
-						t8logo = threading.Thread(name='logodownlogo8', target=Downloader , args=(golf_favs[ret][5],os.path.join(favlogos,golf_favs[ret][5].split('/')[-1]),))
-						t8logo.start()
+						try:
+							t8 = threading.Thread(name='logodown8', target=Downloader , args=(golf_favs[ret][2],os.path.join(favlogos,golf_favs[ret][2].split('/')[-1]),))
+							t8.start()
+						except: pass
+						try:
+							t8fan = threading.Thread(name='logodownfan8', target=Downloader , args=(golf_favs[ret][4],os.path.join(favlogos,golf_favs[ret][4].split('/')[-1]),))
+							t8fan.start()
+						except: pass
+						try:
+							t8logo = threading.Thread(name='logodownlogo8', target=Downloader , args=(golf_favs[ret][5],os.path.join(favlogos,golf_favs[ret][5].split('/')[-1]),))
+							t8logo.start()
+						except: pass
 					elif len(golf_favs) == 1 and settings.getSetting('enable-golf') == 'true':
 						save(golf_fav_file,str(golf_favs[0]))
-						t8 = threading.Thread(name='logodown8', target=Downloader , args=(golf_favs[0][2],os.path.join(favlogos,golf_favs[0][2].split('/')[-1]),))
-						t8.start()
-						t8fan = threading.Thread(name='logodownfan8', target=Downloader , args=(golf_favs[0][4],os.path.join(favlogos,golf_favs[0][4].split('/')[-1]),))
-						t8fan.start()
-						t8logo = threading.Thread(name='logodownlogo8', target=Downloader , args=(golf_favs[0][5],os.path.join(favlogos,golf_favs[0][5].split('/')[-1]),))
-						t8logo.start()
+						try:
+							t8 = threading.Thread(name='logodown8', target=Downloader , args=(golf_favs[0][2],os.path.join(favlogos,golf_favs[0][2].split('/')[-1]),))
+							t8.start()
+						except: pass
+						try:
+							t8fan = threading.Thread(name='logodownfan8', target=Downloader , args=(golf_favs[0][4],os.path.join(favlogos,golf_favs[0][4].split('/')[-1]),))
+							t8fan.start()
+						except: pass
+						try:
+							t8logo = threading.Thread(name='logodownlogo8', target=Downloader , args=(golf_favs[0][5],os.path.join(favlogos,golf_favs[0][5].split('/')[-1]),))
+							t8logo.start()
+						except: pass
 					else: pass
 					
 					#Let us find out what the user loves the most
