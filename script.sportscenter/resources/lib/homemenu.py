@@ -113,8 +113,7 @@ class dialog_home(xbmcgui.WindowXML):
 			favourite_team_id = ''
 			favourite_logo = ''
 			
-			print "aqui",self.focused_sport.lower()
-				
+			
 			if self.focused_sport.lower() == 'soccer' or self.focused_sport.lower() == 'football':	
 				if os.path.isfile(football_fav_file):
 					sport_data = eval(readfile(football_fav_file))
@@ -514,7 +513,6 @@ class dialog_home(xbmcgui.WindowXML):
 
 			
 	def onAction(self,action):
-		print action.getId()
 		if action.getId() == 92 or action == 'PreviousMenu':
 			self.close()
 		elif action.getId() == 107:
