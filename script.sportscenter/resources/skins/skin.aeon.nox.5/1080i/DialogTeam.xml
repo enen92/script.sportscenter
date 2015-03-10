@@ -823,9 +823,9 @@
 					</control>
 					<control type="label" id="309">
 						<description>round</description>
-						<posx>200</posx>
+						<posx>140</posx>
 						<posy>30</posy>
-						<width>800</width>
+						<width>340</width>
 						<height>20</height>
 						<label>$INFO[ListItem.Property(round)]</label>
 						<font>font12_title</font>
@@ -903,6 +903,18 @@
 						<font>Icontiny</font>
 						<align>center</align>
 						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label" id="309">
+						<description>round</description>
+						<posx>140</posx>
+						<posy>30</posy>
+						<width>340</width>
+						<height>20</height>
+						<label>$INFO[ListItem.Property(round)]</label>
+						<font>font12_title</font>
+						<align>center</align>
+						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
 				</focusedlayout>

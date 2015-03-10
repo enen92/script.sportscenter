@@ -13,6 +13,12 @@
 				<height>1080</height>
 				<texture></texture>
 			</control>
+			<control type="image" id="913">
+				<description>Changeable background</description>
+				<width>1920</width>
+				<height>1080</height>
+				<texture></texture>
+			</control>
 		</control>
 	<!-- End Background -->
 	
@@ -71,48 +77,124 @@
 	<control type="group">
 		<animation effect="fade" time="600">WindowOpen</animation>
 		<animation effect="fade" time="600">WindowClose</animation>
-		<control type="image">
+		<control type="image" id="502">
 			<top>0</top>
 			<width>400</width>
 			<height>327</height>
 			<texture>submenu_bar.png</texture>
 		</control>
-		<control type="image">
+		<control type="image" id="501">
 			<top>0</top>
 			<left>400</left>
 			<width>90</width>
 			<height>327</height>
 			<texture flipx="true">submenu_end.png</texture>
 		</control>
-		<control type="image">
-			<top>10</top>
-			<left>10</left>
-			<width>130</width>
-			<height>130</height>
-			<texture>benfica.png</texture>
-		</control>
-		<control type="label">
-			<top>50</top>
-			<width>520</width>
-			<height>41</height>
-			<font>font30_title</font>
-			<textcolor>white</textcolor>
-			<shadowcolor>shadow</shadowcolor>
-			<align>center</align>
-			<aligny>center</aligny>
-			<label>[B]Benfica[/B]</label>
-		</control>
-		<control type="label">
-			<top>100</top>
-			<width>520</width>
-			<height>41</height>
-			<font>font13_title</font>
-			<textcolor>grey</textcolor>
-			<shadowcolor>shadow</shadowcolor>
-			<align>center</align>
-			<aligny>center</aligny>
-			<label>enen92</label>
-		</control>
+		<control type="panel" id="983">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>425</width>
+				<height>630</height>
+				<ondown>980</ondown>
+				<preloaditems>0</preloaditems>
+				<orientation>horizontal</orientation>
+				<itemlayout height="630" width="650">
+					<control type="image" id="901">
+						<top>10</top>
+						<left>10</left>
+						<width>130</width>
+						<height>130</height>
+						<texture>$INFO[ListItem.Property(favourite_logo)]</texture>
+					</control>
+					<control type="textbox" id="902">
+						<top>5</top>
+						<left>140</left>
+						<width>280</width>
+						<height>101</height>
+						<font>font30_title</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<align>center</align>
+						<label>$INFO[ListItem.Property(favourite_name_long)]</label>
+					</control>
+					<control type="textbox" id="903">
+						<top>40</top>
+						<left>140</left>
+						<width>280</width>
+						<height>101</height>
+						<font>font30_title</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<align>center</align>
+						<label>$INFO[ListItem.Property(favourite_name_short)]</label>
+					</control>
+					<control type="label" id="900">
+						<top>105</top>
+						<width>540</width>
+						<height>41</height>
+						<font>font13_title</font>
+						<textcolor>grey</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(username)]</label>
+					</control>
+				</itemlayout>	
+				<focusedlayout height="239" width="240">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>416</width>
+						<height>153</height>
+						<texture border="5">listselect_fo.png</texture>
+					</control>
+					<control type="image" id="901">
+						<top>10</top>
+						<left>10</left>
+						<width>130</width>
+						<height>130</height>
+						<texture>$INFO[ListItem.Property(favourite_logo)]</texture>
+					</control>
+					<control type="textbox" id="902">
+						<top>5</top>
+						<left>140</left>
+						<width>280</width>
+						<height>101</height>
+						<font>font30_title</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<align>center</align>
+						<label>$INFO[ListItem.Property(favourite_name_long)]</label>
+					</control>
+					<control type="textbox" id="903">
+						<top>40</top>
+						<left>140</left>
+						<width>280</width>
+						<height>101</height>
+						<font>font30_title</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<align>center</align>
+						<label>$INFO[ListItem.Property(favourite_name_short)]</label>
+					</control>
+					<control type="label" id="900">
+						<top>105</top>
+						<width>540</width>
+						<height>41</height>
+						<font>font13_title</font>
+						<textcolor>grey</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(username)]</label>
+					</control>
+				</focusedlayout>
+			</control>
+				
+		
+		
+		
+		
 	</control>
 
 	
@@ -296,6 +378,7 @@
 					<top>62</top>
 					<width>4800</width>
 					<height>400</height>
+					<onup>983</onup>
 
 					<movement>1</movement>
 					<pagecontrol>-</pagecontrol>
