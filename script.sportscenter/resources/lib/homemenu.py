@@ -425,7 +425,7 @@ class dialog_home(xbmcgui.WindowXML):
 					if football_custom != '':
 						self.getControl(913).setImage(football_custom)
 					else: self.getControl(913).setImage(addon_fanart)
-				else: pass
+				elif settings.getSetting('football-background') == '0': self.getControl(913).setImage(addon_fanart)
 				
 			elif self.sport == 'basketball':
 				if settings.getSetting('basketball-background') == '1':
@@ -435,10 +435,7 @@ class dialog_home(xbmcgui.WindowXML):
 					if basketball_custom != '':
 						self.getControl(913).setImage(basketball_custom)
 					else: self.getControl(913).setImage(addon_fanart)
-				elif settings.getSetting('basketball-background') == '0':
-					self.getControl(913).setImage(addon_fanart)
-				elif settings.getSetting('basketball-background') == '2' or settings.getSetting('basketball-background') == '3': pass
-				else: self.getControl(913).setImage(addon_fanart)
+				elif settings.getSetting('basketball-background') == '0':self.getControl(913).setImage(addon_fanart)
 				
 			elif self.sport == 'rugby':
 				if settings.getSetting('rugby-background') == '1':
@@ -448,7 +445,7 @@ class dialog_home(xbmcgui.WindowXML):
 					if rugby_custom != '':
 						self.getControl(913).setImage(rugby_custom)
 					else: self.getControl(913).setImage(addon_fanart)
-				else: pass
+				elif settings.getSetting('football-background') == '0': self.getControl(913).setImage(addon_fanart)
 				
 			elif self.sport == 'american%20football':
 				if settings.getSetting('amfootball-background') == '1':
@@ -458,7 +455,7 @@ class dialog_home(xbmcgui.WindowXML):
 					if amfootball_custom != '':
 						self.getControl(913).setImage(amfootball_custom)
 					else: self.getControl(913).setImage(addon_fanart)
-				else: pass
+				elif settings.getSetting('football-background') == '0': self.getControl(913).setImage(addon_fanart)
 				
 			elif self.sport == 'motorsport':
 				if settings.getSetting('motorsport-background') == '1':
@@ -468,7 +465,7 @@ class dialog_home(xbmcgui.WindowXML):
 					if motorsport_custom != '':
 						self.getControl(913).setImage(motorsport_custom)
 					else: self.getControl(913).setImage(addon_fanart)
-				else: pass
+				elif settings.getSetting('football-background') == '0': self.getControl(913).setImage(addon_fanart)
 				
 			elif self.sport == 'ice%20hockey':
 				if settings.getSetting('icehockey-background') == '1':
@@ -478,7 +475,7 @@ class dialog_home(xbmcgui.WindowXML):
 					if icehockey_custom != '':
 						self.getControl(913).setImage(icehockey_custom)
 					else: self.getControl(913).setImage(addon_fanart)
-				else: pass
+				elif settings.getSetting('football-background') == '0': self.getControl(913).setImage(addon_fanart)
 				
 			elif self.sport == 'baseball':
 				if settings.getSetting('baseball-background') == '1':
@@ -488,7 +485,7 @@ class dialog_home(xbmcgui.WindowXML):
 					if baseball_custom != '':
 						self.getControl(913).setImage(baseball_custom)
 					else: self.getControl(913).setImage(addon_fanart)
-				else: pass
+				elif settings.getSetting('football-background') == '0': self.getControl(913).setImage(addon_fanart)
 				
 			elif self.sport == 'golf':
 				if settings.getSetting('golf-background') == '1':
@@ -498,7 +495,7 @@ class dialog_home(xbmcgui.WindowXML):
 					if golf_custom != '':
 						self.getControl(913).setImage(golf_custom)
 					else: self.getControl(913).setImage(addon_fanart)
-				else: pass
+				elif settings.getSetting('football-background') == '0': self.getControl(913).setImage(addon_fanart)
 		return
 			
 	def onClick(self,controlId):
