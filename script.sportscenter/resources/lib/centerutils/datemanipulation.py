@@ -15,3 +15,16 @@ def get_month_short(month):
 	elif int(month) == 11: return "NOV"
 	elif int(month) == 12: return "DEC"
 	else: return str(month)
+	
+#returns the first part of settings defined for each sport	
+def get_sport_setting(sport):
+	sport = sport.lower()
+	if sport == 'soccer' or sport == 'football': return 'football'
+	elif sport == 'rugby': return 'rugby'
+	elif sport == 'motorsport': return 'motorsport'
+	elif sport == 'basketball': return 'basketball'
+	elif sport == 'american%20football': return 'amfootball'
+	elif sport == 'ice%20hockey': return 'icehockey'
+	elif sport == 'baseball': return 'baseball'
+	elif sport == 'golf': return 'golf'
+	else: return None

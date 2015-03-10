@@ -2,6 +2,7 @@ import xbmc,xbmcgui,xbmcaddon,xbmcplugin
 import os,time,datetime,urllib
 from centerutils.common_variables import *
 from centerutils.iofile import *
+from centerutils.datemanipulation import *
 import competlist as competlist
 import teamview as teamview
 from wizzard import wizzard
@@ -54,15 +55,16 @@ class dialog_home(xbmcgui.WindowXML):
 		wizzard()
 		
 		self.setFocusId(980)
-		xbmc.sleep(200)
+		
 		i=0
 		for sport,img,sport_name in table:
 			if sport_name == self.sport:
 				index = i
 			else: i+=1
-		xbmc.sleep(200)
+		#xbmc.sleep(200)
 		try:self.getControl(980).selectItem(index)
 		except: self.getControl(980).selectItem(1)
+		xbmc.sleep(200)
 		
 		self.set_fanart()
 		self.set_favourite_data()
@@ -110,6 +112,8 @@ class dialog_home(xbmcgui.WindowXML):
 			favourite_team_name = ''
 			favourite_team_id = ''
 			favourite_logo = ''
+			
+			print "aqui",self.focused_sport.lower()
 				
 			if self.focused_sport.lower() == 'soccer' or self.focused_sport.lower() == 'football':	
 				if os.path.isfile(football_fav_file):
@@ -136,10 +140,15 @@ class dialog_home(xbmcgui.WindowXML):
 							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
 								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
 									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
-							self.getControl(913).setImage(favourite_team_logo_fanart)
-					else: 
-						#fallback to general addon fanart
-						self.getControl(913).setImage(addon_fanart)
+								self.getControl(913).setImage(favourite_team_logo_fanart)
+				if xbmc.getCondVisibility("Control.HasFocus(980)"):
+					self.current_focus = self.getControl(980).getSelectedItem().getProperty('sport_name')
+					if self.current_focus.lower() != self.focused_sport.lower():
+						setting_sport = get_sport_setting(self.current_focus)
+						if setting_sport:
+							setting_sport = setting_sport + "-background"
+							if str(settings.getSetting(setting_sport)) != '1' and str(settings.getSetting(setting_sport)) != '4':
+								self.getControl(913).setImage(addon_fanart)
 						
 			elif self.focused_sport.lower() == 'basketball':
 				if os.path.isfile(basketball_fav_file):
@@ -166,10 +175,15 @@ class dialog_home(xbmcgui.WindowXML):
 							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
 								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
 									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
-							self.getControl(913).setImage(favourite_team_logo_fanart)
-					else: 
-						#fallback to general addon fanart
-						self.getControl(913).setImage(addon_fanart)
+								self.getControl(913).setImage(favourite_team_logo_fanart)
+				if xbmc.getCondVisibility("Control.HasFocus(980)"):
+					self.current_focus = self.getControl(980).getSelectedItem().getProperty('sport_name')
+					if self.current_focus.lower() != self.focused_sport.lower():
+						setting_sport = get_sport_setting(self.current_focus)
+						if setting_sport:
+							setting_sport = setting_sport + "-background"
+							if str(settings.getSetting(setting_sport)) != '1' and str(settings.getSetting(setting_sport)) != '4':
+								self.getControl(913).setImage(addon_fanart)
 			
 			elif self.focused_sport.lower() == 'rugby':
 				if os.path.isfile(rugby_fav_file):
@@ -196,10 +210,15 @@ class dialog_home(xbmcgui.WindowXML):
 							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
 								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
 									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
-							self.getControl(913).setImage(favourite_team_logo_fanart)
-					else: 
-						#fallback to general addon fanart
-						self.getControl(913).setImage(addon_fanart)
+								self.getControl(913).setImage(favourite_team_logo_fanart)
+				if xbmc.getCondVisibility("Control.HasFocus(980)"):
+					self.current_focus = self.getControl(980).getSelectedItem().getProperty('sport_name')
+					if self.current_focus.lower() != self.focused_sport.lower():
+						setting_sport = get_sport_setting(self.current_focus)
+						if setting_sport:
+							setting_sport = setting_sport + "-background"
+							if str(settings.getSetting(setting_sport)) != '1' and str(settings.getSetting(setting_sport)) != '4':
+								self.getControl(913).setImage(addon_fanart)
 					
 			elif self.focused_sport.lower() == 'american%20football':
 				if os.path.isfile(amfootball_fav_file):
@@ -226,10 +245,16 @@ class dialog_home(xbmcgui.WindowXML):
 							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
 								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
 									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
-							self.getControl(913).setImage(favourite_team_logo_fanart)
-					else: 
-						#fallback to general addon fanart
-						self.getControl(913).setImage(addon_fanart)
+								self.getControl(913).setImage(favourite_team_logo_fanart)
+
+				if xbmc.getCondVisibility("Control.HasFocus(980)"):
+					self.current_focus = self.getControl(980).getSelectedItem().getProperty('sport_name')
+					if self.current_focus.lower() != self.focused_sport.lower():
+						setting_sport = get_sport_setting(self.current_focus)
+						if setting_sport:
+							setting_sport = setting_sport + "-background"
+							if str(settings.getSetting(setting_sport)) != '1' and str(settings.getSetting(setting_sport)) != '4':
+								self.getControl(913).setImage(addon_fanart)
 					
 			elif self.focused_sport.lower() == 'motorsport':
 				if os.path.isfile(motorsport_fav_file):
@@ -256,10 +281,15 @@ class dialog_home(xbmcgui.WindowXML):
 							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
 								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
 									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
-							self.getControl(913).setImage(favourite_team_logo_fanart)
-					else: 
-						#fallback to general addon fanart
-						self.getControl(913).setImage(addon_fanart)
+								self.getControl(913).setImage(favourite_team_logo_fanart)
+				if xbmc.getCondVisibility("Control.HasFocus(980)"):
+					self.current_focus = self.getControl(980).getSelectedItem().getProperty('sport_name')
+					if self.current_focus.lower() != self.focused_sport.lower():
+						setting_sport = get_sport_setting(self.current_focus)
+						if setting_sport:
+							setting_sport = setting_sport + "-background"
+							if str(settings.getSetting(setting_sport)) != '1' and str(settings.getSetting(setting_sport)) != '4':
+								self.getControl(913).setImage(addon_fanart)
 					
 			elif self.focused_sport.lower() == 'ice%20hockey':
 				if os.path.isfile(icehockey_fav_file):
@@ -286,10 +316,15 @@ class dialog_home(xbmcgui.WindowXML):
 							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
 								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
 									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
-							self.getControl(913).setImage(favourite_team_logo_fanart)
-					else: 
-						#fallback to general addon fanart
-						self.getControl(913).setImage(addon_fanart)
+								self.getControl(913).setImage(favourite_team_logo_fanart)
+				if xbmc.getCondVisibility("Control.HasFocus(980)"):
+					self.current_focus = self.getControl(980).getSelectedItem().getProperty('sport_name')
+					if self.current_focus.lower() != self.focused_sport.lower():
+						setting_sport = get_sport_setting(self.current_focus)
+						if setting_sport:
+							setting_sport = setting_sport + "-background"
+							if str(settings.getSetting(setting_sport)) != '1' and str(settings.getSetting(setting_sport)) != '4':
+								self.getControl(913).setImage(addon_fanart)
 					
 			elif self.focused_sport.lower() == 'baseball':
 				if os.path.isfile(baseball_fav_file):
@@ -316,10 +351,15 @@ class dialog_home(xbmcgui.WindowXML):
 							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
 								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
 									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
-							self.getControl(913).setImage(favourite_team_logo_fanart)
-					else: 
-						#fallback to general addon fanart
-						self.getControl(913).setImage(addon_fanart)
+								self.getControl(913).setImage(favourite_team_logo_fanart)
+				if xbmc.getCondVisibility("Control.HasFocus(980)"):
+					self.current_focus = self.getControl(980).getSelectedItem().getProperty('sport_name')
+					if self.current_focus.lower() != self.focused_sport.lower():
+						setting_sport = get_sport_setting(self.current_focus)
+						if setting_sport:
+							setting_sport = setting_sport + "-background"
+							if str(settings.getSetting(setting_sport)) != '1' and str(settings.getSetting(setting_sport)) != '4':
+								self.getControl(913).setImage(addon_fanart)
 					
 			elif self.focused_sport.lower() == 'golf':
 				if os.path.isfile(golf_fav_file):
@@ -346,10 +386,15 @@ class dialog_home(xbmcgui.WindowXML):
 							if favourite_team_logo_fanart and favourite_team_logo_fanart != 'None':
 								if os.path.isfile(os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])):
 									favourite_team_logo_fanart = os.path.join(favlogos,favourite_team_logo_fanart.split('/')[-1])
-							self.getControl(913).setImage(favourite_team_logo_fanart)
-					else: 
-						#fallback to general addon fanart
-						self.getControl(913).setImage(addon_fanart)
+								self.getControl(913).setImage(favourite_team_logo_fanart)
+				if xbmc.getCondVisibility("Control.HasFocus(980)"):
+					self.current_focus = self.getControl(980).getSelectedItem().getProperty('sport_name')
+					if self.current_focus.lower() != self.focused_sport.lower():
+						setting_sport = get_sport_setting(self.current_focus)
+						if setting_sport:
+							setting_sport = setting_sport + "-background"
+							if str(settings.getSetting(setting_sport)) != '1' and str(settings.getSetting(setting_sport)) != '4':
+								self.getControl(913).setImage(addon_fanart)
 				
 
 			#set favourite info
@@ -391,7 +436,10 @@ class dialog_home(xbmcgui.WindowXML):
 					if basketball_custom != '':
 						self.getControl(913).setImage(basketball_custom)
 					else: self.getControl(913).setImage(addon_fanart)
-				else: pass
+				elif settings.getSetting('basketball-background') == '0':
+					self.getControl(913).setImage(addon_fanart)
+				elif settings.getSetting('basketball-background') == '2' or settings.getSetting('basketball-background') == '3': pass
+				else: self.getControl(913).setImage(addon_fanart)
 				
 			elif self.sport == 'rugby':
 				if settings.getSetting('rugby-background') == '1':
@@ -466,6 +514,7 @@ class dialog_home(xbmcgui.WindowXML):
 
 			
 	def onAction(self,action):
+		print action.getId()
 		if action.getId() == 92 or action == 'PreviousMenu':
 			self.close()
 		elif action.getId() == 107:
