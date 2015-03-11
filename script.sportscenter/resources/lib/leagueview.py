@@ -44,8 +44,7 @@ class dialog_league(xbmcgui.WindowXML):
 		menu.append(('Teams','teams'))
 		menu.append(('Latest Matches','lastmatch'))
 		menu.append(('Next Matches','nextmatch'))
-		
-		#,('News','news'),('Videos','videos'),('League Tables','tables'),('Fixtures','fixtures'),('Teams','teams'),('Latest Matches','lastmatch'),('Next Matches','nextmatch')]
+
 		self.getControl(983).reset()	   
 		for entry,entry_id in menu:
 			menu_entry = xbmcgui.ListItem(entry)

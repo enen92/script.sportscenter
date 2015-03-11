@@ -513,20 +513,20 @@ class dialog_team(xbmcgui.WindowXML):
 					if event_round:
 						round_label = 'Round ' + str(event_round)
 				
-					if len(home_team_name) > 8: 
-						if xbmc.getSkinDir() == 'skin.aeon.nox.5': home_team_name = home_team_name.replace(' ','[CR]')
-						else: pass
-					if len(away_team_name) > 8: 
-						if xbmc.getSkinDir() == 'skin.aeon.nox.5': away_team_name = away_team_name.replace(' ','[CR]')
-						else: pass
 				
 				game = xbmcgui.ListItem(event_fullname)
 				game.setProperty('HomeTeamLogo',home_team_logo)
 				if not event_race:
-					game.setProperty('HomeTeam',home_team_name)
+					if ' ' in home_team_name:
+						if len(home_team_name) > 12: game.setProperty('HomeTeamLong',home_team_name)
+						else: game.setProperty('HomeTeamShort',home_team_name)
+					else: game.setProperty('HomeTeamShort',home_team_name)
 					game.setProperty('AwayTeamLogo',away_team_logo)
 					game.setProperty('StadiumThumb',stadium_fanart)
-					game.setProperty('AwayTeam',away_team_name)
+					if ' ' in away_team_name:
+						if len(away_team_name) > 12: game.setProperty('AwayTeamLong',away_team_name)
+						else: game.setProperty('AwayTeamShort',away_team_name)
+					else: game.setProperty('AwayTeamShort',away_team_name)
 					game.setProperty('match_result',result)
 					if event_round: game.setProperty('round',round_label)
 				else:

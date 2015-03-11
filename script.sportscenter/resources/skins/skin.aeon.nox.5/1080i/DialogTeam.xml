@@ -1061,7 +1061,6 @@
 				<width>230</width>
 				<height>46</height>
 				<colordiffuse>88FFFFFF</colordiffuse>
-				<!--<visible>ListItem.HasStarted</visible>-->
 				<info>$INFO[ListItem.Property(Progress)]</info>
 				<texturebg border="2">osd/texturebg2.png</texturebg>
 			</control>
@@ -1130,15 +1129,26 @@
             					<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="label" id="305">
-						<description>competition tag</description>
+					<control type="textbox" id="305">
+						<description>home_team_long</description>
+						<posx>235</posx>
+						<posy>85</posy>
+						<width>250</width>
+						<height>100</height>
+						<label>$INFO[ListItem.Property(HomeTeamLong)]</label>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox" id="305">
+						<description>home_team_short</description>
 						<posx>235</posx>
 						<posy>105</posy>
 						<width>250</width>
 						<height>40</height>
-						<label>$INFO[ListItem.Property(HomeTeam)]</label>
-						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
+						<label>$INFO[ListItem.Property(HomeTeamShort)]</label>
+						<font>font16_title_bold</font>
 						<align>center</align>
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
@@ -1151,7 +1161,7 @@
 						<height>40</height>
 						<label>$INFO[ListItem.Property(EventName)]</label>
 						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
+						<font>font16_title_bold</font>
 						<align>center</align>
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
@@ -1164,26 +1174,39 @@
             					<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="label" id="307">
-						<description>competition tag</description>
+					<control type="textbox" id="307">
+						<description>awayteamlong</description>
+						<posx>700</posx>
+						<posy>85</posy>
+						<width>260</width>
+						<height>100</height>
+						<label>$INFO[ListItem.Property(AwayTeamLong)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox" id="307">
+						<description>awayteamshort</description>
 						<posx>700</posx>
 						<posy>105</posy>
 						<width>260</width>
 						<height>40</height>
-						<label>$INFO[ListItem.Property(AwayTeam)]</label>
+						<label>$INFO[ListItem.Property(AwayTeamShort)]</label>
 						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
+						<font>font16_title_bold</font>
 						<align>center</align>
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
 					<control type="label" id="318">
 						<description>vs tag</description>
-						<posx>515</posx>
-						<posy>115</posy>
-						<width>160</width>
+						<posx>510</posx>
+						<posy>120</posy>
+						<width>170</width>
 						<height>20</height>
-						<label>$INFO[ListItem.Property(match_result)]</label>
+						<label>[B]$INFO[ListItem.Property(match_result)][/B]</label>
 						<font>font48</font>
 						<align>center</align>
 						<textcolor>white</textcolor>
@@ -1237,15 +1260,26 @@
             				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="label" id="305">
-						<description>competition tag</description>
+					<control type="textbox" id="305">
+						<description>home_team_long</description>
+						<posx>235</posx>
+						<posy>85</posy>
+						<width>250</width>
+						<height>100</height>
+						<label>$INFO[ListItem.Property(HomeTeamLong)]</label>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox" id="305">
+						<description>home_team_short</description>
 						<posx>235</posx>
 						<posy>105</posy>
 						<width>250</width>
 						<height>40</height>
-						<label>$INFO[ListItem.Property(HomeTeam)]</label>
-						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
+						<label>$INFO[ListItem.Property(HomeTeamShort)]</label>
+						<font>font16_title_bold</font>
 						<align>center</align>
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
@@ -1258,7 +1292,7 @@
 						<height>40</height>
 						<label>$INFO[ListItem.Property(EventName)]</label>
 						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
+						<font>font16_title_bold</font>
 						<align>center</align>
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
@@ -1271,26 +1305,39 @@
             				<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="label" id="307">
-						<description>competition tag</description>
+					<control type="textbox" id="307">
+						<description>awayteamlong</description>
+						<posx>700</posx>
+						<posy>85</posy>
+						<width>260</width>
+						<height>100</height>
+						<label>$INFO[ListItem.Property(AwayTeamLong)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox" id="307">
+						<description>awayteamshort</description>
 						<posx>700</posx>
 						<posy>105</posy>
 						<width>260</width>
 						<height>40</height>
-						<label>$INFO[ListItem.Property(AwayTeam)]</label>
+						<label>$INFO[ListItem.Property(AwayTeamShort)]</label>
 						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
+						<font>font16_title_bold</font>
 						<align>center</align>
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
 					<control type="label" id="318">
 						<description>vs tag</description>
-						<posx>515</posx>
-						<posy>115</posy>
-						<width>160</width>
+						<posx>510</posx>
+						<posy>120</posy>
+						<width>170</width>
 						<height>20</height>
-						<label>$INFO[ListItem.Property(match_result)]</label>
+						<label>[B]$INFO[ListItem.Property(match_result)][/B]</label>
 						<font>font48</font>
 						<align>center</align>
 						<textcolor>white</textcolor>
