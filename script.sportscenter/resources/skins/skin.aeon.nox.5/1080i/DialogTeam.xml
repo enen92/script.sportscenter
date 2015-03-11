@@ -775,15 +775,15 @@
             				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="label" id="310">
+					<control type="textbox" id="310">
 						<description>competition tag</description>
-						<posx>235</posx>
-						<posy>105</posy>
-						<width>800</width>
-						<height>40</height>
+						<posx>215</posx>
+						<posy>85</posy>
+						<width>300</width>
+						<height>200</height>
 						<label>$INFO[ListItem.Property(EventName)]</label>
 						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
+						<font>font16_title_bold</font>
 						<align>center</align>
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
@@ -858,15 +858,15 @@
 						<visible>true</visible>
         				</control>
 
-					<control type="label" id="310">
+					<control type="textbox" id="310">
 						<description>competition tag</description>
-						<posx>235</posx>
-						<posy>105</posy>
-						<width>800</width>
-						<height>40</height>
+						<posx>215</posx>
+						<posy>85</posy>
+						<width>300</width>
+						<height>200</height>
 						<label>$INFO[ListItem.Property(EventName)]</label>
 						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
+						<font>font16_title_bold</font>
 						<align>center</align>
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
