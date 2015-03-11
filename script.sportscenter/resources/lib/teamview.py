@@ -27,7 +27,7 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 	def onInit(self):
 		self.team = thesportsdb.Lookups().lookupteam(self.team_id)['teams'][0]
 		if settings.getSetting('team-naming')=='0': self.team_name = thesportsdb.Teams().get_name(self.team)
-		else: self.team_name = thesportsdb.Teams().get_alternativefirst(self.team)
+		else: self.team_name = thesportsdb.Teams().get_alternativefirst(self.team)		
 		self.team_badge = thesportsdb.Teams().get_badge(self.team)
 		self.team_fanartlist = thesportsdb.Teams().get_fanart_list(self.team) 
 		self.team_fanart = thesportsdb.Teams().get_fanart_general1(self.team)
@@ -244,7 +244,11 @@ class dialog_team(xbmcgui.WindowXML):
 		if settings.getSetting('team-naming')=='0': self.team_name = thesportsdb.Teams().get_name(self.team)
 		else: self.team_name = thesportsdb.Teams().get_alternativefirst(self.team)
 		self.getControl(427).setLabel('[COLOR labelheader]Team Name:[CR][/COLOR]' + self.team_name)
-		#		
+		
+		#set top bar info
+		self.getControl(333).setLabel("Team View - "+self.team_name)
+		
+			
 		#set next match information
 		if self.event_next_list:
 			self.nextevent = self.event_next_list[0]
@@ -298,6 +302,11 @@ class dialog_team(xbmcgui.WindowXML):
 		
 		players = thesportsdb.Lookups().lookup_all_players(self.team_id)['player']
 		if players:
+			number_players=len(players)
+			
+			#set player number top bar
+			self.getControl(334).setLabel(str(number_players)+' '+'Players')
+			
 			for player in players:
 				player_face = thesportsdb.Players().get_face(player)
 				player_name = thesportsdb.Players().get_name(player)

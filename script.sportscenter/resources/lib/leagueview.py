@@ -20,6 +20,7 @@ class dialog_league(xbmcgui.WindowXML):
 		self.sport = eval(args[3])[1]
 
 	def onInit(self):	
+	
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		
 		xbmc.executebuiltin("SetProperty(loading,1,home)")
@@ -79,6 +80,8 @@ class dialog_league(xbmcgui.WindowXML):
 		#set league name
 		self.league_name = thesportsdb.Leagues().get_name(self.league)
 		self.getControl(427).setLabel('[COLOR labelheader]League:[CR][/COLOR]' + self.league_name)
+		#Set top bar information
+		self.getControl(333).setLabel('League View - ' + self.league_name)
 		
 		self.getControl(980).reset()
 		self.getControl(981).reset()
@@ -86,6 +89,10 @@ class dialog_league(xbmcgui.WindowXML):
 		self.getControl(985).reset()
 			
 		teams_list = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
+		team_number = len(teams_list)
+		#set team number on top bar
+		self.getControl(334).setLabel(str(team_number)+' Teams')
+		
 		for team in teams_list:
 			if settings.getSetting('team-naming')=='0': team_name = thesportsdb.Teams().get_name(team)
 			else: team_name = thesportsdb.Teams().get_alternativefirst(team)

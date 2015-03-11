@@ -23,6 +23,9 @@ class dialog_compet(xbmcgui.WindowXML):
 		
 
 	def onInit(self,):
+		#set top bar info
+		self.getControl(333).setLabel('Competition List - '+self.sport)
+		
 		fanart = os.path.join(addonpath,'fanart.jpg')
 	
 		self.getControl(907).setImage(fanart)
@@ -62,6 +65,8 @@ class dialog_compet(xbmcgui.WindowXML):
 		try: all_leagues = thesportsdb.Search().search_all_leagues(None,self.sport,None)["countrys"]
 		except: all_leagues = {}
 		self.list_listitems = []
+		number_of_leagues=len(all_leagues)
+		self.getControl(334).setLabel(str(number_of_leagues) + ' Leagues')
 		
 		for league in all_leagues:
 			leagueItem = xbmcgui.ListItem(thesportsdb.Leagues().get_name(league), iconImage = thesportsdb.Leagues().get_badge(league))
