@@ -2,7 +2,7 @@
 <settings>
 	<category label="General">
 		<setting id="wizzard_check" type="bool" label="Start wizzard the next run" default="true"/>
-		<setting id="team-naming" type="enum" label="Team displayed name" values="Default|Alternative" default="1" />
+		<setting id="team-naming" type="enum" label="Team displayed name" values="Default|Alternative" default="0" />
 	</category>
 	<category label="Home Menu">
 		<setting label="Football" type="lsep" />

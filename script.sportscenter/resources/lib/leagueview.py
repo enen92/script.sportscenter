@@ -87,7 +87,8 @@ class dialog_league(xbmcgui.WindowXML):
 			
 		teams_list = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
 		for team in teams_list:
-			team_name = thesportsdb.Teams().get_name(team)
+			if settings.getSetting('team-naming')=='0': team_name = thesportsdb.Teams().get_name(team)
+			else: team_name = thesportsdb.Teams().get_alternativefirst(team)
 			team_id = thesportsdb.Teams().get_id(team)
 			team_badge = thesportsdb.Teams().get_badge(team)
 			team_banner = thesportsdb.Teams().get_banner(team)
@@ -106,7 +107,8 @@ class dialog_league(xbmcgui.WindowXML):
 			self.getControl(980).addItem(teamitem)
 			
 		for team in teams_list:
-			team_name = thesportsdb.Teams().get_name(team)
+			if settings.getSetting('team-naming')=='0': team_name = thesportsdb.Teams().get_name(team)
+			else: team_name = thesportsdb.Teams().get_alternativefirst(team)
 			team_banner = thesportsdb.Teams().get_banner(team)
 			team_jersey = thesportsdb.Teams().get_team_jersey(team)
 			team_id = thesportsdb.Teams().get_id(team)
@@ -122,7 +124,8 @@ class dialog_league(xbmcgui.WindowXML):
 			self.getControl(984).addItem(teamitem)
 			
 		for team in teams_list:
-			team_name = thesportsdb.Teams().get_name(team)
+			if settings.getSetting('team-naming')=='0': team_name = thesportsdb.Teams().get_name(team)
+			else: team_name = thesportsdb.Teams().get_alternativefirst(team)
 			team_badge = thesportsdb.Teams().get_badge(team)
 			team_jersey = thesportsdb.Teams().get_team_jersey(team)
 			team_id = thesportsdb.Teams().get_id(team)
@@ -138,7 +141,8 @@ class dialog_league(xbmcgui.WindowXML):
 			self.getControl(985).addItem(teamitem)
 			
 		for team in teams_list:
-			team_name = thesportsdb.Teams().get_name(team)
+			if settings.getSetting('team-naming')=='0': team_name = thesportsdb.Teams().get_name(team)
+			else: team_name = thesportsdb.Teams().get_alternativefirst(team)
 			team_badge = thesportsdb.Teams().get_badge(team)
 			team_id = thesportsdb.Teams().get_id(team)
 			team_jersey = thesportsdb.Teams().get_team_jersey(team)
@@ -274,12 +278,14 @@ class dialog_league(xbmcgui.WindowXML):
 				else:
 					home_team_id = thesportsdb.Events().get_hometeamid(event)
 					home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
-					home_team_name = thesportsdb.Events().get_hometeamname(event)
+					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Events().get_name(home_team_dict)
+					else: team_name = home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
 					home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
 					stadium_fanart = thesportsdb.Teams().get_stadium_thumb(home_team_dict)
 					away_team_id = thesportsdb.Events().get_awayteamid(event)
 					away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
-					away_team_name = thesportsdb.Events().get_awayteamname(event)
+					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
+					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
 					away_team_logo = thesportsdb.Teams().get_badge(away_team_dict)
 					event_round = thesportsdb.Events().get_round(event)
 					if event_round:
@@ -337,12 +343,14 @@ class dialog_league(xbmcgui.WindowXML):
 				else:
 					home_team_id = thesportsdb.Events().get_hometeamid(event)
 					home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
-					home_team_name = thesportsdb.Events().get_hometeamname(event)
+					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
+					else: home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
 					home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
 					stadium_fanart = thesportsdb.Teams().get_stadium_thumb(home_team_dict)
 					away_team_id = thesportsdb.Events().get_awayteamid(event)
 					away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
-					away_team_name = thesportsdb.Events().get_awayteamname(event)
+					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
+					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
 					away_team_logo = thesportsdb.Teams().get_badge(away_team_dict)
 					home_score = thesportsdb.Events().get_homescore(event)
 					away_score = thesportsdb.Events().get_awayscore(event)

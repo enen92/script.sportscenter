@@ -26,7 +26,8 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 
 	def onInit(self):
 		self.team = thesportsdb.Lookups().lookupteam(self.team_id)['teams'][0]
-		self.team_name = thesportsdb.Teams().get_name(self.team)
+		if settings.getSetting('team-naming')=='0': self.team_name = thesportsdb.Teams().get_name(self.team)
+		else: self.team_name = thesportsdb.Teams().get_alternativefirst(self.team)
 		self.team_badge = thesportsdb.Teams().get_badge(self.team)
 		self.team_fanartlist = thesportsdb.Teams().get_fanart_list(self.team) 
 		self.team_fanart = thesportsdb.Teams().get_fanart_general1(self.team)
@@ -240,7 +241,8 @@ class dialog_team(xbmcgui.WindowXML):
 		self.getControl(428).setLabel('[COLOR labelheader]Established:[CR][/COLOR]' + self.team_formedyear)
 		
 		#set team name
-		self.team_name = thesportsdb.Teams().get_name(self.team)
+		if settings.getSetting('team-naming')=='0': self.team_name = thesportsdb.Teams().get_name(self.team)
+		else: self.team_name = thesportsdb.Teams().get_alternativefirst(self.team)
 		self.getControl(427).setLabel('[COLOR labelheader]Team Name:[CR][/COLOR]' + self.team_name)
 		#		
 		#set next match information
@@ -406,23 +408,18 @@ class dialog_team(xbmcgui.WindowXML):
 				else:
 					home_team_id = thesportsdb.Events().get_hometeamid(event)
 					home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
-					home_team_name = thesportsdb.Events().get_hometeamname(event)
+					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
+					else: home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
 					home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
 					stadium_fanart = thesportsdb.Teams().get_stadium_thumb(home_team_dict)
 					away_team_id = thesportsdb.Events().get_awayteamid(event)
 					away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
-					away_team_name = thesportsdb.Events().get_awayteamname(event)
+					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
+					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
 					away_team_logo = thesportsdb.Teams().get_badge(away_team_dict)
 					event_round = thesportsdb.Events().get_round(event)
 					if event_round:
 						round_label = 'Round ' + str(event_round)
-				
-					if len(home_team_name) > 8: 
-						if xbmc.getSkinDir() == 'skin.aeon.nox.5': home_team_name = home_team_name.replace(' ','[CR]')
-						else: pass
-					if len(away_team_name) > 8: 
-						if xbmc.getSkinDir() == 'skin.aeon.nox.5': away_team_name = away_team_name.replace(' ','[CR]')
-						else: pass
 				
 				game = xbmcgui.ListItem(event_fullname)
 				game.setProperty('HomeTeamLogo',home_team_logo)
@@ -499,12 +496,14 @@ class dialog_team(xbmcgui.WindowXML):
 				else:
 					home_team_id = thesportsdb.Events().get_hometeamid(event)
 					home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
-					home_team_name = thesportsdb.Events().get_hometeamname(event)
+					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
+					else: home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
 					home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
 					stadium_fanart = thesportsdb.Teams().get_stadium_thumb(home_team_dict)
 					away_team_id = thesportsdb.Events().get_awayteamid(event)
 					away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
-					away_team_name = thesportsdb.Events().get_awayteamname(event)
+					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
+					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
 					away_team_logo = thesportsdb.Teams().get_badge(away_team_dict)
 					home_score = thesportsdb.Events().get_homescore(event)
 					away_score = thesportsdb.Events().get_awayscore(event)

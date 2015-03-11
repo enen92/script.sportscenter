@@ -40,7 +40,8 @@ class wizzard:
 					for equipa in favourite_teams:
 						team_dict = thesportsdb.Lookups().lookupteam(equipa)['teams'][0]
 						team_sport = thesportsdb.Teams().get_sport(team_dict)
-						team_name = thesportsdb.Teams().get_name(team_dict)
+						if settings.getSetting('team-naming')=='0': team_name = thesportsdb.Teams().get_name(team_dict)
+						else: team_name = thesportsdb.Teams().get_alternativefirst(team_dict)
 						team_badge = thesportsdb.Teams().get_badge(team_dict)
 						team_fan_fanart = thesportsdb.Teams().get_fanart_fans(team_dict)
 						team_logo_fanart = thesportsdb.Teams().get_fanart_general1(team_dict)
