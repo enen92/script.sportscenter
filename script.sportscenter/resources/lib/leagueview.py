@@ -25,13 +25,28 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("SetProperty(loading,1,home)")
 		
 		self.league_id = thesportsdb.Leagues().get_id(self.league)
+		self.league_rss = thesportsdb.Leagues().get_rssurl(self.league)
+		self.league_youtube = thesportsdb.Leagues().get_youtube(self.league)
 		
 		self.getControl(911).setImage(os.path.join(addonpath,art,"sports",self.sport + '.jpg'))
 		
-		self.getControl(983).reset()
+		
 		#populate panel left
-		menu = [('Home','home'),('News','news'),('Videos','videos'),('League Tables','tables'),('Fixtures','fixtures'),('Teams','teams'),('Latest Matches','lastmatch'),('Next Matches','nextmatch')]
-			   
+		menu = [('Home','home')]
+		if self.league_rss and self.league_rss != 'None':
+			menu.append(('News','news'))
+		
+		if self.league_youtube and self.league_youtube !='None':
+			menu.append(('Videos','videos'))
+			
+		menu.append(('League Tables(!)','tables'))
+		menu.append(('Fixtures(!)','fixtures'))
+		menu.append(('Teams','teams'))
+		menu.append(('Latest Matches','lastmatch'))
+		menu.append(('Next Matches','nextmatch'))
+		
+		#,('News','news'),('Videos','videos'),('League Tables','tables'),('Fixtures','fixtures'),('Teams','teams'),('Latest Matches','lastmatch'),('Next Matches','nextmatch')]
+		self.getControl(983).reset()	   
 		for entry,entry_id in menu:
 			menu_entry = xbmcgui.ListItem(entry)
 			menu_entry.setProperty('menu_entry', entry)
@@ -271,19 +286,18 @@ class dialog_league(xbmcgui.WindowXML):
 					if event_round:
 						round_label = 'Round ' + str(event_round)
 				
-					if len(home_team_name) > 8: 
-						if xbmc.getSkinDir() == 'skin.aeon.nox.5': home_team_name = home_team_name.replace(' ','[CR]')
-						else: pass
-					if len(away_team_name) > 8: 
-						if xbmc.getSkinDir() == 'skin.aeon.nox.5': away_team_name = away_team_name.replace(' ','[CR]')
-						else: pass
-				
 				game = xbmcgui.ListItem(event_fullname)
 				game.setProperty('HomeTeamLogo',home_team_logo)
 				if not event_race:
-					game.setProperty('HomeTeam',home_team_name)
+					if ' ' in home_team_name:
+						if len(home_team_name) > 12: game.setProperty('HomeTeamLong',home_team_name)
+						else: game.setProperty('HomeTeamShort',home_team_name)
+					else: game.setProperty('HomeTeamShort',home_team_name)
 					game.setProperty('AwayTeamLogo',away_team_logo)
-					game.setProperty('AwayTeam',away_team_name)
+					if ' ' in away_team_name:
+						if len(away_team_name) > 12: game.setProperty('AwayTeamLong',away_team_name)
+						else: game.setProperty('AwayTeamShort',away_team_name)
+					else: game.setProperty('AwayTeamShort',away_team_name)
 					game.setProperty('StadiumThumb',stadium_fanart)
 					game.setProperty('vs','VS')
 				game.setProperty('date',event_date)
@@ -338,20 +352,20 @@ class dialog_league(xbmcgui.WindowXML):
 					if event_round:
 						round_label = 'Round ' + str(event_round)
 				
-					if len(home_team_name) > 8: 
-						if xbmc.getSkinDir() == 'skin.aeon.nox.5': home_team_name = home_team_name.replace(' ','[CR]')
-						else: pass
-					if len(away_team_name) > 8: 
-						if xbmc.getSkinDir() == 'skin.aeon.nox.5': away_team_name = away_team_name.replace(' ','[CR]')
-						else: pass
-				
+			
 				game = xbmcgui.ListItem(event_fullname)
 				game.setProperty('HomeTeamLogo',home_team_logo)
 				if not event_race:
-					game.setProperty('HomeTeam',home_team_name)
+					if ' ' in home_team_name:
+						if len(home_team_name) > 12: game.setProperty('HomeTeamLong',home_team_name)
+						else: game.setProperty('HomeTeamShort',home_team_name)
+					else: game.setProperty('HomeTeamShort',home_team_name)
 					game.setProperty('AwayTeamLogo',away_team_logo)
 					game.setProperty('StadiumThumb',stadium_fanart)
-					game.setProperty('AwayTeam',away_team_name)
+					if ' ' in away_team_name:
+						if len(away_team_name) > 12: game.setProperty('AwayTeamLong',away_team_name)
+						else: game.setProperty('AwayTeamShort',away_team_name)
+					else: game.setProperty('AwayTeamShort',away_team_name)
 					game.setProperty('match_result',result)
 					if event_round: game.setProperty('round',round_label)
 				else:

@@ -174,14 +174,7 @@ class dialog_team(xbmcgui.WindowXML):
 		
 		self.getControl(983).reset()
 		#populate panel left
-		menu = [('Home','home'),('Team Details','details'),('News','news'),('Tweets','tweets'),('Videos','videos'),('Players','players'),('Stadium','stadium'),('Fixtures','nextmatch'),('Results','lastmatch')]
-			   
-		for entry,entry_id in menu:
-			menu_entry = xbmcgui.ListItem(entry)
-			menu_entry.setProperty('menu_entry', entry)
-			menu_entry.setProperty('entryid', entry_id)
-			self.getControl(983).addItem(menu_entry)
-			
+					
 		#set team fanart
 		self.team_fanartlist = thesportsdb.Teams().get_fanart_general_list(self.team)
 		if self.team_fanartlist:
@@ -194,7 +187,43 @@ class dialog_team(xbmcgui.WindowXML):
 			self.getControl(429).setImage(self.player_fanart)
 		else:
 			self.getControl(429).setImage(self.team_fanart)
-
+			
+		self.team_stadium = thesportsdb.Teams().get_stadium(self.team)
+		self.team_rss = thesportsdb.Teams().get_rssurl(self.team)
+		self.team_youtube = thesportsdb.Teams().get_team_youtube(self.team)
+		self.team_twitter = thesportsdb.Teams().get_team_twitter(self.team)
+			
+		#set team view menu
+		menu = [('Home','home'),('Team Details','details')]
+		
+		if self.team_rss and self.team_rss != 'None':
+			menu.append(('News','news'))
+			
+		if self.team_twitter and self.team_twitter != 'None':
+			menu.append(('Tweets','tweets'))
+			
+		if self.team_youtube and self.team_youtube != 'None':
+			menu.append(('Videos','videos'))
+			
+		menu.append(('Players','players'))
+	
+		if self.team_stadium and self.team_stadium != 'None':
+			menu.append(('Stadium','stadium'))
+			
+		if self.event_next_list and self.event_next_list != 'None':
+			menu.append(('Fixtures','nextmatch'))
+		
+		menu.append(('Results','lastmatch'))
+		
+		self.getControl(983).reset()
+			   
+		for entry,entry_id in menu:
+			menu_entry = xbmcgui.ListItem(entry)
+			menu_entry.setProperty('menu_entry', entry)
+			menu_entry.setProperty('entryid', entry_id)
+			self.getControl(983).addItem(menu_entry)
+		
+		#initialize view
 		self.setplotview()
 		
 	def setplotview(self):
