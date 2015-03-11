@@ -64,10 +64,10 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 		#Next match information
 		if self.event_next_list:
 			self.nextevent = self.event_next_list[0]
-			self.hometeam = thesportsdb.Events().get_hometeamname(self.nextevent)
-			self.awayteam = thesportsdb.Events().get_awayteamname(self.nextevent)
+			self.hometeam = thesportsdb.Events().get_hometeamid(self.nextevent)
+			self.awayteam = thesportsdb.Events().get_awayteamid(self.nextevent)
 			self.home_away = ''
-			if self.team_name == self.hometeam:
+			if self.team_id == self.hometeam:
 				self.home_away = 'HOME'
 				self.searchid = thesportsdb.Events().get_awayteamid(self.nextevent)
 			else:
@@ -97,12 +97,12 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 		i = 0
 		controlinicial = 30
 		winnumber = 0
-		for event in reversed(self.event_last_list):
-			awayteam = thesportsdb.Events().get_awayteamname(event)
-			hometeam = thesportsdb.Events().get_hometeamname(event)
+		for event in self.event_last_list:
+			awayteam = thesportsdb.Events().get_awayteamid(event)
+			hometeam = thesportsdb.Events().get_hometeamid(event)
 			awayscore = thesportsdb.Events().get_awayscore(event)
 			homescore = thesportsdb.Events().get_homescore(event)
-			if hometeam == self.team_name:
+			if hometeam == self.team_id:
 				if int(homescore) > int(awayscore):
 					self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','greensquare.png'))
 					self.getControl(controlinicial+i+1).setLabel('W')
@@ -248,10 +248,10 @@ class dialog_team(xbmcgui.WindowXML):
 		#set next match information
 		if self.event_next_list:
 			self.nextevent = self.event_next_list[0]
-			self.hometeam = thesportsdb.Events().get_hometeamname(self.nextevent)
-			self.awayteam = thesportsdb.Events().get_awayteamname(self.nextevent)
+			self.hometeam = thesportsdb.Events().get_hometeamid(self.nextevent)
+			self.awayteam = thesportsdb.Events().get_awayteamid(self.nextevent)
 			self.home_away = ''
-			if self.team_name == self.hometeam:
+			if self.team_id == self.hometeam:
 				self.home_away = 'HOME'
 				self.searchid = thesportsdb.Events().get_awayteamid(self.nextevent)
 			else:
@@ -458,11 +458,12 @@ class dialog_team(xbmcgui.WindowXML):
 		event_last_list = thesportsdb.Schedules().eventslast(self.team_id)['results']
 		if event_last_list:
 			for event in event_last_list:
-				awayteam = thesportsdb.Events().get_awayteamname(event)
-				hometeam = thesportsdb.Events().get_hometeamname(event)
+				#compare team id's and not team name
+				awayteam = thesportsdb.Events().get_awayteamid(event)
+				hometeam = thesportsdb.Events().get_hometeamid(event)
 				awayscore = thesportsdb.Events().get_awayscore(event)
 				homescore = thesportsdb.Events().get_homescore(event)
-				if hometeam == self.team_name:
+				if hometeam == self.team_id:
 					if int(homescore) > int(awayscore):
 						self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','greensquare.png'))
 						self.getControl(controlinicial+i+1).setLabel('W')
