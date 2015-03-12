@@ -93,29 +93,68 @@ class dialog_league(xbmcgui.WindowXML):
 		#set team number on top bar
 		self.getControl(334).setLabel(str(team_number)+' Teams')
 		
+		#this is the controller for plotview
+		
+		table_check = False
+		if self.sport == 'soccer' or self.sport == 'football':
+			table_list = thesportsdb.Lookups().lookup_leaguetables(self.league_id,None)["table"]
+			dict_to_order = {}
+			if table_list:
+				table_check = True
+				for team in table_list:
+					dict_to_order[thesportsdb.Tables().get_points(team)] = thesportsdb.Tables().get_id(team)
+
+				for key in reversed(sorted(dict_to_order)):
+					team_id = dict_to_order[key]
+					for team in teams_list:
+						if str(thesportsdb.Teams().get_id(team)) == str(team_id):
+							if settings.getSetting('team-naming')=='0': team_name = thesportsdb.Teams().get_name(team)
+							else: team_name = thesportsdb.Teams().get_alternativefirst(team)
+							team_badge = thesportsdb.Teams().get_badge(team)
+							team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
+							if team_fanart_general_list:
+								team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
+							else: team_fanart = self.league_fanart
+							teamitem = xbmcgui.ListItem(team_name,iconImage=team_badge)
+							teamitem.setProperty('team_name',team_name)
+							teamitem.setProperty('team_name_short',team_name)
+							teamitem.setProperty('team_logo',team_badge)
+							teamitem.setProperty('team_fanart',team_fanart)
+							teamitem.setProperty('team_id',team_id)
+							teamitem.setProperty('team_points',key)
+							self.getControl(980).addItem(teamitem)
+				
+							
+		if self.sport != 'soccer' or self.sport == 'football' or not table_check:
+			for team in teams_list:
+				if settings.getSetting('team-naming')=='0': team_name = thesportsdb.Teams().get_name(team)
+				else: team_name = thesportsdb.Teams().get_alternativefirst(team)
+				team_id = thesportsdb.Teams().get_id(team)
+				team_badge = thesportsdb.Teams().get_badge(team)
+				team_banner = thesportsdb.Teams().get_banner(team)
+				team_jersey = thesportsdb.Teams().get_team_jersey(team)
+				team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
+				if team_fanart_general_list:
+					team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
+				else: team_fanart = self.league_fanart
+				teamitem = xbmcgui.ListItem(team_name,iconImage=team_badge)
+				teamitem.setProperty('team_name',team_name)
+				teamitem.setProperty('team_name_long',team_name)
+				teamitem.setProperty('team_banner',team_banner)
+				teamitem.setProperty('team_logo',team_badge)
+				teamitem.setProperty('team_jersey',team_jersey)
+				teamitem.setProperty('team_fanart',team_fanart)
+				teamitem.setProperty('team_id',team_id)
+				self.getControl(980).addItem(teamitem)
+			if self.sport == 'golf': self.getControl(336).setLabel('[COLOR labelheader]Golfers[/COLOR]')			
+			else: self.getControl(336).setLabel('[COLOR labelheader]Teams[/COLOR]')
+			self.getControl(335).setVisible(False)
+
+		
 		for team in teams_list:
 			if settings.getSetting('team-naming')=='0': team_name = thesportsdb.Teams().get_name(team)
 			else: team_name = thesportsdb.Teams().get_alternativefirst(team)
-			team_id = thesportsdb.Teams().get_id(team)
 			team_badge = thesportsdb.Teams().get_badge(team)
-			team_banner = thesportsdb.Teams().get_banner(team)
-			team_jersey = thesportsdb.Teams().get_team_jersey(team)
-			team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
-			if team_fanart_general_list:
-				team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
-			else: team_fanart = self.league_fanart
-			teamitem = xbmcgui.ListItem(team_name,iconImage=team_badge)
-			teamitem.setProperty('team_name',team_name)
-			teamitem.setProperty('team_banner',team_banner)
-			teamitem.setProperty('team_logo',team_badge)
-			teamitem.setProperty('team_jersey',team_jersey)
-			teamitem.setProperty('team_fanart',team_fanart)
-			teamitem.setProperty('team_id',team_id)
-			self.getControl(980).addItem(teamitem)
-			
-		for team in teams_list:
-			if settings.getSetting('team-naming')=='0': team_name = thesportsdb.Teams().get_name(team)
-			else: team_name = thesportsdb.Teams().get_alternativefirst(team)
 			team_banner = thesportsdb.Teams().get_banner(team)
 			team_jersey = thesportsdb.Teams().get_team_jersey(team)
 			team_id = thesportsdb.Teams().get_id(team)

@@ -86,6 +86,9 @@ if mode==None or url==None or len(url)<1:
 	skin = xbmc.getSkinDir()
 	if skin == 'skin.aeon.nox.5':# or skin == 'skin.mimic' or skin == 'skin.confluence':
 		home.start(None)
+		#Dialog test
+		#from resources.lib import calendar as calendar
+		#calendar.start(None)
 	else:
 		#mensagemok('Sports Center', 'Only available for Confluence,Aeon Nox and Mimic')
 		mensagemok('Sports Center', 'Only available for Aeon Nox 5 and Helix for now...')

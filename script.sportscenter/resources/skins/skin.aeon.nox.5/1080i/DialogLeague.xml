@@ -420,7 +420,7 @@
 				<height>884</height>
 				<texture border="40">listpanel_back.png</texture>
 			</control>
-			<control type="button">
+			<control type="button" id="336">
 				<left>1336</left>
 				<top>165</top>
 				<label>[COLOR labelheader]Team[/COLOR]</label>
@@ -428,17 +428,15 @@
 				<width>505</width>
 				<align>left</align>
 				<include>ShowCaseInfoPanelButtonsValues</include>
-				<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
 			</control>
-			<control type="button">
+			<control type="button" id="335">
 				<left>1336</left>
 				<top>165</top>
-				<label>[COLOR labelheader]PTS[/COLOR]</label>
+				<label>[COLOR labelheader]Pts[/COLOR]</label>
 				<height>50</height>
 				<width>505</width>
 				<align>right</align>
 				<include>ShowCaseInfoPanelButtonsValues</include>
-				<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
 			</control>
 			
 			<control type="scrollbar" id="61">
@@ -446,10 +444,6 @@
 				<top>220</top>
 				<width>14</width>
 				<height>720</height>
-				<!--<onleft>Dialog.Close(textviewer)</onleft>
-				<onright>Dialog.Close(textviewer)</onright>
-				<ondown>61</ondown>
-				<onup>61</onup>-->
 				<onleft>980</onleft>
 				<onright>2</onright>
 				<showonepage>false</showonepage>
@@ -482,13 +476,26 @@
 						<height>90</height>
 						<texture border="1">separator2.png</texture>
 					</control>
-					<control type="label" id="305">
+					<control type="label">
 						<description>Team name presented on panel right</description>
 						<posx>110</posx>
 						<posy>30</posy>
-						<width>280</width>
+						<width>310</width>
 						<height>40</height>
-						<label>$INFO[ListItem.Property(team_name)]</label>
+						<label>$INFO[ListItem.Property(team_name_short)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16_title_bold</font>
+						<align>left</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>Team name presented on panel right</description>
+						<posx>110</posx>
+						<posy>30</posy>
+						<width>400</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_name_long)]</label>
 						<wrapmultiline>true</wrapmultiline>
 						<font>font16_title_bold</font>
 						<align>left</align>
@@ -533,13 +540,26 @@
 						<height>90</height>
 						<texture border="5">listselect_fo.png</texture>
 					</control>
-					<control type="label" id="305">
+					<control type="label">
 						<description>Team name presented on panel right</description>
 						<posx>110</posx>
 						<posy>30</posy>
-						<width>280</width>
+						<width>310</width>
 						<height>40</height>
-						<label>$INFO[ListItem.Property(team_name)]</label>
+						<label>$INFO[ListItem.Property(team_name_short)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16_title_bold</font>
+						<align>left</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>Team name presented on panel right</description>
+						<posx>110</posx>
+						<posy>30</posy>
+						<width>400</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_name_long)]</label>
 						<wrapmultiline>true</wrapmultiline>
 						<font>font16_title_bold</font>
 						<align>left</align>
