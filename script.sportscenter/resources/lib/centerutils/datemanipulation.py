@@ -28,3 +28,17 @@ def get_sport_setting(sport):
 	elif sport == 'baseball': return 'baseball'
 	elif sport == 'golf': return 'golf'
 	else: return None
+	
+def get_position_string(position):
+	position = str(position)
+	if position:
+		if position[-1] == '1':
+			if position == '11': return position +'th'
+			else: return position +'st'
+		elif position[-1] == '2': 
+			if position == 12: return position + 'th'
+			else: return position + 'nd'
+		elif position[-1] == '3': 
+			if position == '13': return position + 'th'
+			else: return position+'rd'
+		else: return position + 'th'

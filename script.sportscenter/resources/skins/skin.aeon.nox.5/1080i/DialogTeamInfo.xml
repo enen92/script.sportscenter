@@ -125,7 +125,7 @@
 				<posy>280</posy>
 				<width>250</width>
 				<height>20</height>
-				<label>[B]1st[/B]</label>
+				<label></label>
 				<font>font30_title</font>
 				<align>left</align>
 				<textcolor>grey2</textcolor>

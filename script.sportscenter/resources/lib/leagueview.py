@@ -99,19 +99,18 @@ class dialog_league(xbmcgui.WindowXML):
 		if self.sport == 'soccer' or self.sport == 'football':
 			table_list = thesportsdb.Lookups().lookup_leaguetables(self.league_id,None)["table"]
 			dict_to_order = {}
+			print table_list
 			if table_list:
 				table_check = True
 				for team in table_list:
-					dict_to_order[thesportsdb.Tables().get_points(team)] = thesportsdb.Tables().get_id(team)
-
-				for key in reversed(sorted(dict_to_order)):
-					team_id = dict_to_order[key]
-					for team in teams_list:
-						if str(thesportsdb.Teams().get_id(team)) == str(team_id):
-							if settings.getSetting('team-naming')=='0': team_name = thesportsdb.Teams().get_name(team)
-							else: team_name = thesportsdb.Teams().get_alternativefirst(team)
-							team_badge = thesportsdb.Teams().get_badge(team)
-							team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(team)
+					team_id = thesportsdb.Tables().get_id(team)
+					team_points = thesportsdb.Tables().get_points(team)
+					for teamfull in teams_list:
+						if thesportsdb.Teams().get_id(teamfull) == team_id:
+							if settings.getSetting('team-naming')=='0': team_name = thesportsdb.Teams().get_name(teamfull)
+							else: team_name = thesportsdb.Teams().get_alternativefirst(teamfull)
+							team_badge = thesportsdb.Teams().get_badge(teamfull)
+							team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(teamfull)
 							if team_fanart_general_list:
 								team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
 							else: team_fanart = self.league_fanart
@@ -121,7 +120,7 @@ class dialog_league(xbmcgui.WindowXML):
 							teamitem.setProperty('team_logo',team_badge)
 							teamitem.setProperty('team_fanart',team_fanart)
 							teamitem.setProperty('team_id',team_id)
-							teamitem.setProperty('team_points',key)
+							teamitem.setProperty('team_points',team_points)
 							self.getControl(980).addItem(teamitem)
 				
 							

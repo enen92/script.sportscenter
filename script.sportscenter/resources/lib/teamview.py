@@ -42,6 +42,26 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 		self.location = thesportsdb.Teams().get_stadium_location(self.team)
 		self.league = thesportsdb.Teams().get_league(self.team)
 		self.likes = thesportsdb.Teams().get_likes(self.team)
+		self.league_id = thesportsdb.Teams().get_league_id(self.team)
+		#get league table data
+		table_list = thesportsdb.Lookups().lookup_leaguetables(self.league_id,None)["table"]
+		self.position = 0
+		#detect position
+		dict_to_order = {}
+		if table_list:
+			for team in table_list:
+				self.position += 1
+				if self.team_id == thesportsdb.Tables().get_id(team): break
+				#dict_to_order[thesportsdb.Tables().get_points(team)] = thesportsdb.Tables().get_id(team)
+			
+			#for key in reversed(sorted(dict_to_order)):
+			#	self.position += 1
+			#	team_id = dict_to_order[key]
+			#	if team_id == self.team_id: break
+				
+			if self.position != 0:
+				self.getControl(309).setLabel('[B]'+get_position_string(self.position)+'[/B]')
+		
 		if self.likes == 'None': self.likes = '0'
 		
 		self.getControl(1).setLabel(self.team_name)
