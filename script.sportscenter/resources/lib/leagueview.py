@@ -98,8 +98,6 @@ class dialog_league(xbmcgui.WindowXML):
 		table_check = False
 		if self.sport == 'soccer' or self.sport == 'football':
 			table_list = thesportsdb.Lookups().lookup_leaguetables(self.league_id,None)["table"]
-			dict_to_order = {}
-			print table_list
 			if table_list:
 				table_check = True
 				for team in table_list:
