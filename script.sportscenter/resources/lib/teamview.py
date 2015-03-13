@@ -52,12 +52,6 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 			for team in table_list:
 				self.position += 1
 				if self.team_id == thesportsdb.Tables().get_id(team): break
-				#dict_to_order[thesportsdb.Tables().get_points(team)] = thesportsdb.Tables().get_id(team)
-			
-			#for key in reversed(sorted(dict_to_order)):
-			#	self.position += 1
-			#	team_id = dict_to_order[key]
-			#	if team_id == self.team_id: break
 				
 			if self.position != 0:
 				self.getControl(309).setLabel('[B]'+get_position_string(self.position)+'[/B]')
