@@ -918,9 +918,9 @@
 						<height>20</height>
 						<label>$INFO[ListItem.Property(date)]</label>
 						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
+						<font>font16_title_bold</font>
 						<align>center</align>
-						<textcolor>grey2</textcolor>
+						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
 					<control type="label" id="309">
@@ -1002,9 +1002,9 @@
 						<height>20</height>
 						<label>$INFO[ListItem.Property(date)]</label>
 						<wrapmultiline>true</wrapmultiline>
-						<font>Icontiny</font>
+						<font>font16_title_bold</font>
 						<align>center</align>
-						<textcolor>white</textcolor>
+						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
 					<control type="label" id="309">

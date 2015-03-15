@@ -89,6 +89,10 @@ if mode==None or url==None or len(url)<1:
 		#Dialog test
 		#from resources.lib import calendar as calendar
 		#calendar.start(None)
+		#from resources.lib import livescores as livescores
+		#livescores.start(None)
+		#from resources.lib import matchdetails as matchdetails
+		#matchdetails.start(None)
 	else:
 		#mensagemok('Sports Center', 'Only available for Confluence,Aeon Nox and Mimic')
 		mensagemok('Sports Center', 'Only available for Aeon Nox 5 and Helix for now...')

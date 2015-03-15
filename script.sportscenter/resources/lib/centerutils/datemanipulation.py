@@ -16,6 +16,15 @@ def get_month_short(month):
 	elif int(month) == 12: return "DEC"
 	else: return str(month)
 	
+def get_weekday(dayint):
+	if dayint == 0: return "Monday"
+	elif dayint == 1: return "Tuesday"
+	elif dayint == 2: return "Wednesday"
+	elif dayint == 3: return "Thursday"
+	elif dayint == 4: return "Friday"
+	elif dayint == 5: return "Saturday"
+	elif dayint == 6: return "Sunday"
+	
 #returns the first part of settings defined for each sport	
 def get_sport_setting(sport):
 	sport = sport.lower()

@@ -52,7 +52,7 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 			for team in table_list:
 				self.position += 1
 				if self.team_id == thesportsdb.Tables().get_id(team): break
-				
+
 			if self.position != 0:
 				self.getControl(309).setLabel('[B]'+get_position_string(self.position)+'[/B]')
 		
@@ -420,7 +420,7 @@ class dialog_team(xbmcgui.WindowXML):
 					day_difference = abs(eventdate - datenow).days
 					if day_difference == 0: presented_date='Today'
 					elif day_difference == 1: presented_date='Tomorrow'
-					else: presented_date = event_date_parsed[2] + '-' + get_month_short(event_date_parsed[1]) +'   '+str(day_difference)+' days'
+					else: presented_date = event_date_parsed[2] + ' ' + get_month_short(event_date_parsed[1]) +' ('+str(day_difference)+' days)'
 				else: presented_date = event_date_parsed[2] + '-' + get_month_short(event_date_parsed[1])
 				event_fullname = thesportsdb.Events().get_eventtitle(event)
 				event_race = thesportsdb.Events().get_racelocation(event)

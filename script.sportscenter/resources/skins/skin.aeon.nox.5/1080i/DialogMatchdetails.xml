@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+	<onload>SetProperty(Window.HasSettings,True,home)</onload>
+	<onload>ClearProperty(MediaMenu,Home)</onload>
+	<onunload>ClearProperty(Window.HasSettings,Home)</onunload>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<!-- Background!-->
+		<control type="group">
+			<control type="image">
+				<left>200</left>
+				<top>40</top>
+				<width>1600</width>
+				<height>1030</height>
+				<texture border="40">dialogs/default/bg.png</texture>
+			</control>
+			
+			<control type="image">
+				<left>230</left>
+				<top>70</top>
+				<width>150</width>
+				<height>150</height>
+				<texture>chelsea.png</texture>
+			</control>
+			<control type="label" id="309">
+				<description>HometeamLabel</description>
+				<posx>400</posx>
+				<posy>120</posy>
+				<width>460</width>
+				<height>40</height>
+				<label>Chelsea</label>
+				<font>font_MainMenu</font>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			
+			<control type="image">
+				<left>1620</left>
+				<top>70</top>
+				<width>150</width>
+				<height>150</height>
+				<texture>arsenal.png</texture>
+			</control>
+			<control type="label" id="309">
+				<description>AwayteamLabel</description>
+				<posx>1620</posx>
+				<posy>120</posy>
+				<width>460</width>
+				<height>40</height>
+				<label>Arsenal</label>
+				<font>font_MainMenu</font>
+				<align>right</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			<control type="image">
+				<description>soccer field</description>
+				<left>290</left>
+				<top>230</top>
+				<width>1430</width>
+				<height>730</height>
+				<texture>soccerfield2.jpg</texture>
+			</control>
+			
+			<!--Home team members -->
+			<control type="image">
+				<left>300</left>
+				<top>530</top>
+				<width>130</width>
+				<height>130</height>
+				<texture>chelseajersey.png</texture>
+			</control>
+			
+
+		</control>
+	</controls>
+</window>

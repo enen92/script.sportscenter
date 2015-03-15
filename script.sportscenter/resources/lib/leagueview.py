@@ -43,8 +43,8 @@ class dialog_league(xbmcgui.WindowXML):
 		menu.append(('League Tables(!)','tables'))
 		menu.append(('Fixtures(!)','fixtures'))
 		menu.append(('Teams','teams'))
-		menu.append(('Latest Matches','lastmatch'))
-		menu.append(('Next Matches','nextmatch'))
+		menu.append(('Latest Events','lastmatch'))
+		menu.append(('Next Events','nextmatch'))
 
 		self.getControl(983).reset()	   
 		for entry,entry_id in menu:
