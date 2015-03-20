@@ -16,6 +16,21 @@ def get_month_short(month):
 	elif int(month) == 12: return "DEC"
 	else: return str(month)
 	
+def get_month_long(month):
+	if int(month) == 1: return "January"
+	elif int(month) == 2: return "February"
+	elif int(month) == 3: return "March"
+	elif int(month) == 4: return "April"
+	elif int(month) == 5: return "May"
+	elif int(month) == 6: return "June"
+	elif int(month) == 7: return "July"
+	elif int(month) == 8: return "August"
+	elif int(month) == 9: return "September"
+	elif int(month) == 10: return "October"
+	elif int(month) == 11: return "November"
+	elif int(month) == 12: return "December"
+	else: return str(month)
+	
 def get_weekday(dayint):
 	if dayint == 0: return "Monday"
 	elif dayint == 1: return "Tuesday"

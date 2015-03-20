@@ -8,6 +8,7 @@ from centerutils.youtube import *
 from centerutils.rssparser import *
 from centerutils.datemanipulation import *
 import competlist as competlist
+import matchdetails as matchdetails
 import stadium as stadium
 import tweetbuild as tweetbuild
 import imageviewer as imageviewer
@@ -486,6 +487,7 @@ class dialog_team(xbmcgui.WindowXML):
 				hometeam = thesportsdb.Events().get_hometeamid(event)
 				awayscore = thesportsdb.Events().get_awayscore(event)
 				homescore = thesportsdb.Events().get_homescore(event)
+				event_id = thesportsdb.Events().get_eventid(event)
 				if hometeam == self.team_id:
 					if int(homescore) > int(awayscore):
 						self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','greensquare.png'))
@@ -539,6 +541,7 @@ class dialog_team(xbmcgui.WindowXML):
 				
 				game = xbmcgui.ListItem(event_fullname)
 				game.setProperty('HomeTeamLogo',home_team_logo)
+				game.setProperty('event_id',event_id)
 				if not event_race:
 					if ' ' in home_team_name:
 						if len(home_team_name) > 12: game.setProperty('HomeTeamLong',home_team_name)
@@ -633,6 +636,31 @@ class dialog_team(xbmcgui.WindowXML):
 		self.getControl(927).setLabel('[COLOR labelheader]Weight:[CR][/COLOR]'+player_weight)
 		self.getControl(928).setText(player_plot)
 		return fanart
+	
+	def fanart_setter(self):
+		checkplayers = xbmc.getCondVisibility("Control.HasFocus(985)")
+		checkplot = xbmc.getCondVisibility("Control.HasFocus(980)")
+		checkbanner = xbmc.getCondVisibility("Control.HasFocus(984)")
+		checklastmatch = xbmc.getCondVisibility("Control.HasFocus(988)")
+		checknextmatch = xbmc.getCondVisibility("Control.HasFocus(987)")
+		if checkplayers or checkplot or checkbanner or checklastmatch or checknextmatch:
+			if checkplayers:
+				fanart = self.setplayerinfo()
+			elif checkplot:
+				fanart = self.getControl(980).getSelectedItem().getProperty('team_fanart')
+			elif checkbanner:
+				fanart = self.getControl(984).getSelectedItem().getProperty('team_fanart')
+			elif checklastmatch:
+				fanart = self.getControl(988).getSelectedItem().getProperty('StadiumThumb')
+				if not fanart or fanart == 'None': fanart = self.team_fanart
+			elif checknextmatch:
+				fanart = self.getControl(987).getSelectedItem().getProperty('StadiumThumb')
+				if not fanart or fanart == 'None': fanart = self.team_fanart
+			self.getControl(912).setImage(fanart)
+		#to-do check what window is open
+		else: 
+			self.getControl(912).setImage(self.team_fanart)
+		return
 				
 		
 	def onAction(self,action):
@@ -647,27 +675,7 @@ class dialog_team(xbmcgui.WindowXML):
 				self.close()
 				#competlist.start(self.sport)
 		else:
-			checkplayers = xbmc.getCondVisibility("Control.HasFocus(985)")
-			checkplot = xbmc.getCondVisibility("Control.HasFocus(980)")
-			checkbanner = xbmc.getCondVisibility("Control.HasFocus(984)")
-			checklastmatch = xbmc.getCondVisibility("Control.HasFocus(988)")
-			checknextmatch = xbmc.getCondVisibility("Control.HasFocus(987)")
-			if checkplayers or checkplot or checkbanner or checklastmatch or checknextmatch:
-				if checkplayers:
-					fanart = self.setplayerinfo()
-				elif checkplot:
-					fanart = self.getControl(980).getSelectedItem().getProperty('team_fanart')
-				elif checkbanner:
-					fanart = self.getControl(984).getSelectedItem().getProperty('team_fanart')
-				elif checklastmatch:
-					fanart = self.getControl(988).getSelectedItem().getProperty('StadiumThumb')
-					if not fanart or fanart == 'None': fanart = self.team_fanart
-				elif checknextmatch:
-					fanart = self.getControl(987).getSelectedItem().getProperty('StadiumThumb')
-					if not fanart or fanart == 'None': fanart = self.team_fanart
-				self.getControl(912).setImage(fanart)
-			else: 
-				self.getControl(912).setImage(self.team_fanart)
+			self.fanart_setter()
 
 
 			
@@ -719,6 +727,11 @@ class dialog_team(xbmcgui.WindowXML):
 				self.setlastmatchview()
 			elif active_view_type == "League: LastMatchView":
 				self.setplotview()
+				
+		elif controlId == 988:
+			event_id = self.getControl(988).getSelectedItem().getProperty('event_id')
+			self.fanart_setter()
+			matchdetails.start([False,event_id])
 				
 		elif controlId == 989:
 			youtube_id = self.getControl(989).getSelectedItem().getProperty('video_id')

@@ -507,6 +507,12 @@ class dialog_home(xbmcgui.WindowXML):
 			self.team_id = self.getControl(983).getSelectedItem().getProperty('favourite_id')
 			self.favteam_sport = urllib.quote(self.getControl(983).getSelectedItem().getProperty('favourite_team_sport').lower())
 			teamview.start([self.team_id,self.favteam_sport,'',''])
+		elif controlId == 9024:
+			from resources.lib import livescores as livescores
+			livescores.start(None)
+		elif controlId == 9023:
+			from resources.lib import calendar as calendar
+			calendar.start(None)
 
 			
 	def onAction(self,action):

@@ -8,6 +8,7 @@ from centerutils.rssparser import *
 from centerutils.datemanipulation import *
 import competlist as competlist
 import teamview as teamview
+import matchdetails as matchdetails
 
 def start(data_list):
 	window = dialog_league('DialogLeague.xml',addonpath,'Default',str(data_list))
@@ -321,7 +322,7 @@ class dialog_league(xbmcgui.WindowXML):
 				else:
 					home_team_id = thesportsdb.Events().get_hometeamid(event)
 					home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
-					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Events().get_name(home_team_dict)
+					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
 					else: team_name = home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
 					home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
 					stadium_fanart = thesportsdb.Teams().get_stadium_thumb(home_team_dict)
@@ -379,6 +380,7 @@ class dialog_league(xbmcgui.WindowXML):
 				event_date = thesportsdb.Events().get_eventdate(event)
 				event_fullname = thesportsdb.Events().get_eventtitle(event)
 				event_race = thesportsdb.Events().get_racelocation(event)
+				event_id = thesportsdb.Events().get_eventid(event)
 				if event_race:
 					home_team_logo = os.path.join(addonpath,art,'raceflag.png')
 					event_name = thesportsdb.Events().get_eventtitle(event)
@@ -417,6 +419,7 @@ class dialog_league(xbmcgui.WindowXML):
 						else: game.setProperty('AwayTeamShort',away_team_name)
 					else: game.setProperty('AwayTeamShort',away_team_name)
 					game.setProperty('match_result',result)
+					game.setProperty('event_id',event_id)
 					if event_round: game.setProperty('round',round_label)
 				else:
 					game.setProperty('EventName',event_name) 
@@ -573,5 +576,10 @@ class dialog_league(xbmcgui.WindowXML):
 			self.getControl(939).setImage(news_image)
 			self.getControl(937).setText(news_content)
 			self.getControl(938).setLabel(news_title)
+			
+		elif controlId == 988:
+			event_id = self.getControl(988).getSelectedItem().getProperty('event_id')
+			matchdetails.start([False,event_id])
+			
 	
 		

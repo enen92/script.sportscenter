@@ -1,4 +1,5 @@
-# Copyright (C) 2009-2013 Malte Loepmann (maloep@googlemail.com)
+# -*- coding: utf-8 -*-
+# Copyright (C) 2015 enen92
 #
 # This program is free software; you can redistribute it and/or modify it under the terms 
 # of the GNU General Public License as published by the Free Software Foundation; 
@@ -12,17 +13,18 @@
 # if not, see <http://www.gnu.org/licenses/>.
 
 
-# I have built this script from scratch but you will find some lines or ideas that are taken 
-# from other xbmc scripts. Some basic ideas are taken from Redsandros "Arcade Browser" and I often 
-# had a look at Nuka1195's "Apple Movie Trailers" script while implementing this one. Thanks for your work!
 
-import xbmcplugin,xbmcgui,xbmc,xbmcaddon,os,sys
+import xbmcplugin
+import xbmcgui
+import xbmc 
+import xbmcaddon
+import os
+import sys
 from resources.lib import homemenu as home
 from resources.lib.centerutils.common_variables import *
 
 
 
-print sys.argv
 def get_params():
 	try:
 		param=[]
@@ -84,19 +86,25 @@ print "Iconimage: "+str(iconimage)
 if mode==None or url==None or len(url)<1:
 	print ""
 	skin = xbmc.getSkinDir()
-	if skin == 'skin.aeon.nox.5':# or skin == 'skin.mimic' or skin == 'skin.confluence':
-		home.start(None)
+	try:
+		if skin == 'skin.aeon.nox.5':# or skin == 'skin.mimic' or skin == 'skin.confluence':
+			home.start(None)
+		else:
+			mensagemok('Sports Center', 'Only available for Aeon Nox 5 and Helix for now...')
+			sys.exit(0)
+	except: pass
+	
 		#Dialog test
 		#from resources.lib import calendar as calendar
 		#calendar.start(None)
 		#from resources.lib import livescores as livescores
 		#livescores.start(None)
 		#from resources.lib import matchdetails as matchdetails
-		#matchdetails.start(None)
-	else:
+		#matchdetails.start([False,'441709'])
+		#matchdetails.start_linup(None)
+		#except:
 		#mensagemok('Sports Center', 'Only available for Confluence,Aeon Nox and Mimic')
-		mensagemok('Sports Center', 'Only available for Aeon Nox 5 and Helix for now...')
-		sys.exit(0)
+			
 
 elif mode==1:
 	calendar()
