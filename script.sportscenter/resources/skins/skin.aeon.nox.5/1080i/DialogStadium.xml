@@ -4,21 +4,22 @@
 	<onload>ClearProperty(MediaMenu,Home)</onload>
 	<onunload>ClearProperty(Window.HasSettings,Home)</onunload>
 	<allowoverlay>no</allowoverlay>
+	<onload>SetFocus(67)</onload>
 	<controls>
 		<!-- Background!-->
 		<control type="group">
 			<control type="image">
-				<left>200</left>
+				<left>70</left>
 				<top>120</top>
-				<width>1568</width>
-				<height>660</height>
+				<width>1788</width>
+				<height>860</height>
 				<texture border="40">dialogs/default/bg.png</texture>
 			</control>
 			<control type="image" id="3">
-				<left>226</left>
-				<top>06</top>
-				<width>822</width>
-				<height>1002</height>
+				<left>126</left>
+				<top>80</top>
+				<width>922</width>
+				<height>1082</height>
 				<aspectratio>keep</aspectratio>
 				<texture></texture>
 				<!--<bordertexture border="5">dialogs/default/inner.png</bordertexture>
@@ -38,7 +39,7 @@
 				<left>1060</left>
 				<top>195</top>
 				<label></label>
-				<width>667</width>
+				<width>767</width>
 				<align>left</align>
 				<include>ShowCaseInfoPanelButtonsValues</include>
 			</control>
@@ -46,39 +47,39 @@
 				<left>1046</left>
 				<top>290</top>
 				<label></label>
-				<width>507</width>
+				<width>517</width>
 				<align>left</align>
 				<include>ShowCaseInfoPanelButtonsValues</include>
 			</control>
 			<control type="button" id="5">
-				<left>1226</left>
+				<left>1306</left>
 				<top>290</top>
 				<label></label>
-				<width>507</width>
+				<width>517</width>
 				<align>right</align>
 				<include>ShowCaseInfoPanelButtonsValues</include>
 			</control>
 			<control type="image">
 				<left>1060</left>
 				<top>386</top>
-				<width>672</width>
-				<height>342</height>
+				<width>752</width>
+				<height>542</height>
 				<texture border="5">dialogs/default/inner.png</texture>
 			</control>
 			<control type="textbox" id="6">
 				<left>1070</left>
 				<top>386</top>
-				<width>657</width>
-				<height>322</height>
+				<width>727</width>
+				<height>532</height>
 				<label></label>
 				<pagecontrol>67</pagecontrol>
 				<textcolor>grey2</textcolor>
 				<autoscroll time="3000" delay="4000" repeat="5000">Skin.HasSetting(Enable.AutoScroll)</autoscroll>
 			</control>
 			<control type="scrollbar" id="67">
-				<left>1724</left>
+				<left>1804</left>
 				<top>390</top>
-				<height>337</height>
+				<height>537</height>
 				<width>8</width>
 				<onleft>6</onleft>
 				<showonepage>true</showonepage>

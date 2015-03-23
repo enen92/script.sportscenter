@@ -40,8 +40,9 @@ class dialog_league(xbmcgui.WindowXML):
 		
 		if self.league_youtube and self.league_youtube !='None':
 			menu.append(('Videos','videos'))
-			
-		menu.append(('League Tables(!)','tables'))
+		
+		if self.sport == 'soccer' or self.sport == 'football':	
+			menu.append(('League Tables','tables'))
 		menu.append(('Fixtures(!)','fixtures'))
 		menu.append(('Teams','teams'))
 		menu.append(('Latest Events','lastmatch'))
@@ -208,6 +209,7 @@ class dialog_league(xbmcgui.WindowXML):
 		self.setleagueinfo()
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
+		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
@@ -228,6 +230,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
+		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
@@ -244,6 +247,7 @@ class dialog_league(xbmcgui.WindowXML):
 		self.setleagueinfo()
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
+		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
@@ -261,6 +265,7 @@ class dialog_league(xbmcgui.WindowXML):
 		self.setleagueinfo()
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
+		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
 		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
 		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
@@ -295,6 +300,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
+		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
 		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
@@ -302,7 +308,66 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("SetProperty(newsview,1,home)")
 		settings.setSetting("view_type_league",'newsview')
 
-		self.getControl(2).setLabel("League: NewsView")	
+		self.getControl(2).setLabel("League: NewsView")
+		
+	def settablesview(self):
+		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
+		xbmc.executebuiltin("SetProperty(loading,1,home)")	
+		#tables stuff
+		teams_list = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
+		table_list = thesportsdb.Lookups().lookup_leaguetables(self.league_id,None)["table"]
+		pos=0
+		if table_list:
+			for team in table_list:
+				pos += 1
+				team_id = thesportsdb.Tables().get_id(team)
+				team_points = thesportsdb.Tables().get_points(team)
+				team_played = thesportsdb.Tables().get_totalplayed(team)
+				team_wins = thesportsdb.Tables().get_wins(team)
+				team_lost = thesportsdb.Tables().get_loss(team)
+				team_draws = thesportsdb.Tables().get_draws(team)
+				team_gs = thesportsdb.Tables().get_goalsscored(team)
+				team_gc = thesportsdb.Tables().get_goalssuffered(team)
+				team_gd = thesportsdb.Tables().get_goalsdifference(team)
+				for teamfull in teams_list:
+					if thesportsdb.Teams().get_id(teamfull) == team_id:
+						if settings.getSetting('team-naming')=='0': team_name = thesportsdb.Teams().get_name(teamfull)
+						else: team_name = thesportsdb.Teams().get_alternativefirst(teamfull)
+						team_fanart_general_list = thesportsdb.Teams().get_fanart_general_list(teamfull)
+						if team_fanart_general_list:
+							team_fanart = team_fanart_general_list[randint(0,len(team_fanart_general_list)-1)]
+						else: team_fanart = self.league_fanart
+						team_badge = thesportsdb.Teams().get_badge(teamfull)
+						teamitem = xbmcgui.ListItem(team_name,iconImage=team_badge)
+						teamitem.setProperty('team_name',team_name)
+						teamitem.setProperty('team_fanart',team_fanart)
+						teamitem.setProperty('team_played',team_played)
+						teamitem.setProperty('team_wins',team_wins)
+						teamitem.setProperty('team_draws',team_draws)
+						teamitem.setProperty('team_losts',team_lost)
+						teamitem.setProperty('team_gs',team_gs)
+						teamitem.setProperty('team_gc',team_gc)
+						teamitem.setProperty('team_gd',team_gd)
+						teamitem.setProperty('position',str(pos)+' -')
+						teamitem.setProperty('team_logo',team_badge)
+						teamitem.setProperty('team_id',team_id)
+						teamitem.setProperty('team_points',team_points)
+						self.getControl(990).addItem(teamitem)
+		#		
+		xbmc.executebuiltin("ClearProperty(loading,Home)")
+		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
+		xbmc.executebuiltin("ClearProperty(plotview,Home)")
+		xbmc.executebuiltin("ClearProperty(videosview,Home)")
+		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
+		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
+		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
+		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
+		xbmc.executebuiltin("ClearProperty(newsview,Home)")
+		xbmc.executebuiltin("SetProperty(tablesview,1,home)")
+		settings.setSetting("view_type_league",'tablesview')
+
+		self.getControl(2).setLabel("League: TablesView")
+	
 		
 			
 	def setnextmatchview(self):
@@ -356,6 +421,7 @@ class dialog_league(xbmcgui.WindowXML):
 				self.getControl(987).addItem(game)
 				
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
+		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
@@ -429,6 +495,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
+		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
 		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
@@ -465,6 +532,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")		
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
+		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextview,Home)")
 		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
 		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
@@ -492,10 +560,13 @@ class dialog_league(xbmcgui.WindowXML):
 			checkbanner = xbmc.getCondVisibility("Control.HasFocus(984)")
 			checklastmatch = xbmc.getCondVisibility("Control.HasFocus(988)")
 			checknextmatch = xbmc.getCondVisibility("Control.HasFocus(987)")
+			checktables = xbmc.getCondVisibility("Control.HasFocus(990)")
 			
-			if checkbadge or checkplot or checkbanner or checklastmatch or checknextmatch or checkjersey:
+			if checkbadge or checkplot or checkbanner or checklastmatch or checknextmatch or checkjersey or checktables:
 				if checkbadge:
 					fanart = self.getControl(985).getSelectedItem().getProperty('team_fanart')
+				elif checktables:
+					fanart = self.getControl(990).getSelectedItem().getProperty('team_fanart')
 				elif checkplot:
 					fanart = self.getControl(980).getSelectedItem().getProperty('team_fanart')
 				elif checkbanner:
@@ -539,8 +610,10 @@ class dialog_league(xbmcgui.WindowXML):
 					self.setlastmatchview()
 			elif seleccionado == 'videos':
 					self.setvideosview()
+			elif seleccionado == 'tables':
+					self.settablesview()
 					
-		elif controlId == 980 or controlId == 984 or controlId == 985 or controlId == 981:
+		elif controlId == 980 or controlId == 984 or controlId == 985 or controlId == 981 or controlId == 990:
 			self.team = self.getControl(controlId).getSelectedItem().getProperty('team_id')
 			teamview.start([self.team,self.sport,'',''])
 		

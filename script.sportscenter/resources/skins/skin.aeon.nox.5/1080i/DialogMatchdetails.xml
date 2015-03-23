@@ -641,12 +641,12 @@
 				<description>awayteamshort</description>
 				<posx>0</posx>
 				<posy>65</posy>
-				<width>650</width>
+				<width>1140</width>
 				<height>170</height>
 				<label></label>
 				<wrapmultiline>true</wrapmultiline>
 				<font>font45caps_title</font>
-				<align>right</align>
+				<align>center</align>
 				<textcolor>gold</textcolor>
 				<shadowcolor>AA000000</shadowcolor>
 				<visible>!IsEmpty(Window(home).Property(lineup))</visible>

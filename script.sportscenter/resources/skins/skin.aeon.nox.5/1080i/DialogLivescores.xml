@@ -442,7 +442,7 @@
 			</control>
 			<control type="scrollbar" id="49">
 				<left>1733</left>
-				<top>74</top>
+				<top>55</top>
 				<width>14</width>
 				<height>975</height>
 				<onright>SetProperty(MediaMenu,True,home)</onright>

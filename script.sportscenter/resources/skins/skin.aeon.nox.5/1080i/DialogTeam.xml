@@ -228,7 +228,7 @@
 				<texture border="40">listpanel_back.png</texture>
 			</control>
 			<control type="image" id="934">
-				<left>1425</left>
+				<left>1435</left>
 				<top>165</top>
 				<width>350</width>
 				<height>330</height>
@@ -274,12 +274,12 @@
 				<preloaditems>0</preloaditems>
 				<orientation>vertical</orientation>
 
-				<itemlayout height="103" width="650">
+				<itemlayout height="81" width="650">
 					<control type="image">
 						<posx>10</posx>
 						<posy>10</posy>
 						<width>425</width>
-						<height>103</height>
+						<height>81</height>
 						<texture border="1">separator2.png</texture>
 					</control>
 
@@ -287,7 +287,7 @@
 					<control type="label" id="343">
 						<description>competition tag</description>
 						<posx>0</posx>
-						<posy>10</posy>
+						<posy>-3</posy>
 						<width>425</width>
 						<height>103</height>
 						<label>$INFO[ListItem.Property(menu_entry)]</label>
@@ -297,25 +297,25 @@
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
 				</itemlayout>	
-				<focusedlayout height="239" width="240">
+				<focusedlayout height="81" width="240">
 					<control type="image">
 						<posx>10</posx>
 						<posy>10</posy>
 						<width>425</width>
-						<height>103</height>
+						<height>81</height>
 						<texture border="1">separator2.png</texture>
 					</control>
 					<control type="image">
 						<posx>10</posx>
 						<posy>10</posy>
 						<width>425</width>
-						<height>103</height>
+						<height>81</height>
 						<texture border="5">listselect_fo.png</texture>
 					</control>
 					<control type="label" id="343">
 						<description>competition tag</description>
 						<posx>0</posx>
-						<posy>10</posy>
+						<posy>-3</posy>
 						<width>425</width>
 						<height>103</height>
 						<label>$INFO[ListItem.Property(menu_entry)]</label>

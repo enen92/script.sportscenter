@@ -89,6 +89,8 @@ if mode==None or url==None or len(url)<1:
 	try:
 		if skin == 'skin.aeon.nox.5':# or skin == 'skin.mimic' or skin == 'skin.confluence':
 			home.start(None)
+			#from resources.lib import tables as tables
+			#tables.start(None)
 		else:
 			mensagemok('Sports Center', 'Only available for Aeon Nox 5 and Helix for now...')
 			sys.exit(0)

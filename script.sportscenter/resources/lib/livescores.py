@@ -21,6 +21,7 @@ import thesportsdb
 import datetime
 from centerutils.common_variables import *
 from centerutils.datemanipulation import *
+from centerutils.caching import *
 
 
 def start(data_list):
@@ -45,6 +46,8 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 		except: self.livescores = None
 		if self.livescores:
 			self.getControl(93).setVisible(False)
+			if type(self.livescores) == dict:
+				self.livescores = [self.livescores]
 			for event in reversed(self.livescores):
 				try:
 					event_home_id = thesportsdb.Livematch().get_home_id(event)
@@ -85,12 +88,15 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 						if len(home_team_name) > 12: game.setProperty('HomeTeamLong',home_team_name)
 						else: game.setProperty('HomeTeamShort',home_team_name)
 					else: game.setProperty('HomeTeamShort',home_team_name)
+					#home_team_logo = cache_image(home_team_logo)
 					game.setProperty('HomeTeamLogo',home_team_logo)
 					if ' ' in away_team_name:
 						if len(away_team_name) > 12: game.setProperty('AwayTeamLong',away_team_name)
 						else: game.setProperty('AwayTeamShort',away_team_name)
 					else: game.setProperty('AwayTeamShort',away_team_name)
 					#set progress
+					#xbmc.sleep(100)
+					#print "away",away_team_logo,'teste', cache_image(away_team_logo)
 					game.setProperty('AwayTeamLogo',away_team_logo)
 					game.setProperty('result',result)
 					game.setProperty('competition',competition)
@@ -142,7 +148,7 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 			xbmc.executebuiltin("ClearProperty(loading,Home)")
 			self.getControl(987).addItems(items_to_add)
 			xbmc.sleep(300)
-			self.setFocus(987)
+			self.setFocusId(987)
 			self.getControl(987).selectItem(1)
 		else:
 			print "no matches"
