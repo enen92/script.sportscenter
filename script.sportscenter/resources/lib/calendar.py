@@ -2,6 +2,7 @@ import xbmc,xbmcgui,xbmcaddon,xbmcplugin
 import urllib
 import thesportsdb
 import datetime
+import os
 from random import randint
 from centerutils.common_variables import *
 from centerutils.datemanipulation import *
@@ -30,6 +31,8 @@ class dialog_league(xbmcgui.WindowXML):
 		
 		self.getControl(911).setImage(addon_fanart)
 		self.getControl(333).setLabel('Calendar View')
+		self.ignored_leagues = os.listdir(ignoredleaguesfolder)
+		self.rmleaguescalendar = os.listdir(ignoreleaguecalendar)
 		
 		
 		#Populate week days
@@ -67,48 +70,81 @@ class dialog_league(xbmcgui.WindowXML):
 		event_next_list = thesportsdb.Schedules().eventsday(datestring,None,None)["events"]
 		if event_next_list:
 			for event in event_next_list:
-				event_date = thesportsdb.Events().get_eventdate(event)
-				event_fullname = thesportsdb.Events().get_eventtitle(event)
-				event_race = thesportsdb.Events().get_racelocation(event)
-				if event_race:
-					home_team_logo = os.path.join(addonpath,art,'raceflag.png')
-					event_name = thesportsdb.Events().get_eventtitle(event)
-					event_round = ''		
+				event_sport = thesportsdb.Events().get_sport(event)
+				#check if event belongs to blocked sport strSport
+				if event_sport == 'Soccer' and settings.getSetting('enable-football') == 'false' and settings.getSetting('calendar-disabledsports') == 'true': pass
+				elif event_sport == 'Basketball' and settings.getSetting('enable-basketball') == 'false' and settings.getSetting('calendar-disabledsports') == 'true': pass
+				elif event_sport == 'Ice Hockey' and settings.getSetting('enable-icehockey') == 'false' and settings.getSetting('calendar-disabledsports') == 'true': pass
+				elif event_sport == 'Baseball' and settings.getSetting('enable-baseball') == 'false' and settings.getSetting('calendar-disabledsports') == 'true': pass
+				elif event_sport == 'Motorsport' and settings.getSetting('enable-motorsport') == 'false' and settings.getSetting('calendar-disabledsports') == 'true': pass
+				elif event_sport == 'Rugby' and settings.getSetting('enable-rugby') == 'false' and settings.getSetting('calendar-disabledsports') == 'true': pass
+				elif event_sport == 'Golf' and settings.getSetting('enable-golf') == 'false' and settings.getSetting('calendar-disabledsports') == 'true': pass
+				elif event_sport == 'American Football' and settings.getSetting('enable-amfootball') == 'false' and settings.getSetting('calendar-disabledsports') == 'true': pass
 				else:
-					home_team_id = thesportsdb.Events().get_hometeamid(event)
-					home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
-					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
-					else: team_name = home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
-					home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
-					stadium_fanart = thesportsdb.Teams().get_stadium_thumb(home_team_dict)
-					away_team_id = thesportsdb.Events().get_awayteamid(event)
-					away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
-					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
-					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
-					away_team_logo = thesportsdb.Teams().get_badge(away_team_dict)
-					event_round = thesportsdb.Events().get_round(event)
-					if event_round:
-						round_label = 'Round ' + str(event_round)
+					#get league id and check if the league is not ignored
+					league_id = thesportsdb.Events().get_leagueid(event)
+					if ((league_id + '.txt') in self.ignored_leagues and settings.getSetting('calendar-disabledleagues') == 'true') or ((league_id + '.txt') in self.rmleaguescalendar): pass
+					else:
+						event_date = thesportsdb.Events().get_eventdate(event)
+						event_fullname = thesportsdb.Events().get_eventtitle(event)
+						event_race = thesportsdb.Events().get_racelocation(event)
+						event_league = thesportsdb.Events().get_league(event)
+						event_sport = thesportsdb.Events().get_sport(event)
+						
+						if event_sport == 'Soccer': sport_logo = os.path.join(addonpath,art,'loadingsports','soccer.png')
+						elif event_sport == 'Basketball': sport_logo = os.path.join(addonpath,art,'loadingsports','basketball.png')
+						elif event_sport == 'Ice Hockey': sport_logo = os.path.join(addonpath,art,'loadingsports','ice%20hockey.png')
+						elif event_sport == 'Baseball': sport_logo = os.path.join(addonpath,art,'loadingsports','baseball.png')
+						elif event_sport == 'Motorsport': sport_logo = os.path.join(addonpath,art,'loadingsports','motorsport.png')
+						elif event_sport == 'Rugby': sport_logo = os.path.join(addonpath,art,'loadingsports','rugby.png')
+						elif event_sport == 'Golf': sport_logo = os.path.join(addonpath,art,'loadingsports','golf.png')
+						elif event_sport == 'American Football': sport_logo = os.path.join(addonpath,art,'loadingsports','american%20football.png')
+						
+						
+						
+						
+						if event_race:
+							home_team_logo = os.path.join(addonpath,art,'raceflag.png')
+							event_name = thesportsdb.Events().get_eventtitle(event)
+							event_round = ''		
+						else:
+							home_team_id = thesportsdb.Events().get_hometeamid(event)
+							home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
+							if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
+							else: team_name = home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
+							home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
+							stadium_fanart = thesportsdb.Teams().get_stadium_thumb(home_team_dict)
+							away_team_id = thesportsdb.Events().get_awayteamid(event)
+							away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
+							if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
+							else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
+							away_team_logo = thesportsdb.Teams().get_badge(away_team_dict)
+							event_round = thesportsdb.Events().get_round(event)
+							if event_round and event_round != '0':
+								round_label = ' - Round ' + str(event_round)
+								event_league = event_league + round_label
 				
-				game = xbmcgui.ListItem(event_fullname)
-				game.setProperty('HomeTeamLogo',home_team_logo)
-				if not event_race:
-					if ' ' in home_team_name:
-						if len(home_team_name) > 12: game.setProperty('HomeTeamLong',home_team_name)
-						else: game.setProperty('HomeTeamShort',home_team_name)
-					else: game.setProperty('HomeTeamShort',home_team_name)
-					game.setProperty('AwayTeamLogo',away_team_logo)
-					if ' ' in away_team_name:
-						if len(away_team_name) > 12: game.setProperty('AwayTeamLong',away_team_name)
-						else: game.setProperty('AwayTeamShort',away_team_name)
-					else: game.setProperty('AwayTeamShort',away_team_name)
-					game.setProperty('StadiumThumb',stadium_fanart)
-					game.setProperty('vs','VS')
-				game.setProperty('date',event_date)
-				if event_race: 
-					game.setProperty('EventName',event_name) 
-				if event_round: game.setProperty('round',round_label)
-				self.getControl(987).addItem(game)
+						game = xbmcgui.ListItem(event_fullname)
+						game.setProperty('HomeTeamLogo',home_team_logo)
+						game.setProperty('league',event_league)
+						game.setProperty('sport_logo',sport_logo)
+						game.setProperty('sport',event_sport)
+						if not event_race:
+							if ' ' in home_team_name:
+								if len(home_team_name) > 12: game.setProperty('HomeTeamLong',home_team_name)
+								else: game.setProperty('HomeTeamShort',home_team_name)
+							else: game.setProperty('HomeTeamShort',home_team_name)
+							game.setProperty('AwayTeamLogo',away_team_logo)
+							if ' ' in away_team_name:
+								if len(away_team_name) > 12: game.setProperty('AwayTeamLong',away_team_name)
+								else: game.setProperty('AwayTeamShort',away_team_name)
+							else: game.setProperty('AwayTeamShort',away_team_name)
+							game.setProperty('StadiumThumb',stadium_fanart)
+							game.setProperty('vs','VS')
+						game.setProperty('date',event_date)
+						if event_race: 
+							game.setProperty('EventName',event_name) 
+						self.getControl(987).addItem(game)
 				
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")

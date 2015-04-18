@@ -40,9 +40,13 @@ favlogos = os.path.join(profilepath,'favlogos')
 contextfolder = os.path.join(profilepath,'user_settings')
 ignoredleaguesfolder = os.path.join(contextfolder,'ignoredleagues')
 favleaguesfolder = os.path.join(contextfolder,'favleagues')
+ignoreleaguecalendar = os.path.join(contextfolder,'igncalendar')
+ignoreleaguelivescores = os.path.join(contextfolder,'ignlivescores')
 if not os.path.isdir(contextfolder): xbmcvfs.mkdir(contextfolder)
 if not os.path.isdir(ignoredleaguesfolder): xbmcvfs.mkdir(ignoredleaguesfolder)
 if not os.path.isdir(favleaguesfolder): xbmcvfs.mkdir(favleaguesfolder)
+if not os.path.isdir(ignoreleaguecalendar): xbmcvfs.mkdir(ignoreleaguecalendar)
+if not os.path.isdir(ignoreleaguelivescores): xbmcvfs.mkdir(ignoreleaguelivescores)
 
 
       

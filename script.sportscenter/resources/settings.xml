@@ -47,6 +47,10 @@
 		<setting id="amfootball-custom" label="Custom Image" type="file" default="" enable="eq(-2,true)+eq(-1,4)" visible="eq(-2,true)+eq(-1,4)"/>
 		
 	</category>
+	<category label="Calendar">
+		<setting id="calendar-disabledsports" type="bool" label="Hide disabled sports from calendar" default="true"/>
+		<setting id="calendar-disabledleagues" type="bool" label="Hide ignored leagues from calendar" default="true"/>
+	</category>
 	<setting id="username" type="text" default="" visible="false"/>
  	<setting id="view_type_leaguelist" type="text" default="" visible="false"/>
   	<setting id="view_type_league" type="text" default="" visible="false"/>

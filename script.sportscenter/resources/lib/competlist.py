@@ -23,8 +23,6 @@ class dialog_compet(xbmcgui.WindowXML):
 		xbmcgui.WindowXML.__init__(self)
 		self.sport = args[3]
 		self.ignored_leagues = os.listdir(ignoredleaguesfolder)
-		self.favourite_leagues = os.listdir(favleaguesfolder)
-		
 
 	def onInit(self,):
 		threading.Thread(name='watcher', target=self.watcher).start()
@@ -43,16 +41,6 @@ class dialog_compet(xbmcgui.WindowXML):
 				self.getControl(980).reset()
 				self.addleagues()
 			xbmc.sleep(200)
-			if self.favourite_leagues != fav_leagues:
-				self.favourite_leagues = fav_leagues
-				self.getControl(983).reset()
-				self.getControl(981).reset()
-				self.getControl(984).reset()
-				self.getControl(982).reset()
-				self.getControl(980).reset()
-				self.addleagues()
-			xbmc.sleep(200)
-	
 	
 	def addleagues(self,):
 		#set top bar info
