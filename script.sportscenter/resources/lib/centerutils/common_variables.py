@@ -4,7 +4,7 @@
    	
 """
     
-import xbmc,xbmcplugin,xbmcgui,xbmcaddon,os
+import xbmc,xbmcplugin,xbmcvfs,xbmcgui,xbmcaddon,os
 
 addon_id = 'script.sportscenter'
 art = os.path.join("resources","img")
@@ -37,6 +37,12 @@ motorsport_file = os.path.join(profilepath,'motorsport.txt')
 motorsport_fav_file = os.path.join(profilepath,'motorsport_fav.txt')
 sport_fav_file = os.path.join(profilepath,'sport_fav.txt')
 favlogos = os.path.join(profilepath,'favlogos')
+contextfolder = os.path.join(profilepath,'user_settings')
+ignoredleaguesfolder = os.path.join(contextfolder,'ignoredleagues')
+favleaguesfolder = os.path.join(contextfolder,'favleagues')
+if not os.path.isdir(contextfolder): xbmcvfs.mkdir(contextfolder)
+if not os.path.isdir(ignoredleaguesfolder): xbmcvfs.mkdir(ignoredleaguesfolder)
+if not os.path.isdir(favleaguesfolder): xbmcvfs.mkdir(favleaguesfolder)
 
 
       

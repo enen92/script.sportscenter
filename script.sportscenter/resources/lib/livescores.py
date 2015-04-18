@@ -42,6 +42,9 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 		
 	def fill_livescores(self):
 		items_to_add = []
+		items_in_progress = []
+		items_not_started = []
+		items_finished = []
 		try: self.livescores = thesportsdb.LiveScores().latestsoccer()["teams"]["Match"]
 		except: self.livescores = None
 		if self.livescores:
@@ -76,14 +79,28 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 					#	competition = competition + ' - Round ' + roundnum
 					#Game progress
 					progress = thesportsdb.Livematch().get_time(event)
-					if progress.lower() == 'finished': progress = "90'"
-					elif progress.lower() == 'halftime': progress = "45'"
-					elif progress.lower() == 'postponed': progress = 'P'
-					elif progress.lower() == 'waiting for penalty': progress = 'WP'
-					elif progress.lower() == 'penalty': progress = 'PEN'
-					elif progress.lower() == 'finished ap': progress = "90'"
-					elif progress.lower() == 'not started': progress = "0''"
-					else:pass
+					if progress.lower() == 'finished':
+						progress = "90'"
+						status = 'finished'
+					elif progress.lower() == 'halftime':
+						progress = "45'"
+						status = 'progress'
+					elif progress.lower() == 'postponed':
+						status = 'notstarted'
+						progress = 'P'
+					elif progress.lower() == 'waiting for penalty':
+						progress = 'WP'
+						status = 'progress'
+					elif progress.lower() == 'penalty':
+						progress = 'PEN'
+						status = 'progress'
+					elif progress.lower() == 'finished ap':
+						progress = "90'"
+						status = 'progress'
+					elif progress.lower() == 'not started':
+						progress = "0''"
+						status = 'notstarted'
+					else:status = 'progress'
 					if ' ' in home_team_name:
 						if len(home_team_name) > 12: game.setProperty('HomeTeamLong',home_team_name)
 						else: game.setProperty('HomeTeamShort',home_team_name)
@@ -142,10 +159,31 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 						else:
 							game.setProperty('is_live','notlive.png')
 							game.setProperty("my_percent","100")
-					items_to_add.append(game)
+					
+				
+					if status == 'progress':
+						print "este esta em progresso"
+						items_in_progress.append(game)
+					elif status == 'notstarted': 
+						print "este nao comecou"
+						items_not_started.append(game)
+					elif status == 'finished':
+						print "este acabou"
+						items_finished.append(game)
+					
 				except: pass
 			self.getControl(987).reset
 			xbmc.executebuiltin("ClearProperty(loading,Home)")
+			
+			#iterate to all different lists to add the events by order of progress
+			if items_in_progress:
+				for item in items_in_progress: items_to_add.append(item)
+			if items_finished:
+				for item in items_finished: items_to_add.append(item)
+			if items_not_started:
+				for item in items_not_started: items_to_add.append(item)
+			
+			
 			self.getControl(987).addItems(items_to_add)
 			xbmc.sleep(300)
 			self.setFocusId(987)

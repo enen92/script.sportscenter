@@ -2,11 +2,13 @@
 # -*- coding: UTF-8 -*-
 
 import xbmc,xbmcgui,xbmcaddon,xbmcplugin
+import os,threading
 from centerutils.common_variables import *
 from random import randint
 import homemenu as home
 import thesportsdb
 import leagueview as leagueview
+import contextmenubuilder
 
 def start(sportname):
 	window = dialog_compet('DialogCompetList.xml',addonpath,'Default',sportname)
@@ -20,9 +22,39 @@ class dialog_compet(xbmcgui.WindowXML):
 	def __init__( self, *args, **kwargs ):
 		xbmcgui.WindowXML.__init__(self)
 		self.sport = args[3]
+		self.ignored_leagues = os.listdir(ignoredleaguesfolder)
+		self.favourite_leagues = os.listdir(favleaguesfolder)
 		
 
 	def onInit(self,):
+		threading.Thread(name='watcher', target=self.watcher).start()
+		self.addleagues()
+		
+	def watcher(self,):
+		while not xbmc.abortRequested:
+			ignored_leagues = os.listdir(ignoredleaguesfolder)
+			fav_leagues = os.listdir(favleaguesfolder)
+			if self.ignored_leagues != ignored_leagues:
+				self.ignored_leagues = ignored_leagues
+				self.getControl(983).reset()
+				self.getControl(981).reset()
+				self.getControl(984).reset()
+				self.getControl(982).reset()
+				self.getControl(980).reset()
+				self.addleagues()
+			xbmc.sleep(200)
+			if self.favourite_leagues != fav_leagues:
+				self.favourite_leagues = fav_leagues
+				self.getControl(983).reset()
+				self.getControl(981).reset()
+				self.getControl(984).reset()
+				self.getControl(982).reset()
+				self.getControl(980).reset()
+				self.addleagues()
+			xbmc.sleep(200)
+	
+	
+	def addleagues(self,):
 		#set top bar info
 		self.getControl(333).setLabel('Competition List - '+self.sport)
 		
@@ -70,6 +102,8 @@ class dialog_compet(xbmcgui.WindowXML):
 		
 		for league in all_leagues:
 			leagueItem = xbmcgui.ListItem(thesportsdb.Leagues().get_name(league), iconImage = thesportsdb.Leagues().get_badge(league))
+			league_id = thesportsdb.Leagues().get_id(league)
+			leagueItem.setProperty('league_id', league_id)
 			leagueItem.setProperty('year', thesportsdb.Leagues().get_formedyear(league))
 			leagueItem.setProperty('sport', thesportsdb.Leagues().get_sport(league))
 			leagueItem.setProperty('country', thesportsdb.Leagues().get_country(league))
@@ -82,7 +116,9 @@ class dialog_compet(xbmcgui.WindowXML):
 			leagueItem.setProperty('clear', thesportsdb.Leagues().get_logo(league))
 			leagueItem.setProperty('trophy', thesportsdb.Leagues().get_trophy(league))
 			leagueItem.setProperty('league_object',str(league))
-			self.list_listitems.append(leagueItem)
+			
+			if (league_id + '.txt') not in self.ignored_leagues:
+				self.list_listitems.append(leagueItem)
 			
 		xbmc.sleep(200)	
 		self.getControl(self.controler).addItems(self.list_listitems)
@@ -106,7 +142,15 @@ class dialog_compet(xbmcgui.WindowXML):
 				self.setFocusId(self.controler)
 			else: 
 				self.close()
-				#home.start(self.sport)		
+				#home.start(self.sport)
+		elif action.getId() == 117: #contextmenu
+			if xbmc.getCondVisibility("Control.HasFocus(983)"): container = 983
+			elif xbmc.getCondVisibility("Control.HasFocus(981)"): container = 981
+			elif xbmc.getCondVisibility("Control.HasFocus(984)"): container = 984
+			elif xbmc.getCondVisibility("Control.HasFocus(982)"): container = 982
+			elif xbmc.getCondVisibility("Control.HasFocus(980)"): container = 980
+			self.specific_id = self.getControl(container).getSelectedItem().getProperty('league_id')
+			contextmenubuilder.start(['leaguelist',self.specific_id])	
 		else:
 			self.set_info()
 		

@@ -238,7 +238,7 @@
 			<left>1817</left>
 			<top>494</top>
 			<width>14</width>
-			<height>490</height>
+			<height>486</height>
 			<!--<onleft>Dialog.Close(textviewer)</onleft>
 			<onright>Dialog.Close(textviewer)</onright>
 			<ondown>61</ondown>
@@ -257,7 +257,7 @@
 				<posx>1393</posx>
 				<posy>485</posy>
 				<width>425</width>
-				<height>490</height>
+				<height>494</height>
 				
 				<onleft condition="!IsEmpty(Window(home).Property(plotview))">69</onleft>
 				<onleft condition="!IsEmpty(Window(home).Property(videosview))">989</onleft>

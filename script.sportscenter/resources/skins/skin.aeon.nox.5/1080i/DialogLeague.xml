@@ -232,7 +232,7 @@
 			<left>507</left>
 			<top>494</top>
 			<width>14</width>
-			<height>490</height>
+			<height>486</height>
 			<!--<onleft>Dialog.Close(textviewer)</onleft>
 			<onright>Dialog.Close(textviewer)</onright>
 			<ondown>61</ondown>
@@ -258,7 +258,7 @@
 				<posx>83</posx>
 				<posy>485</posy>
 				<width>425</width>
-				<height>490</height>
+				<height>494</height>
 				<onleft>SetProperty(MediaMenu,True,home)</onleft>
 				<onleft>SetFocus(9050)</onleft>
 				<onright>62</onright>
@@ -270,12 +270,12 @@
 				<preloaditems>1</preloaditems>
 				<orientation>vertical</orientation>
 
-				<itemlayout height="103" width="650">
+				<itemlayout height="81" width="650">
 					<control type="image">
 						<posx>10</posx>
 						<posy>10</posy>
 						<width>425</width>
-						<height>103</height>
+						<height>81</height>
 						<texture border="1">separator2.png</texture>
 					</control>
 
@@ -283,7 +283,7 @@
 					<control type="label" id="343">
 						<description>competition tag</description>
 						<posx>0</posx>
-						<posy>10</posy>
+						<posy>-3</posy>
 						<width>425</width>
 						<height>103</height>
 						<label>$INFO[ListItem.Property(menu_entry)]</label>
@@ -293,25 +293,25 @@
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
 				</itemlayout>	
-				<focusedlayout height="239" width="240">
+				<focusedlayout height="81" width="240">
 					<control type="image">
 						<posx>10</posx>
 						<posy>10</posy>
 						<width>425</width>
-						<height>103</height>
+						<height>81</height>
 						<texture border="1">separator2.png</texture>
 					</control>
 					<control type="image">
 						<posx>10</posx>
 						<posy>10</posy>
 						<width>425</width>
-						<height>103</height>
+						<height>81</height>
 						<texture border="5">listselect_fo.png</texture>
 					</control>
 					<control type="label" id="343">
 						<description>competition tag</description>
 						<posx>0</posx>
-						<posy>10</posy>
+						<posy>-3</posy>
 						<width>425</width>
 						<height>103</height>
 						<label>$INFO[ListItem.Property(menu_entry)]</label>
