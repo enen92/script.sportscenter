@@ -22,6 +22,7 @@ import datetime
 from centerutils.common_variables import *
 from centerutils.datemanipulation import *
 from centerutils.caching import *
+import matchdetails
 
 
 def start(data_list):
@@ -52,6 +53,8 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 			if type(self.livescores) == dict:
 				self.livescores = [self.livescores]
 			for event in reversed(self.livescores):
+				#get league id first to check if we proceed or ignore - livescores-disabledleagues
+				#event_leagueid = thesportsdb.Livematch().get_home_id(event)
 				try:
 					event_home_id = thesportsdb.Livematch().get_home_id(event)
 					event_away_id = thesportsdb.Livematch().get_away_id(event)
@@ -178,10 +181,12 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 			#iterate to all different lists to add the events by order of progress
 			if items_in_progress:
 				for item in items_in_progress: items_to_add.append(item)
-			if items_finished:
-				for item in items_finished: items_to_add.append(item)
-			if items_not_started:
-				for item in items_not_started: items_to_add.append(item)
+			if settings.getSetting('livescores-hidefinished') != 'true':
+				if items_finished:
+					for item in items_finished: items_to_add.append(item)
+			if settings.getSetting('livescores-hidenotstarted') != 'true':
+				if items_not_started:
+					for item in items_not_started: items_to_add.append(item)
 			
 			
 			self.getControl(987).addItems(items_to_add)
@@ -199,5 +204,14 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 			listControl = self.getControl(controlId)
 			selected_date=listControl.getSelectedItem().getProperty('entry_date')
 			self.fill_calendar(selected_date)
+			
+		elif controlId == 987:
+			listControl = self.getControl(controlId)
+			hometeam = listControl.getSelectedItem().getProperty('HomeTeamLong')
+			if not hometeam: hometeam = listControl.getSelectedItem().getProperty('HomeTeamShort')
+			awayteam = listControl.getSelectedItem().getProperty('AwayTeamLong')
+			if not awayteam: awayteam = listControl.getSelectedItem().getProperty('AwayTeamShort')
+			event_string = hometeam + '###' + awayteam
+			#event_string identifies the event. Matchdetails should parse this string, get the home and away teams, call thesportsdb, find the correct event, feed the information
 	
 		

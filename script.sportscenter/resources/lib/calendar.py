@@ -21,18 +21,14 @@ class dialog_league(xbmcgui.WindowXML):
 
 	def onInit(self):	
 	
-		#self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
-		
-		#xbmc.executebuiltin("SetProperty(loading,1,home)")
-		
-		#self.league_id = thesportsdb.Leagues().get_id(self.league)
-		#self.league_rss = thesportsdb.Leagues().get_rssurl(self.league)
-		#self.league_youtube = thesportsdb.Leagues().get_youtube(self.league)
-		
 		self.getControl(911).setImage(addon_fanart)
 		self.getControl(333).setLabel('Calendar View')
 		self.ignored_leagues = os.listdir(ignoredleaguesfolder)
 		self.rmleaguescalendar = os.listdir(ignoreleaguecalendar)
+		
+		#Change background if custom is defined
+		if settings.getSetting('calendar-background-type') == '1' and settings.getSetting('calendar-background-custom') != '':
+			self.getControl(912).setImage(settings.getSetting('calendar-background-custom'))
 		
 		
 		#Populate week days

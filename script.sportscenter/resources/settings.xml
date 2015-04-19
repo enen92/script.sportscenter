@@ -48,8 +48,15 @@
 		
 	</category>
 	<category label="Calendar">
+		<setting id="calendar-background-type" type="enum" label="Calendar background" values="Addon fanart|Custom" default="0" />
+		<setting id="calendar-background-custom" label="Custom Image" type="file" default="" enable="eq(-1,1)" visible="eq(-1,1)"/>
 		<setting id="calendar-disabledsports" type="bool" label="Hide disabled sports from calendar" default="true"/>
 		<setting id="calendar-disabledleagues" type="bool" label="Hide ignored leagues from calendar" default="true"/>
+	</category>
+	<category label="Livescores">
+		<setting id="livescores-disabledleagues" type="bool" label="Hide ignored leagues from livescores listing" default="true"/>
+		<setting id="livescores-hidefinished" type="bool" label="Hide finished games from window" default="false"/>
+		<setting id="livescores-hidenotstarted" type="bool" label="Hide games that have not started from window" default="false"/>
 	</category>
 	<setting id="username" type="text" default="" visible="false"/>
  	<setting id="view_type_leaguelist" type="text" default="" visible="false"/>

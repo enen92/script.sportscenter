@@ -375,6 +375,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("SetProperty(loading,1,home)")	
 		#next matches stuff
 		event_next_list = thesportsdb.Schedules().eventsnextleague(self.league_id)["events"]
+		league_teams = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
 		if event_next_list:
 			for event in event_next_list:
 				event_date = thesportsdb.Events().get_eventdate(event)
@@ -386,13 +387,24 @@ class dialog_league(xbmcgui.WindowXML):
 					event_round = ''		
 				else:
 					home_team_id = thesportsdb.Events().get_hometeamid(event)
-					home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
+					home_team_dict = None
+					for team in league_teams:
+						if thesportsdb.Teams().get_id(team) == home_team_id:
+							home_team_dict = team
+							break 
+					if not home_team_dict: home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
+					
 					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
 					else: team_name = home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
 					home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
 					stadium_fanart = thesportsdb.Teams().get_stadium_thumb(home_team_dict)
 					away_team_id = thesportsdb.Events().get_awayteamid(event)
-					away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
+					away_team_dict = None
+					for team in league_teams:
+						if thesportsdb.Teams().get_id(team) == away_team_id:
+							away_team_dict = team
+							break 
+					if not away_team_dict: away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
 					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
 					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
 					away_team_logo = thesportsdb.Teams().get_badge(away_team_dict)
@@ -440,6 +452,8 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("SetProperty(loading,1,home)")	
 		#last matches stuff
 		event_last_list = thesportsdb.Schedules().eventspastleague(self.league_id)["events"]
+		league_teams = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
+		print league_teams
 		if event_last_list:
 			for event in event_last_list:
 
@@ -452,14 +466,28 @@ class dialog_league(xbmcgui.WindowXML):
 					event_name = thesportsdb.Events().get_eventtitle(event)
 					event_round = ''
 				else:
+					home_team_dict = None
 					home_team_id = thesportsdb.Events().get_hometeamid(event)
-					home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
+					for team in league_teams:
+						if thesportsdb.Teams().get_id(team) == home_team_id:
+							home_team_dict = team
+							break
+					#make the lookup only if we can't match the team
+					if not home_team_dict: home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
+					
 					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
 					else: home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
 					home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
 					stadium_fanart = thesportsdb.Teams().get_stadium_thumb(home_team_dict)
 					away_team_id = thesportsdb.Events().get_awayteamid(event)
-					away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
+					away_team_dict = None
+					for team in league_teams:
+						if thesportsdb.Teams().get_id(team) == away_team_id:
+							away_team_dict = team
+							break
+					#make the request only if we can't match the team
+					if not away_team_dict: away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
+					
 					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
 					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
 					away_team_logo = thesportsdb.Teams().get_badge(away_team_dict)
