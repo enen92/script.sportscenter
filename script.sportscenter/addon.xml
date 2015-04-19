@@ -5,6 +5,7 @@
     <import addon="script.module.thesportsdb"/>
     <import addon="script.module.twitter"/>
     <import addon="script.module.feedparser"/>
+    <import addon="script.module.pytz" />
   </requires>
   <extension point="xbmc.python.script" library="default.py">
     <provides>game</provides>

@@ -158,6 +158,7 @@ class dialog_league(xbmcgui.WindowXML):
 							game.setProperty('EventName',event_name) 
 						items_to_add.append(game)
 		
+		
 		#order the items here by start time
 		time_array = []
 		items_to_add_processed = []
@@ -170,7 +171,8 @@ class dialog_league(xbmcgui.WindowXML):
 				if itemorder == timestmp:
 					items_to_add_processed.append(item)
 					items_to_add.remove(item)
-		
+					
+	
 		self.getControl(987).addItems(items_to_add_processed)
 			
 						
