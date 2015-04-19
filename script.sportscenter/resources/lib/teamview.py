@@ -36,7 +36,37 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 		self.team_clear = thesportsdb.Teams().get_logo(self.team)
 		self.team_jersey = thesportsdb.Teams().get_team_jersey(self.team)
 		self.founded = thesportsdb.Teams().get_formedyear(self.team)
-		self.plot = thesportsdb.Teams().get_plot_en(self.team)
+		
+		if settings.getSetting('addon-language') == '0':
+			self.plot = thesportsdb.Teams().get_plot_en(self.team)
+		elif settings.getSetting('addon-language') == '1':
+			self.plot = thesportsdb.Teams().get_plot_de(self.team)
+		elif settings.getSetting('addon-language') == '2':
+			self.plot = thesportsdb.Teams().get_plot_fr(self.team)
+		elif settings.getSetting('addon-language') == '3':
+			self.plot = thesportsdb.Teams().get_plot_it(self.team)
+		elif settings.getSetting('addon-language') == '4':
+			self.plot = thesportsdb.Teams().get_plot_cn(self.team)
+		elif settings.getSetting('addon-language') == '5':
+			self.plot = thesportsdb.Teams().get_plot_jp(self.team)
+		elif settings.getSetting('addon-language') == '6':
+			self.plot = thesportsdb.Teams().get_plot_ru(self.team)
+		elif settings.getSetting('addon-language') == '7':
+			self.plot = thesportsdb.Teams().get_plot_es(self.team)
+		elif settings.getSetting('addon-language') == '8':
+			self.plot = thesportsdb.Teams().get_plot_pt(self.team)
+		elif settings.getSetting('addon-language') == '9':
+			self.plot = thesportsdb.Teams().get_plot_se(self.team)
+		elif settings.getSetting('addon-language') == '10':
+			self.plot = thesportsdb.Teams().get_plot_nl(self.team)
+		elif settings.getSetting('addon-language') == '11':
+			self.plot = thesportsdb.Teams().get_plot_hu(self.team)
+		elif settings.getSetting('addon-language') == '12':
+			self.plot = thesportsdb.Teams().get_plot_no(self.team)
+		elif settings.getSetting('addon-language') == '13':
+			self.plot = thesportsdb.Teams().get_plot_pl(self.team)
+		
+		
 		self.sport = thesportsdb.Teams().get_sport(self.team)
 		self.manager = thesportsdb.Teams().get_manager(self.team)
 		self.stadium_name = thesportsdb.Teams().get_stadium(self.team)
@@ -248,7 +278,35 @@ class dialog_team(xbmcgui.WindowXML):
 
 		
 		#set team plot
-		self.team_plot = thesportsdb.Teams().get_plot_en(self.team)
+		if settings.getSetting('addon-language') == '0':
+			self.team_plot = thesportsdb.Teams().get_plot_en(self.team)
+		elif settings.getSetting('addon-language') == '1':
+			self.team_plot = thesportsdb.Teams().get_plot_de(self.team)
+		elif settings.getSetting('addon-language') == '2':
+			self.team_plot = thesportsdb.Teams().get_plot_fr(self.team)
+		elif settings.getSetting('addon-language') == '3':
+			self.team_plot = thesportsdb.Teams().get_plot_it(self.team)
+		elif settings.getSetting('addon-language') == '4':
+			self.team_plot = thesportsdb.Teams().get_plot_cn(self.team)
+		elif settings.getSetting('addon-language') == '5':
+			self.team_plot = thesportsdb.Teams().get_plot_jp(self.team)
+		elif settings.getSetting('addon-language') == '6':
+			self.team_plot = thesportsdb.Teams().get_plot_ru(self.team)
+		elif settings.getSetting('addon-language') == '7':
+			self.team_plot = thesportsdb.Teams().get_plot_es(self.team)
+		elif settings.getSetting('addon-language') == '8':
+			self.team_plot = thesportsdb.Teams().get_plot_pt(self.team)
+		elif settings.getSetting('addon-language') == '9':
+			self.team_plot = thesportsdb.Teams().get_plot_se(self.team)
+		elif settings.getSetting('addon-language') == '10':
+			self.team_plot = thesportsdb.Teams().get_plot_nl(self.team)
+		elif settings.getSetting('addon-language') == '11':
+			self.team_plot = thesportsdb.Teams().get_plot_hu(self.team)
+		elif settings.getSetting('addon-language') == '12':
+			self.team_plot = thesportsdb.Teams().get_plot_no(self.team)
+		elif settings.getSetting('addon-language') == '13':
+			self.team_plot = thesportsdb.Teams().get_plot_pl(self.team)
+		
 		self.getControl(430).setText(self.team_plot)
 		
 		#set team formed year
@@ -334,7 +392,37 @@ class dialog_team(xbmcgui.WindowXML):
 				player_location = thesportsdb.Players().get_bornlocation(player)
 				player_height = thesportsdb.Players().get_height(player)
 				player_weight = thesportsdb.Players().get_weight(player)
-				player_plot = thesportsdb.Players().get_plot_en(player)
+				
+				#player plot different languages
+				if settings.getSetting('addon-language') == '0':
+					player_plot = thesportsdb.Players().get_plot_en(player)
+				elif settings.getSetting('addon-language') == '1':
+					player_plot = thesportsdb.Players().get_plot_de(player)
+				elif settings.getSetting('addon-language') == '2':
+					player_plot = thesportsdb.Players().get_plot_fr(player)
+				elif settings.getSetting('addon-language') == '3':
+					player_plot = thesportsdb.Players().get_plot_it(player)
+				elif settings.getSetting('addon-language') == '4':
+					player_plot = thesportsdb.Players().get_plot_cn(player)
+				elif settings.getSetting('addon-language') == '5':
+					player_plot = thesportsdb.Players().get_plot_jp(player)
+				elif settings.getSetting('addon-language') == '6':
+					player_plot = thesportsdb.Players().get_plot_ru(player)
+				elif settings.getSetting('addon-language') == '7':
+					player_plot = thesportsdb.Players().get_plot_es(player)
+				elif settings.getSetting('addon-language') == '8':
+					player_plot = thesportsdb.Players().get_plot_pt(player)
+				elif settings.getSetting('addon-language') == '9':
+					player_plot = thesportsdb.Players().get_plot_se(player)
+				elif settings.getSetting('addon-language') == '10':
+					player_plot = thesportsdb.Players().get_plot_nl(player)
+				elif settings.getSetting('addon-language') == '11':
+					player_plot = thesportsdb.Players().get_plot_hu(player)
+				elif settings.getSetting('addon-language') == '12':
+					player_plot = thesportsdb.Players().get_plot_no(player)
+				elif settings.getSetting('addon-language') == '13':
+					player_plot = thesportsdb.Players().get_plot_pl(player)
+				
 
 				if player_fanart_list: player_fanart = player_fanart_list[randint(0,len(player_fanart_list))-1]
 				else: player_fanart = ''

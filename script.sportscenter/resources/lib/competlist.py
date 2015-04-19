@@ -95,7 +95,37 @@ class dialog_compet(xbmcgui.WindowXML):
 			leagueItem.setProperty('year', thesportsdb.Leagues().get_formedyear(league))
 			leagueItem.setProperty('sport', thesportsdb.Leagues().get_sport(league))
 			leagueItem.setProperty('country', thesportsdb.Leagues().get_country(league))
-			leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_en(league))
+			#en|de|fr|it|cn|jp|ru|es|pt|se|nl|hu|no|pl
+			#manipulate languages here
+			if settings.getSetting('addon-language') == '0':
+				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_en(league))
+			elif settings.getSetting('addon-language') == '1':	
+				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_de(league))
+			elif settings.getSetting('addon-language') == '2':
+				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_fr(league))
+			elif settings.getSetting('addon-language') == '3':
+				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_it(league))
+			elif settings.getSetting('addon-language') == '4':
+				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_cn(league))
+			elif settings.getSetting('addon-language') == '5':
+				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_jp(league))	
+			elif settings.getSetting('addon-language') == '6':
+				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_ru(league))
+			elif settings.getSetting('addon-language') == '7':
+				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_es(league))	
+			elif settings.getSetting('addon-language') == '8':
+				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_pt(league))
+			elif settings.getSetting('addon-language') == '9':
+				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_se(league))
+			elif settings.getSetting('addon-language') == '10':
+				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_nl(league))
+			elif settings.getSetting('addon-language') == '11':
+				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_hu(league))
+			elif settings.getSetting('addon-language') == '12':
+				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_no(league))
+			elif settings.getSetting('addon-language') == '13':
+				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_pl(league))	
+				
 			fanart = thesportsdb.Leagues().get_fanart(league)
 			if len(fanart) >= 1: leagueItem.setProperty('fanart', fanart[randint(0,len(fanart)-1)])
 			else: leagueItem.setProperty('fanart', os.path.join(addonpath,art,"sports",self.sport + '.jpg'))

@@ -72,7 +72,35 @@ class dialog_league(xbmcgui.WindowXML):
 		self.getControl(934).setImage(os.path.join(self.league_badge))
 		
 		#set league plot
-		self.league_plot = thesportsdb.Leagues().get_plot_en(self.league)
+		if settings.getSetting('addon-language') == '0':
+			self.league_plot = thesportsdb.Leagues().get_plot_en(self.league)
+		elif settings.getSetting('addon-language') == '1':	
+			self.league_plot = thesportsdb.Leagues().get_plot_de(self.league)
+		elif settings.getSetting('addon-language') == '2':
+			self.league_plot = thesportsdb.Leagues().get_plot_fr(self.league)
+		elif settings.getSetting('addon-language') == '3':
+			self.league_plot = thesportsdb.Leagues().get_plot_it(self.league)
+		elif settings.getSetting('addon-language') == '4':
+			self.league_plot = thesportsdb.Leagues().get_plot_cn(self.league)
+		elif settings.getSetting('addon-language') == '5':
+			self.league_plot = thesportsdb.Leagues().get_plot_jp(self.league)
+		elif settings.getSetting('addon-language') == '6':
+			self.league_plot = thesportsdb.Leagues().get_plot_ru(self.league)
+		elif settings.getSetting('addon-language') == '7':
+			self.league_plot = thesportsdb.Leagues().get_plot_es(self.league)
+		elif settings.getSetting('addon-language') == '8':
+			self.league_plot = thesportsdb.Leagues().get_plot_pt(self.league)
+		elif settings.getSetting('addon-language') == '9':
+			self.league_plot = thesportsdb.Leagues().get_plot_se(self.league)
+		elif settings.getSetting('addon-language') == '10':
+			self.league_plot = thesportsdb.Leagues().get_plot_nl(self.league)
+		elif settings.getSetting('addon-language') == '11':
+			self.league_plot = thesportsdb.Leagues().get_plot_hu(self.league)
+		elif settings.getSetting('addon-language') == '12':
+			self.league_plot = thesportsdb.Leagues().get_plot_no(self.league)
+		elif settings.getSetting('addon-language') == '13':
+			self.league_plot = thesportsdb.Leagues().get_plot_pl(self.league)
+		
 		self.getControl(430).setText(self.league_plot)
 		
 		#set league formed year
