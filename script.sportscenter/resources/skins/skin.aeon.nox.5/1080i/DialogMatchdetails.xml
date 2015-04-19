@@ -118,9 +118,9 @@
 			<control type="image" id="786">
 				<description>panel to be filled</description>
 				<left>170</left>
-				<top>436</top>
+				<top>430</top>
 				<width>1552</width>
-				<height>520</height>
+				<height>526</height>
 				<texture border="5">dialogs/default/inner.png</texture>
 				<visible>!IsEmpty(Window(home).Property(detail))</visible>
 			</control>

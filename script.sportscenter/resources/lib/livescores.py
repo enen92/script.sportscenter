@@ -65,7 +65,7 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 					away_team_dict = thesportsdb.Lookups().lookupteam(event_away_id)["teams"][0]
 					#set hometeamname
 					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
-					else: team_name = home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
+					else: home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
 					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
 					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
 					#logos
@@ -82,7 +82,7 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 					#	competition = competition + ' - Round ' + roundnum
 					#Game progress
 					progress = thesportsdb.Livematch().get_time(event)
-					if progress.lower() == 'finished':
+					if progress.lower() == 'finished' or progress.lower() == 'finished after awarded win':
 						progress = "90'"
 						status = 'finished'
 					elif progress.lower() == 'halftime':
@@ -212,6 +212,6 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 			awayteam = listControl.getSelectedItem().getProperty('AwayTeamLong')
 			if not awayteam: awayteam = listControl.getSelectedItem().getProperty('AwayTeamShort')
 			event_string = hometeam + '###' + awayteam
-			#event_string identifies the event. Matchdetails should parse this string, get the home and away teams, call thesportsdb, find the correct event, feed the information
+			matchdetails.start([True,event_string])
 	
 		

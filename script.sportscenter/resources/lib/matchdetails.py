@@ -27,7 +27,19 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 			self.event_id = self.params[1]
 			self.event_details(self.event_id)
 		else:
-			pass
+			self.event_string = self.params[1]
+			#event is live
+			event_list = self.event_string.split('###')
+			self.home_team = event_list[0]
+			self.away_team = event_list[1]
+			self.livescores = thesportsdb.LiveScores().latestsoccer()["teams"]["Match"]
+			for match in self.livescores:
+				home_team = thesportsdb.Livematch().get_home_name(match)
+				away_team = thesportsdb.Livematch().get_away_name(match)
+				if home_team == self.home_team and away_team == self.away_team:
+					self.live_dict = match
+					self.event_details(match)
+					break
 			
 	def event_lineup(self,event_dict,home_away):
 		xbmc.executebuiltin("ClearProperty(detail,Home)")
@@ -51,13 +63,22 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 			self.jersey = self.hometeam_jersey
 			self.badge = self.hometeam_badge
 			self.team_name = self.hometeam_name
-			self.formation = thesportsdb.Events().get_homeformation(self.event_dict)
-			self.goalkeeper = thesportsdb.Events().get_homegoalkeeper(self.event_dict)
-			self.defenders_raw = thesportsdb.Events().get_homedefense(self.event_dict)
-			self.midfielders_raw = thesportsdb.Events().get_homemidfielders(self.event_dict)
-			self.forwarders_raw = thesportsdb.Events().get_homeforward(self.event_dict)
-			self.subs_raw = thesportsdb.Events().get_homesubs(self.event_dict)
-			self.coach = thesportsdb.Teams().get_manager(self.hometeam_dict)
+			if self.is_live == False:
+				self.coach = thesportsdb.Teams().get_manager(self.hometeam_dict)
+				self.formation = thesportsdb.Events().get_homeformation(self.event_dict)
+				self.goalkeeper = thesportsdb.Events().get_homegoalkeeper(self.event_dict)
+				self.defenders_raw = thesportsdb.Events().get_homedefense(self.event_dict)
+				self.midfielders_raw = thesportsdb.Events().get_homemidfielders(self.event_dict)
+				self.forwarders_raw = thesportsdb.Events().get_homeforward(self.event_dict)
+				self.subs_raw = thesportsdb.Events().get_homesubs(self.event_dict)
+			else:
+				self.coach = thesportsdb.Livematch().get_homecoach(self.event_dict).replace(';','')
+				self.formation = thesportsdb.Livematch().get_homeformation(self.event_dict)
+				self.goalkeeper = thesportsdb.Livematch().get_homegoalkeeper(self.event_dict)
+				self.defenders_raw = thesportsdb.Livematch().get_homedefense(self.event_dict)
+				self.midfielders_raw = thesportsdb.Livematch().get_homemidfield(self.event_dict)
+				self.forwarders_raw = thesportsdb.Livematch().get_homeforward(self.event_dict)
+				self.subs_raw = thesportsdb.Livematch().get_home_sublineup(self.event_dict)
 			#set button label to call away team lineup
 			self.getControl(9027).setLabel('Away Team Lineup')
 		
@@ -65,13 +86,23 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 			self.jersey = self.awayteam_jersey
 			self.badge = self.awayteam_badge
 			self.team_name = self.awayteam_name
-			self.formation = thesportsdb.Events().get_awayformation(self.event_dict)
-			self.goalkeeper = thesportsdb.Events().get_awaygoalkeeper(self.event_dict)
-			self.defenders_raw = thesportsdb.Events().get_awaydefense(self.event_dict)
-			self.midfielders_raw = thesportsdb.Events().get_awaymidfielders(self.event_dict)
-			self.forwarders_raw = thesportsdb.Events().get_awayforward(self.event_dict)
-			self.subs_raw = thesportsdb.Events().get_awaysubs(self.event_dict)
-			self.coach = thesportsdb.Teams().get_manager(self.awayteam_dict)
+			if self.is_live == False:
+				self.coach = thesportsdb.Teams().get_manager(self.awayteam_dict)
+				self.formation = thesportsdb.Events().get_awayformation(self.event_dict)
+				self.goalkeeper = thesportsdb.Events().get_awaygoalkeeper(self.event_dict)
+				self.defenders_raw = thesportsdb.Events().get_awaydefense(self.event_dict)
+				self.midfielders_raw = thesportsdb.Events().get_awaymidfielders(self.event_dict)
+				self.forwarders_raw = thesportsdb.Events().get_awayforward(self.event_dict)
+				self.subs_raw = thesportsdb.Events().get_awaysubs(self.event_dict)
+			else:
+				self.formation = thesportsdb.Livematch().get_awayformation(self.event_dict)
+				self.goalkeeper = thesportsdb.Livematch().get_away_goalkeeper(self.event_dict)
+				self.defenders_raw = thesportsdb.Livematch().get_awaydefense(self.event_dict)
+				self.midfielders_raw = thesportsdb.Livematch().get_awaymidfielder(self.event_dict)
+				self.forwarders_raw = thesportsdb.Livematch().get_awayforward(self.event_dict)
+				self.subs_raw = thesportsdb.Livematch().get_away_sublineup(self.event_dict)
+				self.coach = thesportsdb.Livematch().get_awaycoach(self.event_dict).replace(';','')		
+			
 			#set button label to call home team lineup
 			self.getControl(9027).setLabel('Home Team Lineup')
 		
@@ -1068,208 +1099,263 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 		self.setFocusId(9027)
 		
 					
-	def event_details(self,event_id):
+	def event_details(self,event):
 		xbmc.executebuiltin("ClearProperty(lineup,Home)")
 		xbmc.executebuiltin("ClearProperty(detail,Home)")
-		self.event_dict = thesportsdb.Lookups().lookupevent(event_id)["events"]
-		if self.event_dict and self.event_dict != 'None':
-			self.event_dict = self.event_dict[0]
+		if type(event) == dict:
+			#in this case we are passing the dictionary itself
+			self.event_dict = event
+		else:
+			self.event_dict = thesportsdb.Lookups().lookupevent(event)["events"]
+			if self.event_dict and self.event_dict != 'None':
+				self.event_dict = self.event_dict[0]
+				
+		
+		if self.is_live == False:
 			self.hometeam_id = thesportsdb.Events().get_hometeamid(self.event_dict)
-			self.hometeam_dict = thesportsdb.Lookups().lookupteam(self.hometeam_id)["teams"][0]
 			self.awayteam_id = thesportsdb.Events().get_awayteamid(self.event_dict)
-			self.awayteam_dict = thesportsdb.Lookups().lookupteam(self.awayteam_id)["teams"][0]
+		else:
+			self.hometeam_id = thesportsdb.Livematch().get_home_id(self.event_dict)
+			self.awayteam_id = thesportsdb.Livematch().get_away_id(self.event_dict)
 			
-			#Get both teams badge and jersey
-			self.hometeam_badge = thesportsdb.Teams().get_badge(self.hometeam_dict)
-			self.awayteam_badge = thesportsdb.Teams().get_badge(self.awayteam_dict)
-			self.hometeam_jersey = thesportsdb.Teams().get_team_jersey(self.hometeam_dict)
-			self.awayteam_jersey = thesportsdb.Teams().get_team_jersey(self.awayteam_dict)
+		self.hometeam_dict = thesportsdb.Lookups().lookupteam(self.hometeam_id)["teams"][0]
+		self.awayteam_dict = thesportsdb.Lookups().lookupteam(self.awayteam_id)["teams"][0]
+		
 			
-			#Set badge and jersey (if it exists)
-			if self.hometeam_jersey and self.hometeam_jersey != 'None':
-				self.getControl(777).setImage(self.hometeam_badge)
-				self.getControl(779).setImage(self.hometeam_jersey)
-			else:
-				self.getControl(778).setImage(self.hometeam_badge)
+		#Get both teams badge and jersey
+		self.hometeam_badge = thesportsdb.Teams().get_badge(self.hometeam_dict)
+		self.awayteam_badge = thesportsdb.Teams().get_badge(self.awayteam_dict)
+		self.hometeam_jersey = thesportsdb.Teams().get_team_jersey(self.hometeam_dict)
+		self.awayteam_jersey = thesportsdb.Teams().get_team_jersey(self.awayteam_dict)
+			
+		#Set badge and jersey (if it exists)
+		if self.hometeam_jersey and self.hometeam_jersey != 'None':
+			self.getControl(777).setImage(self.hometeam_badge)
+			self.getControl(779).setImage(self.hometeam_jersey)
+		else:
+			self.getControl(778).setImage(self.hometeam_badge)
+			
+		if self.awayteam_jersey and self.awayteam_jersey != 'None':
+			self.getControl(780).setImage(self.awayteam_badge)
+			self.getControl(782).setImage(self.awayteam_jersey)
+		else:
+			self.getControl(781).setImage(self.awayteam_badge)
 				
-			if self.awayteam_jersey and self.awayteam_jersey != 'None':
-				self.getControl(780).setImage(self.awayteam_badge)
-				self.getControl(782).setImage(self.awayteam_jersey)
-			else:
-				self.getControl(781).setImage(self.awayteam_badge)
-				
-			#Set team name
-			if settings.getSetting('team-naming')=='0': self.hometeam_name = thesportsdb.Teams().get_name(self.hometeam_dict)
-			else: self.hometeam_name = thesportsdb.Teams().get_alternativefirst(self.hometeam_dict)
-			if settings.getSetting('team-naming')=='0': self.awayteam_name = thesportsdb.Teams().get_name(self.awayteam_dict)
-			else: self.awayteam_name = thesportsdb.Teams().get_alternativefirst(self.awayteam_dict)
-			self.getControl(784).setText('[B]%s[/B]' % (self.hometeam_name))
-			self.getControl(785).setText('[B]%s[/B]' % (self.awayteam_name))
+		#Set team name
+		if settings.getSetting('team-naming')=='0': self.hometeam_name = thesportsdb.Teams().get_name(self.hometeam_dict)
+		else: self.hometeam_name = thesportsdb.Teams().get_alternativefirst(self.hometeam_dict)
+		if settings.getSetting('team-naming')=='0': self.awayteam_name = thesportsdb.Teams().get_name(self.awayteam_dict)
+		else: self.awayteam_name = thesportsdb.Teams().get_alternativefirst(self.awayteam_dict)
+		self.getControl(784).setText('[B]%s[/B]' % (self.hometeam_name))
+		self.getControl(785).setText('[B]%s[/B]' % (self.awayteam_name))
 			
-			#event stadium and spectactors
-			self.stadium = thesportsdb.Teams().get_stadium(self.hometeam_dict)
-			self.getControl(792).setLabel('[B]%s[/B]' % (self.stadium))
-			self.spectators = thesportsdb.Events().get_spectators(self.event_dict)
-			if self.spectators != '0':
-				try:
-					i = 0
-					spectators = ''
-					lenght = len(self.spectators)
-					for letter in reversed(self.spectators):
-						i += 1
-						if (float(i)/3).is_integer():	
-							if lenght != i: spectators = ',' + letter + spectators
-							else: spectators = letter + spectators
+		#event stadium and spectactors
+		self.stadium = thesportsdb.Teams().get_stadium(self.hometeam_dict)
+		self.getControl(792).setLabel('[B]%s[/B]' % (self.stadium))
+		if self.is_live == False: self.spectators = thesportsdb.Events().get_spectators(self.event_dict)
+		else: self.spectators = thesportsdb.Livematch().get_spectators(self.event_dict)
+		if self.spectators != '0' and str(self.spectators) != '{}':
+			try:
+				i = 0
+				spectators = ''
+				lenght = len(self.spectators)
+				for letter in reversed(self.spectators):
+					i += 1
+					if (float(i)/3).is_integer():	
+						if lenght != i: spectators = ',' + letter + spectators
 						else: spectators = letter + spectators
-					self.getControl(793).setLabel('[B]Spectators[/B]: %s' % (spectators))
-				except:
-					self.getControl(793).setLabel('[B]Spectators[/B]: %s' % (self.spectators))
+					else: spectators = letter + spectators
+				self.getControl(793).setLabel('[B]Spectators[/B]: %s' % (spectators))
+			except:
+				self.getControl(793).setLabel('[B]Spectators[/B]: %s' % (self.spectators))
 			
-			#set match as finished as it is not live
+		#event progress time
+		if self.is_live == False:
 			self.getControl(789).setLabel("[B]90'[/B]")
 			self.getControl(790).setPercent(100)
 			self.getControl(791).setImage(os.path.join(addonpath,art,'notlive.png'))
+		else:
+			self.timestring = thesportsdb.Livematch().get_time(self.event_dict)
+			present = False
+			if self.timestring.lower() == 'halftime':
+				present = True
+				self.time = 45
+				self.statusimg = os.path.join(addonpath,art,'half.png')
+			elif self.timestring.lower() == 'finished': 
+				present = True
+				self.time = 90
+				self.statusimg = os.path.join(addonpath,art,'notlive.png')
+			else:
+				try: 
+					self.time = int(self.timestring.replace("'",""))
+					present = True
+					self.statusimg = os.path.join(addonpath,art,'live.png')
+				except: present = False
+			if present:
+				self.getControl(789).setLabel("[B]"+str(self.time)+"'"+"[/B]")
+				self.getControl(790).setPercent(int(float(self.time)/90*100))
+				self.getControl(791).setImage(self.statusimg)
 			
-			#set date
-			self.date = thesportsdb.Events().get_date(self.event_dict)
-			try:
-				if self.date and self.date != 'None':
-					date_vector = self.date.split('/')
-					if len(date_vector) == 3:
-						day = date_vector[0]
-						if len(date_vector[2]) == 2:
-							year = '20'+date_vector[2]
-						month = get_month_long(date_vector[1])
-						self.getControl(788).setLabel('[B]%s %s %s[/B]' % (day,month,year))
-			except: self.getControl(788).setLabel('[B]%s[/B]' % (self.date))
+		#set date
+		if self.is_live == False: self.date = thesportsdb.Events().get_date(self.event_dict)
+		else: self.date = thesportsdb.Livematch().get_date(self.event_dict)
+		try:
+			if self.date and self.date != 'None':
+				date_vector = self.date.split('/')
+				if len(date_vector) == 3:
+					day = date_vector[0]
+					if len(date_vector[2]) == 2:
+						year = '20'+date_vector[2]
+					month = get_month_long(date_vector[1])
+					self.getControl(788).setLabel('[B]%s %s %s[/B]' % (day,month,year))
+		except: self.getControl(788).setLabel('[B]%s[/B]' % (self.date))
 			
-			#set event competition and round(if available)
+		#set event competition and round(if available)
+		if self.is_live == False:
 			self.competition = thesportsdb.Events().get_league(self.event_dict)
 			self.round = thesportsdb.Events().get_round(self.event_dict)
-			if self.round and self.round != 'None': self.title = '[B]' + self.competition + ' - Round ' + str(self.round) + '[/B]'
-			else: self.title = '[B]'+self.competition+'[/B]'
-			self.getControl(787).setLabel(self.title)
+		else:
+			self.competition = thesportsdb.Livematch().get_league(self.event_dict)
+			self.round = thesportsdb.Livematch().get_round(self.event_dict)
+		if self.round and self.round != 'None': self.title = '[B]' + self.competition + ' - Round ' + str(self.round) + '[/B]'
+		else: self.title = '[B]'+self.competition+'[/B]'
+		self.getControl(787).setLabel(self.title)
 			
-			#set result
+		#set result
+		if self.is_live == False:
 			self.home_scored = thesportsdb.Events().get_homescore(self.event_dict)
 			self.away_scored = thesportsdb.Events().get_awayscore(self.event_dict)
-			self.result = '[B]%s-%s[/B]' % (str(self.home_scored),str(self.away_scored))
-			self.getControl(783).setLabel(self.result)
+		else:
+			self.home_scored = thesportsdb.Livematch().get_homegoals_number(self.event_dict)
+			self.away_scored = thesportsdb.Livematch().get_awaygoals_number(self.event_dict)
+		self.result = '[B]%s-%s[/B]' % (str(self.home_scored),str(self.away_scored))
+		self.getControl(783).setLabel(self.result)
 			
-			#check number of shots
+		#check number of shots
+		if self.is_live == False:
 			self.home_shots = thesportsdb.Events().get_homeshots(self.event_dict)
 			self.away_shots = thesportsdb.Events().get_awayshots(self.event_dict)
-			if (self.home_shots and self.home_shots != 'None') and (self.away_shots and self.away_shots != 'None'):
-				self.getControl(794).setLabel('[B]Shots[/B]')
-				self.getControl(795).setLabel('[B]%s[/B]' %(str(self.home_shots)))
-				self.getControl(796).setLabel('[B]%s[/B]' %(str(self.away_shots)))
+		else:
+			self.home_shots = 'None'
+			self.away_shots = 'None'
+		if (self.home_shots and self.home_shots != 'None') and (self.away_shots and self.away_shots != 'None'):
+			self.getControl(794).setLabel('[B]Shots[/B]')
+			self.getControl(795).setLabel('[B]%s[/B]' %(str(self.home_shots)))
+			self.getControl(796).setLabel('[B]%s[/B]' %(str(self.away_shots)))
 			
-			#fill home team match details
-			self.home_details = {}
+		#fill home team match details
+		self.home_details = {}
 			
-			self.home_goaldetails = thesportsdb.Events().get_homegoaldetails(self.event_dict).split(';')
-			for goal in self.home_goaldetails:
-				homegoaldetails = re.compile("(\d+).+?\:(.*)").findall(goal)
-				if homegoaldetails:
-					for minute,player in homegoaldetails:
-						if int(minute) in self.home_details.keys():
-							if player != '&nbsp':
-								self.home_details[int(minute)].append((os.path.join(addonpath,art,'goal.png'),player))
-						else:
-							if player != '&nbsp':
-								self.home_details[int(minute)] = [(os.path.join(addonpath,art,'goal.png'),player)]
+		if self.is_live == False: self.home_goaldetails = thesportsdb.Events().get_homegoaldetails(self.event_dict).split(';')
+		else: self.home_goaldetails = str(thesportsdb.Livematch().get_homegoals_detail(self.event_dict)).split(';')
+		for goal in self.home_goaldetails:
+			homegoaldetails = re.compile("(\d+).+?\:(.*)").findall(goal)
+			if homegoaldetails:
+				for minute,player in homegoaldetails:
+					if int(minute) in self.home_details.keys():
+						if player != '&nbsp':
+							self.home_details[int(minute)].append((os.path.join(addonpath,art,'goal.png'),player))
+					else:
+						if player != '&nbsp':
+							self.home_details[int(minute)] = [(os.path.join(addonpath,art,'goal.png'),player)]
 							
-			self.home_yellowcards = thesportsdb.Events().get_homeyellowcards(self.event_dict).split(';')
-			for yellow in self.home_yellowcards:
-				homeyellowdetails = re.compile("(\d+).+?\:(.*)").findall(yellow)
-				if homeyellowdetails:
-					for minute,player in homeyellowdetails:
-						if int(minute) in self.home_details.keys():
-							if player != '&nbsp':
-								self.home_details[int(minute)].append((os.path.join(addonpath,art,'yellowcard2.png'),player))
-						else:
-							if player != '&nbsp':
-								self.home_details[int(minute)] = [(os.path.join(addonpath,art,'yellowcard2.png'),player)]
+		if self.is_live == False: self.home_yellowcards = thesportsdb.Events().get_homeyellowcards(self.event_dict).split(';')
+		else: self.home_yellowcards = str(thesportsdb.Livematch().get_homeyellowcards(self.event_dict)).split(';')
+		
+		for yellow in self.home_yellowcards:
+			homeyellowdetails = re.compile("(\d+).+?\:(.*)").findall(yellow)
+			if homeyellowdetails:
+				for minute,player in homeyellowdetails:
+					if int(minute) in self.home_details.keys():
+						if player != '&nbsp':
+							self.home_details[int(minute)].append((os.path.join(addonpath,art,'yellowcard2.png'),player))
+					else:
+						if player != '&nbsp':
+							self.home_details[int(minute)] = [(os.path.join(addonpath,art,'yellowcard2.png'),player)]
 							
-			self.home_redcards = thesportsdb.Events().get_homeredcards(self.event_dict).split(';')
-			for red in self.home_redcards:
-				homereddetails = re.compile("(\d+).+?\:(.*)").findall(red)
-				if homereddetails:
-					for minute,player in homereddetails:
-						if int(minute) in self.home_details.keys():
-							if player != '&nbsp':
-								self.home_details[int(minute)].append((os.path.join(addonpath,art,'redcard2.png'),player))
-						else:
-							if player != '&nbsp':
-								self.home_details[int(minute)] = [(os.path.join(addonpath,art,'redcard2.png'),player)]
+		if self.is_live == False: self.home_redcards = thesportsdb.Events().get_homeredcards(self.event_dict).split(';')
+		else: self.home_redcards = str(thesportsdb.Livematch().get_homeredcards(self.event_dict)).split(';')
+		for red in self.home_redcards:
+			homereddetails = re.compile("(\d+).+?\:(.*)").findall(red)
+			if homereddetails:
+				for minute,player in homereddetails:
+					if int(minute) in self.home_details.keys():
+						if player != '&nbsp':
+							self.home_details[int(minute)].append((os.path.join(addonpath,art,'redcard2.png'),player))
+					else:
+						if player != '&nbsp':
+							self.home_details[int(minute)] = [(os.path.join(addonpath,art,'redcard2.png'),player)]
 			
-			self.home_details_listitems = []			
-			for key in reversed(sorted(self.home_details.keys())):
-				for detail in self.home_details[key]:
-					detail_img = detail[0]
-					detail_player = detail[1]
+		self.home_details_listitems = []			
+		for key in reversed(sorted(self.home_details.keys())):
+			for detail in self.home_details[key]:
+				detail_img = detail[0]
+				detail_player = detail[1]
 					
-					detail_item = xbmcgui.ListItem(str(key))
-					detail_item.setProperty('minute',"[B]%s': [/B]" % (str(key)))
-					detail_item.setProperty('detail_img',detail_img)
-					detail_item.setProperty('player',detail_player)
-					self.home_details_listitems.append(detail_item)
+				detail_item = xbmcgui.ListItem(str(key))
+				detail_item.setProperty('minute',"[B]%s': [/B]" % (str(key)))
+				detail_item.setProperty('detail_img',detail_img)
+				detail_item.setProperty('player',detail_player)
+				self.home_details_listitems.append(detail_item)
 					
-			self.getControl(987).addItems(self.home_details_listitems)
+		self.getControl(987).addItems(self.home_details_listitems)
 			
-			#fill away team match details
-			self.away_details = {}
+		#fill away team match details
+		self.away_details = {}
 			
-			self.away_goaldetails = thesportsdb.Events().get_awaygoaldetails(self.event_dict).split(';')
-			for goal in self.away_goaldetails:
-				awaygoaldetails = re.compile("(\d+).+?\:(.*)").findall(goal)
-				if awaygoaldetails:
-					for minute,player in awaygoaldetails:
-						if int(minute) in self.away_details.keys():
-							self.away_details[int(minute)].append((os.path.join(addonpath,art,'goal.png'),player))
-						else:
-							self.away_details[int(minute)] = [(os.path.join(addonpath,art,'goal.png'),player)]
+		if self.is_live == False: self.away_goaldetails = thesportsdb.Events().get_awaygoaldetails(self.event_dict).split(';')
+		else: self.away_goaldetails = str(thesportsdb.Livematch().get_away_goaldetails(self.event_dict)).split(';')
+		for goal in self.away_goaldetails:
+			awaygoaldetails = re.compile("(\d+).+?\:(.*)").findall(goal)
+			if awaygoaldetails:
+				for minute,player in awaygoaldetails:
+					if int(minute) in self.away_details.keys():
+						self.away_details[int(minute)].append((os.path.join(addonpath,art,'goal.png'),player))
+					else:
+						self.away_details[int(minute)] = [(os.path.join(addonpath,art,'goal.png'),player)]
 							
-			self.away_yellowcards = thesportsdb.Events().get_awayyellowcards(self.event_dict).split(';')
-			for yellow in self.away_yellowcards:
-				awayyellowdetails = re.compile("(\d+).+?\:(.*)").findall(yellow)
-				if awayyellowdetails:
-					for minute,player in awayyellowdetails:
-						if int(minute) in self.away_details.keys():
-							if player != '&nbsp':
-								self.away_details[int(minute)].append((os.path.join(addonpath,art,'yellowcard2.png'),player))
-						else:
-							if player != '&nbsp':
-								self.away_details[int(minute)] = [(os.path.join(addonpath,art,'yellowcard2.png'),player)]
+		if self.is_live == False: self.away_yellowcards = thesportsdb.Events().get_awayyellowcards(self.event_dict).split(';')
+		else: self.away_yellowcards = str(thesportsdb.Livematch().get_awayyellow(self.event_dict)).split(';')
+		for yellow in self.away_yellowcards:
+			awayyellowdetails = re.compile("(\d+).+?\:(.*)").findall(yellow)
+			if awayyellowdetails:
+				for minute,player in awayyellowdetails:
+					if int(minute) in self.away_details.keys():
+						if player != '&nbsp':
+							self.away_details[int(minute)].append((os.path.join(addonpath,art,'yellowcard2.png'),player))
+					else:
+						if player != '&nbsp':
+							self.away_details[int(minute)] = [(os.path.join(addonpath,art,'yellowcard2.png'),player)]
 							
-			self.away_redcards = thesportsdb.Events().get_awayredcards(self.event_dict).split(';')
-			for red in self.away_redcards:
-				awayreddetails = re.compile("(\d+).+?\:(.*)").findall(red)
-				if awayreddetails:
-					for minute,player in awayreddetails:
-						if int(minute) in self.away_details.keys():
-							if player != '&nbsp':
-								self.away_details[int(minute)].append((os.path.join(addonpath,art,'redcard2.png'),player))
-						else:
-							if player != '&nbsp':
-								self.away_details[int(minute)] = [(os.path.join(addonpath,art,'redcard2.png'),player)]
+		if self.is_live == False: self.away_redcards = thesportsdb.Events().get_awayredcards(self.event_dict).split(';')
+		else: self.away_redcards = str(thesportsdb.Livematch().get_away_redcards(self.event_dict)).split(';')
+		for red in self.away_redcards:
+			awayreddetails = re.compile("(\d+).+?\:(.*)").findall(red)
+			if awayreddetails:
+				for minute,player in awayreddetails:
+					if int(minute) in self.away_details.keys():
+						if player != '&nbsp':
+							self.away_details[int(minute)].append((os.path.join(addonpath,art,'redcard2.png'),player))
+					else:
+						if player != '&nbsp':
+							self.away_details[int(minute)] = [(os.path.join(addonpath,art,'redcard2.png'),player)]
 			
-			self.away_details_listitems = []			
-			for key in reversed(sorted(self.away_details.keys())):
-				for detail in self.away_details[key]:
-					detail_img = detail[0]
-					detail_player = detail[1]
+		self.away_details_listitems = []			
+		for key in reversed(sorted(self.away_details.keys())):
+			for detail in self.away_details[key]:
+				detail_img = detail[0]
+				detail_player = detail[1]
 					
-					detail_item = xbmcgui.ListItem(str(key))
-					detail_item.setProperty('minute',"[B]%s': [/B]" % (str(key)))
-					detail_item.setProperty('detail_img',detail_img)
-					detail_item.setProperty('player',detail_player)
-					self.away_details_listitems.append(detail_item)
+				detail_item = xbmcgui.ListItem(str(key))
+				detail_item.setProperty('minute',"[B]%s': [/B]" % (str(key)))
+				detail_item.setProperty('detail_img',detail_img)
+				detail_item.setProperty('player',detail_player)
+				self.away_details_listitems.append(detail_item)
 					
-			self.getControl(988).addItems(self.away_details_listitems)
-			xbmc.executebuiltin("SetProperty(detail,1,home)")
-			xbmc.sleep(200)
-			self.setFocusId(9022)
+		self.getControl(988).addItems(self.away_details_listitems)
+		xbmc.executebuiltin("SetProperty(detail,1,home)")
+		xbmc.sleep(200)
+		self.setFocusId(9022)
 					
 
 	def onClick(self,controlId):
@@ -1295,7 +1381,10 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 				self.event_lineup(self.event_dict,"home")
 			
 		elif controlId == 9028:
-			self.event_details(self.event_id)
+			if self.is_live == False:
+				self.event_details(self.event_id)
+			else:
+				self.event_details(self.live_dict)
 			
 	
 		
