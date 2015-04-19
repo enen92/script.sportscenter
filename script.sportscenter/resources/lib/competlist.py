@@ -95,7 +95,6 @@ class dialog_compet(xbmcgui.WindowXML):
 			leagueItem.setProperty('year', thesportsdb.Leagues().get_formedyear(league))
 			leagueItem.setProperty('sport', thesportsdb.Leagues().get_sport(league))
 			leagueItem.setProperty('country', thesportsdb.Leagues().get_country(league))
-			#en|de|fr|it|cn|jp|ru|es|pt|se|nl|hu|no|pl
 			#manipulate languages here
 			if settings.getSetting('addon-language') == '0':
 				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_en(league))

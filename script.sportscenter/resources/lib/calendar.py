@@ -3,6 +3,7 @@ import urllib
 import thesportsdb
 import datetime
 import os
+import re
 from random import randint
 from centerutils.common_variables import *
 from centerutils.datemanipulation import *
@@ -58,6 +59,7 @@ class dialog_league(xbmcgui.WindowXML):
 		
 
 	def fill_calendar(self,datestring):
+		items_to_add = []
 		#self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")
 		self.getControl(987).reset()
@@ -96,7 +98,19 @@ class dialog_league(xbmcgui.WindowXML):
 						elif event_sport == 'Golf': sport_logo = os.path.join(addonpath,art,'loadingsports','golf.png')
 						elif event_sport == 'American Football': sport_logo = os.path.join(addonpath,art,'loadingsports','american%20football.png')
 						
-						
+						#time stuff is indendent from the sport of the event
+						event_time = thesportsdb.Events().get_time(event)
+						time_match = re.compile('(.+?)\+').findall(event_time)
+						if time_match:
+							timetmp = time_match[0].split(':')
+							if len(timetmp) == 3:
+								event_time = timetmp[0] + ':' + timetmp[1]
+								event_order = int(timetmp[0] + timetmp[1])
+							
+						else:
+							event_time = 'N/A'
+							event_order = 30000
+							
 						
 						
 						if event_race:
@@ -125,6 +139,8 @@ class dialog_league(xbmcgui.WindowXML):
 						game.setProperty('league',event_league)
 						game.setProperty('sport_logo',sport_logo)
 						game.setProperty('sport',event_sport)
+						game.setProperty('event_time',event_time)
+						game.setProperty('event_order',str(event_order))
 						if not event_race:
 							if ' ' in home_team_name:
 								if len(home_team_name) > 12: game.setProperty('HomeTeamLong',home_team_name)
@@ -140,8 +156,24 @@ class dialog_league(xbmcgui.WindowXML):
 						game.setProperty('date',event_date)
 						if event_race: 
 							game.setProperty('EventName',event_name) 
-						self.getControl(987).addItem(game)
-				
+						items_to_add.append(game)
+		
+		#order the items here by start time
+		time_array = []
+		items_to_add_processed = []
+		for item in items_to_add:
+			time_array.append(int(item.getProperty('event_order')))
+		
+		for timestmp in sorted(time_array):
+			for item in items_to_add:
+				itemorder = int(item.getProperty('event_order'))
+				if itemorder == timestmp:
+					items_to_add_processed.append(item)
+					items_to_add.remove(item)
+		
+		self.getControl(987).addItems(items_to_add_processed)
+			
+						
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")

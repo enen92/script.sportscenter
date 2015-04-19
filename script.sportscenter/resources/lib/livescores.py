@@ -77,6 +77,14 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 					result = '%s-%s' % (home_goals,away_goals)
 					#league info
 					competition = thesportsdb.Livematch().get_league(event)
+					#Event time
+					time = thesportsdb.Livematch().get_date(event)
+					time_match = re.compile('.+?T(.+?)\+').findall(time)
+					if time_match:
+						#time and time manipulation goes here
+						game.setProperty('event_time',time_match[0])
+					
+					#TO-DO
 					#roundnum = thesportsdb.Livematch().get_round(event)
 					#if roundnum and roudnum != 'None':
 					#	competition = competition + ' - Round ' + roundnum

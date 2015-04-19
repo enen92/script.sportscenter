@@ -81,16 +81,28 @@
 
 				<itemlayout height="244" width="1530">
 					<control type="image">
-						<posx>10</posx>
+						<posx>40</posx>
 						<posy>10</posy>
 						<width>1530</width>
 						<height>244</height>
 						<texture border="1">separator2.png</texture>
 					</control>
+					<control type="label">
+						<description>hour</description>
+						<posx>70</posx>
+						<posy>210</posy>
+						<width>130</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_time)][/B]</label>
+						<font>font12_title</font>
+						<align>center</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
 					<control type="label" id="309">
 						<description>competition tag</description>
 						<posx>0</posx>
-						<posy>110</posy>
+						<posy>100</posy>
 						<width>260</width>
 						<height>40</height>
 						<label>$INFO[ListItem.Property(minutes)]</label>
@@ -102,7 +114,7 @@
 					<control type="progress" id="333">
 						<description>Progressbar</description>
 						<left>45</left>
-						<top>187</top>
+						<top>177</top>
 						<width>180</width>
 						<height>16</height>
 						<colordiffuse>88FFFFFF</colordiffuse>
@@ -111,7 +123,7 @@
 					</control>
 					<control type="image">
             				<posx>200</posx>
-            				<posy>110</posy>
+            				<posy>100</posy>
             				<width>60</width>
             				<height>60</height>
             				<texture>$INFO[ListItem.Property(is_live)]</texture>
@@ -277,10 +289,22 @@
 						<height>244</height>
 						<texture border="5">listselect_fo.png</texture>
 					</control>
+					<control type="label">
+						<description>hour</description>
+						<posx>70</posx>
+						<posy>210</posy>
+						<width>130</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_time)][/B]</label>
+						<font>font12_title</font>
+						<align>center</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
 					<control type="label" id="309">
 						<description>competition tag</description>
 						<posx>0</posx>
-						<posy>110</posy>
+						<posy>100</posy>
 						<width>260</width>
 						<height>40</height>
 						<label>$INFO[ListItem.Property(minutes)]</label>
@@ -292,7 +316,7 @@
 					<control type="progress" id="333">
 						<description>Progressbar</description>
 						<left>45</left>
-						<top>187</top>
+						<top>177</top>
 						<width>180</width>
 						<height>16</height>
 						<colordiffuse>88FFFFFF</colordiffuse>
@@ -301,7 +325,7 @@
 					</control>
 					<control type="image">
             				<posx>200</posx>
-            				<posy>110</posy>
+            				<posy>100</posy>
             				<width>60</width>
             				<height>60</height>
             				<texture>$INFO[ListItem.Property(is_live)]</texture>

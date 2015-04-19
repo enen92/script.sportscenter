@@ -363,7 +363,7 @@
 						<posy>75</posy>
 						<width>260</width>
 						<height>40</height>
-						<label>15:00</label>
+						<label>$INFO[ListItem.Property(event_time)]</label>
 						<font>font_MainMenu</font>
 						<align>center</align>
 						<textcolor>gold</textcolor>
@@ -524,7 +524,7 @@
 						<posy>75</posy>
 						<width>260</width>
 						<height>40</height>
-						<label>15:00</label>
+						<label>$INFO[ListItem.Property(event_time)]</label>
 						<font>font_MainMenu</font>
 						<align>center</align>
 						<textcolor>gold</textcolor>
