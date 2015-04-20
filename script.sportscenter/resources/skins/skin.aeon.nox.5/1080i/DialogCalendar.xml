@@ -174,7 +174,7 @@
 		<!-- End of topbar -->	
 		
 		
-
+		
 		
 		
 		
@@ -662,13 +662,13 @@
 		<!--Busy control-->
 		<control type="image" id="92">
 			<description>Busy animation</description>
-			<posx>1650</posx>
-			<posy>930</posy>
-			<width>150</width>
-			<height>150</height>
+			<posx>1380</posx>
+			<posy>520</posy>
+			<width>80</width>
+			<height>80</height>
 			<texture></texture>
 			<aspectratio>keep</aspectratio>
-			<animation effect="rotate" start="0" end="360" center="1725,1005" time="1200" loop="true" condition="true">conditional</animation>-->
+			<animation effect="rotate" start="0" end="360" center="1420,560" time="1200" loop="true" condition="true">conditional</animation>
 			<visible>!IsEmpty(Window(home).Property(loading))+!Player.HasMedia</visible>
 		</control>
 		
@@ -684,7 +684,30 @@
 			<label>LOADING...</label>
 			<visible>!IsEmpty(Window(home).Property(loading))+!Player.HasMedia</visible>
 		</control>
+		<control type="progress" id="94">
+			<left>800</left>
+			<top>640</top>
+			<width>800</width>
+			<height>67</height>
+			<colordiffuse>88FFFFFF</colordiffuse>
+			<texturebg border="2">osd/texturebg2.png</texturebg>
+			<info></info>
+			<visible>!IsEmpty(Window(home).Property(loading))+!Player.HasMedia</visible>
+		</control>
 		
+		<!--no matches indicator-->
+		<control type="label" id="93">
+			<top>520</top>
+			<left>750</left>
+			<width>830</width>
+			<height>90</height>
+			<font>font_MainMenu</font>
+			<textcolor>grey2</textcolor>
+			<aligny>center</aligny>
+			<align>center</align>
+			<label></label>
+		</control>
+		<!---->
 
 		
 		<!-- Control panel -->

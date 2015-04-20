@@ -4,6 +4,7 @@ import thesportsdb
 from centerutils.common_variables import *
 from centerutils.iofile import *
 import competlist as competlist
+import teamview
 
 def start(data_list):
 	window = dialog_context('DialogContext.xml',addonpath,'Default',str(data_list))
@@ -36,7 +37,15 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 			else:
 				menu_items.append(('Remove from livescores listing','rmleaguelivescores'))
 			menu_items.append(('Add to widgets','addtowidgets'))
-
+		elif self.mode == 'calendaritem':
+			menu_items = []
+			self.event_dict = thesportsdb.Lookups().lookupevent(self.specific_id)["events"][0]
+			if not thesportsdb.Events().get_racelocation(self.event_dict):
+				menu_items.append(('View home team details','hometeamdetails'))
+				menu_items.append(('Navigate to home team','hometeammain'))
+				menu_items.append(('View away team details','awayteamdetails'))
+				menu_items.append(('Navigate to away team','awayteammain'))
+			menu_items.append(('Ignore competition from calendar','rmleaguecalendar'))
 			
 		
 		#set menu dimensions according to the number of menu items
@@ -99,6 +108,27 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 			elif self.identifier == 'addleaguelivescores':
 				self.close()
 				add_leaguelivescores(self.specific_id)
+				
+			elif self.identifier == 'hometeamdetails':
+				self.team_id = thesportsdb.Events().get_hometeamid(self.event_dict)
+				teamview.teamdetails(self.team_id)
+				
+			elif self.identifier == 'awayteamdetails':
+				self.team_id = thesportsdb.Events().get_awayteamid(self.event_dict)
+				teamview.teamdetails(self.team_id)
+				
+			elif self.identifier == 'hometeammain':
+				self.close()
+				self.team_id = thesportsdb.Events().get_hometeamid(self.event_dict)
+				self.sport = thesportsdb.Events().get_sport(self.event_dict)
+				teamview.start([self.team_id,self.sport,'',''])
+				
+				
+			elif self.identifier == 'awayteammain':
+				self.close()
+				self.team_id = thesportsdb.Events().get_awayteamid(self.event_dict)
+				self.sport = thesportsdb.Events().get_sport(self.event_dict)
+				teamview.start([self.team_id,self.sport,'',''])
 			
 			
 						

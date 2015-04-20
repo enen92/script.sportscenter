@@ -9,6 +9,7 @@ from centerutils.common_variables import *
 from centerutils.datemanipulation import *
 import competlist as competlist
 import teamview as teamview
+import contextmenubuilder
 
 def start(data_list):
 	window = dialog_league('DialogCalendar.xml',addonpath,'Default',str(data_list))
@@ -17,8 +18,7 @@ def start(data_list):
 class dialog_league(xbmcgui.WindowXML):
 	def __init__( self, *args, **kwargs ):
 		xbmcgui.WindowXML.__init__(self)
-		#self.league = eval(eval(args[3])[0])
-		#self.sport = eval(args[3])[1]
+		self.date_string = eval(args[3])
 
 	def onInit(self):	
 	
@@ -52,23 +52,30 @@ class dialog_league(xbmcgui.WindowXML):
 			menu_entry.setProperty('menu_entry', data_string)
 			menu_entry.setProperty('entry_date', date)
 			self.getControl(983).addItem(menu_entry)
-			
-		self.setFocusId(983)
-		self.getControl(983).selectItem(0)
-		self.fill_calendar(menu[0][1])
+		
+		#use this to direct navigation to a given date!	
+		if not self.date_string:
+			self.setFocusId(983)
+			self.getControl(983).selectItem(0)
+			self.fill_calendar(menu[0][1])
 		
 
 	def fill_calendar(self,datestring):
+		self.getControl(93).setVisible(False)
 		items_to_add = []
-		#self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
+		self.getControl(94).setPercent(0)
+		self.getControl(92).setImage(os.path.join(addonpath,art,'busy.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")
 		self.getControl(987).reset()
 		#next matches stuff
 		#event_next_list = thesportsdb.Schedules().eventsnextleague("4328")["events"]
 		event_next_list = thesportsdb.Schedules().eventsday(datestring,None,None)["events"]
+		total_events = len(event_next_list)
+		j = 0
 		if event_next_list:
 			for event in event_next_list:
 				event_sport = thesportsdb.Events().get_sport(event)
+				event_id = thesportsdb.Events().get_eventid(event)
 				#check if event belongs to blocked sport strSport
 				if event_sport == 'Soccer' and settings.getSetting('enable-football') == 'false' and settings.getSetting('calendar-disabledsports') == 'true': pass
 				elif event_sport == 'Basketball' and settings.getSetting('enable-basketball') == 'false' and settings.getSetting('calendar-disabledsports') == 'true': pass
@@ -141,6 +148,7 @@ class dialog_league(xbmcgui.WindowXML):
 						game.setProperty('sport',event_sport)
 						game.setProperty('event_time',event_time)
 						game.setProperty('event_order',str(event_order))
+						game.setProperty('event_id',event_id)
 						if not event_race:
 							if ' ' in home_team_name:
 								if len(home_team_name) > 12: game.setProperty('HomeTeamLong',home_team_name)
@@ -157,25 +165,35 @@ class dialog_league(xbmcgui.WindowXML):
 						if event_race: 
 							game.setProperty('EventName',event_name) 
 						items_to_add.append(game)
+						
+						#try to set progress bar here
+						#for the events presented
+						j+=1
+						self.getControl(94).setPercent(int(float(j)/total_events*100))
+					#for the events not presented
+					j+=1
+					self.getControl(94).setPercent(int(float(j)/total_events*100))
 		
 		
-		#order the items here by start time
-		time_array = []
-		items_to_add_processed = []
-		for item in items_to_add:
-			time_array.append(int(item.getProperty('event_order')))
-		
-		for timestmp in sorted(time_array):
+			#order the items here by start time
+			time_array = []
+			items_to_add_processed = []
 			for item in items_to_add:
-				itemorder = int(item.getProperty('event_order'))
-				if itemorder == timestmp:
-					items_to_add_processed.append(item)
-					items_to_add.remove(item)
+				time_array.append(int(item.getProperty('event_order')))
+		
+			for timestmp in sorted(time_array):
+				for item in items_to_add:
+					itemorder = int(item.getProperty('event_order'))
+					if itemorder == timestmp:
+						items_to_add_processed.append(item)
+						items_to_add.remove(item)
 					
 	
-		self.getControl(987).addItems(items_to_add_processed)
-			
-						
+			if items_to_add_processed: self.getControl(987).addItems(items_to_add_processed)
+			else:
+				self.getControl(93).setVisible(True)
+				self.getControl(93).setLabel('No events available!')
+									
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
@@ -192,43 +210,14 @@ class dialog_league(xbmcgui.WindowXML):
 
 
 		
-#	def onAction(self,action):
-#		if action == 92 or action == 'PreviousMenu':
-#			#if not self.control_panel: 
-#			if 2==1:
-#				pass
-				#xbmc.executebuiltin("ClearProperty(MediaMenu,Home)")
-				#self.setFocusId(980)
-#			else: 
-				#pass
-#				self.close()
-				#competlist.start(self.sport)
-#		else:
-#			checkjersey = xbmc.getCondVisibility("Control.HasFocus(981)")
-#			checkbadge = xbmc.getCondVisibility("Control.HasFocus(985)")
-#			checkplot = xbmc.getCondVisibility("Control.HasFocus(980)")
-#			checkbanner = xbmc.getCondVisibility("Control.HasFocus(984)")
-#			checklastmatch = xbmc.getCondVisibility("Control.HasFocus(988)")
-#			checknextmatch = xbmc.getCondVisibility("Control.HasFocus(987)")
-#			
-#			if checkbadge or checkplot or checkbanner or checklastmatch or checknextmatch or checkjersey:
-#				if checkbadge:
-#					fanart = self.getControl(985).getSelectedItem().getProperty('team_fanart')
-#				elif checkplot:
-#					fanart = self.getControl(980).getSelectedItem().getProperty('team_fanart')
-#				elif checkbanner:
-#					fanart = self.getControl(984).getSelectedItem().getProperty('team_fanart')
-#				elif checkjersey:
-#					fanart = self.getControl(981).getSelectedItem().getProperty('team_fanart')
-#				elif checklastmatch:
-#					fanart = self.getControl(988).getSelectedItem().getProperty('StadiumThumb')
-#					if not fanart or fanart == 'None': fanart = self.league_fanart
-#				elif checknextmatch:
-#					fanart = self.getControl(987).getSelectedItem().getProperty('StadiumThumb')
-#					if not fanart or fanart == 'None': fanart = self.league_fanart
-#				self.getControl(912).setImage(fanart)
-#			else: 
-#				if self.league_fanart: self.getControl(912).setImage(self.league_fanart)
+	def onAction(self,action):
+		if action.getId() == 92 or action.getId() == 10:
+			self.close()
+
+		elif action.getId() == 117: #contextmenu
+			if xbmc.getCondVisibility("Control.HasFocus(987)"): container = 987
+			self.specific_id = self.getControl(container).getSelectedItem().getProperty('event_id')
+			contextmenubuilder.start(['calendaritem',self.specific_id])	
 
 			
 	def onClick(self,controlId):
