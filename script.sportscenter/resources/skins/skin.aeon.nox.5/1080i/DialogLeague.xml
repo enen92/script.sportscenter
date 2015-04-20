@@ -1615,8 +1615,8 @@
 						<posy>200</posy>
 						<width>800</width>
 						<height>20</height>
-						<label>$INFO[ListItem.Property(date)]</label>
-						<font>font12_title</font>
+						<label>[B]$INFO[ListItem.Property(date)][/B]</label>
+						<font>font12</font>
 						<align>center</align>
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
@@ -1627,7 +1627,7 @@
 						<posy>30</posy>
 						<width>800</width>
 						<height>20</height>
-						<label>$INFO[ListItem.Property(round)]</label>
+						<label>[B]$INFO[ListItem.Property(round)][/B]</label>
 						<font>font12_title</font>
 						<align>center</align>
 						<textcolor>FFB2D4F5</textcolor>
@@ -1681,19 +1681,18 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<!--<control type="label" id="315">
-						<description>competition tag</description>
-						<posx>235</posx>
-						<posy>105</posy>
-						<width>250</width>
-						<height>40</height>
-						<label>$INFO[ListItem.Property(HomeTeam)]</label>
-						<wrapmultiline>true</wrapmultiline>
-						<font>font16_title_bold</font>
+					<control type="label" id="309">
+						<description>round</description>
+						<posx>200</posx>
+						<posy>30</posy>
+						<width>800</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(round)][/B]</label>
+						<font>font12_title</font>
 						<align>center</align>
-						<textcolor>white</textcolor>
+						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
-					</control>-->
+					</control>
 					<control type="label" id="310">
 						<description>competition tag</description>
 						<posx>235</posx>
@@ -1759,8 +1758,8 @@
 						<posy>200</posy>
 						<width>800</width>
 						<height>20</height>
-						<label>$INFO[ListItem.Property(date)]</label>
-						<font>font12_title</font>
+						<label>[B]$INFO[ListItem.Property(date)][/B]</label>
+						<font>font12</font>
 						<align>center</align>
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
@@ -1922,8 +1921,8 @@
 						<posy>200</posy>
 						<width>800</width>
 						<height>20</height>
-						<label>$INFO[ListItem.Property(date)]</label>
-						<font>font12_title</font>
+						<label>[B]$INFO[ListItem.Property(date)][/B]</label>
+						<font>font12</font>
 						<align>center</align>
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
@@ -1934,7 +1933,7 @@
 						<posy>30</posy>
 						<width>800</width>
 						<height>20</height>
-						<label>$INFO[ListItem.Property(round)]</label>
+						<label>[B]$INFO[ListItem.Property(round)][/B]</label>
 						<font>font12_title</font>
 						<align>center</align>
 						<textcolor>FFB2D4F5</textcolor>
@@ -2053,8 +2052,8 @@
 						<posy>200</posy>
 						<width>800</width>
 						<height>20</height>
-						<label>$INFO[ListItem.Property(date)]</label>
-						<font>font12_title</font>
+						<label>[B]$INFO[ListItem.Property(date)][/B]</label>
+						<font>font12</font>
 						<align>center</align>
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
@@ -2065,7 +2064,7 @@
 						<posy>30</posy>
 						<width>800</width>
 						<height>20</height>
-						<label>$INFO[ListItem.Property(round)]</label>
+						<label>[B]$INFO[ListItem.Property(round)][/B]</label>
 						<font>font12_title</font>
 						<align>center</align>
 						<textcolor>FFB2D4F5</textcolor>

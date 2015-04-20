@@ -136,6 +136,18 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 					string = 'In ' + str(day_difference) + ' days'
 				
 				self.getControl(42).setLabel(string)
+			#event time processing is done here as it is independent from sport
+			self.event_time = thesportsdb.Events().get_time(self.nextevent)
+			self.event_timematch = re.compile('(.+?)\+').findall(self.event_time)
+			if self.event_timematch:
+				#timezone manipulation goes here
+				event_timetmp = self.event_timematch[0].split(':')
+				if len(event_timetmp) == 3:
+					self.hour = event_timetmp[0]
+					self.minute = event_timetmp[1]
+					self.event_time = self.hour + ':' + self.minute
+				else: self.event_time = self.event_timematch[0]
+				self.getControl(45).setLabel(self.event_time)
 
 
 		
@@ -354,6 +366,20 @@ class dialog_team(xbmcgui.WindowXML):
 				
 					self.getControl(42).setLabel(string)
 			except: pass
+			#event time processing is done here as it is independent from sport
+			self.event_time = thesportsdb.Events().get_time(self.nextevent)
+			self.event_timematch = re.compile('(.+?)\+').findall(self.event_time)
+			if self.event_timematch:
+				#timezone manipulation goes here
+				event_timetmp = self.event_timematch[0].split(':')
+				if len(event_timetmp) == 3:
+					self.hour = event_timetmp[0]
+					self.minute = event_timetmp[1]
+					self.event_time = self.hour + ':' + self.minute
+				else: self.event_time = self.event_timematch[0]
+			else: self.event_time = ''
+			self.getControl(43).setLabel(self.event_time)
+			
 		
 		
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
@@ -501,6 +527,18 @@ class dialog_team(xbmcgui.WindowXML):
 		if event_next_list:
 			for event in event_next_list:
 				event_date = thesportsdb.Events().get_eventdate(event)
+				#event time processing is done here as it is independent from sport
+				event_time = thesportsdb.Events().get_time(event)
+				event_timematch = re.compile('(.+?)\+').findall(event_time)
+				if event_timematch:
+					#timezone manipulation goes here
+					event_timetmp = event_timematch[0].split(':')
+					if len(event_timetmp) == 3:
+						hour = event_timetmp[0]
+						minute = event_timetmp[1]
+						event_time = ' - ' + hour + ':' + minute
+					else: event_time = event_timematch[0]
+				else: event_time = ''
 				event_date_parsed = event_date.split('-')
 				if event_date_parsed:
 					now = datetime.datetime.now()
@@ -509,8 +547,8 @@ class dialog_team(xbmcgui.WindowXML):
 					day_difference = abs(eventdate - datenow).days
 					if day_difference == 0: presented_date='Today'
 					elif day_difference == 1: presented_date='Tomorrow'
-					else: presented_date = event_date_parsed[2] + ' ' + get_month_short(event_date_parsed[1]) +' ('+str(day_difference)+' days)'
-				else: presented_date = event_date_parsed[2] + '-' + get_month_short(event_date_parsed[1])
+					else: presented_date = event_date_parsed[2] + ' ' + get_month_short(event_date_parsed[1]) +event_time+' [COLOR white](In '+str(day_difference)+' days)[/COLOR]'
+				else: presented_date = event_date_parsed[2] + '-' + get_month_short(event_date_parsed[1]) +event_time
 				event_fullname = thesportsdb.Events().get_eventtitle(event)
 				event_race = thesportsdb.Events().get_racelocation(event)
 				if event_race:
@@ -603,6 +641,19 @@ class dialog_team(xbmcgui.WindowXML):
 				event_date = thesportsdb.Events().get_eventdate(event)
 				event_fullname = thesportsdb.Events().get_eventtitle(event)
 				event_race = thesportsdb.Events().get_racelocation(event)
+				#event time processing is done here as it is independent from sport
+				event_time = thesportsdb.Events().get_time(event)
+				event_timematch = re.compile('(.+?)\+').findall(event_time)
+				if event_timematch:
+					#timezone manipulation goes here
+					event_timetmp = event_timematch[0].split(':')
+					if len(event_timetmp) == 3:
+						hour = event_timetmp[0]
+						minute = event_timetmp[1]
+						event_time = ' - ' + hour + ':' + minute
+					else: event_time = event_timematch[0]
+				else: event_time = ''
+				
 				if event_race:
 					home_team_logo = os.path.join(addonpath,art,'raceflag.png')
 					event_name = thesportsdb.Events().get_eventtitle(event)
@@ -627,6 +678,32 @@ class dialog_team(xbmcgui.WindowXML):
 						round_label = 'Round ' + str(event_round)
 				
 				
+				#Extensive date manipulation here x/x/x to -> x Month Year
+				date_vector = event_date.split('-')
+				try:
+					if len(date_vector) == 3:
+						day = date_vector[2]
+						year = date_vector[0]
+						month = get_month_long(date_vector[1])
+						extensiveday = '%s %s %s' % (day,month,year)
+				except: extensiveday = event_date
+				
+				#day difference is calculated here
+				nextdate = event_date.split('-')
+				if len(nextdate) == 3:
+					now = datetime.datetime.now()
+					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day))
+					eventdate = datetime.datetime(int(nextdate[0]), int(nextdate[1]), int(nextdate[2]))
+					day_difference = abs(eventdate - datenow).days
+					if day_difference == 0:
+						timedelay = '[COLOR white] (Today)[/COLOR]'
+					elif day_difference == 1:
+						timedelay = '[COLOR white] (Yesterday)[/COLOR]'
+					else:
+						timedelay = '[COLOR white] (' + str(day_difference) + ' days ago)[/COLOR]'
+				else: timedelay = ''
+				
+				
 				game = xbmcgui.ListItem(event_fullname)
 				game.setProperty('HomeTeamLogo',home_team_logo)
 				game.setProperty('event_id',event_id)
@@ -644,8 +721,10 @@ class dialog_team(xbmcgui.WindowXML):
 					game.setProperty('match_result',result)
 					if event_round: game.setProperty('round',round_label)
 				else:
-					game.setProperty('EventName',event_name) 
-				game.setProperty('date',event_date)
+					game.setProperty('EventName',event_name)
+				# date + time + timedelay
+				event_timestring = extensiveday + event_time + timedelay
+				game.setProperty('date',event_timestring)
 				self.getControl(988).addItem(game)
 		
 		#Set percentage		

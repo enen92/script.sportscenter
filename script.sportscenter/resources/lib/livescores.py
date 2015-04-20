@@ -82,7 +82,12 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 					time_match = re.compile('.+?T(.+?)\+').findall(time)
 					if time_match:
 						#time and time manipulation goes here
-						game.setProperty('event_time',time_match[0])
+						if len(time_match[0].split(':')) == 3:
+							hour = time_match[0].split(':')[0]
+							minute = time_match[0].split(':')[1]
+							time_match = hour + ':' + minute
+						else: time_match = time_match[0]
+						game.setProperty('event_time',time_match)
 					
 					#TO-DO
 					#roundnum = thesportsdb.Livematch().get_round(event)
