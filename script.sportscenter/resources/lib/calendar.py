@@ -4,6 +4,7 @@ import thesportsdb
 import datetime
 import os
 import re
+import threading
 from random import randint
 from centerutils.common_variables import *
 from centerutils.datemanipulation import *
@@ -12,10 +13,10 @@ import teamview as teamview
 import contextmenubuilder
 
 def start(data_list):
-	window = dialog_league('DialogCalendar.xml',addonpath,'Default',str(data_list))
+	window = dialog_calendar('DialogCalendar.xml',addonpath,'Default',str(data_list))
 	window.doModal()
 	
-class dialog_league(xbmcgui.WindowXML):
+class dialog_calendar(xbmcgui.WindowXML):
 	def __init__( self, *args, **kwargs ):
 		xbmcgui.WindowXML.__init__(self)
 		self.date_string = eval(args[3])
@@ -53,11 +54,13 @@ class dialog_league(xbmcgui.WindowXML):
 			menu_entry.setProperty('entry_date', date)
 			self.getControl(983).addItem(menu_entry)
 		
-		#use this to direct navigation to a given date!	
+		#use this to direct navigation to a given date!
+		threading.Thread(name='watcher', target=self.watcher).start()
 		if not self.date_string:
 			self.setFocusId(983)
 			self.getControl(983).selectItem(0)
-			self.fill_calendar(menu[0][1])
+			self.date_string = menu[0][1]
+			self.fill_calendar(self.date_string)
 		
 
 	def fill_calendar(self,datestring):
@@ -208,6 +211,13 @@ class dialog_league(xbmcgui.WindowXML):
 
 		self.getControl(2).setLabel("League: NextMatchView")
 
+	def watcher(self,):
+		while not xbmc.abortRequested:
+			rmleaguescalendar = os.listdir(ignoreleaguecalendar)
+			if self.rmleaguescalendar != rmleaguescalendar:
+				self.rmleaguescalendar = rmleaguescalendar
+				self.fill_calendar(self.date_string)
+			xbmc.sleep(200)
 
 		
 	def onAction(self,action):
@@ -224,6 +234,7 @@ class dialog_league(xbmcgui.WindowXML):
 		if controlId == 983:
 			listControl = self.getControl(controlId)
 			selected_date=listControl.getSelectedItem().getProperty('entry_date')
+			self.date_string = selected_date
 			self.fill_calendar(selected_date)
 					
 		elif controlId == 980 or controlId == 984 or controlId == 985 or controlId == 981:

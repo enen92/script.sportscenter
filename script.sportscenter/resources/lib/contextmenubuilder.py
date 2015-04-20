@@ -45,7 +45,7 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 				menu_items.append(('Navigate to home team','hometeammain'))
 				menu_items.append(('View away team details','awayteamdetails'))
 				menu_items.append(('Navigate to away team','awayteammain'))
-			menu_items.append(('Ignore competition from calendar','rmleaguecalendar'))
+			menu_items.append(('Ignore competition from calendar','rmleaguecalendar_calendar'))
 			
 		
 		#set menu dimensions according to the number of menu items
@@ -129,6 +129,11 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 				self.team_id = thesportsdb.Events().get_awayteamid(self.event_dict)
 				self.sport = thesportsdb.Events().get_sport(self.event_dict)
 				teamview.start([self.team_id,self.sport,'',''])
+			
+			elif self.identifier == 'rmleaguecalendar_calendar':
+				self.close()
+				self.league_id = thesportsdb.Events().get_leagueid(self.event_dict)
+				rm_leaguecalendar(self.league_id)
 			
 			
 						
