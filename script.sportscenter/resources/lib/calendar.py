@@ -54,7 +54,7 @@ class dialog_calendar(xbmcgui.WindowXML):
 			menu_entry.setProperty('entry_date', date)
 			self.getControl(983).addItem(menu_entry)
 		
-		#use this to direct navigation to a given date!
+		#use this to direct navigation to a given date! -TODO
 		threading.Thread(name='watcher', target=self.watcher).start()
 		if not self.date_string:
 			self.setFocusId(983)
@@ -109,15 +109,19 @@ class dialog_calendar(xbmcgui.WindowXML):
 						elif event_sport == 'American Football': sport_logo = os.path.join(addonpath,art,'loadingsports','american%20football.png')
 						
 						#time stuff is indendent from the sport of the event
-						event_time = thesportsdb.Events().get_time(event)
-						time_match = re.compile('(.+?)\+').findall(event_time)
-						if time_match:
-							timetmp = time_match[0].split(':')
-							if len(timetmp) == 3:
-								event_time = timetmp[0] + ':' + timetmp[1]
-								event_order = int(timetmp[0] + timetmp[1])
+						try:
+							event_time = thesportsdb.Events().get_time(event)
+							time_match = re.compile('(.+?)\+').findall(event_time)
+							if time_match:
+								timetmp = time_match[0].split(':')
+								if len(timetmp) == 3:
+									event_time = timetmp[0] + ':' + timetmp[1]
+									event_order = int(timetmp[0] + timetmp[1])
 							
-						else:
+							else:
+								event_time = 'N/A'
+								event_order = 30000
+						except:
 							event_time = 'N/A'
 							event_order = 30000
 							
