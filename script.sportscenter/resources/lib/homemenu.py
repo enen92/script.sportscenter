@@ -527,6 +527,7 @@ class dialog_home(xbmcgui.WindowXML):
 					self.set_favourite_data()
 				self.lasttime = now
 		else:
+			#TODO - add fanart to list below
 			if not xbmc.getCondVisibility("Control.HasFocus(983)") and not xbmc.getCondVisibility("Control.HasFocus(9024)") and not xbmc.getCondVisibility("Control.HasFocus(9023)"):
 				self.set_fanart()
 				self.set_favourite_data()

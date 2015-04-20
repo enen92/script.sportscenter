@@ -44,7 +44,8 @@ class dialog_league(xbmcgui.WindowXML):
 		
 		if self.sport == 'soccer' or self.sport == 'football':	
 			menu.append(('League Tables','tables'))
-		menu.append(('Fixtures(!)','fixtures'))
+		if self.sport == 'soccer' or self.sport == 'football':	
+			menu.append(('Fixtures','fixtures'))
 		menu.append(('Teams','teams'))
 		menu.append(('Latest Events','lastmatch'))
 		menu.append(('Next Events','nextmatch'))
@@ -242,6 +243,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
+		xbmc.executebuiltin("ClearProperty(fixturesview,Home)")
 		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
@@ -263,6 +265,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
+		xbmc.executebuiltin("ClearProperty(fixturesview,Home)")
 		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
 		xbmc.executebuiltin("SetProperty(badgeview,1,home)")
@@ -279,6 +282,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
+		xbmc.executebuiltin("ClearProperty(fixturesview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
@@ -297,6 +301,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
 		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
+		xbmc.executebuiltin("ClearProperty(fixturesview,Home)")
 		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
@@ -329,6 +334,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
+		xbmc.executebuiltin("ClearProperty(fixturesview,Home)")
 		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
 		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
@@ -387,6 +393,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
+		xbmc.executebuiltin("ClearProperty(fixturesview,Home)")
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
 		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
@@ -511,6 +518,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
+		xbmc.executebuiltin("ClearProperty(fixturesview,Home)")
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextview,Home)")
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
@@ -638,6 +646,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
+		xbmc.executebuiltin("ClearProperty(fixturesview,Home)")
 		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextview,Home)")
 		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
@@ -646,6 +655,133 @@ class dialog_league(xbmcgui.WindowXML):
 		settings.setSetting("view_type_league",'lastmatchview')
 
 		self.getControl(2).setLabel("League: LastMatchView")
+		
+	def setfixturesview(self,roundnum = None):	
+		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
+		xbmc.executebuiltin("SetProperty(loading,1,home)")	
+		#last matches stuff
+		self.roundnum = '1'
+		if not roundnum:
+			event_last_list = thesportsdb.Schedules().eventspastleague(self.league_id)["events"]
+			event_next_list = thesportsdb.Schedules().eventsnextleague(self.league_id)["events"]
+			if event_next_list:
+				if event_last_list:
+					roundlast = thesportsdb.Events().get_round(event_last_list[0])
+					roundnext = thesportsdb.Events().get_round(event_next_list[0])
+					if roundlast == roundnext: self.roundnum = roundlast
+					else: self.roundnum = roundnext
+				else:
+					self.roundnum = thesportsdb.Events().get_round(event_next_list[0])	
+			else:
+				#set round as last list
+				if event_last_list:
+					self.roundnum = thesportsdb.Events().get_round(event_last_list[0])
+				else: sys.exit(0) #TODO close progress
+		
+		print "teste",self.roundnum
+		
+		
+		
+		league_teams = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
+		if event_last_list:
+			for event in event_last_list:
+
+				event_date = thesportsdb.Events().get_eventdate(event)
+				event_fullname = thesportsdb.Events().get_eventtitle(event)
+				event_race = thesportsdb.Events().get_racelocation(event)
+				event_id = thesportsdb.Events().get_eventid(event)
+				#event time processing is done here as it is independent from sport
+				event_time = thesportsdb.Events().get_time(event)
+				event_timematch = re.compile('(.+?)\+').findall(event_time)
+				if event_timematch:
+					#timezone manipulation goes here
+					event_timetmp = event_timematch[0].split(':')
+					if len(event_timetmp) == 3:
+						hour = event_timetmp[0]
+						minute = event_timetmp[1]
+						event_time = ' - ' + hour + ':' + minute
+					else: event_time = event_timematch[0]
+				else: event_time = ''
+				if event_race:
+					home_team_logo = os.path.join(addonpath,art,'raceflag.png')
+					event_name = thesportsdb.Events().get_eventtitle(event)
+					event_round = ''
+				else:
+					home_team_dict = None
+					home_team_id = thesportsdb.Events().get_hometeamid(event)
+					for team in league_teams:
+						if thesportsdb.Teams().get_id(team) == home_team_id:
+							home_team_dict = team
+							break
+					#make the lookup only if we can't match the team
+					if not home_team_dict: home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
+					
+					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
+					else: home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
+					home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
+					stadium_fanart = thesportsdb.Teams().get_stadium_thumb(home_team_dict)
+					away_team_id = thesportsdb.Events().get_awayteamid(event)
+					away_team_dict = None
+					for team in league_teams:
+						if thesportsdb.Teams().get_id(team) == away_team_id:
+							away_team_dict = team
+							break
+					#make the request only if we can't match the team
+					if not away_team_dict: away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
+					
+					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
+					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
+					away_team_logo = thesportsdb.Teams().get_badge(away_team_dict)
+					home_score = thesportsdb.Events().get_homescore(event)
+					away_score = thesportsdb.Events().get_awayscore(event)
+					result = str(home_score) + '-' + str(away_score)
+					#event_round = thesportsdb.Events().get_round(event)
+					#if event_round:
+					#	round_label = 'Round ' + str(event_round)
+				
+				#Extensive date manipulation here x/x/x to -> x Month Year
+				date_vector = event_date.split('-')
+				try:
+					if len(date_vector) == 3:
+						day = date_vector[2]
+						year = date_vector[0]
+						month = get_month_long(date_vector[1])
+						extensiveday = '%s %s %s' % (day,month,year)
+				except: extensiveday = event_date
+				
+							
+				game = xbmcgui.ListItem(event_fullname)
+				game.setProperty('HomeTeamLogo',home_team_logo)
+				if not event_race:
+					game.setProperty('HomeTeamLong',home_team_name)
+					game.setProperty('AwayTeamLogo',away_team_logo)
+					game.setProperty('StadiumThumb',stadium_fanart)
+					game.setProperty('AwayTeamLong',away_team_name)
+					game.setProperty('match_result',result)
+					game.setProperty('event_id',event_id)
+					#if event_round: game.setProperty('round',round_label)
+				else:
+					game.setProperty('EventName',event_name)
+				# date + time + timedelay
+				event_timestring = extensiveday + event_time
+				game.setProperty('date',event_timestring)
+				self.getControl(988).addItem(game)
+		
+		xbmc.executebuiltin("ClearProperty(loading,Home)")
+		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
+		xbmc.executebuiltin("ClearProperty(plotview,Home)")
+		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
+		xbmc.executebuiltin("ClearProperty(videosview,Home)")
+		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
+		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
+		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
+		xbmc.executebuiltin("ClearProperty(nextview,Home)")
+		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
+		xbmc.executebuiltin("ClearProperty(newsview,Home)")
+		xbmc.executebuiltin("SetProperty(fixturesview,1,home)")
+		settings.setSetting("view_type_league",'fixturesview')
+
+		self.getControl(2).setLabel("League: FixturesView")
 		
 	def setvideosview(self):
 	
@@ -674,6 +810,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(bannerview,Home)")
 		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
 		xbmc.executebuiltin("ClearProperty(nextview,Home)")
+		xbmc.executebuiltin("ClearProperty(fixturesview,Home)")
 		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
 		xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
@@ -743,15 +880,18 @@ class dialog_league(xbmcgui.WindowXML):
 				else:
 					self.setbadgeview()
 			elif seleccionado == 'home':
-					self.setplotview()
+				self.setplotview()
 			elif seleccionado == 'nextmatch':
-					self.setnextmatchview()
+				self.setnextmatchview()
 			elif seleccionado == 'lastmatch':
-					self.setlastmatchview()
+				self.setlastmatchview()
 			elif seleccionado == 'videos':
-					self.setvideosview()
+				self.setvideosview()
 			elif seleccionado == 'tables':
-					self.settablesview()
+				self.settablesview()
+			elif seleccionado == 'fixtures':
+				self.setfixturesview()
+			
 					
 		elif controlId == 980 or controlId == 984 or controlId == 985 or controlId == 981 or controlId == 990:
 			self.team = self.getControl(controlId).getSelectedItem().getProperty('team_id')
