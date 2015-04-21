@@ -170,8 +170,18 @@ class dialog_calendar(xbmcgui.WindowXML):
 							game.setProperty('vs','VS')
 						game.setProperty('date',event_date)
 						if event_race: 
-							game.setProperty('EventName',event_name) 
-						items_to_add.append(game)
+							game.setProperty('EventName',event_name)
+						try:
+							now = datetime.datetime.now()
+							print datestring.split('-')
+							eventdate = datetime.datetime(year=int(datestring.split('-')[0]),month=int(datestring.split('-')[1]),day=int(datestring.split('-')[2]),hour=int(event_time.split(':')[0]),minute=int(event_time.split(':')[1]))
+							if eventdate > now:
+								hour_diff = (eventdate-now).seconds/3600
+							else: hour_diff = ((now-eventdate).seconds/3600)*(-1)
+							if settings.getsetting('calendar-disabledpassed') == 'true' and hour_diff > settings.getSetting('calendar-disabledpassed-delay'): pass
+							else: items_to_add.append(game)
+						
+						except:items_to_add.append(game)
 						
 						#try to set progress bar here
 						#for the events presented
