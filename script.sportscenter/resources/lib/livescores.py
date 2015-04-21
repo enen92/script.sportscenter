@@ -19,6 +19,7 @@ import xbmcplugin
 import urllib
 import thesportsdb
 import datetime
+import threading
 from centerutils.common_variables import *
 from centerutils.datemanipulation import *
 from centerutils.caching import *
@@ -34,12 +35,25 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 		xbmcgui.WindowXML.__init__(self)
 
 	def onInit(self):
+		#save window open timestamp 
+		self.livescores_timestamp = datetime.datetime.now()
+		
+		
 		#check if the panel has content to know if necessary to bring up loading controls
 		self.getControl(92).setImage(os.path.join(addonpath,art,'busy.png'))
+		threading.Thread(name='livescoreupdater', target=self.livescore_updthrd).start()
 		number_of_items = self.getControl(987).size()
 		if number_of_items <= 0:
 			xbmc.executebuiltin("SetProperty(loading,1,home)")
 			self.fill_livescores()
+		
+	def livescore_updthrd(self,):
+		while not xbmc.abortRequested:
+			now = datetime.datetime.now()
+			if ( (now - self.livescores_timestamp).seconds/60 ) >= int(settings.getSetting('livescores-updater')):
+				self.livescores_timestamp = datetime.datetime.now()
+				self.fill_livescores()
+			xbmc.sleep(200)
 		
 	def fill_livescores(self):
 		items_to_add = []
@@ -210,6 +224,7 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 			print "no matches"
 			xbmc.executebuiltin("ClearProperty(loading,Home)")
 			self.getControl(93).setLabel('No matches!')
+		return
 
 			
 	def onClick(self,controlId):

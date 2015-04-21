@@ -55,12 +55,13 @@
 		<setting id="calendar-disabledsports" type="bool" label="Hide disabled sports from calendar" default="true"/>
 		<setting id="calendar-disabledleagues" type="bool" label="Hide ignored leagues from calendar" default="true"/>
 		<setting id="calendar-disabledpassed" type="bool" label="Hide matches already concluded" default="false"/>
-		<setting id="calendar-disabledpassed-delay" label="Hour difference to assume an event has finished" visible="eq(-1,true)" enable="eq(-1,true)" type="slider" default="3" range="3,1,6" option="int"/>
+		<setting id="calendar-disabledpassed-delay" label="Hour difference to assume an event has finished (hours)" visible="eq(-1,true)" enable="eq(-1,true)" type="slider" default="3" range="3,1,6" option="int"/>
 	</category>
 	<category label="Livescores">
 		<setting id="livescores-disabledleagues" type="bool" label="Hide ignored leagues from livescores listing" default="true"/>
 		<setting id="livescores-hidefinished" type="bool" label="Hide finished games from window" default="false"/>
 		<setting id="livescores-hidenotstarted" type="bool" label="Hide games that have not started from window" default="false"/>
+		<setting id="livescores-updater" label="Time between updates if the window is open (minutes)" type="slider" default="3" range="1,1,10" option="int"/>
 	</category>
 	<setting id="username" type="text" default="" visible="false"/>
  	<setting id="view_type_leaguelist" type="text" default="" visible="false"/>

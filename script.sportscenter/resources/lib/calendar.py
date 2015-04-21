@@ -37,8 +37,8 @@ class dialog_calendar(xbmcgui.WindowXML):
 		menu = []
 		date = datetime.datetime.now()
 		menu.append(('Today, %s' % (date.day),'%s-%s-%s' % (str(date.year),str(date.month),str(date.day))))
-		print menu
-		#print "day",now.day,now.month,now.year
+
+
 		for i in range(7): 
 			date += datetime.timedelta(days=1)
 			if i == 0: day_string ='%s, %s' % ('Tomorrow',date.day)
@@ -71,7 +71,6 @@ class dialog_calendar(xbmcgui.WindowXML):
 		xbmc.executebuiltin("SetProperty(loading,1,home)")
 		self.getControl(987).reset()
 		#next matches stuff
-		#event_next_list = thesportsdb.Schedules().eventsnextleague("4328")["events"]
 		event_next_list = thesportsdb.Schedules().eventsday(datestring,None,None)["events"]
 		total_events = len(event_next_list)
 		j = 0
@@ -79,7 +78,9 @@ class dialog_calendar(xbmcgui.WindowXML):
 			for event in event_next_list:
 				event_sport = thesportsdb.Events().get_sport(event)
 				event_id = thesportsdb.Events().get_eventid(event)
+				
 				#check if event belongs to blocked sport strSport
+				
 				if event_sport == 'Soccer' and settings.getSetting('enable-football') == 'false' and settings.getSetting('calendar-disabledsports') == 'true': pass
 				elif event_sport == 'Basketball' and settings.getSetting('enable-basketball') == 'false' and settings.getSetting('calendar-disabledsports') == 'true': pass
 				elif event_sport == 'Ice Hockey' and settings.getSetting('enable-icehockey') == 'false' and settings.getSetting('calendar-disabledsports') == 'true': pass
@@ -178,7 +179,7 @@ class dialog_calendar(xbmcgui.WindowXML):
 							if eventdate > now:
 								hour_diff = (eventdate-now).seconds/3600
 							else: hour_diff = ((now-eventdate).seconds/3600)*(-1)
-							if settings.getsetting('calendar-disabledpassed') == 'true' and hour_diff > settings.getSetting('calendar-disabledpassed-delay'): pass
+							if settings.getsetting('calendar-disabledpassed') == 'true' and hour_diff > int(settings.getSetting('calendar-disabledpassed-delay')): pass
 							else: items_to_add.append(game)
 						
 						except:items_to_add.append(game)
