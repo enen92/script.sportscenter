@@ -18,6 +18,9 @@ MainURL = 'http'
 addon_icon = settings.getAddonInfo('icon')
 addon_fanart = os.path.join(addonpath,'fanart.jpg')
 
+#Internal database variables
+sc_database = os.path.join(profilepath,'sc_database.sql')
+
 #Wizzard variables
 football_file = os.path.join(profilepath,'football.txt')
 football_fav_file = os.path.join(profilepath,'football_fav.txt')
