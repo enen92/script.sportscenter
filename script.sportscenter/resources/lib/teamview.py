@@ -90,11 +90,16 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 		if self.likes == 'None': self.likes = '0'
 		
 		self.getControl(1).setLabel(self.team_name)
-		self.getControl(2).setImage(self.team_badge)
-		self.getControl(3).setImage(self.team_fanart)
-		self.getControl(4).setImage(self.team_stadiumfanart)
-		self.getControl(5).setImage(self.team_clear)
-		self.getControl(6).setImage(self.team_jersey)
+		if self.team_badge and self.team_badge != 'None':
+			self.getControl(2).setImage(self.team_badge)
+		if self.team_fanart and self.team_fanart != 'None':
+			self.getControl(3).setImage(self.team_fanart)
+		if self.team_stadiumfanart and self.team_stadiumfanart != 'None':
+			self.getControl(4).setImage(self.team_stadiumfanart)
+		if self.team_clear and self.team_clear != 'None':
+			self.getControl(5).setImage(self.team_clear)
+		if self.team_jersey and self.team_jersey != 'None':
+			self.getControl(6).setImage(self.team_jersey)
 		self.getControl(7).setLabel('[COLOR labelheader]Founded:[CR][/COLOR]'+self.founded)
 		self.getControl(430).setText(self.plot)
 		self.getControl(8).setLabel('[COLOR labelheader]Sport:[CR][/COLOR]'+self.sport)
@@ -368,15 +373,17 @@ class dialog_team(xbmcgui.WindowXML):
 			except: pass
 			#event time processing is done here as it is independent from sport
 			self.event_time = thesportsdb.Events().get_time(self.nextevent)
-			self.event_timematch = re.compile('(.+?)\+').findall(self.event_time)
-			if self.event_timematch:
-				#timezone manipulation goes here
-				event_timetmp = self.event_timematch[0].split(':')
-				if len(event_timetmp) == 3:
-					self.hour = event_timetmp[0]
-					self.minute = event_timetmp[1]
-					self.event_time = self.hour + ':' + self.minute
-				else: self.event_time = self.event_timematch[0]
+			if self.event_time and self.event_time != 'null':
+				self.event_timematch = re.compile('(.+?)\+').findall(self.event_time)
+				if self.event_timematch:
+					#timezone manipulation goes here
+					event_timetmp = self.event_timematch[0].split(':')
+					if len(event_timetmp) == 3:
+						self.hour = event_timetmp[0]
+						self.minute = event_timetmp[1]
+						self.event_time = self.hour + ':' + self.minute
+					else: self.event_time = self.event_timematch[0]
+				else: self.event_time = ''
 			else: self.event_time = ''
 			self.getControl(43).setLabel(self.event_time)
 			
@@ -529,15 +536,17 @@ class dialog_team(xbmcgui.WindowXML):
 				event_date = thesportsdb.Events().get_eventdate(event)
 				#event time processing is done here as it is independent from sport
 				event_time = thesportsdb.Events().get_time(event)
-				event_timematch = re.compile('(.+?)\+').findall(event_time)
-				if event_timematch:
-					#timezone manipulation goes here
-					event_timetmp = event_timematch[0].split(':')
-					if len(event_timetmp) == 3:
-						hour = event_timetmp[0]
-						minute = event_timetmp[1]
-						event_time = ' - ' + hour + ':' + minute
-					else: event_time = event_timematch[0]
+				if event_time and event_time != 'null':
+					event_timematch = re.compile('(.+?)\+').findall(event_time)
+					if event_timematch:
+						#timezone manipulation goes here
+						event_timetmp = event_timematch[0].split(':')
+						if len(event_timetmp) == 3:
+							hour = event_timetmp[0]
+							minute = event_timetmp[1]
+							event_time = ' - ' + hour + ':' + minute
+						else: event_time = event_timematch[0]
+					else: event_time = ''
 				else: event_time = ''
 				event_date_parsed = event_date.split('-')
 				if event_date_parsed:
@@ -568,7 +577,7 @@ class dialog_team(xbmcgui.WindowXML):
 					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
 					away_team_logo = thesportsdb.Teams().get_badge(away_team_dict)
 					event_round = thesportsdb.Events().get_round(event)
-					if event_round:
+					if event_round and event_round != '0':
 						round_label = 'Round ' + str(event_round)
 				
 				game = xbmcgui.ListItem(event_fullname)
@@ -580,7 +589,7 @@ class dialog_team(xbmcgui.WindowXML):
 				game.setProperty('date',presented_date)
 				if event_race: 
 					game.setProperty('EventName',event_name) 
-				if event_round: game.setProperty('round',round_label)
+				if event_round and event_round != '0': game.setProperty('round',round_label)
 				self.getControl(987).addItem(game)
 				
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
@@ -643,15 +652,17 @@ class dialog_team(xbmcgui.WindowXML):
 				event_race = thesportsdb.Events().get_racelocation(event)
 				#event time processing is done here as it is independent from sport
 				event_time = thesportsdb.Events().get_time(event)
-				event_timematch = re.compile('(.+?)\+').findall(event_time)
-				if event_timematch:
-					#timezone manipulation goes here
-					event_timetmp = event_timematch[0].split(':')
-					if len(event_timetmp) == 3:
-						hour = event_timetmp[0]
-						minute = event_timetmp[1]
-						event_time = ' - ' + hour + ':' + minute
-					else: event_time = event_timematch[0]
+				if event_time and event_time != 'null':
+					event_timematch = re.compile('(.+?)\+').findall(event_time)
+					if event_timematch:
+						#timezone manipulation goes here
+						event_timetmp = event_timematch[0].split(':')
+						if len(event_timetmp) == 3:
+							hour = event_timetmp[0]
+							minute = event_timetmp[1]
+							event_time = ' - ' + hour + ':' + minute
+						else: event_time = event_timematch[0]
+					else: event_time = ''
 				else: event_time = ''
 				
 				if event_race:
@@ -674,7 +685,7 @@ class dialog_team(xbmcgui.WindowXML):
 					away_score = thesportsdb.Events().get_awayscore(event)
 					result = str(home_score) + '-' + str(away_score)
 					event_round = thesportsdb.Events().get_round(event)
-					if event_round:
+					if event_round and event_round != '0':
 						round_label = 'Round ' + str(event_round)
 				
 				
@@ -719,7 +730,7 @@ class dialog_team(xbmcgui.WindowXML):
 						else: game.setProperty('AwayTeamShort',away_team_name)
 					else: game.setProperty('AwayTeamShort',away_team_name)
 					game.setProperty('match_result',result)
-					if event_round: game.setProperty('round',round_label)
+					if event_round and event_round != '0': game.setProperty('round',round_label)
 				else:
 					game.setProperty('EventName',event_name)
 				# date + time + timedelay
