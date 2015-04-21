@@ -420,15 +420,17 @@ class dialog_league(xbmcgui.WindowXML):
 				event_race = thesportsdb.Events().get_racelocation(event)
 				#event time processing is done here as it is independent from sport
 				event_time = thesportsdb.Events().get_time(event)
-				event_timematch = re.compile('(.+?)\+').findall(event_time)
-				if event_timematch:
-					#timezone manipulation goes here
-					event_timetmp = event_timematch[0].split(':')
-					if len(event_timetmp) == 3:
-						hour = event_timetmp[0]
-						minute = event_timetmp[1]
-						event_time = ' - ' + hour + ':' + minute
-					else: event_time = event_timematch[0]
+				if event_time and event_time != 'null':
+					event_timematch = re.compile('(.+?)\+').findall(event_time)
+					if event_timematch:
+						#timezone manipulation goes here
+						event_timetmp = event_timematch[0].split(':')
+						if len(event_timetmp) == 3:
+							hour = event_timetmp[0]
+							minute = event_timetmp[1]
+							event_time = ' - ' + hour + ':' + minute
+						else: event_time = event_timematch[0]
+					else: event_time = ''
 				else: event_time = ''
 				
 				
@@ -460,7 +462,7 @@ class dialog_league(xbmcgui.WindowXML):
 					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
 					away_team_logo = thesportsdb.Teams().get_badge(away_team_dict)
 					event_round = thesportsdb.Events().get_round(event)
-					if event_round:
+					if event_round and event_round != '0':
 						round_label = 'Round ' + str(event_round)
 				
 				game = xbmcgui.ListItem(event_fullname)
@@ -511,7 +513,7 @@ class dialog_league(xbmcgui.WindowXML):
 				game.setProperty('date',event_timestring)
 				if event_race: 
 					game.setProperty('EventName',event_name) 
-				if event_round: game.setProperty('round',round_label)
+				if event_round and event_round != '0': game.setProperty('round',round_label)
 				self.getControl(987).addItem(game)
 				
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
@@ -545,15 +547,17 @@ class dialog_league(xbmcgui.WindowXML):
 				event_id = thesportsdb.Events().get_eventid(event)
 				#event time processing is done here as it is independent from sport
 				event_time = thesportsdb.Events().get_time(event)
-				event_timematch = re.compile('(.+?)\+').findall(event_time)
-				if event_timematch:
-					#timezone manipulation goes here
-					event_timetmp = event_timematch[0].split(':')
-					if len(event_timetmp) == 3:
-						hour = event_timetmp[0]
-						minute = event_timetmp[1]
-						event_time = ' - ' + hour + ':' + minute
-					else: event_time = event_timematch[0]
+				if event_time and event_time != 'null':
+					event_timematch = re.compile('(.+?)\+').findall(event_time)
+					if event_timematch:
+						#timezone manipulation goes here
+						event_timetmp = event_timematch[0].split(':')
+						if len(event_timetmp) == 3:
+							hour = event_timetmp[0]
+							minute = event_timetmp[1]
+							event_time = ' - ' + hour + ':' + minute
+						else: event_time = event_timematch[0]
+					else: event_time = ''
 				else: event_time = ''
 				if event_race:
 					home_team_logo = os.path.join(addonpath,art,'raceflag.png')
@@ -632,7 +636,7 @@ class dialog_league(xbmcgui.WindowXML):
 					else: game.setProperty('AwayTeamShort',away_team_name)
 					game.setProperty('match_result',result)
 					game.setProperty('event_id',event_id)
-					if event_round: game.setProperty('round',round_label)
+					if event_round and event_round != '0': game.setProperty('round',round_label)
 				else:
 					game.setProperty('EventName',event_name)
 				# date + time + timedelay
@@ -678,8 +682,7 @@ class dialog_league(xbmcgui.WindowXML):
 					self.roundnum = thesportsdb.Events().get_round(event_last_list[0])
 				else: sys.exit(0) #TODO close progress
 		
-		print "teste",self.roundnum
-		
+	
 		
 		
 		league_teams = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
@@ -692,15 +695,17 @@ class dialog_league(xbmcgui.WindowXML):
 				event_id = thesportsdb.Events().get_eventid(event)
 				#event time processing is done here as it is independent from sport
 				event_time = thesportsdb.Events().get_time(event)
-				event_timematch = re.compile('(.+?)\+').findall(event_time)
-				if event_timematch:
-					#timezone manipulation goes here
-					event_timetmp = event_timematch[0].split(':')
-					if len(event_timetmp) == 3:
-						hour = event_timetmp[0]
-						minute = event_timetmp[1]
-						event_time = ' - ' + hour + ':' + minute
-					else: event_time = event_timematch[0]
+				if event_time and event_time != 'null':
+					event_timematch = re.compile('(.+?)\+').findall(event_time)
+					if event_timematch:
+						#timezone manipulation goes here
+						event_timetmp = event_timematch[0].split(':')
+						if len(event_timetmp) == 3:
+							hour = event_timetmp[0]
+							minute = event_timetmp[1]
+							event_time = ' - ' + hour + ':' + minute
+						else: event_time = event_timematch[0]
+					else: event_time = ''
 				else: event_time = ''
 				if event_race:
 					home_team_logo = os.path.join(addonpath,art,'raceflag.png')
