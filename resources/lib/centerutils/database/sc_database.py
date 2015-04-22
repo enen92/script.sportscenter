@@ -291,9 +291,71 @@ class Updater:
 		Inserter().insert_event(_event_id_or_dict_)
 		return
 		
-class Converter:
-	def row_to_dict(self, table,tsdb_id_or_dict):
+class Retriever:
+	def __init__(self,):
 		pass
 	
+	def get_all_teams(self,sport,season,league):
+		teams = []
+		#decide which sql_string to use here
+		sql_cmd = "SELECT * FROM Team"
+		#All looks the same below
+		con = lite.connect(sc_database)
+		with con:
+			cur.execute(sql_cmd)
+			colums = list(map(lambda x: x[0], cur.description))
+			rows = cur.fetchall()
+			for row in rows:
+				row_dict = {}
+				i=0
+				for info in row:
+					row_dict[colums[i]] = info
+					i +=1
+				if row_dict: teams.append(row_dict)
+		if con:
+			con.close()
+		return teams
 		
-	
+	def get_all_leagues(self,sport,season):
+		leagues = []
+		#decide which sql_string to use here
+		sql_cmd = "SELECT * FROM League"
+		#All looks the same below
+		con = lite.connect(sc_database)
+		with con:
+			cur.execute(sql_cmd)
+			colums = list(map(lambda x: x[0], cur.description))
+			rows = cur.fetchall()
+			for row in rows:
+				row_dict = {}
+				i=0
+				for info in row:
+					row_dict[colums[i]] = info
+					i +=1
+				if row_dict: leagues.append(row_dict)
+		if con:
+			con.close()
+		return leagues
+		
+	def get_all_events(self,sport,season,league,team):
+		events = []
+		#decide which sql_string to use here
+		sql_cmd = "SELECT * FROM Event"
+		#All looks the same below
+		con = lite.connect(sc_database)
+		with con:
+			cur.execute(sql_cmd)
+			colums = list(map(lambda x: x[0], cur.description))
+			rows = cur.fetchall()
+			for row in rows:
+				row_dict = {}
+				i=0
+				for info in row:
+					row_dict[colums[i]] = info
+					i +=1
+				if row_dict: events.append(row_dict)
+		if con:
+			con.close()
+		return events
+		
+
