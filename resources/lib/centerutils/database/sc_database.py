@@ -2,7 +2,6 @@
 import thesportsdb
 import sqlite3 as lite
 import os
-import urllib
 #command line use only!
 sc_database = 'sc_database.db'
 templatefolder =  os.path.join(os.path.dirname(os.path.abspath(__file__)),'templates')
@@ -233,17 +232,64 @@ class Remover:
 	def __init__(self,):
 		pass
 		
-	def global_remover(self,table,dict):
-		pass
+	def global_remover(self,table,db_key,sc_id):
+		con = lite.connect(sc_database)
+		cur = con.cursor()
+		cur.execute("delete from "+table+" where "+db_key+" = '%s' " % sc_id)
+		print "SportsCenter: "+db_key+" = "+sc_id+" removed from " + table +"!"
+		if con:
+			con.commit()
+			con.close()
+		return		
 		
 	def remove_team(self,_team_id_or_dict_):
-		pass
+		if type(_team_id_or_dict_) == str:
+			sc_id = _team_id_or_dict_
+		elif type(_event_id_or_dict_) == dict: 
+			sc_id = thesportsdb.Teams().get_id(_team_id_or_dict_)
+		else: sc_id = None
+		if sc_id:
+			self.global_remover('Team','idTeam',sc_id)
+		return
 		
 	def remove_league(self,_league_id_or_dict_):
-		pass
+		if type(_league_id_or_dict_) == str:
+			sc_id = _league_id_or_dict_
+		elif type(_league_id_or_dict_) == dict: 
+			sc_id = thesportsdb.Leagues().get_id(_league_id_or_dict_)
+		else: sc_id = None
+		if sc_id:
+			self.global_remover('League','idLeague',sc_id)
+		return
 		
 	def remove_event(self,_event_id_or_dict_):
-		pass	
+		if type(_event_id_or_dict_) == str:
+			sc_id = _event_id_or_dict_
+		elif type(_event_id_or_dict_) == dict: 
+			sc_id = thesportsdb.Events().get_eventid(_event_id_or_dict_)
+		else: sc_id = None
+		if sc_id:
+			self.global_remover('Event','idEvent',sc_id)
+		return
+		
+class Updater:
+	def __init__(self,):
+		pass
+		
+	def update_team(self,_team_id_or_dict_):
+		Remover().remove_team(_team_id_or_dict_)
+		Inserter().insert_team(_team_id_or_dict_)
+		return
+		
+	def update_league(self,_league_id_or_dict_):
+		Remover().remove_league(_league_id_or_dict_)
+		Inserter().insert_league(_league_id_or_dict_)
+		return
+		
+	def update_event(self,_event_id_or_dict_):
+		Remover().remove_event(_event_id_or_dict_)
+		Inserter().insert_event(_event_id_or_dict_)
+		return
 		
 class Converter:
 	def row_to_dict(self, table,tsdb_id_or_dict):
