@@ -295,10 +295,15 @@ class Retriever:
 	def __init__(self,):
 		pass
 	
-	def get_all_teams(self,sport,season,league):
+	def get_all_teams(self,sport,league):
 		teams = []
 		#decide which sql_string to use here
-		sql_cmd = "SELECT * FROM Team"
+		if not sport and not league:
+			sql_cmd = "SELECT * FROM Team"
+		elif sport and not league:
+			sql_cmd = "SELECT * FROM Team where strSport = '"+sport+"'"
+		elif sport and league:
+			sql_cmd = "SELECT * FROM Team where strSport = '"+sport+"' AND idLeague = '"+league+'"'
 		#All looks the same below
 		con = lite.connect(sc_database)
 		with con:
@@ -319,7 +324,12 @@ class Retriever:
 	def get_all_leagues(self,sport,season):
 		leagues = []
 		#decide which sql_string to use here
-		sql_cmd = "SELECT * FROM League"
+		if not sport and not season:
+			sql_cmd = "SELECT * FROM League"
+		elif sport and not season:
+			sql_cmd = "SELECT * FROM League where strSport = '"+sport+"'"
+		elif sport and season:
+			sql_cmd = "SELECT * FROM League where strSport = '"+sport+"' AND idLeague = '"+league+'"'
 		#All looks the same below
 		con = lite.connect(sc_database)
 		with con:
@@ -340,7 +350,20 @@ class Retriever:
 	def get_all_events(self,sport,season,league,team):
 		events = []
 		#decide which sql_string to use here
-		sql_cmd = "SELECT * FROM Event"
+		if not sport and not season and not league and not team:
+			sql_cmd = "SELECT * FROM Event"
+		elif sport and not season and not league and not team:
+			sql_cmd = "SELECT * FROM Event where strSport = '"+sport+"'"
+		elif sport and season and not league and not team:
+			sql_cmd = "SELECT * FROM Event where strSport = '"+sport+"' AND strSeason = '"+season+"'"
+		elif sport and league and not season and not team:
+			sql_cmd = "SELECT * FROM Event where strSport = '"+sport+"' AND idLeague = '"+league+"'"
+		elif sport and not league and not season and team:
+			sql_cmd = "SELECT * FROM Event where (strSport = '"+sport+"' AND idAwayTeam = '"+team+"') OR (strSport = '"+sport+"' AND idHomeTeam = '"+team+"')"
+		elif sport and league and not season and team:
+			sql_cmd = "SELECT * FROM Event where (strSport = '"+sport+"' AND idAwayTeam = '"+team+"' AND idLeague = '"+league+"') OR (strSport = '"+sport+"' AND idHomeTeam = '"+team+"' AND idLeague = '"+league+"')"
+		elif sport and league and season and team:
+			sql_cmd = "SELECT * FROM Event where (strSport = '"+sport+"' AND idAwayTeam = '"+team+"' AND idLeague = '"+league+"' AND strSeason = '"+season+"') OR (strSport = '"+sport+"' AND idHomeTeam = '"+team+"' AND idLeague = '"+league+"' AND strSeason = '"+season+"')"
 		#All looks the same below
 		con = lite.connect(sc_database)
 		with con:
