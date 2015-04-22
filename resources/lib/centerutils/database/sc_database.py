@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 import thesportsdb
 import sqlite3 as lite
 import os
-
+import urllib
 #command line use only!
 sc_database = 'sc_database.db'
 templatefolder =  os.path.join(os.path.dirname(os.path.abspath(__file__)),'templates')
@@ -149,23 +150,84 @@ class Inserter:
 		pass
 		
 	def global_inserter(self,table,dictionary):
-		pass
+		con = lite.connect(sc_database)
+		cur = con.cursor()
+		cur.execute('select * from '+table)
+		colums = list(map(lambda x: x[0], cur.description))
+		totalcolums = len(colums)
+		totalitems = len(cur.fetchall())
+		next = totalitems + 1
+		key_array = '('
+		key_array_add = ''
+		i=0
+		for key in colums:
+			if i != (totalcolums-1): key_array_add  = key_array_add + key.replace('"','').replace("'","") + ','
+			else: key_array_add  = key_array_add + key.replace('"','').replace("'","") + ')'
+			i+=1
+			
+		key_array = key_array + key_array_add
+		
+		values_array_tmp = []
+		for key in sorted(dictionary.keys()):
+			if key in colums:
+				if dictionary[key] == None or dictionary[key] == '': values_array_tmp.append('null')
+				else: values_array_tmp.append(dictionary[key].replace('"','').replace("'",""))
+		
+		values_array = '('+str(next)+','
+		i=0
+		for key in values_array_tmp:
+			if i != (len(values_array_tmp)-1): values_array = values_array + "'"+key +"'"+ ','
+			else: values_array = values_array +"'"+ key +"'"+')'
+			i+=1
+				
+		sql_string = "INSERT INTO "+table+" "+key_array+" VALUES "+values_array+";"
+		cur.execute(sql_string)
+		if con:
+			con.commit()
+			con.close()
+			print "SportsCenter: added to " + table + "!"
+		return	
+		
 		
 	def insert_team(self,_team_id_or_dict_):
-		if _team_id_or_dict_ == str:
+		if type(_team_id_or_dict_) == str:
 			team_dictionary = thesportsdb.Lookups().lookupteam(_team_id_or_dict_)["teams"][0]
-		elif _team_id_or_dict_ == dict: team_dictionary = _team_id_or_dict_
+		elif type(_team_id_or_dict_) == dict: 
+			team_dictionary = _team_id_or_dict_
 		else: team_dictionary = None
 		if team_dictionary:
-			#here we check if the table exists
-			pass
+			#here we check if the table exists if not we create it
+			Checker().create_table_if_not_exists('Team')
+			#send the dictionary to global inserter
+			self.global_inserter('Team',team_dictionary)
+		return
 		
 		
 	def insert_league(self,_league_id_or_dict_):
-		pass
+		if type(_league_id_or_dict_) == str:
+			league_dictionary = thesportsdb.Lookups().lookupleague(_league_id_or_dict_)["leagues"][0]
+		elif type(_league_id_or_dict_) == dict: 
+			league_dictionary = _league_id_or_dict_
+		else: league_dictionary = None
+		if league_dictionary:
+			#here we check if the table exists if not we create it
+			Checker().create_table_if_not_exists('League')
+			#send the dictionary to global inserter
+			self.global_inserter('League',league_dictionary)
+		return
 		
 	def insert_event(self,_event_id_or_dict_):
-		pass	
+		if type(_event_id_or_dict_) == str:
+			event_dictionary = thesportsdb.Lookups().lookupevent(_event_id_or_dict_)["events"][0]
+		elif type(_event_id_or_dict_) == dict: 
+			event_dictionary = _event_id_or_dict_
+		else: event_dictionary = None
+		if event_dictionary:
+			#here we check if the table exists if not we create it
+			Checker().create_table_if_not_exists('Event')
+			#send the dictionary to global inserter
+			self.global_inserter('Event',event_dictionary)
+		return
 		
 class Remover:
 	def __init__(self,):
@@ -182,6 +244,10 @@ class Remover:
 		
 	def remove_event(self,_event_id_or_dict_):
 		pass	
+		
+class Converter:
+	def row_to_dict(self, table,tsdb_id_or_dict):
+		pass
 	
 		
 	
