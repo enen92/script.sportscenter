@@ -17,6 +17,7 @@ class dialog_home(xbmcgui.WindowXML):
 	def __init__( self, *args, **kwargs ):
 		xbmcgui.WindowXML.__init__(self)
 		self.sport = args[3]
+		self.has_diff_submenu = ""
 
 	def onInit(self):
 		self.focused_sport = 'soccer'
@@ -66,7 +67,7 @@ class dialog_home(xbmcgui.WindowXML):
 		
 		self.set_fanart()
 		self.set_favourite_data()
-		
+		self.set_submenu()
 
 	
 	def set_favourite_data(self):
@@ -495,6 +496,54 @@ class dialog_home(xbmcgui.WindowXML):
 					else: self.getControl(913).setImage(addon_fanart)
 				elif settings.getSetting('golf-background') == '0': self.getControl(913).setImage(addon_fanart)
 		return
+
+	def set_submenu(self):
+		#menu entries
+		has_library = [('Leagues','leagues'),('Seasons','seasons'),('Teams','teams'),('Events','events'),('Configure','configure')]
+		no_library = [('Configure','configure')]
+		#
+		self.sport = self.getControl(980).getSelectedItem().getProperty('sport_name')
+		if self.sport == 'soccer' or self.sport == 'football':
+			library = settings.getSetting('haslibrary-football')
+		elif self.sport == 'basketball':
+			library = settings.getSetting('haslibrary-basketball')
+		elif self.sport == 'rugby':
+			library = settings.getSetting('haslibrary-rugby')
+		elif self.sport == 'american%20football':
+			library = settings.getSetting('haslibrary-amfootball')
+		elif self.sport == 'motorsport':
+			library = settings.getSetting('haslibrary-motorsport')
+		elif self.sport == 'ice%20hockey':
+			library = settings.getSetting('haslibrary-icehockey')
+		elif self.sport == 'baseball':
+			library = settings.getSetting('haslibrary-baseball')
+		elif self.sport == 'golf':
+			library = settings.getSetting('haslibrary-golf')
+		if library == 'true':
+			if self.has_diff_submenu == 'has_library': #self.has_diff_submenu can only have 'has_library' or 'no_library' as values
+				pass
+			else:
+				self.getControl(9010).reset()
+				for menu_label,menu_key in has_library:
+					menu_item = xbmcgui.ListItem(menu_label)
+					menu_item.setProperty('menu_key',menu_key)
+					self.getControl(9010).addItem(menu_item)
+				self.has_diff_submenu == 'has_library'
+		else:
+			if self.has_diff_submenu == 'no_library':
+				pass
+			else:
+				self.getControl(9010).reset()
+				for menu_label,menu_key in no_library:
+					menu_item = xbmcgui.ListItem(menu_label)
+					menu_item.setProperty('menu_key',menu_key)
+					self.getControl(9010).addItem(menu_item)
+				self.has_diff_submenu == 'no_library'
+		
+		
+		
+		
+		return
 			
 	def onClick(self,controlId):
 		if controlId == 980:
@@ -511,6 +560,8 @@ class dialog_home(xbmcgui.WindowXML):
 		elif controlId == 9023:
 			from resources.lib import calendar as calendar
 			calendar.start(None)
+		elif controlId == 9022:
+			settings.openSettings()
 
 			
 	def onAction(self,action):
@@ -518,5 +569,6 @@ class dialog_home(xbmcgui.WindowXML):
 			self.close()
 		else:
 			if xbmc.getCondVisibility("Control.HasFocus(980)"):
+				self.set_submenu()
 				self.set_fanart()
 				self.set_favourite_data()

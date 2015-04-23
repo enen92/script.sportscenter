@@ -63,6 +63,19 @@
 		<setting id="livescores-hidenotstarted" type="bool" label="Hide games that have not started from window" default="false"/>
 		<setting id="livescores-updater" label="Time between updates if the window is open (minutes)" type="slider" default="3" range="1,1,10" option="int"/>
 	</category>
+	<category label="Library/Scrapper">
+	
+		<!--Hidden settings -->
+		<setting id="haslibrary-football" type="bool" label="" default="false" visible="false"/>
+		<setting id="haslibrary-basketball" type="bool" label="" default="false" visible="false"/>
+		<setting id="haslibrary-icehockey" type="bool" label="" default="false" visible="false"/>
+		<setting id="haslibrary-baseball" type="bool" label="" default="false" visible="false"/>
+		<setting id="haslibrary-motorsport" type="bool" label="" default="false" visible="false"/>
+		<setting id="haslibrary-rugby" type="bool" label="" default="false" visible="false"/>
+		<setting id="haslibrary-golf" type="bool" label="" default="false" visible="false"/>
+		<setting id="haslibrary-amfootball" type="bool" label="" default="false" visible="false"/>
+
+	</category>
 	<setting id="username" type="text" default="" visible="false"/>
  	<setting id="view_type_leaguelist" type="text" default="" visible="false"/>
   	<setting id="view_type_league" type="text" default="" visible="false"/>
