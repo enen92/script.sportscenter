@@ -152,7 +152,7 @@ class dialog_compet(xbmcgui.WindowXML):
 		
 			
 	def onAction(self,action):
-		if action.getId() == 92:
+		if action.getId() == 92 or action.getId() == 10:
 			self.control_panel = xbmc.getCondVisibility("!IsEmpty(Window(home).Property(MediaMenu))")
 			if self.control_panel:
 				xbmc.executebuiltin("ClearProperty(MediaMenu,Home)")

@@ -842,7 +842,7 @@ class dialog_team(xbmcgui.WindowXML):
 				
 		
 	def onAction(self,action):
-		if action == 92 or action == 'PreviousMenu':
+		if action.getId() == 92 or action.getId() == 10:
 			#if not self.control_panel: 
 			if 2==1:
 				pass

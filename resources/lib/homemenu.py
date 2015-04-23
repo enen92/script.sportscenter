@@ -1,5 +1,5 @@
 import xbmc,xbmcgui,xbmcaddon,xbmcplugin
-import os,time,datetime,urllib
+import os,time,urllib
 from centerutils.common_variables import *
 from centerutils.iofile import *
 from centerutils.datemanipulation import *
@@ -19,7 +19,6 @@ class dialog_home(xbmcgui.WindowXML):
 		self.sport = args[3]
 
 	def onInit(self):
-		self.lasttime = datetime.datetime.now()
 		self.focused_sport = 'soccer'
 		table = []
 		if settings.getSetting('enable-football') == 'true':
@@ -61,7 +60,6 @@ class dialog_home(xbmcgui.WindowXML):
 			if sport_name == self.sport:
 				index = i
 			else: i+=1
-		#xbmc.sleep(200)
 		try:self.getControl(980).selectItem(index)
 		except: self.getControl(980).selectItem(1)
 		xbmc.sleep(200)
@@ -516,18 +514,9 @@ class dialog_home(xbmcgui.WindowXML):
 
 			
 	def onAction(self,action):
-		if action.getId() == 92 or action == 'PreviousMenu':
+		if action.getId() == 92 or action.getId() == 10:
 			self.close()
-		elif action.getId() == 107:
-			if not xbmc.getCondVisibility("Control.HasFocus(983)"):
-				now = datetime.datetime.now()
-				dif = (now - self.lasttime).microseconds
-				if dif > 83712:
-					self.set_fanart()
-					self.set_favourite_data()
-				self.lasttime = now
 		else:
-			#TODO - add fanart to list below
-			if not xbmc.getCondVisibility("Control.HasFocus(983)") and not xbmc.getCondVisibility("Control.HasFocus(9024)") and not xbmc.getCondVisibility("Control.HasFocus(9023)"):
+			if xbmc.getCondVisibility("Control.HasFocus(980)"):
 				self.set_fanart()
 				self.set_favourite_data()
