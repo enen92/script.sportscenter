@@ -6,6 +6,7 @@ from centerutils.datemanipulation import *
 from centerutils.database import sc_database
 import competlist as competlist
 import teamview as teamview
+import seasonlist as seasonlist
 from wizzard import wizzard
 
 
@@ -28,17 +29,17 @@ class dialog_home(xbmcgui.WindowXML):
 		self.focused_sport = 'soccer'
 		table = []
 		if settings.getSetting('enable-football') == 'true':
-			table.append(('Football','football.png','soccer'))
+			table.append(('Football','soccer.png','soccer'))
 		if settings.getSetting('enable-rugby') == 'true':
 			table.append(('Rugby','Rugby.png','rugby'))
 		if settings.getSetting('enable-motorsport') == 'true':
 			table.append(('MotorSport','Racing.png','motorsport'))
 		if settings.getSetting('enable-basketball') == 'true':
-			table.append(('Basketball','Basketball.png','basketball'))
+			table.append(('Basketball','basketball.png','basketball'))
 		if settings.getSetting('enable-amfootball') == 'true':
 			table.append(('AM Football','americanfootball.png','american%20football'))
 		if settings.getSetting('enable-icehockey') == 'true':
-			table.append(('Ice Hockey','IceHockey.png','ice%20hockey'))
+			table.append(('Ice Hockey','ice%20hockey.png','ice%20hockey'))
 		if settings.getSetting('enable-baseball') == 'true':
 			table.append(('Baseball','baseball.png','baseball'))
 		if settings.getSetting('enable-golf') == 'true':
@@ -575,8 +576,13 @@ class dialog_home(xbmcgui.WindowXML):
 		elif controlId == 9022:
 			settings.openSettings()
 		elif controlId == 9010:
-			#usage -> competlist.start(['sport','True for library False for Current Season'])
-			competlist.start([self.sport,True])
+			key = self.getControl(9010).getSelectedItem().getProperty('menu_key')
+			if key == 'leagues':
+				#usage -> competlist.start(['sport','True for library False for Current Season'])
+				competlist.start([self.sport,True])
+			elif key == 'seasons':
+				#usage -> seasonlist.start(['sport','None for all seasons league id for seasons of a league'])
+				seasonlist.start([self.sport,''])
 
 			
 	def onAction(self,action):

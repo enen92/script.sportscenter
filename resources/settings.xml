@@ -72,7 +72,8 @@
 		<setting id="livescores-updater" label="Time between updates if the window is open (minutes)" type="slider" default="3" range="1,1,10" option="int"/>
 	</category>
 	<category label="Library/Scrapper">
-	
+		<setting id="season-background" type="enum" label="-Background type for seasons" values="Global Addon Fanart|Addon Custom Sport Fanart|Favourite team Fan Fanart|Favourite Team Logo Fanart|Custom Image" default="0"/>
+		<setting id="season-custom" label="Custom Image" type="file" default="" enable="eq(-2,true)+eq(-1,4)" visible="eq(-2,true)+eq(-1,4)"/>
 		<!--Hidden settings -->
 		<setting id="haslibrary-football" type="bool" label="" default="false" visible="false"/>
 		<setting id="haslibrary-basketball" type="bool" label="" default="false" visible="false"/>
@@ -86,5 +87,6 @@
 	</category>
 	<setting id="username" type="text" default="" visible="false"/>
  	<setting id="view_type_leaguelist" type="text" default="" visible="false"/>
+ 	<setting id="view_type_seasonlist" type="text" default="" visible="false"/>
   	<setting id="view_type_league" type="text" default="" visible="false"/>
 </settings>

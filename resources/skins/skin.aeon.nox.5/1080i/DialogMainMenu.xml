@@ -341,7 +341,65 @@
 					<height>100</height>
 					<texture>submenu_bar.png</texture>
 				</control>
-				
+				<!-- Submenu fixedlist -->
+				<control type="fixedlist" id="9010">
+					<left>210</left>
+					<top>5</top>
+					<width>1500</width>
+					<height>87</height>
+					<align>center</align>
+					<onup>980</onup>
+					<pagecontrol>-</pagecontrol>
+					<scrolltime tween="quadratic" easing="out">300</scrolltime>
+					<focusposition>2</focusposition>
+					<movement>2</movement>
+					<orientation>Horizontal</orientation>
+					<animation effect="fade" time="600">WindowClose</animation>
+					<itemlayout height="87" width="300">
+						<control type="label">
+							<width>300</width>
+							<height>41</height>
+							<font>font13_title</font>
+							<textcolor>grey</textcolor>
+							<shadowcolor>shadow</shadowcolor>
+							<align>center</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</itemlayout>
+					<focusedlayout height="87" width="300">
+						<control type="group">
+							<visible>Control.HasFocus(9010)</visible>
+							<control type="image">
+							<width>300</width>
+							<height>41</height>
+							<texture>listselect_fo.png</texture>
+						</control>
+						<control type="label">
+							<width>300</width>
+							<height>41</height>
+							<font>font13_title</font>
+							<shadowcolor>shadow</shadowcolor>
+							<align>center</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+						</control>
+						<control type="group">
+							<visible>!Control.HasFocus(9010)</visible>
+							<control type="label">
+								<width>300</width>
+								<height>41</height>
+								<font>font13_title</font>
+								<textcolor>grey</textcolor>
+								<shadowcolor>shadow</shadowcolor>
+								<align>center</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+						</control>
+					</focusedlayout>
+				</control>
 			</control>
 			
 			<control type="image">
@@ -449,65 +507,7 @@
 			</control>
 		</control>
 		
-		<!-- Submenu fixedlist -->
-		<control type="fixedlist" id="9010">
-			<left>210</left>
-			<top>940</top>
-			<width>1500</width>
-			<height>87</height>
-			<align>center</align>
-			<onup>980</onup>
-			<pagecontrol>-</pagecontrol>
-			<scrolltime tween="quadratic" easing="out">300</scrolltime>
-			<focusposition>2</focusposition>
-			<movement>2</movement>
-			<orientation>Horizontal</orientation>
-			<animation effect="fade" time="600">WindowClose</animation>
-			<itemlayout height="87" width="300">
-				<control type="label">
-					<width>300</width>
-					<height>41</height>
-					<font>font13_title</font>
-					<textcolor>grey</textcolor>
-					<shadowcolor>shadow</shadowcolor>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Label]</label>
-				</control>
-			</itemlayout>
-			<focusedlayout height="87" width="300">
-				<control type="group">
-					<visible>Control.HasFocus(9010)</visible>
-					<control type="image">
-					<width>300</width>
-					<height>41</height>
-					<texture>listselect_fo.png</texture>
-				</control>
-				<control type="label">
-					<width>300</width>
-					<height>41</height>
-					<font>font13_title</font>
-					<shadowcolor>shadow</shadowcolor>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Label]</label>
-				</control>
-				</control>
-				<control type="group">
-					<visible>!Control.HasFocus(9010)</visible>
-					<control type="label">
-						<width>300</width>
-						<height>41</height>
-						<font>font13_title</font>
-						<textcolor>grey</textcolor>
-						<shadowcolor>shadow</shadowcolor>
-						<align>center</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label]</label>
-					</control>
-				</control>
-			</focusedlayout>
-		</control>
+		
 		
 		
 	</controls>
