@@ -3,6 +3,7 @@ import os,time,urllib
 from centerutils.common_variables import *
 from centerutils.iofile import *
 from centerutils.datemanipulation import *
+from centerutils.database import sc_database
 import competlist as competlist
 import teamview as teamview
 from wizzard import wizzard
@@ -18,6 +19,10 @@ class dialog_home(xbmcgui.WindowXML):
 		xbmcgui.WindowXML.__init__(self)
 		self.sport = args[3]
 		self.has_diff_submenu = ""
+		
+		#note simple hack to avoid flickering and set the submenu when launching the plugin
+		self.initfanart = False
+		self.initsubmenu = False 
 
 	def onInit(self):
 		self.focused_sport = 'soccer'
@@ -414,87 +419,90 @@ class dialog_home(xbmcgui.WindowXML):
 	def set_fanart(self):
 		#here the addon only sets the custom addon sport fanart or any custom fanart defined on the addon settings
 		if xbmc.getCondVisibility("Control.HasFocus(980)"):
-			self.sport = self.getControl(980).getSelectedItem().getProperty('sport_name')
+			sport = self.getControl(980).getSelectedItem().getProperty('sport_name')
+			if sport != self.sport or not self.initfanart:
+				self.initfanart = True
+				self.sport = sport
 			
-			if self.sport == 'soccer' or self.sport == 'football':
-				if settings.getSetting('football-background') == '1':
-					self.getControl(913).setImage(os.path.join(addonpath,art,'sports','soccer.jpg'))
-				elif settings.getSetting('football-background') == '4':
-					football_custom = settings.getSetting('football-custom')
-					if football_custom != '':
-						self.getControl(913).setImage(football_custom)
-					else: self.getControl(913).setImage(addon_fanart)
-				elif settings.getSetting('football-background') == '0': self.getControl(913).setImage(addon_fanart)
+				if self.sport == 'soccer' or self.sport == 'football':
+					if settings.getSetting('football-background') == '1':
+						self.getControl(913).setImage(os.path.join(addonpath,art,'sports','soccer.jpg'))
+					elif settings.getSetting('football-background') == '4':
+						football_custom = settings.getSetting('football-custom')
+						if football_custom != '':
+							self.getControl(913).setImage(football_custom)
+						else: self.getControl(913).setImage(addon_fanart)
+					elif settings.getSetting('football-background') == '0': self.getControl(913).setImage(addon_fanart)
 				
-			elif self.sport == 'basketball':
-				if settings.getSetting('basketball-background') == '1':
-					self.getControl(913).setImage(os.path.join(addonpath,art,'sports','basketball.jpg'))
-				elif settings.getSetting('basketball-background') == '4':
-					basketball_custom = settings.getSetting('basketball-custom')
-					if basketball_custom != '':
-						self.getControl(913).setImage(basketball_custom)
-					else: self.getControl(913).setImage(addon_fanart)
-				elif settings.getSetting('basketball-background') == '0':self.getControl(913).setImage(addon_fanart)
+				elif self.sport == 'basketball':
+					if settings.getSetting('basketball-background') == '1':
+						self.getControl(913).setImage(os.path.join(addonpath,art,'sports','basketball.jpg'))
+					elif settings.getSetting('basketball-background') == '4':
+						basketball_custom = settings.getSetting('basketball-custom')
+						if basketball_custom != '':
+							self.getControl(913).setImage(basketball_custom)
+						else: self.getControl(913).setImage(addon_fanart)
+					elif settings.getSetting('basketball-background') == '0':self.getControl(913).setImage(addon_fanart)
 				
-			elif self.sport == 'rugby':
-				if settings.getSetting('rugby-background') == '1':
-					self.getControl(913).setImage(os.path.join(addonpath,art,'sports','rugby.jpg'))
-				elif settings.getSetting('rugby-background') == '4':
-					rugby_custom = settings.getSetting('rugby-custom')
-					if rugby_custom != '':
-						self.getControl(913).setImage(rugby_custom)
-					else: self.getControl(913).setImage(addon_fanart)
-				elif settings.getSetting('rugby-background') == '0': self.getControl(913).setImage(addon_fanart)
+				elif self.sport == 'rugby':
+					if settings.getSetting('rugby-background') == '1':
+						self.getControl(913).setImage(os.path.join(addonpath,art,'sports','rugby.jpg'))
+					elif settings.getSetting('rugby-background') == '4':
+						rugby_custom = settings.getSetting('rugby-custom')
+						if rugby_custom != '':
+							self.getControl(913).setImage(rugby_custom)
+						else: self.getControl(913).setImage(addon_fanart)
+					elif settings.getSetting('rugby-background') == '0': self.getControl(913).setImage(addon_fanart)
 				
-			elif self.sport == 'american%20football':
-				if settings.getSetting('amfootball-background') == '1':
-					self.getControl(913).setImage(os.path.join(addonpath,art,'sports','american%20football.jpg'))
-				elif settings.getSetting('amfootball-background') == '4':
-					amfootball_custom = settings.getSetting('amfootball-custom')
-					if amfootball_custom != '':
-						self.getControl(913).setImage(amfootball_custom)
-					else: self.getControl(913).setImage(addon_fanart)
-				elif settings.getSetting('amfootball-background') == '0': self.getControl(913).setImage(addon_fanart)
+				elif self.sport == 'american%20football':
+					if settings.getSetting('amfootball-background') == '1':
+						self.getControl(913).setImage(os.path.join(addonpath,art,'sports','american%20football.jpg'))
+					elif settings.getSetting('amfootball-background') == '4':
+						amfootball_custom = settings.getSetting('amfootball-custom')
+						if amfootball_custom != '':
+							self.getControl(913).setImage(amfootball_custom)
+						else: self.getControl(913).setImage(addon_fanart)
+					elif settings.getSetting('amfootball-background') == '0': self.getControl(913).setImage(addon_fanart)
 				
-			elif self.sport == 'motorsport':
-				if settings.getSetting('motorsport-background') == '1':
-					self.getControl(913).setImage(os.path.join(addonpath,art,'sports','motorsport.jpg'))
-				elif settings.getSetting('motorsport-background') == '4':
-					motorsport_custom = settings.getSetting('motorsport-custom')
-					if motorsport_custom != '':
-						self.getControl(913).setImage(motorsport_custom)
-					else: self.getControl(913).setImage(addon_fanart)
-				elif settings.getSetting('motorsport-background') == '0': self.getControl(913).setImage(addon_fanart)
+				elif self.sport == 'motorsport':
+					if settings.getSetting('motorsport-background') == '1':
+						self.getControl(913).setImage(os.path.join(addonpath,art,'sports','motorsport.jpg'))
+					elif settings.getSetting('motorsport-background') == '4':
+						motorsport_custom = settings.getSetting('motorsport-custom')
+						if motorsport_custom != '':
+							self.getControl(913).setImage(motorsport_custom)
+						else: self.getControl(913).setImage(addon_fanart)
+					elif settings.getSetting('motorsport-background') == '0': self.getControl(913).setImage(addon_fanart)
 				
-			elif self.sport == 'ice%20hockey':
-				if settings.getSetting('icehockey-background') == '1':
-					self.getControl(913).setImage(os.path.join(addonpath,art,'sports','ice%20hockey.jpg'))
-				elif settings.getSetting('icehockey-background') == '4':
-					icehockey_custom = settings.getSetting('icehockey-custom')
-					if icehockey_custom != '':
-						self.getControl(913).setImage(icehockey_custom)
-					else: self.getControl(913).setImage(addon_fanart)
-				elif settings.getSetting('icehockey-background') == '0': self.getControl(913).setImage(addon_fanart)
+				elif self.sport == 'ice%20hockey':
+					if settings.getSetting('icehockey-background') == '1':
+						self.getControl(913).setImage(os.path.join(addonpath,art,'sports','ice%20hockey.jpg'))
+					elif settings.getSetting('icehockey-background') == '4':
+						icehockey_custom = settings.getSetting('icehockey-custom')
+						if icehockey_custom != '':
+							self.getControl(913).setImage(icehockey_custom)
+						else: self.getControl(913).setImage(addon_fanart)
+					elif settings.getSetting('icehockey-background') == '0': self.getControl(913).setImage(addon_fanart)
 				
-			elif self.sport == 'baseball':
-				if settings.getSetting('baseball-background') == '1':
-					self.getControl(913).setImage(os.path.join(addonpath,art,'sports','baseball.jpg'))
-				elif settings.getSetting('baseball-background') == '4':
-					baseball_custom = settings.getSetting('baseball-custom')
-					if baseball_custom != '':
-						self.getControl(913).setImage(baseball_custom)
-					else: self.getControl(913).setImage(addon_fanart)
-				elif settings.getSetting('baseball-background') == '0': self.getControl(913).setImage(addon_fanart)
+				elif self.sport == 'baseball':
+					if settings.getSetting('baseball-background') == '1':
+						self.getControl(913).setImage(os.path.join(addonpath,art,'sports','baseball.jpg'))
+					elif settings.getSetting('baseball-background') == '4':
+						baseball_custom = settings.getSetting('baseball-custom')
+						if baseball_custom != '':
+							self.getControl(913).setImage(baseball_custom)
+						else: self.getControl(913).setImage(addon_fanart)
+					elif settings.getSetting('baseball-background') == '0': self.getControl(913).setImage(addon_fanart)
 				
-			elif self.sport == 'golf':
-				if settings.getSetting('golf-background') == '1':
-					self.getControl(913).setImage(os.path.join(addonpath,art,'sports','golf.jpg'))
-				elif settings.getSetting('golf-background') == '4':
-					golf_custom = settings.getSetting('golf-custom')
-					if golf_custom != '':
-						self.getControl(913).setImage(golf_custom)
-					else: self.getControl(913).setImage(addon_fanart)
-				elif settings.getSetting('golf-background') == '0': self.getControl(913).setImage(addon_fanart)
+				elif self.sport == 'golf':
+					if settings.getSetting('golf-background') == '1':
+						self.getControl(913).setImage(os.path.join(addonpath,art,'sports','golf.jpg'))
+					elif settings.getSetting('golf-background') == '4':
+						golf_custom = settings.getSetting('golf-custom')
+						if golf_custom != '':
+							self.getControl(913).setImage(golf_custom)
+						else: self.getControl(913).setImage(addon_fanart)
+					elif settings.getSetting('golf-background') == '0': self.getControl(913).setImage(addon_fanart)
 		return
 
 	def set_submenu(self):
@@ -502,43 +510,46 @@ class dialog_home(xbmcgui.WindowXML):
 		has_library = [('Leagues','leagues'),('Seasons','seasons'),('Teams','teams'),('Events','events'),('Configure','configure')]
 		no_library = [('Configure','configure')]
 		#
-		self.sport = self.getControl(980).getSelectedItem().getProperty('sport_name')
-		if self.sport == 'soccer' or self.sport == 'football':
-			library = settings.getSetting('haslibrary-football')
-		elif self.sport == 'basketball':
-			library = settings.getSetting('haslibrary-basketball')
-		elif self.sport == 'rugby':
-			library = settings.getSetting('haslibrary-rugby')
-		elif self.sport == 'american%20football':
-			library = settings.getSetting('haslibrary-amfootball')
-		elif self.sport == 'motorsport':
-			library = settings.getSetting('haslibrary-motorsport')
-		elif self.sport == 'ice%20hockey':
-			library = settings.getSetting('haslibrary-icehockey')
-		elif self.sport == 'baseball':
-			library = settings.getSetting('haslibrary-baseball')
-		elif self.sport == 'golf':
-			library = settings.getSetting('haslibrary-golf')
-		if library == 'true':
-			if self.has_diff_submenu == 'has_library': #self.has_diff_submenu can only have 'has_library' or 'no_library' as values
-				pass
+		sport = self.getControl(980).getSelectedItem().getProperty('sport_name')
+		if sport != self.sport or not self.initsubmenu:
+			self.sport = sport
+			self.initsubmenu = True
+			if self.sport == 'soccer' or self.sport == 'football':
+				library = settings.getSetting('haslibrary-football')
+			elif self.sport == 'basketball':
+				library = settings.getSetting('haslibrary-basketball')
+			elif self.sport == 'rugby':
+				library = settings.getSetting('haslibrary-rugby')
+			elif self.sport == 'american%20football':
+				library = settings.getSetting('haslibrary-amfootball')
+			elif self.sport == 'motorsport':
+				library = settings.getSetting('haslibrary-motorsport')
+			elif self.sport == 'ice%20hockey':
+				library = settings.getSetting('haslibrary-icehockey')
+			elif self.sport == 'baseball':
+				library = settings.getSetting('haslibrary-baseball')
+			elif self.sport == 'golf':
+				library = settings.getSetting('haslibrary-golf')
+			if library == 'true':
+				if self.has_diff_submenu == 'has_library': #self.has_diff_submenu can only have 'has_library' or 'no_library' as values
+					pass
+				else:
+					self.getControl(9010).reset()
+					for menu_label,menu_key in has_library:
+						menu_item = xbmcgui.ListItem(menu_label)
+						menu_item.setProperty('menu_key',menu_key)
+						self.getControl(9010).addItem(menu_item)
+					self.has_diff_submenu == 'has_library'
 			else:
-				self.getControl(9010).reset()
-				for menu_label,menu_key in has_library:
-					menu_item = xbmcgui.ListItem(menu_label)
-					menu_item.setProperty('menu_key',menu_key)
-					self.getControl(9010).addItem(menu_item)
-				self.has_diff_submenu == 'has_library'
-		else:
-			if self.has_diff_submenu == 'no_library':
-				pass
-			else:
-				self.getControl(9010).reset()
-				for menu_label,menu_key in no_library:
-					menu_item = xbmcgui.ListItem(menu_label)
-					menu_item.setProperty('menu_key',menu_key)
-					self.getControl(9010).addItem(menu_item)
-				self.has_diff_submenu == 'no_library'
+				if self.has_diff_submenu == 'no_library':
+					pass
+				else:
+					self.getControl(9010).reset()
+					for menu_label,menu_key in no_library:
+						menu_item = xbmcgui.ListItem(menu_label)
+						menu_item.setProperty('menu_key',menu_key)
+						self.getControl(9010).addItem(menu_item)
+					self.has_diff_submenu == 'no_library'
 		
 		
 		
@@ -549,7 +560,8 @@ class dialog_home(xbmcgui.WindowXML):
 		if controlId == 980:
 			listControl = self.getControl(980)
 			seleccionado=listControl.getSelectedItem()
-			competlist.start(seleccionado.getProperty('sport_name'))
+			#usage -> competlist.start(['sport','True for library False for Current Season'])
+			competlist.start([seleccionado.getProperty('sport_name'),False])
 		elif controlId == 983:
 			self.team_id = self.getControl(983).getSelectedItem().getProperty('favourite_id')
 			self.favteam_sport = urllib.quote(self.getControl(983).getSelectedItem().getProperty('favourite_team_sport').lower())
@@ -562,6 +574,9 @@ class dialog_home(xbmcgui.WindowXML):
 			calendar.start(None)
 		elif controlId == 9022:
 			settings.openSettings()
+		elif controlId == 9010:
+			#usage -> competlist.start(['sport','True for library False for Current Season'])
+			competlist.start([self.sport,True])
 
 			
 	def onAction(self,action):

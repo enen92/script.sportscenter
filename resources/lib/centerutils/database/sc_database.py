@@ -2,8 +2,24 @@
 import thesportsdb
 import sqlite3 as lite
 import os
-#command line use only!
-sc_database = 'sc_database.db'
+import sys
+import xbmc
+import xbmcaddon
+import urllib
+
+#TODO avoid repetition here!######
+addon_id = 'script.sportscenter'
+settings = xbmcaddon.Addon(id=addon_id)
+addonpath = settings.getAddonInfo('path').decode('utf-8')
+sys.path.append(os.path.join(addonpath,'resources','lib'))
+profilepath= xbmc.translatePath(settings.getAddonInfo('profile')).decode('utf-8')
+########
+from centerutils.common_variables import *
+
+
+
+
+sc_database = os.path.join(profilepath,'sc_database.db')
 templatefolder =  os.path.join(os.path.dirname(os.path.abspath(__file__)),'templates')
 
 class Creator:
@@ -170,12 +186,15 @@ class Inserter:
 		for key in sorted(dictionary.keys()):
 			if key in colums:
 				if dictionary[key] == None or dictionary[key] == '': values_array_tmp.append('null')
-				else: values_array_tmp.append(dictionary[key].replace('"','').replace("'",""))
+				else: 
+					if key != 'strSport': values_array_tmp.append(dictionary[key].replace('"','').replace("'",""))
+					else: values_array_tmp.append(urllib.quote(dictionary[key].replace('"','').replace("'","").lower()))
 		
 		values_array = '('+str(next)+','
 		i=0
 		for key in values_array_tmp:
-			if i != (len(values_array_tmp)-1): values_array = values_array + "'"+key +"'"+ ','
+			if i != (len(values_array_tmp)-1):
+				values_array = values_array + "'"+key +"'"+ ','
 			else:
 				if table != 'Event':
 					values_array = values_array +"'"+ key +"'"+')'
@@ -189,7 +208,7 @@ class Inserter:
 			con.commit()
 			con.close()
 			print "SportsCenter: added to " + table + "!"
-		return	
+		return
 		
 		
 	def insert_team(self,_team_id_or_dict_):
@@ -311,6 +330,7 @@ class Retriever:
 		#All looks the same below
 		con = lite.connect(sc_database)
 		with con:
+			cur = con.cursor() 
 			cur.execute(sql_cmd)
 			colums = list(map(lambda x: x[0], cur.description))
 			rows = cur.fetchall()
@@ -337,6 +357,7 @@ class Retriever:
 		#All looks the same below
 		con = lite.connect(sc_database)
 		with con:
+			cur = con.cursor() 
 			cur.execute(sql_cmd)
 			colums = list(map(lambda x: x[0], cur.description))
 			rows = cur.fetchall()
@@ -346,7 +367,8 @@ class Retriever:
 				for info in row:
 					row_dict[colums[i]] = info
 					i +=1
-				if row_dict: leagues.append(row_dict)
+				if row_dict: 
+					leagues.append(row_dict)
 		if con:
 			con.close()
 		return leagues
@@ -371,6 +393,7 @@ class Retriever:
 		#All looks the same below
 		con = lite.connect(sc_database)
 		with con:
+			cur = con.cursor() 
 			cur.execute(sql_cmd)
 			colums = list(map(lambda x: x[0], cur.description))
 			rows = cur.fetchall()

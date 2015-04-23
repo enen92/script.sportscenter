@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import xbmc,xbmcgui,xbmcaddon,xbmcplugin
-import os,threading
+import xbmc
+import xbmcgui
+import xbmcaddon
+import xbmcplugin
+import os
+import threading
+import urllib
 from centerutils.common_variables import *
+from centerutils.database import sc_database
 from random import randint
 import homemenu as home
 import thesportsdb
@@ -11,7 +17,7 @@ import leagueview as leagueview
 import contextmenubuilder
 
 def start(sportname):
-	window = dialog_compet('DialogCompetList.xml',addonpath,'Default',sportname)
+	window = dialog_compet('DialogCompetList.xml',addonpath,'Default',str(sportname))
 	window.doModal()
 	
 def removeNonAscii(s): return "".join(filter(lambda x: ord(x)<128, s))
@@ -21,11 +27,14 @@ class dialog_compet(xbmcgui.WindowXML):
 
 	def __init__( self, *args, **kwargs ):
 		xbmcgui.WindowXML.__init__(self)
-		self.sport = args[3]
-		self.ignored_leagues = os.listdir(ignoredleaguesfolder)
+		self.sport = eval(args[3])[0]
+		self.is_library = eval(args[3])[1]
+		if not self.is_library:
+			self.ignored_leagues = os.listdir(ignoredleaguesfolder)
 
 	def onInit(self,):
-		threading.Thread(name='watcher', target=self.watcher).start()
+		if not self.is_library:
+			threading.Thread(name='watcher', target=self.watcher).start()
 		self.addleagues()
 		
 	def watcher(self,):
@@ -44,7 +53,7 @@ class dialog_compet(xbmcgui.WindowXML):
 	
 	def addleagues(self,):
 		#set top bar info
-		self.getControl(333).setLabel('Competition List - '+self.sport)
+		self.getControl(333).setLabel('Competition List - '+urllib.unquote(self.sport))
 		
 		fanart = os.path.join(addonpath,'fanart.jpg')
 	
@@ -81,65 +90,76 @@ class dialog_compet(xbmcgui.WindowXML):
 		elif self.preferred_view == 'infoview':
 			self.preferred_label = 'League InfoView'
 			self.controler = 980
-			
-		try: all_leagues = thesportsdb.Search().search_all_leagues(None,self.sport,None)["countrys"]
-		except: all_leagues = {}
-		self.list_listitems = []
-		number_of_leagues=len(all_leagues)
-		self.getControl(334).setLabel(str(number_of_leagues) + ' Leagues')
 		
-		for league in all_leagues:
-			leagueItem = xbmcgui.ListItem(thesportsdb.Leagues().get_name(league), iconImage = thesportsdb.Leagues().get_badge(league))
-			league_id = thesportsdb.Leagues().get_id(league)
-			leagueItem.setProperty('league_id', league_id)
-			leagueItem.setProperty('year', thesportsdb.Leagues().get_formedyear(league))
-			leagueItem.setProperty('sport', thesportsdb.Leagues().get_sport(league))
-			leagueItem.setProperty('country', thesportsdb.Leagues().get_country(league))
-			#manipulate languages here
-			if settings.getSetting('addon-language') == '0':
-				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_en(league))
-			elif settings.getSetting('addon-language') == '1':	
-				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_de(league))
-			elif settings.getSetting('addon-language') == '2':
-				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_fr(league))
-			elif settings.getSetting('addon-language') == '3':
-				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_it(league))
-			elif settings.getSetting('addon-language') == '4':
-				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_cn(league))
-			elif settings.getSetting('addon-language') == '5':
-				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_jp(league))	
-			elif settings.getSetting('addon-language') == '6':
-				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_ru(league))
-			elif settings.getSetting('addon-language') == '7':
-				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_es(league))	
-			elif settings.getSetting('addon-language') == '8':
-				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_pt(league))
-			elif settings.getSetting('addon-language') == '9':
-				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_se(league))
-			elif settings.getSetting('addon-language') == '10':
-				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_nl(league))
-			elif settings.getSetting('addon-language') == '11':
-				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_hu(league))
-			elif settings.getSetting('addon-language') == '12':
-				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_no(league))
-			elif settings.getSetting('addon-language') == '13':
-				leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_pl(league))	
-				
-			fanart = thesportsdb.Leagues().get_fanart(league)
-			if len(fanart) >= 1: leagueItem.setProperty('fanart', fanart[randint(0,len(fanart)-1)])
-			else: leagueItem.setProperty('fanart', os.path.join(addonpath,art,"sports",self.sport + '.jpg'))
-			leagueItem.setProperty('badge', thesportsdb.Leagues().get_badge(league))
-			leagueItem.setProperty('banner', thesportsdb.Leagues().get_banner(league))
-			leagueItem.setProperty('clear', thesportsdb.Leagues().get_logo(league))
-			leagueItem.setProperty('trophy', thesportsdb.Leagues().get_trophy(league))
-			leagueItem.setProperty('league_object',str(league))
+		if not self.is_library: #Current season information
+			try: all_leagues = thesportsdb.Search().search_all_leagues(None,self.sport,None)["countrys"]
+			except: all_leagues = []
+		else: #internal library information
+			try:
+				all_leagues = sc_database.Retriever().get_all_leagues(self.sport,None)
+			except: all_leagues = []
 			
-			if (league_id + '.txt') not in self.ignored_leagues:
-				self.list_listitems.append(leagueItem)
+		print all_leagues
+		self.list_listitems = []
+		
+		if all_leagues:
+		
+			for league in all_leagues:
+				leagueItem = xbmcgui.ListItem(thesportsdb.Leagues().get_name(league), iconImage = thesportsdb.Leagues().get_badge(league))
+				league_id = thesportsdb.Leagues().get_id(league)
+				leagueItem.setProperty('league_id', league_id)
+				leagueItem.setProperty('year', thesportsdb.Leagues().get_formedyear(league))
+				leagueItem.setProperty('sport', thesportsdb.Leagues().get_sport(league))
+				leagueItem.setProperty('country', thesportsdb.Leagues().get_country(league))
+				#manipulate languages here
+				if settings.getSetting('addon-language') == '0':
+					leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_en(league))
+				elif settings.getSetting('addon-language') == '1':	
+					leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_de(league))
+				elif settings.getSetting('addon-language') == '2':
+					leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_fr(league))
+				elif settings.getSetting('addon-language') == '3':
+					leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_it(league))
+				elif settings.getSetting('addon-language') == '4':
+					leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_cn(league))
+				elif settings.getSetting('addon-language') == '5':
+					leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_jp(league))	
+				elif settings.getSetting('addon-language') == '6':
+					leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_ru(league))
+				elif settings.getSetting('addon-language') == '7':
+					leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_es(league))	
+				elif settings.getSetting('addon-language') == '8':
+					leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_pt(league))
+				elif settings.getSetting('addon-language') == '9':
+					leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_se(league))
+				elif settings.getSetting('addon-language') == '10':
+					leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_nl(league))
+				elif settings.getSetting('addon-language') == '11':
+					leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_hu(league))
+				elif settings.getSetting('addon-language') == '12':
+					leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_no(league))
+				elif settings.getSetting('addon-language') == '13':
+					leagueItem.setProperty('plot', thesportsdb.Leagues().get_plot_pl(league))	
+				
+				fanart = thesportsdb.Leagues().get_fanart(league)
+				if len(fanart) >= 1: leagueItem.setProperty('fanart', fanart[randint(0,len(fanart)-1)])
+				else: leagueItem.setProperty('fanart', os.path.join(addonpath,art,"sports",self.sport + '.jpg'))
+				leagueItem.setProperty('badge', thesportsdb.Leagues().get_badge(league))
+				leagueItem.setProperty('banner', thesportsdb.Leagues().get_banner(league))
+				leagueItem.setProperty('clear', thesportsdb.Leagues().get_logo(league))
+				leagueItem.setProperty('trophy', thesportsdb.Leagues().get_trophy(league))
+				leagueItem.setProperty('league_object',str(league))
+			
+				if not self.is_library:
+					if (league_id + '.txt') not in self.ignored_leagues:
+						self.list_listitems.append(leagueItem)
+				else: self.list_listitems.append(leagueItem)
 			
 		xbmc.sleep(200)	
 		self.getControl(self.controler).addItems(self.list_listitems)
 			
+		number_of_leagues=len(self.list_listitems)
+		self.getControl(334).setLabel(str(number_of_leagues) + ' '+'Leagues') #TODO string
 		
 		xbmc.executebuiltin("SetProperty("+self.preferred_view+",1,home)")
 		self.getControl(2).setLabel(self.preferred_label)
@@ -188,7 +208,9 @@ class dialog_compet(xbmcgui.WindowXML):
 		elif active_view_type == "League PanelView":
 			self.controler = 984
 			self.listControl = self.getControl(self.controler)
-		seleccionado=self.listControl.getSelectedItem()
+		
+		try:seleccionado=self.listControl.getSelectedItem()
+		except:seleccionado = ''
 	          
 		if seleccionado:
 
