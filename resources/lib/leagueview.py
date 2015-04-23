@@ -249,6 +249,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("SetProperty(plotview,1,home)")
 		settings.setSetting("view_type_league",'plotview')
+		
 
 		self.getControl(2).setLabel("League: PlotView")
 		self.setFocusId(983)
@@ -330,6 +331,7 @@ class dialog_league(xbmcgui.WindowXML):
 			self.getControl(937).setText(rssitems[0][2])
 			self.getControl(938).setLabel(rssitems[0][0])
 			
+		
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(plotview,Home)")
@@ -388,6 +390,7 @@ class dialog_league(xbmcgui.WindowXML):
 						teamitem.setProperty('team_id',team_id)
 						teamitem.setProperty('team_points',team_points)
 						self.getControl(990).addItem(teamitem)
+						
 		#		
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
@@ -516,6 +519,7 @@ class dialog_league(xbmcgui.WindowXML):
 				if event_round and event_round != '0': game.setProperty('round',round_label)
 				self.getControl(987).addItem(game)
 				
+				
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(tablesview,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
@@ -643,6 +647,7 @@ class dialog_league(xbmcgui.WindowXML):
 				event_timestring = extensiveday + event_time + timedelay
 				game.setProperty('date',event_timestring)
 				self.getControl(988).addItem(game)
+				
 		
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
@@ -771,6 +776,7 @@ class dialog_league(xbmcgui.WindowXML):
 				event_timestring = extensiveday + event_time
 				game.setProperty('date',event_timestring)
 				self.getControl(988).addItem(game)
+				
 		
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
@@ -807,6 +813,7 @@ class dialog_league(xbmcgui.WindowXML):
 				video.setProperty('thumb',video_thumb)
 				video.setProperty('video_id',video_id)
 				self.getControl(989).addItem(video)
+				
 			
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
@@ -826,15 +833,12 @@ class dialog_league(xbmcgui.WindowXML):
 		
 	def onAction(self,action):
 		if action.getId() == 92 or action.getId() == 10:
-			#if not self.control_panel: 
-			if 2==1:
-				pass
-				#xbmc.executebuiltin("ClearProperty(MediaMenu,Home)")
-				#self.setFocusId(980)
-			else: 
-				#pass
+			self.control_panel = xbmc.getCondVisibility("Control.HasFocus(2)")
+			if self.control_panel:
+				xbmc.executebuiltin("ClearProperty(MediaMenu,Home)")
+				self.setFocusId(983)
+			else:
 				self.close()
-				#competlist.start(self.sport)
 		else:
 			checkjersey = xbmc.getCondVisibility("Control.HasFocus(981)")
 			checkbadge = xbmc.getCondVisibility("Control.HasFocus(985)")

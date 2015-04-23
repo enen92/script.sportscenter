@@ -835,7 +835,7 @@ class dialog_team(xbmcgui.WindowXML):
 				fanart = self.getControl(987).getSelectedItem().getProperty('StadiumThumb')
 				if not fanart or fanart == 'None': fanart = self.team_fanart
 			self.getControl(912).setImage(fanart)
-		#to-do check what window is open
+		#TODO check what window is open
 		else: 
 			self.getControl(912).setImage(self.team_fanart)
 		return
@@ -843,15 +843,12 @@ class dialog_team(xbmcgui.WindowXML):
 		
 	def onAction(self,action):
 		if action.getId() == 92 or action.getId() == 10:
-			#if not self.control_panel: 
-			if 2==1:
-				pass
-				#xbmc.executebuiltin("ClearProperty(MediaMenu,Home)")
-				#self.setFocusId(980)
+			self.control_panel = xbmc.getCondVisibility("Control.HasFocus(2)")
+			if self.control_panel: 
+				xbmc.executebuiltin("ClearProperty(MediaMenu,Home)")
+				self.setFocusId(983)
 			else: 
-				#pass
 				self.close()
-				#competlist.start(self.sport)
 		else:
 			self.fanart_setter()
 
