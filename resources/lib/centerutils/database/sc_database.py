@@ -148,7 +148,7 @@ class Inserter:
 	def __init__(self,):
 		pass
 		
-	def global_inserter(self,table,dictionary):
+	def global_inserter(self,table,dictionary,file_folder=None):
 		con = lite.connect(sc_database)
 		cur = con.cursor()
 		cur.execute('select * from '+table)
@@ -176,7 +176,11 @@ class Inserter:
 		i=0
 		for key in values_array_tmp:
 			if i != (len(values_array_tmp)-1): values_array = values_array + "'"+key +"'"+ ','
-			else: values_array = values_array +"'"+ key +"'"+')'
+			else:
+				if table != 'Event':
+					values_array = values_array +"'"+ key +"'"+')'
+				else:
+					values_array = values_array +"'"+ key +"','"+file_folder+"')"
 			i+=1
 				
 		sql_string = "INSERT INTO "+table+" "+key_array+" VALUES "+values_array+";"
@@ -215,7 +219,7 @@ class Inserter:
 			self.global_inserter('League',league_dictionary)
 		return
 		
-	def insert_event(self,_event_id_or_dict_):
+	def insert_event(self,_event_id_or_dict_,folder_file):
 		if type(_event_id_or_dict_) == str:
 			event_dictionary = thesportsdb.Lookups().lookupevent(_event_id_or_dict_)["events"][0]
 		elif type(_event_id_or_dict_) == dict: 
@@ -225,7 +229,7 @@ class Inserter:
 			#here we check if the table exists if not we create it
 			Checker().create_table_if_not_exists('Event')
 			#send the dictionary to global inserter
-			self.global_inserter('Event',event_dictionary)
+			self.global_inserter('Event',event_dictionary,folder_file)
 		return
 		
 class Remover:
