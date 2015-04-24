@@ -20,6 +20,8 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmcgui.WindowXML.__init__(self)
 		self.league = eval(eval(args[3])[0])
 		self.sport = eval(args[3])[1]
+		if type(self.league) != dict:
+			self.league = thesportsdb.Lookups().lookupleague(self.league)["leagues"][0]
 
 	def onInit(self):	
 	
@@ -669,7 +671,7 @@ class dialog_league(xbmcgui.WindowXML):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")	
 		#last matches stuff
-		self.roundnum = '1'
+		self.roundnum = roundnum
 		if not roundnum:
 			event_last_list = thesportsdb.Schedules().eventspastleague(self.league_id)["events"]
 			event_next_list = thesportsdb.Schedules().eventsnextleague(self.league_id)["events"]
@@ -686,14 +688,19 @@ class dialog_league(xbmcgui.WindowXML):
 				if event_last_list:
 					self.roundnum = thesportsdb.Events().get_round(event_last_list[0])
 				else: sys.exit(0) #TODO close progress
+				
+		else: pass # roundnum is already defined
 		
-	
-		
+		event_list = thesportsdb.Schedules().eventsround(self.league_id,self.roundnum,None)["events"]
+		items_to_add = []
 		
 		league_teams = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
-		if event_last_list:
-			for event in event_last_list:
-
+		if event_list:
+			for event in event_list:
+				#init result and versus
+				event_result_present = ''
+				event_vs_present = ''
+				#
 				event_date = thesportsdb.Events().get_eventdate(event)
 				event_fullname = thesportsdb.Events().get_eventtitle(event)
 				event_race = thesportsdb.Events().get_racelocation(event)
@@ -745,9 +752,9 @@ class dialog_league(xbmcgui.WindowXML):
 					home_score = thesportsdb.Events().get_homescore(event)
 					away_score = thesportsdb.Events().get_awayscore(event)
 					result = str(home_score) + '-' + str(away_score)
-					#event_round = thesportsdb.Events().get_round(event)
-					#if event_round:
-					#	round_label = 'Round ' + str(event_round)
+					#check if result is None-None and if so define vs instead of result
+					if result == 'None-None': event_vs_present = 'vs'
+					else: event_result_present = result
 				
 				#Extensive date manipulation here x/x/x to -> x Month Year
 				date_vector = event_date.split('-')
@@ -759,7 +766,6 @@ class dialog_league(xbmcgui.WindowXML):
 						extensiveday = '%s %s %s' % (day,month,year)
 				except: extensiveday = event_date
 				
-							
 				game = xbmcgui.ListItem(event_fullname)
 				game.setProperty('HomeTeamLogo',home_team_logo)
 				if not event_race:
@@ -767,15 +773,20 @@ class dialog_league(xbmcgui.WindowXML):
 					game.setProperty('AwayTeamLogo',away_team_logo)
 					game.setProperty('StadiumThumb',stadium_fanart)
 					game.setProperty('AwayTeamLong',away_team_name)
-					game.setProperty('match_result',result)
+					game.setProperty('match_result',event_result_present)
+					game.setProperty('event_vs',event_vs_present)
 					game.setProperty('event_id',event_id)
-					#if event_round: game.setProperty('round',round_label)
 				else:
 					game.setProperty('EventName',event_name)
 				# date + time + timedelay
 				event_timestring = extensiveday + event_time
 				game.setProperty('date',event_timestring)
-				self.getControl(988).addItem(game)
+				items_to_add.append(game)
+		
+		if items_to_add:	
+			self.getControl(988).reset()
+			self.getControl(9025).setLabel("[B]Round "+str(self.roundnum)+"[/B]")
+			self.getControl(988).addItems(items_to_add)
 				
 		
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
@@ -942,6 +953,24 @@ class dialog_league(xbmcgui.WindowXML):
 		elif controlId == 988:
 			event_id = self.getControl(988).getSelectedItem().getProperty('event_id')
 			matchdetails.start([False,event_id])
+			
+		elif controlId == 9024: #previous round
+			if self.roundnum and self.roundnum != '0':
+				try:
+					int(self.roundnum)-1
+					Proceed = True
+				except: Proceed = False
+				if Proceed:
+					self.setfixturesview(int(self.roundnum)-1)
+			
+		elif controlId == 9026: #next round
+			if self.roundnum and self.roundnum != '0':
+				try:
+					int(self.roundnum)+1
+					Proceed = True
+				except: Proceed = False
+				if Proceed:
+					self.setfixturesview(int(self.roundnum)+1)
 			
 	
 		

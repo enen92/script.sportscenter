@@ -230,6 +230,8 @@ class dialog_compet(xbmcgui.WindowXML):
 			except: pass
 			try: self.getControl(910).setImage(seleccionado.getProperty('trophy'))
 			except: pass
+			try: self.getControl(954).setImage(seleccionado.getProperty('trophy'))
+			except: pass
 			try: self.getControl(908).setImage(seleccionado.getProperty('clear'))
 			except: pass
 			try: self.getControl(938).setImage(seleccionado.getProperty('badge'))
@@ -240,7 +242,6 @@ class dialog_compet(xbmcgui.WindowXML):
 				
 	def onClick(self,controlId):
 		print "clicou no control id",controlId
-		#se clicar no diferente tipo de view
 		if controlId == 2:
 			active_view_type = self.getControl(controlId).getLabel()
 			if active_view_type == "League ListView":

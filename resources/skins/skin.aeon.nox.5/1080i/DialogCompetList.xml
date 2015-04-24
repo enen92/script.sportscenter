@@ -426,7 +426,7 @@
 					<texture></texture>
 					<fadetime>400</fadetime>			
 			</control>
-			<control type="image" id="910">
+			<control type="image" id="954">
 					<left>1640</left>
 					<top>587</top>
 					<width>150</width>

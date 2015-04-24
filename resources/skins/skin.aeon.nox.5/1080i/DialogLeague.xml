@@ -245,7 +245,7 @@
 			<onright condition="!IsEmpty(Window(home).Property(badgeview))">985</onright>
 			<onright condition="!IsEmpty(Window(home).Property(bannerview))">984</onright>
 			<onright condition="!IsEmpty(Window(home).Property(tablesview))">990</onright>
-			
+			<onright condition="!IsEmpty(Window(home).Property(fixturesview))">988</onright>
 			<onright condition="!IsEmpty(Window(home).Property(nextmatchview))">987</onright>
 			<onright condition="!IsEmpty(Window(home).Property(lastmatchview))">988</onright>
 			<onright condition="!IsEmpty(Window(home).Property(jerseyview))">981</onright>
@@ -2120,9 +2120,8 @@
 				<font>font_MainMenu</font>
 				<textcolor>grey2</textcolor>
 				<shadowcolor>shadow</shadowcolor>
-				<onright>9023</onright>
-				<onup>983</onup>
-				<ondown>980</ondown>
+				<onright>9026</onright>
+				<ondown>988</ondown>
 				<animation type="Visible">
 					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
 					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
@@ -2145,7 +2144,7 @@
 				<posy>200</posy>
 				<width>500</width>
 				<height>20</height>
-				<label>[B]Round 20[/B]</label>
+				<label></label>
 				<font>font_MainMenu</font>
 				<align>center</align>
 				<textcolor>labelheader</textcolor>
@@ -2162,9 +2161,8 @@
 				<font>font_MainMenu</font>
 				<textcolor>grey2</textcolor>
 				<shadowcolor>shadow</shadowcolor>
-				<onright>9023</onright>
-				<onup>983</onup>
-				<ondown>980</ondown>
+				<onleft>9024</onleft>
+				<ondown>988</ondown>
 				<animation type="Visible">
 					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
 					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
@@ -2181,7 +2179,7 @@
 				<height>728</height>
 				<onleft>983</onleft>
 				<onright>65</onright>
-				<onup>600</onup>
+				<onup>9026</onup>
 				<ondown>500</ondown>
 				<viewtype>icon</viewtype>
 				<pagecontrol>65</pagecontrol>
@@ -2198,7 +2196,7 @@
 						<height>120</height>
 						<texture border="1">separator2.png</texture>
 					</control>
-					<control type="image" id="304">
+					<control type="image">
             				<posx>30</posx>
             				<posy>18</posy>
             				<width>100</width>
@@ -2206,7 +2204,7 @@
             				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="textbox" id="305">
+					<control type="textbox">
 						<description>home_team_long</description>
 						<posx>235</posx>
 						<posy>35</posy>
@@ -2218,7 +2216,7 @@
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="textbox" id="310">
+					<control type="textbox">
 						<description>competition tag</description>
 						<posx>235</posx>
 						<posy>35</posy>
@@ -2231,7 +2229,7 @@
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="image" id="306">
+					<control type="image">
             				<posx>1060</posx>
             				<posy>18</posy>
             				<width>100</width>
@@ -2239,7 +2237,7 @@
             				<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="textbox" id="307">
+					<control type="textbox">
 						<description>awayteamlong</description>
 						<posx>700</posx>
 						<posy>35</posy>
@@ -2252,7 +2250,7 @@
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="318">
+					<control type="label">
 						<description>vs tag</description>
 						<posx>510</posx>
 						<posy>50</posy>
@@ -2264,7 +2262,19 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="303">
+					<control type="label">
+						<description>vs tag</description>
+						<posx>510</posx>
+						<posy>50</posy>
+						<width>170</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_vs)][/B]</label>
+						<font>IconMedium</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
 						<description>date of the event</description>
 						<posx>200</posx>
 						<posy>100</posy>
@@ -2292,7 +2302,7 @@
 						<height>120</height>
 						<texture border="5">listselect_fo.png</texture>
 					</control>
-					<control type="image" id="304">
+					<control type="image">
             				<posx>30</posx>
             				<posy>18</posy>
             				<width>100</width>
@@ -2300,7 +2310,7 @@
             				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="textbox" id="305">
+					<control type="textbox">
 						<description>home_team_long</description>
 						<posx>235</posx>
 						<posy>35</posy>
@@ -2312,7 +2322,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="textbox" id="310">
+					<control type="textbox">
 						<description>competition tag</description>
 						<posx>235</posx>
 						<posy>35</posy>
@@ -2325,7 +2335,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="image" id="306">
+					<control type="image">
             				<posx>1060</posx>
             				<posy>18</posy>
             				<width>100</width>
@@ -2333,7 +2343,7 @@
             				<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="textbox" id="307">
+					<control type="textbox">
 						<description>awayteamlong</description>
 						<posx>700</posx>
 						<posy>35</posy>
@@ -2346,7 +2356,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="318">
+					<control type="label">
 						<description>result tag</description>
 						<posx>510</posx>
 						<posy>50</posy>
@@ -2358,7 +2368,19 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="303">
+					<control type="label">
+						<description>vs tag</description>
+						<posx>510</posx>
+						<posy>50</posy>
+						<width>170</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_vs)][/B]</label>
+						<font>IconMedium</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
 						<description>date of the event</description>
 						<posx>200</posx>
 						<posy>100</posy>
