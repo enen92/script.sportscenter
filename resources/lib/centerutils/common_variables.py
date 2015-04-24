@@ -7,6 +7,7 @@
 import xbmc,xbmcplugin,xbmcvfs,xbmcgui,xbmcaddon,os
 
 addon_id = 'script.sportscenter'
+tsdbkey = '5261590715995'
 art = os.path.join("resources","img")
 settings = xbmcaddon.Addon(id=addon_id)
 addonpath = settings.getAddonInfo('path').decode('utf-8')

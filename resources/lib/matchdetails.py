@@ -32,7 +32,7 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 			event_list = self.event_string.split('###')
 			self.home_team = event_list[0]
 			self.away_team = event_list[1]
-			self.livescores = thesportsdb.LiveScores().latestsoccer()["teams"]["Match"]
+			self.livescores = thesportsdb.LiveScores(tsdbkey).latestsoccer()["teams"]["Match"]
 			for match in self.livescores:
 				home_team = thesportsdb.Livematch().get_home_name(match)
 				away_team = thesportsdb.Livematch().get_away_name(match)
@@ -1106,7 +1106,7 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 			#in this case we are passing the dictionary itself
 			self.event_dict = event
 		else:
-			self.event_dict = thesportsdb.Lookups().lookupevent(event)["events"]
+			self.event_dict = thesportsdb.Lookups(tsdbkey).lookupevent(event)["events"]
 			if self.event_dict and self.event_dict != 'None':
 				self.event_dict = self.event_dict[0]
 				
@@ -1118,8 +1118,8 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 			self.hometeam_id = thesportsdb.Livematch().get_home_id(self.event_dict)
 			self.awayteam_id = thesportsdb.Livematch().get_away_id(self.event_dict)
 			
-		self.hometeam_dict = thesportsdb.Lookups().lookupteam(self.hometeam_id)["teams"][0]
-		self.awayteam_dict = thesportsdb.Lookups().lookupteam(self.awayteam_id)["teams"][0]
+		self.hometeam_dict = thesportsdb.Lookups(tsdbkey).lookupteam(self.hometeam_id)["teams"][0]
+		self.awayteam_dict = thesportsdb.Lookups(tsdbkey).lookupteam(self.awayteam_id)["teams"][0]
 		
 			
 		#Get both teams badge and jersey

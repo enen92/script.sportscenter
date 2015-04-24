@@ -213,7 +213,7 @@ class Inserter:
 		
 	def insert_team(self,_team_id_or_dict_):
 		if type(_team_id_or_dict_) == str:
-			team_dictionary = thesportsdb.Lookups().lookupteam(_team_id_or_dict_)["teams"][0]
+			team_dictionary = thesportsdb.Lookups(tsdbkey).lookupteam(_team_id_or_dict_)["teams"][0]
 		elif type(_team_id_or_dict_) == dict: 
 			team_dictionary = _team_id_or_dict_
 		else: team_dictionary = None
@@ -227,7 +227,7 @@ class Inserter:
 		
 	def insert_league(self,_league_id_or_dict_):
 		if type(_league_id_or_dict_) == str:
-			league_dictionary = thesportsdb.Lookups().lookupleague(_league_id_or_dict_)["leagues"][0]
+			league_dictionary = thesportsdb.Lookups(tsdbkey).lookupleague(_league_id_or_dict_)["leagues"][0]
 		elif type(_league_id_or_dict_) == dict: 
 			league_dictionary = _league_id_or_dict_
 		else: league_dictionary = None
@@ -240,7 +240,7 @@ class Inserter:
 		
 	def insert_event(self,_event_id_or_dict_,folder_file):
 		if type(_event_id_or_dict_) == str:
-			event_dictionary = thesportsdb.Lookups().lookupevent(_event_id_or_dict_)["events"][0]
+			event_dictionary = thesportsdb.Lookups(tsdbkey).lookupevent(_event_id_or_dict_)["events"][0]
 		elif type(_event_id_or_dict_) == dict: 
 			event_dictionary = _event_id_or_dict_
 		else: event_dictionary = None

@@ -14,8 +14,8 @@ class dialog_stadium(xbmcgui.WindowXMLDialog):
 		self.league_id = '4328'
 
 	def onInit(self):
-		teams_list = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
-		table_list = thesportsdb.Lookups().lookup_leaguetables(self.league_id,None)["table"]
+		teams_list = thesportsdb.Lookups(tsdbkey).lookup_all_teams(self.league_id)["teams"]
+		table_list = thesportsdb.Lookups(tsdbkey).lookup_leaguetables(self.league_id,None)["table"]
 		pos=0
 		if table_list:
 			for team in table_list:

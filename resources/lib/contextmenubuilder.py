@@ -39,7 +39,7 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 			menu_items.append(('Add to widgets','addtowidgets'))
 		elif self.mode == 'calendaritem':
 			menu_items = []
-			self.event_dict = thesportsdb.Lookups().lookupevent(self.specific_id)["events"][0]
+			self.event_dict = thesportsdb.Lookups(tsdbkey).lookupevent(self.specific_id)["events"][0]
 			if not thesportsdb.Events().get_racelocation(self.event_dict):
 				menu_items.append(('View home team details','hometeamdetails'))
 				menu_items.append(('Navigate to home team','hometeammain'))

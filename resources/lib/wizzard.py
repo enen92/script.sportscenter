@@ -25,7 +25,7 @@ class wizzard:
 				nick = dialog.input('Please enter your nickname', type=xbmcgui.INPUT_ALPHANUM)
 				xbmc.executebuiltin( "ActivateWindow(busydialog)" )
 				settings.setSetting('username',nick)
-				favourite_teams = thesportsdb.User().get_favourite_teams(nick)
+				favourite_teams = thesportsdb.User(tsdbkey).get_favourite_teams(nick)
 				football_favs = []
 				basketball_favs = []
 				baseball_favs = []
@@ -38,7 +38,7 @@ class wizzard:
 				sport_favs = []
 				if favourite_teams:
 					for equipa in favourite_teams:
-						team_dict = thesportsdb.Lookups().lookupteam(equipa)['teams'][0]
+						team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(equipa)['teams'][0]
 						team_sport = thesportsdb.Teams().get_sport(team_dict)
 						if settings.getSetting('team-naming')=='0': team_name = thesportsdb.Teams().get_name(team_dict)
 						else: team_name = thesportsdb.Teams().get_alternativefirst(team_dict)

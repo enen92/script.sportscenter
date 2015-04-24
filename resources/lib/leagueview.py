@@ -21,7 +21,7 @@ class dialog_league(xbmcgui.WindowXML):
 		self.league = eval(eval(args[3])[0])
 		self.sport = eval(args[3])[1]
 		if type(self.league) != dict:
-			self.league = thesportsdb.Lookups().lookupleague(self.league)["leagues"][0]
+			self.league = thesportsdb.Lookups(tsdbkey).lookupleague(self.league)["leagues"][0]
 
 	def onInit(self):	
 	
@@ -122,7 +122,7 @@ class dialog_league(xbmcgui.WindowXML):
 		self.getControl(984).reset()
 		self.getControl(985).reset()
 			
-		teams_list = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
+		teams_list = thesportsdb.Lookups(tsdbkey).lookup_all_teams(self.league_id)["teams"]
 		team_number = len(teams_list)
 		#set team number on top bar
 		self.getControl(334).setLabel(str(team_number)+' Teams')
@@ -131,7 +131,7 @@ class dialog_league(xbmcgui.WindowXML):
 		
 		table_check = False
 		if self.sport == 'soccer' or self.sport == 'football':
-			table_list = thesportsdb.Lookups().lookup_leaguetables(self.league_id,None)["table"]
+			table_list = thesportsdb.Lookups(tsdbkey).lookup_leaguetables(self.league_id,None)["table"]
 			if table_list:
 				table_check = True
 				for team in table_list:
@@ -353,8 +353,8 @@ class dialog_league(xbmcgui.WindowXML):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")	
 		#tables stuff
-		teams_list = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
-		table_list = thesportsdb.Lookups().lookup_leaguetables(self.league_id,None)["table"]
+		teams_list = thesportsdb.Lookups(tsdbkey).lookup_all_teams(self.league_id)["teams"]
+		table_list = thesportsdb.Lookups(tsdbkey).lookup_leaguetables(self.league_id,None)["table"]
 		pos=0
 		if table_list:
 			for team in table_list:
@@ -415,8 +415,8 @@ class dialog_league(xbmcgui.WindowXML):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")	
 		#next matches stuff
-		event_next_list = thesportsdb.Schedules().eventsnextleague(self.league_id)["events"]
-		league_teams = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]		
+		event_next_list = thesportsdb.Schedules(tsdbkey).eventsnextleague(self.league_id)["events"]
+		league_teams = thesportsdb.Lookups(tsdbkey).lookup_all_teams(self.league_id)["teams"]		
 		
 		if event_next_list:
 			for event in event_next_list:
@@ -450,7 +450,7 @@ class dialog_league(xbmcgui.WindowXML):
 						if thesportsdb.Teams().get_id(team) == home_team_id:
 							home_team_dict = team
 							break 
-					if not home_team_dict: home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
+					if not home_team_dict: home_team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(home_team_id)["teams"][0]
 					
 					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
 					else: team_name = home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
@@ -462,7 +462,7 @@ class dialog_league(xbmcgui.WindowXML):
 						if thesportsdb.Teams().get_id(team) == away_team_id:
 							away_team_dict = team
 							break 
-					if not away_team_dict: away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
+					if not away_team_dict: away_team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(away_team_id)["teams"][0]
 					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
 					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
 					away_team_logo = thesportsdb.Teams().get_badge(away_team_dict)
@@ -542,8 +542,8 @@ class dialog_league(xbmcgui.WindowXML):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")	
 		#last matches stuff
-		event_last_list = thesportsdb.Schedules().eventspastleague(self.league_id)["events"]
-		league_teams = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
+		event_last_list = thesportsdb.Schedules(tsdbkey).eventspastleague(self.league_id)["events"]
+		league_teams = thesportsdb.Lookups(tsdbkey).lookup_all_teams(self.league_id)["teams"]
 		if event_last_list:
 			for event in event_last_list:
 
@@ -577,7 +577,7 @@ class dialog_league(xbmcgui.WindowXML):
 							home_team_dict = team
 							break
 					#make the lookup only if we can't match the team
-					if not home_team_dict: home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
+					if not home_team_dict: home_team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(home_team_id)["teams"][0]
 					
 					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
 					else: home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
@@ -590,7 +590,7 @@ class dialog_league(xbmcgui.WindowXML):
 							away_team_dict = team
 							break
 					#make the request only if we can't match the team
-					if not away_team_dict: away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
+					if not away_team_dict: away_team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(away_team_id)["teams"][0]
 					
 					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
 					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
@@ -598,6 +598,7 @@ class dialog_league(xbmcgui.WindowXML):
 					home_score = thesportsdb.Events().get_homescore(event)
 					away_score = thesportsdb.Events().get_awayscore(event)
 					result = str(home_score) + '-' + str(away_score)
+					print "FUCKING RESULT",result
 					event_round = thesportsdb.Events().get_round(event)
 					if event_round:
 						round_label = 'Round ' + str(event_round)
@@ -673,8 +674,8 @@ class dialog_league(xbmcgui.WindowXML):
 		#last matches stuff
 		self.roundnum = roundnum
 		if not roundnum:
-			event_last_list = thesportsdb.Schedules().eventspastleague(self.league_id)["events"]
-			event_next_list = thesportsdb.Schedules().eventsnextleague(self.league_id)["events"]
+			event_last_list = thesportsdb.Schedules(tsdbkey).eventspastleague(self.league_id)["events"]
+			event_next_list = thesportsdb.Schedules(tsdbkey).eventsnextleague(self.league_id)["events"]
 			if event_next_list:
 				if event_last_list:
 					roundlast = thesportsdb.Events().get_round(event_last_list[0])
@@ -691,10 +692,10 @@ class dialog_league(xbmcgui.WindowXML):
 				
 		else: pass # roundnum is already defined
 		
-		event_list = thesportsdb.Schedules().eventsround(self.league_id,self.roundnum,None)["events"]
+		event_list = thesportsdb.Schedules(tsdbkey).eventsround(self.league_id,self.roundnum,None)["events"]
 		items_to_add = []
 		
-		league_teams = thesportsdb.Lookups().lookup_all_teams(self.league_id)["teams"]
+		league_teams = thesportsdb.Lookups(tsdbkey).lookup_all_teams(self.league_id)["teams"]
 		if event_list:
 			for event in event_list:
 				#init result and versus
@@ -731,7 +732,7 @@ class dialog_league(xbmcgui.WindowXML):
 							home_team_dict = team
 							break
 					#make the lookup only if we can't match the team
-					if not home_team_dict: home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
+					if not home_team_dict: home_team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(home_team_id)["teams"][0]
 					
 					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
 					else: home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
@@ -744,7 +745,7 @@ class dialog_league(xbmcgui.WindowXML):
 							away_team_dict = team
 							break
 					#make the request only if we can't match the team
-					if not away_team_dict: away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
+					if not away_team_dict: away_team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(away_team_id)["teams"][0]
 					
 					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
 					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
@@ -773,7 +774,7 @@ class dialog_league(xbmcgui.WindowXML):
 					game.setProperty('AwayTeamLogo',away_team_logo)
 					game.setProperty('StadiumThumb',stadium_fanart)
 					game.setProperty('AwayTeamLong',away_team_name)
-					game.setProperty('match_result',event_result_present)
+					game.setProperty('event_result',event_result_present)
 					game.setProperty('event_vs',event_vs_present)
 					game.setProperty('event_id',event_id)
 				else:
@@ -784,9 +785,9 @@ class dialog_league(xbmcgui.WindowXML):
 				items_to_add.append(game)
 		
 		if items_to_add:	
-			self.getControl(988).reset()
+			self.getControl(991).reset()
 			self.getControl(9025).setLabel("[B]Round "+str(self.roundnum)+"[/B]")
-			self.getControl(988).addItems(items_to_add)
+			self.getControl(991).addItems(items_to_add)
 				
 		
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
@@ -858,8 +859,9 @@ class dialog_league(xbmcgui.WindowXML):
 			checklastmatch = xbmc.getCondVisibility("Control.HasFocus(988)")
 			checknextmatch = xbmc.getCondVisibility("Control.HasFocus(987)")
 			checktables = xbmc.getCondVisibility("Control.HasFocus(990)")
+			checkfixtures = xbmc.getCondVisibility("Control.HasFocus(991)")
 			
-			if checkbadge or checkplot or checkbanner or checklastmatch or checknextmatch or checkjersey or checktables:
+			if checkbadge or checkplot or checkbanner or checklastmatch or checknextmatch or checkjersey or checktables or checkfixtures:
 				if checkbadge:
 					fanart = self.getControl(985).getSelectedItem().getProperty('team_fanart')
 				elif checktables:
@@ -870,6 +872,9 @@ class dialog_league(xbmcgui.WindowXML):
 					fanart = self.getControl(984).getSelectedItem().getProperty('team_fanart')
 				elif checkjersey:
 					fanart = self.getControl(981).getSelectedItem().getProperty('team_fanart')
+				elif checkfixtures:
+					fanart = self.getControl(991).getSelectedItem().getProperty('StadiumThumb')
+					if not fanart or fanart == 'None': fanart = self.league_fanart
 				elif checklastmatch:
 					fanart = self.getControl(988).getSelectedItem().getProperty('StadiumThumb')
 					if not fanart or fanart == 'None': fanart = self.league_fanart
@@ -950,8 +955,8 @@ class dialog_league(xbmcgui.WindowXML):
 			self.getControl(937).setText(news_content)
 			self.getControl(938).setLabel(news_title)
 			
-		elif controlId == 988:
-			event_id = self.getControl(988).getSelectedItem().getProperty('event_id')
+		elif controlId == 988 or controlId == 991:
+			event_id = self.getControl(controlId).getSelectedItem().getProperty('event_id')
 			matchdetails.start([False,event_id])
 			
 		elif controlId == 9024: #previous round

@@ -22,11 +22,11 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 	def __init__( self, *args, **kwargs ):
 		xbmcgui.WindowXML.__init__(self)
 		self.team_id = str(args[3])
-		self.event_last_list = thesportsdb.Schedules().eventslast(self.team_id)['results']
-		self.event_next_list = thesportsdb.Schedules().eventsnext(self.team_id)['events']
+		self.event_last_list = thesportsdb.Schedules(tsdbkey).eventslast(self.team_id)['results']
+		self.event_next_list = thesportsdb.Schedules(tsdbkey).eventsnext(self.team_id)['events']
 
 	def onInit(self):
-		self.team = thesportsdb.Lookups().lookupteam(self.team_id)['teams'][0]
+		self.team = thesportsdb.Lookups(tsdbkey).lookupteam(self.team_id)['teams'][0]
 		if settings.getSetting('team-naming')=='0': self.team_name = thesportsdb.Teams().get_name(self.team)
 		else: self.team_name = thesportsdb.Teams().get_alternativefirst(self.team)		
 		self.team_badge = thesportsdb.Teams().get_badge(self.team)
@@ -75,7 +75,7 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 		self.likes = thesportsdb.Teams().get_likes(self.team)
 		self.league_id = thesportsdb.Teams().get_league_id(self.team)
 		#get league table data
-		table_list = thesportsdb.Lookups().lookup_leaguetables(self.league_id,None)["table"]
+		table_list = thesportsdb.Lookups(tsdbkey).lookup_leaguetables(self.league_id,None)["table"]
 		self.position = 0
 		#detect position
 		dict_to_order = {}
@@ -124,7 +124,7 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 				self.home_away = 'AWAY'
 				self.searchid = thesportsdb.Events().get_hometeamid(self.nextevent)
 			self.getControl(41).setLabel(self.home_away)
-			self.nexteam = thesportsdb.Lookups().lookupteam(self.searchid)['teams'][0]
+			self.nexteam = thesportsdb.Lookups(tsdbkey).lookupteam(self.searchid)['teams'][0]
 			self.nextlogo = thesportsdb.Teams().get_badge(self.nexteam)
 			self.getControl(40).setImage(self.nextlogo)
 			self.nextdate = thesportsdb.Events().get_eventdate(self.nextevent).split('-')
@@ -218,8 +218,8 @@ class dialog_team(xbmcgui.WindowXML):
 		xbmcgui.WindowXML.__init__(self)
 		self.team_id = eval(args[3])[0]
 		self.sport = eval(args[3])[1]
-		self.team = thesportsdb.Lookups().lookupteam(self.team_id)['teams'][0]
-		self.event_next_list = thesportsdb.Schedules().eventsnext(self.team_id)['events']
+		self.team = thesportsdb.Lookups(tsdbkey).lookupteam(self.team_id)['teams'][0]
+		self.event_next_list = thesportsdb.Schedules(tsdbkey).eventsnext(self.team_id)['events']
 		
 
 	def onInit(self):	
@@ -353,7 +353,7 @@ class dialog_team(xbmcgui.WindowXML):
 				self.searchid = thesportsdb.Events().get_hometeamid(self.nextevent)
 			self.getControl(41).setLabel(self.home_away)
 			try:
-				self.nexteam = thesportsdb.Lookups().lookupteam(self.searchid)['teams'][0]
+				self.nexteam = thesportsdb.Lookups(tsdbkey).lookupteam(self.searchid)['teams'][0]
 				self.nextlogo = thesportsdb.Teams().get_badge(self.nexteam)
 				self.getControl(40).setImage(self.nextlogo)
 				self.nextdate = thesportsdb.Events().get_eventdate(self.nextevent).split('-')
@@ -406,7 +406,7 @@ class dialog_team(xbmcgui.WindowXML):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")
 		
-		players = thesportsdb.Lookups().lookup_all_players(self.team_id)['player']
+		players = thesportsdb.Lookups(tsdbkey).lookup_all_players(self.team_id)['player']
 		if players:
 			number_players=len(players)
 			
@@ -529,7 +529,7 @@ class dialog_team(xbmcgui.WindowXML):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")	
 		#next matches stuff
-		event_next_list = thesportsdb.Schedules().eventsnext(self.team_id)['events']
+		event_next_list = thesportsdb.Schedules(tsdbkey).eventsnext(self.team_id)['events']
 		self.getControl(987).reset()
 		if event_next_list:
 			for event in event_next_list:
@@ -566,13 +566,13 @@ class dialog_team(xbmcgui.WindowXML):
 					event_round = ''		
 				else:
 					home_team_id = thesportsdb.Events().get_hometeamid(event)
-					home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
+					home_team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(home_team_id)["teams"][0]
 					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
 					else: home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
 					home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
 					stadium_fanart = thesportsdb.Teams().get_stadium_thumb(home_team_dict)
 					away_team_id = thesportsdb.Events().get_awayteamid(event)
-					away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
+					away_team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(away_team_id)["teams"][0]
 					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
 					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
 					away_team_logo = thesportsdb.Teams().get_badge(away_team_dict)
@@ -614,7 +614,7 @@ class dialog_team(xbmcgui.WindowXML):
 		winnumber = 0
 		
 		#last matches stuff
-		event_last_list = thesportsdb.Schedules().eventslast(self.team_id)['results']
+		event_last_list = thesportsdb.Schedules(tsdbkey).eventslast(self.team_id)['results']
 		if event_last_list:
 			for event in event_last_list:
 				#compare team id's and not team name
@@ -671,13 +671,13 @@ class dialog_team(xbmcgui.WindowXML):
 					event_round = ''
 				else:
 					home_team_id = thesportsdb.Events().get_hometeamid(event)
-					home_team_dict = thesportsdb.Lookups().lookupteam(home_team_id)["teams"][0]
+					home_team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(home_team_id)["teams"][0]
 					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
 					else: home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
 					home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
 					stadium_fanart = thesportsdb.Teams().get_stadium_thumb(home_team_dict)
 					away_team_id = thesportsdb.Events().get_awayteamid(event)
-					away_team_dict = thesportsdb.Lookups().lookupteam(away_team_id)["teams"][0]
+					away_team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(away_team_id)["teams"][0]
 					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
 					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
 					away_team_logo = thesportsdb.Teams().get_badge(away_team_dict)

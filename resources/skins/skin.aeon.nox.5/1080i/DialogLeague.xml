@@ -245,7 +245,7 @@
 			<onright condition="!IsEmpty(Window(home).Property(badgeview))">985</onright>
 			<onright condition="!IsEmpty(Window(home).Property(bannerview))">984</onright>
 			<onright condition="!IsEmpty(Window(home).Property(tablesview))">990</onright>
-			<onright condition="!IsEmpty(Window(home).Property(fixturesview))">988</onright>
+			<onright condition="!IsEmpty(Window(home).Property(fixturesview))">991</onright>
 			<onright condition="!IsEmpty(Window(home).Property(nextmatchview))">987</onright>
 			<onright condition="!IsEmpty(Window(home).Property(lastmatchview))">988</onright>
 			<onright condition="!IsEmpty(Window(home).Property(jerseyview))">981</onright>
@@ -1506,7 +1506,7 @@
 						<height>244</height>
 						<texture border="1">separator2.png</texture>
 					</control>
-					<control type="image" id="304">
+					<control type="image">
             				<posx>30</posx>
             				<posy>30</posy>
             				<width>200</width>
@@ -1514,7 +1514,7 @@
             				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="textbox" id="305">
+					<control type="textbox">
 						<description>home_team_long</description>
 						<posx>235</posx>
 						<posy>85</posy>
@@ -1526,7 +1526,7 @@
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="textbox" id="305">
+					<control type="textbox">
 						<description>home_team_short</description>
 						<posx>235</posx>
 						<posy>105</posy>
@@ -1538,7 +1538,7 @@
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="315">
+					<control type="label">
 						<description>competition tag</description>
 						<posx>235</posx>
 						<posy>105</posy>
@@ -1551,7 +1551,7 @@
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="310">
+					<control type="label">
 						<description>competition tag</description>
 						<posx>235</posx>
 						<posy>105</posy>
@@ -1564,7 +1564,7 @@
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="image" id="306">
+					<control type="image">
             				<posx>980</posx>
             				<posy>30</posy>
             				<width>200</width>
@@ -1572,7 +1572,7 @@
             				<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="textbox" id="307">
+					<control type="textbox">
 						<description>awayteamlong</description>
 						<posx>700</posx>
 						<posy>85</posy>
@@ -1585,7 +1585,7 @@
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="textbox" id="307">
+					<control type="textbox">
 						<description>awayteamshort</description>
 						<posx>700</posx>
 						<posy>105</posy>
@@ -1598,7 +1598,7 @@
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="318">
+					<control type="label">
 						<description>vs tag</description>
 						<posx>560</posx>
 						<posy>115</posy>
@@ -1610,7 +1610,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="303">
+					<control type="label">
 						<description>date of the event</description>
 						<posx>200</posx>
 						<posy>200</posy>
@@ -1622,7 +1622,7 @@
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="309">
+					<control type="label">
 						<description>round</description>
 						<posx>200</posx>
 						<posy>30</posy>
@@ -1650,7 +1650,7 @@
 						<height>240</height>
 						<texture border="5">listselect_fo.png</texture>
 					</control>
-					<control type="image" id="304">
+					<control type="image">
             				<posx>30</posx>
             				<posy>30</posy>
             				<width>200</width>
@@ -1658,7 +1658,7 @@
             				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="textbox" id="305">
+					<control type="textbox">
 						<description>home_team_long</description>
 						<posx>235</posx>
 						<posy>85</posy>
@@ -1670,7 +1670,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="textbox" id="305">
+					<control type="textbox">
 						<description>home_team_short</description>
 						<posx>235</posx>
 						<posy>105</posy>
@@ -1682,7 +1682,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="309">
+					<control type="label">
 						<description>round</description>
 						<posx>200</posx>
 						<posy>30</posy>
@@ -1694,7 +1694,7 @@
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="310">
+					<control type="label">
 						<description>competition tag</description>
 						<posx>235</posx>
 						<posy>105</posy>
@@ -1707,7 +1707,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="image" id="306">
+					<control type="image">
             				<posx>980</posx>
             				<posy>30</posy>
             				<width>200</width>
@@ -1715,7 +1715,7 @@
             				<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="textbox" id="307">
+					<control type="textbox">
 						<description>awayteamlong</description>
 						<posx>700</posx>
 						<posy>85</posy>
@@ -1728,7 +1728,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="textbox" id="307">
+					<control type="textbox">
 						<description>awayteamshort</description>
 						<posx>700</posx>
 						<posy>105</posy>
@@ -1741,7 +1741,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="318">
+					<control type="label">
 						<description>vs tag</description>
 						<posx>560</posx>
 						<posy>115</posy>
@@ -1753,7 +1753,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="303">
+					<control type="label">
 						<description>date of the event</description>
 						<posx>200</posx>
 						<posy>200</posy>
@@ -1825,7 +1825,7 @@
 						<height>244</height>
 						<texture border="1">separator2.png</texture>
 					</control>
-					<control type="image" id="304">
+					<control type="image">
             				<posx>30</posx>
             				<posy>30</posy>
             				<width>200</width>
@@ -1833,7 +1833,7 @@
             				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="textbox" id="305">
+					<control type="textbox">
 						<description>home_team_long</description>
 						<posx>235</posx>
 						<posy>85</posy>
@@ -1845,7 +1845,7 @@
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="textbox" id="305">
+					<control type="textbox">
 						<description>home_team_short</description>
 						<posx>235</posx>
 						<posy>105</posy>
@@ -1857,7 +1857,7 @@
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="textbox" id="310">
+					<control type="textbox">
 						<description>competition tag</description>
 						<posx>235</posx>
 						<posy>105</posy>
@@ -1870,7 +1870,7 @@
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="image" id="306">
+					<control type="image">
             				<posx>980</posx>
             				<posy>30</posy>
             				<width>200</width>
@@ -1878,7 +1878,7 @@
             				<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="textbox" id="307">
+					<control type="textbox">
 						<description>awayteamlong</description>
 						<posx>700</posx>
 						<posy>85</posy>
@@ -1891,7 +1891,7 @@
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="textbox" id="307">
+					<control type="textbox">
 						<description>awayteamshort</description>
 						<posx>700</posx>
 						<posy>105</posy>
@@ -1904,7 +1904,7 @@
 						<textcolor>grey2</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="318">
+					<control type="label">
 						<description>vs tag</description>
 						<posx>510</posx>
 						<posy>120</posy>
@@ -1916,7 +1916,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="303">
+					<control type="label">
 						<description>date of the event</description>
 						<posx>200</posx>
 						<posy>200</posy>
@@ -1928,7 +1928,7 @@
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="309">
+					<control type="label">
 						<description>round</description>
 						<posx>200</posx>
 						<posy>30</posy>
@@ -1956,7 +1956,7 @@
 						<height>240</height>
 						<texture border="5">listselect_fo.png</texture>
 					</control>
-					<control type="image" id="304">
+					<control type="image">
             				<posx>30</posx>
             				<posy>30</posy>
             				<width>200</width>
@@ -1964,7 +1964,7 @@
             				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="textbox" id="305">
+					<control type="textbox">
 						<description>home_team_long</description>
 						<posx>235</posx>
 						<posy>85</posy>
@@ -1976,7 +1976,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="textbox" id="305">
+					<control type="textbox">
 						<description>home_team_short</description>
 						<posx>235</posx>
 						<posy>105</posy>
@@ -1988,7 +1988,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="textbox" id="310">
+					<control type="textbox">
 						<description>competition tag</description>
 						<posx>235</posx>
 						<posy>105</posy>
@@ -2001,7 +2001,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="image" id="306">
+					<control type="image">
             				<posx>980</posx>
             				<posy>30</posy>
             				<width>200</width>
@@ -2009,7 +2009,7 @@
             				<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
 						<visible>true</visible>
         				</control>
-					<control type="textbox" id="307">
+					<control type="textbox">
 						<description>awayteamlong</description>
 						<posx>700</posx>
 						<posy>85</posy>
@@ -2022,7 +2022,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="textbox" id="307">
+					<control type="textbox">
 						<description>awayteamshort</description>
 						<posx>700</posx>
 						<posy>105</posy>
@@ -2035,7 +2035,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="318">
+					<control type="label">
 						<description>result tag</description>
 						<posx>510</posx>
 						<posy>120</posy>
@@ -2047,7 +2047,7 @@
 						<textcolor>white</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="303">
+					<control type="label">
 						<description>date of the event</description>
 						<posx>200</posx>
 						<posy>200</posy>
@@ -2059,7 +2059,7 @@
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<control type="label" id="309">
+					<control type="label">
 						<description>round</description>
 						<posx>200</posx>
 						<posy>30</posy>
@@ -2121,7 +2121,8 @@
 				<textcolor>grey2</textcolor>
 				<shadowcolor>shadow</shadowcolor>
 				<onright>9026</onright>
-				<ondown>988</ondown>
+				<ondown>991</ondown>
+				<onleft>983</onleft>
 				<animation type="Visible">
 					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
 					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
@@ -2162,7 +2163,8 @@
 				<textcolor>grey2</textcolor>
 				<shadowcolor>shadow</shadowcolor>
 				<onleft>9024</onleft>
-				<ondown>988</ondown>
+				<ondown>991</ondown>
+				<onright>65</onright>
 				<animation type="Visible">
 					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
 					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
@@ -2172,7 +2174,7 @@
 					<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
 				</animation>
 			</control>
-			<control type="panel" id="988">
+			<control type="panel" id="991">
 				<posx>612</posx>
 				<posy>250</posy>
 				<width>1330</width>
@@ -2256,7 +2258,7 @@
 						<posy>50</posy>
 						<width>170</width>
 						<height>20</height>
-						<label>[B]$INFO[ListItem.Property(match_result)][/B]</label>
+						<label>[B]$INFO[ListItem.Property(event_result)][/B]</label>
 						<font>font48</font>
 						<align>center</align>
 						<textcolor>white</textcolor>
@@ -2362,7 +2364,7 @@
 						<posy>50</posy>
 						<width>170</width>
 						<height>20</height>
-						<label>[B]$INFO[ListItem.Property(match_result)][/B]</label>
+						<label>[B]$INFO[ListItem.Property(event_result)][/B]</label>
 						<font>font48</font>
 						<align>center</align>
 						<textcolor>white</textcolor>

@@ -26,7 +26,6 @@ from centerutils.caching import *
 from centerutils import pytzimp
 import matchdetails
 
-
 def start(data_list):
 	window = dialog_livescores('DialogLivescores.xml',addonpath,'Default',str(data_list))
 	window.doModal()
@@ -61,7 +60,7 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 		items_in_progress = []
 		items_not_started = []
 		items_finished = []
-		try: self.livescores = thesportsdb.LiveScores().latestsoccer()["teams"]["Match"]
+		try: self.livescores = thesportsdb.LiveScores(tsdbkey).latestsoccer()["teams"]["Match"]
 		except: self.livescores = None
 		if self.livescores:
 			self.getControl(93).setVisible(False)
@@ -76,8 +75,8 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 					event_identifier = event_home_id + event_away_id
 					game = xbmcgui.ListItem(event_identifier)
 					#get home and away dicts
-					home_team_dict = thesportsdb.Lookups().lookupteam(event_home_id)["teams"][0]
-					away_team_dict = thesportsdb.Lookups().lookupteam(event_away_id)["teams"][0]
+					home_team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(event_home_id)["teams"][0]
+					away_team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(event_away_id)["teams"][0]
 					#set hometeamname
 					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
 					else: home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)

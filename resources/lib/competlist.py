@@ -94,7 +94,7 @@ class dialog_compet(xbmcgui.WindowXML):
 			self.controler = 980
 		
 		if not self.is_library: #Current season information
-			try: all_leagues = thesportsdb.Search().search_all_leagues(None,self.sport,None)["countrys"]
+			try: all_leagues = thesportsdb.Search(tsdbkey).search_all_leagues(None,self.sport,None)["countrys"]
 			except: all_leagues = []
 		else: #internal library information
 			try:
