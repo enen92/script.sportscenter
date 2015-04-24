@@ -88,11 +88,13 @@ if mode==None or url==None or len(url)<1:
 	skin = xbmc.getSkinDir()
 	try:
 		if skin == 'skin.aeon.nox.5':# or skin == 'skin.mimic' or skin == 'skin.confluence':
-			home.start(None)
+			#home.start(None)
 			#from resources.lib import tables as tables
 			#tables.start(None)
 			#from resources.lib import leagueview
 			#leagueview.start(['4328','soccer'])
+			from resources.lib import teamview
+			teamview.start(['134806','motorsport'])
 		else:
 			mensagemok('Sports Center', 'Only available for Aeon Nox 5 and Helix for now...')
 			sys.exit(0)

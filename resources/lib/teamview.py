@@ -7,6 +7,7 @@ from centerutils.common_variables import *
 from centerutils.youtube import *
 from centerutils.rssparser import *
 from centerutils.datemanipulation import *
+from centerutils import pytzimp
 import competlist as competlist
 import matchdetails as matchdetails
 import stadium as stadium
@@ -111,7 +112,7 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 		self.getControl(18).setImage(os.path.join(addonpath,'resources','img','like.png'))
 		self.getControl(19).setLabel(str(self.likes)+' Users')
 		
-		#Next match information
+		#set next match information
 		if self.event_next_list:
 			self.nextevent = self.event_next_list[0]
 			self.hometeam = thesportsdb.Events().get_hometeamid(self.nextevent)
@@ -124,34 +125,35 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 				self.home_away = 'AWAY'
 				self.searchid = thesportsdb.Events().get_hometeamid(self.nextevent)
 			self.getControl(41).setLabel(self.home_away)
-			self.nexteam = thesportsdb.Lookups(tsdbkey).lookupteam(self.searchid)['teams'][0]
-			self.nextlogo = thesportsdb.Teams().get_badge(self.nexteam)
-			self.getControl(40).setImage(self.nextlogo)
-			self.nextdate = thesportsdb.Events().get_eventdate(self.nextevent).split('-')
-			if len(self.nextdate) == 3:
-				now = datetime.datetime.now()
-				datenow = datetime.datetime(int(now.year), int(now.month), int(now.day))
-				eventdate = datetime.datetime(int(self.nextdate[0]), int(self.nextdate[1]), int(self.nextdate[2]))
-				day_difference = abs(eventdate - datenow).days
-				if day_difference == 0:
-					string = 'Today'
-				elif day_difference == 1:
-					string = 'Tomorrow'
-				else:
-					string = 'In ' + str(day_difference) + ' days'
-				
+			try:
+				self.nexteam = thesportsdb.Lookups(tsdbkey).lookupteam(self.searchid)['teams'][0]
+				self.nextlogo = thesportsdb.Teams().get_badge(self.nexteam)
+				self.getControl(40).setImage(self.nextlogo)
+				#date
+				self.nextdate = thesportsdb.Events().get_datetime_object(self.nextevent)
+				if self.nextdate:
+					#datetime object conversion goes here
+					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(self.nextdate)
+					self.nextdate=db_time.astimezone(my_location)
+				#next date
+				#day difference is calculated here
+				if self.nextdate:
+					now = datetime.datetime.now()
+					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day))
+					datenow =  pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(datenow)
+					day_difference = abs(self.nextdate - datenow).days
+					if day_difference == 0:
+						string = 'Today'
+					elif day_difference == 1:
+						string = 'Tomorrow'
+					else:
+						string = 'In ' + str(day_difference) + ' days'
+				else: string = ''
 				self.getControl(42).setLabel(string)
-			#event time processing is done here as it is independent from sport
-			self.event_time = thesportsdb.Events().get_time(self.nextevent)
-			self.event_timematch = re.compile('(.+?)\+').findall(self.event_time)
-			if self.event_timematch:
-				#timezone manipulation goes here
-				event_timetmp = self.event_timematch[0].split(':')
-				if len(event_timetmp) == 3:
-					self.hour = event_timetmp[0]
-					self.minute = event_timetmp[1]
-					self.event_time = self.hour + ':' + self.minute
-				else: self.event_time = self.event_timematch[0]
+			except: pass
+			if self.nextdate:
+				fmt = "%H:%M"
+				self.event_time = self.nextdate.strftime(fmt)
 				self.getControl(45).setLabel(self.event_time)
 
 
@@ -356,36 +358,33 @@ class dialog_team(xbmcgui.WindowXML):
 				self.nexteam = thesportsdb.Lookups(tsdbkey).lookupteam(self.searchid)['teams'][0]
 				self.nextlogo = thesportsdb.Teams().get_badge(self.nexteam)
 				self.getControl(40).setImage(self.nextlogo)
-				self.nextdate = thesportsdb.Events().get_eventdate(self.nextevent).split('-')
-				if len(self.nextdate) == 3:
+				#date
+				self.nextdate = thesportsdb.Events().get_datetime_object(self.nextevent)
+				if self.nextdate:
+					#datetime object conversion goes here
+					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(self.nextdate)
+					self.nextdate=db_time.astimezone(my_location)
+				#next date
+				#day difference is calculated here
+				if self.nextdate:
 					now = datetime.datetime.now()
 					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day))
-					eventdate = datetime.datetime(int(self.nextdate[0]), int(self.nextdate[1]), int(self.nextdate[2]))
-					day_difference = abs(eventdate - datenow).days
+					datenow =  pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(datenow)
+					day_difference = abs(self.nextdate - datenow).days
 					if day_difference == 0:
 						string = 'Today'
 					elif day_difference == 1:
 						string = 'Tomorrow'
 					else:
 						string = 'In ' + str(day_difference) + ' days'
-				
-					self.getControl(42).setLabel(string)
+				else: string = ''
+				self.getControl(42).setLabel(string)
+
+				if self.nextdate:
+					fmt = "%H:%M"
+					self.event_time = self.nextdate.strftime(fmt)
+					self.getControl(43).setLabel(self.event_time)
 			except: pass
-			#event time processing is done here as it is independent from sport
-			self.event_time = thesportsdb.Events().get_time(self.nextevent)
-			if self.event_time and self.event_time != 'null':
-				self.event_timematch = re.compile('(.+?)\+').findall(self.event_time)
-				if self.event_timematch:
-					#timezone manipulation goes here
-					event_timetmp = self.event_timematch[0].split(':')
-					if len(event_timetmp) == 3:
-						self.hour = event_timetmp[0]
-						self.minute = event_timetmp[1]
-						self.event_time = self.hour + ':' + self.minute
-					else: self.event_time = self.event_timematch[0]
-				else: self.event_time = ''
-			else: self.event_time = ''
-			self.getControl(43).setLabel(self.event_time)
 			
 		
 		
@@ -399,8 +398,10 @@ class dialog_team(xbmcgui.WindowXML):
 		settings.setSetting("view_type_league",'plotview')
 
 		self.getControl(2).setLabel("League: PlotView")
-		self.setFocusId(983)
-		self.getControl(983).selectItem(0)
+		#select first item only if mediamenu is not active
+		if not xbmc.getCondVisibility("Control.HasFocus(2)"):
+			self.setFocusId(983)
+			self.getControl(983).selectItem(0)
 		
 	def setplayersview(self):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
@@ -489,8 +490,10 @@ class dialog_team(xbmcgui.WindowXML):
 
 		self.getControl(2).setLabel("League: PlayersView")
 		
-		self.setFocusId(985)
-		self.getControl(985).selectItem(0)
+		#select first item only if mediamenu is not active
+		if not xbmc.getCondVisibility("Control.HasFocus(2)"):
+			self.setFocusId(985)
+			self.getControl(985).selectItem(0)
 		self.setplayerinfo()
 		
 	def setnewsview(self):
@@ -521,9 +524,11 @@ class dialog_team(xbmcgui.WindowXML):
 		xbmc.executebuiltin("SetProperty(newsview,1,home)")
 		settings.setSetting("view_type_league",'newsview')
 
-		self.getControl(2).setLabel("League: LastMatchView")	
-		try:self.getControl(986).selectItem(0)
-		except:pass
+		self.getControl(2).setLabel("League: LastMatchView")
+		#select first item only if mediamenu is not active
+		if not xbmc.getCondVisibility("Control.HasFocus(2)"):	
+			try:self.getControl(986).selectItem(0)
+			except:pass
 			
 	def setnextmatchview(self):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
@@ -533,31 +538,38 @@ class dialog_team(xbmcgui.WindowXML):
 		self.getControl(987).reset()
 		if event_next_list:
 			for event in event_next_list:
-				event_date = thesportsdb.Events().get_eventdate(event)
-				#event time processing is done here as it is independent from sport
-				event_time = thesportsdb.Events().get_time(event)
-				if event_time and event_time != 'null':
-					event_timematch = re.compile('(.+?)\+').findall(event_time)
-					if event_timematch:
-						#timezone manipulation goes here
-						event_timetmp = event_timematch[0].split(':')
-						if len(event_timetmp) == 3:
-							hour = event_timetmp[0]
-							minute = event_timetmp[1]
-							event_time = ' - ' + hour + ':' + minute
-						else: event_time = event_timematch[0]
-					else: event_time = ''
-				else: event_time = ''
-				event_date_parsed = event_date.split('-')
-				if event_date_parsed:
+				event_datetime = thesportsdb.Events().get_datetime_object(event)
+				if event_datetime:
+					#datetime object conversion goes here
+					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
+					event_datetime=db_time.astimezone(my_location)
+				
+				if event_datetime:
+					try:
+						day = str(event_datetime.day)
+						month = get_month_short(event_datetime.month)
+						extensiveday = '%s %s' % (day,month)
+						fmt = "%H:%M"
+						extensivetime=event_datetime.strftime(fmt)
+						event_timestring = extensiveday + ' - ' + extensivetime
+					except: event_timestring = ''
+				else: event_timestring = ''
+				
+				#day difference is calculated here
+				if event_datetime:
 					now = datetime.datetime.now()
 					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day))
-					eventdate = datetime.datetime(int(event_date_parsed[0]), int(event_date_parsed[1]), int(event_date_parsed[2]))
-					day_difference = abs(eventdate - datenow).days
-					if day_difference == 0: presented_date='Today'
-					elif day_difference == 1: presented_date='Tomorrow'
-					else: presented_date = event_date_parsed[2] + ' ' + get_month_short(event_date_parsed[1]) +event_time+' [COLOR white](In '+str(day_difference)+' days)[/COLOR]'
-				else: presented_date = event_date_parsed[2] + '-' + get_month_short(event_date_parsed[1]) +event_time
+					datenow =  pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(datenow)
+					day_difference = abs(event_datetime - datenow).days
+					if day_difference == 0:
+						timedelay = '[COLOR white] (Today)[/COLOR]'
+					elif day_difference == 1:
+						timedelay = '[COLOR white] (Tomorrow)[/COLOR]'
+					else:
+						timedelay = '[COLOR white] (In ' + str(day_difference) + ' days)[/COLOR]'
+				else: timedelay = ''
+				presented_date = event_timestring + timedelay
+				
 				event_fullname = thesportsdb.Events().get_eventtitle(event)
 				event_race = thesportsdb.Events().get_racelocation(event)
 				if event_race:
@@ -603,7 +615,7 @@ class dialog_team(xbmcgui.WindowXML):
 		xbmc.executebuiltin("SetProperty(nextmatchview,1,home)")
 		settings.setSetting("view_type_league",'nextmatchview')
 
-		self.getControl(2).setLabel("League: LastMatchView")
+		self.getControl(2).setLabel("League: NextMatchView")
 
 	def setlastmatchview(self):	
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
@@ -647,23 +659,13 @@ class dialog_team(xbmcgui.WindowXML):
 						self.getControl(controlinicial+i+1).setLabel('D')
 				i += 2
 				
-				event_date = thesportsdb.Events().get_eventdate(event)
 				event_fullname = thesportsdb.Events().get_eventtitle(event)
 				event_race = thesportsdb.Events().get_racelocation(event)
-				#event time processing is done here as it is independent from sport
-				event_time = thesportsdb.Events().get_time(event)
-				if event_time and event_time != 'null':
-					event_timematch = re.compile('(.+?)\+').findall(event_time)
-					if event_timematch:
-						#timezone manipulation goes here
-						event_timetmp = event_timematch[0].split(':')
-						if len(event_timetmp) == 3:
-							hour = event_timetmp[0]
-							minute = event_timetmp[1]
-							event_time = ' - ' + hour + ':' + minute
-						else: event_time = event_timematch[0]
-					else: event_time = ''
-				else: event_time = ''
+				event_datetime = thesportsdb.Events().get_datetime_object(event)
+				if event_datetime:
+					#datetime object conversion goes here
+					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
+					event_datetime=db_time.astimezone(my_location)
 				
 				if event_race:
 					home_team_logo = os.path.join(addonpath,art,'raceflag.png')
@@ -689,23 +691,25 @@ class dialog_team(xbmcgui.WindowXML):
 						round_label = 'Round ' + str(event_round)
 				
 				
-				#Extensive date manipulation here x/x/x to -> x Month Year
-				date_vector = event_date.split('-')
-				try:
-					if len(date_vector) == 3:
-						day = date_vector[2]
-						year = date_vector[0]
-						month = get_month_long(date_vector[1])
+				if event_datetime:
+					try:
+						day = str(event_datetime.day)
+						month = get_month_long(event_datetime.month)
+						year = str(event_datetime.year)
 						extensiveday = '%s %s %s' % (day,month,year)
-				except: extensiveday = event_date
+						fmt = "%H:%M"
+						extensivetime=event_datetime.strftime(fmt)
+						extensiveday = '%s %s %s' % (day,month,year)
+						event_timestring = extensiveday + ' - ' + extensivetime
+					except: event_timestring = ''
+				else: event_timestring = ''
 				
 				#day difference is calculated here
-				nextdate = event_date.split('-')
-				if len(nextdate) == 3:
+				if event_datetime:
 					now = datetime.datetime.now()
-					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day))
-					eventdate = datetime.datetime(int(nextdate[0]), int(nextdate[1]), int(nextdate[2]))
-					day_difference = abs(eventdate - datenow).days
+					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day),int(now.hour),int(now.minute))
+					datenow =  pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(datenow)
+					day_difference = abs(event_datetime - datenow).days
 					if day_difference == 0:
 						timedelay = '[COLOR white] (Today)[/COLOR]'
 					elif day_difference == 1:
@@ -734,8 +738,8 @@ class dialog_team(xbmcgui.WindowXML):
 				else:
 					game.setProperty('EventName',event_name)
 				# date + time + timedelay
-				event_timestring = extensiveday + event_time + timedelay
-				game.setProperty('date',event_timestring)
+				event_fullstring = event_timestring + timedelay
+				game.setProperty('date',event_fullstring)
 				self.getControl(988).addItem(game)
 		
 		#Set percentage		
@@ -889,13 +893,20 @@ class dialog_team(xbmcgui.WindowXML):
 		elif controlId == 2:
 			active_view_type = self.getControl(controlId).getLabel()
 			if active_view_type == "League: PlotView":
-				self.setvideosview()
+				self.setplayersview()
 			elif active_view_type == "League: VideosView":
-				self.setbannerview()
-			elif active_view_type == "League: BannerView":
-				self.setplayersview()	
+				if self.team_rss and self.team_rss != 'None':
+					self.setnewsview()
+				else:
+					self.setnextmatchview()
 			elif active_view_type == "League: PlayersView":
-				self.newsview()
+				if self.team_youtube and self.team_youtube != 'None':
+					self.setvideosview()
+				else:
+					if self.team_rss and self.team_rss != 'None':
+						self.setnewsview()
+					else:
+						self.setnextmatchview()
 			elif active_view_type == "League: NewsView":
 				self.setnextmatchview()
 			elif active_view_type == "League: NextMatchView":

@@ -543,7 +543,6 @@ class dialog_league(xbmcgui.WindowXML):
 				event_id = thesportsdb.Events().get_eventid(event)
 				
 				event_datetime = thesportsdb.Events().get_datetime_object(event)
-				print event_datetime
 				if event_datetime:
 					#datetime object conversion goes here
 					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
