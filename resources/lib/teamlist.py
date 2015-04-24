@@ -129,7 +129,7 @@ class dialog_compet(xbmcgui.WindowXML):
 				
 				fanart = thesportsdb.Teams().get_fanart_general_list(team)
 				if len(fanart) >= 1: teamItem.setProperty('fanart', fanart[randint(0,len(fanart)-1)])
-				else: fanart = ''
+				else: teamItem.setProperty('fanart',os.path.join(addonpath,art,'sports',self.sport + '.jpg'))
 				player_fanart = thesportsdb.Teams().get_fanart_player(team)
 				if not player_fanart:
 					fan_fanart = thesportsdb.Teams().get_fanart_fans(team)
@@ -254,10 +254,10 @@ class dialog_compet(xbmcgui.WindowXML):
 				xbmc.sleep(200)
 				self.getControl(controlId).setLabel("Team: JerseyView")
 				self.getControl(980).reset()
-				self.getControl(981).addItems(self.list_listitems)
+				self.getControl(985).addItems(self.list_listitems)
 				xbmc.executebuiltin("SetProperty(jerseyview,1,home)")
 				settings.setSetting('view_type_teamlist','jerseyview')
-				self.controler = 981
+				self.controler = 985
 			elif active_view_type == "Team: JerseyView":
 				xbmc.sleep(200)
 				xbmc.executebuiltin("ClearProperty(jerseyview,Home)")
