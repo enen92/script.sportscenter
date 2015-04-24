@@ -4,7 +4,13 @@
    	
 """
     
-import xbmc,xbmcplugin,xbmcvfs,xbmcgui,xbmcaddon,os
+import xbmc
+import xbmcplugin
+import xbmcvfs
+import xbmcgui 
+import xbmcaddon
+import os
+import pytzimp
 
 addon_id = 'script.sportscenter'
 tsdbkey = '5261590715995'
@@ -18,6 +24,11 @@ mensagemprogresso = xbmcgui.DialogProgress()
 MainURL = 'http'
 addon_icon = settings.getAddonInfo('icon')
 addon_fanart = os.path.join(addonpath,'fanart.jpg')
+
+#Timezones
+my_timezone = settings.getSetting('timezone')
+my_location = pytzimp.timezone(pytzimp.all_timezones[int(my_timezone)])
+tsdbtimezone = 'Atlantic/Azores'
 
 #Internal database variables
 sc_database = os.path.join(profilepath,'sc_database.sql')

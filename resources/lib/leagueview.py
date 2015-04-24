@@ -7,6 +7,7 @@ from centerutils.common_variables import *
 from centerutils.youtube import *
 from centerutils.rssparser import *
 from centerutils.datemanipulation import *
+from centerutils import pytzimp
 import competlist as competlist
 import teamview as teamview
 import matchdetails as matchdetails
@@ -420,24 +421,14 @@ class dialog_league(xbmcgui.WindowXML):
 		
 		if event_next_list:
 			for event in event_next_list:
-				event_date = thesportsdb.Events().get_eventdate(event)
 				event_fullname = thesportsdb.Events().get_eventtitle(event)
 				event_race = thesportsdb.Events().get_racelocation(event)
-				#event time processing is done here as it is independent from sport
-				event_time = thesportsdb.Events().get_time(event)
-				if event_time and event_time != 'null':
-					event_timematch = re.compile('(.+?)\+').findall(event_time)
-					if event_timematch:
-						#timezone manipulation goes here
-						event_timetmp = event_timematch[0].split(':')
-						if len(event_timetmp) == 3:
-							hour = event_timetmp[0]
-							minute = event_timetmp[1]
-							event_time = ' - ' + hour + ':' + minute
-						else: event_time = event_timematch[0]
-					else: event_time = ''
-				else: event_time = ''
 				
+				event_datetime = thesportsdb.Events().get_datetime_object(event)
+				if event_datetime:
+					#datetime object conversion goes here
+					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
+					event_datetime=db_time.astimezone(my_location)				
 				
 				if event_race:
 					home_team_logo = os.path.join(addonpath,art,'raceflag.png')
@@ -485,37 +476,36 @@ class dialog_league(xbmcgui.WindowXML):
 					game.setProperty('StadiumThumb',stadium_fanart)
 					game.setProperty('vs','VS')
 					
-				#Extensive date manipulation here x/x/x to -> x Month Year
-				date_vector = event_date.split('-')
-				try:
-					if len(date_vector) == 3:
-						day = date_vector[2]
-						year = date_vector[0]
-						month = get_month_long(date_vector[1])
+				if event_datetime:
+					try:
+						day = str(event_datetime.day)
+						month = get_month_long(event_datetime.month)
+						year = str(event_datetime.year)
 						extensiveday = '%s %s %s' % (day,month,year)
-				except: extensiveday = event_date
-				
-				
+						fmt = "%H:%M"
+						extensivetime=event_datetime.strftime(fmt)
+						extensiveday = '%s %s %s' % (day,month,year)
+						event_timestring = extensiveday + ' - ' + extensivetime
+					except: event_timestring = ''
+				else: event_timestring = ''
 				
 				#day difference is calculated here
-				nextdate = event_date.split('-')
-				if len(nextdate) == 3:
+				if event_datetime:
 					now = datetime.datetime.now()
 					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day))
-					eventdate = datetime.datetime(int(nextdate[0]), int(nextdate[1]), int(nextdate[2]))
-					day_difference = abs(eventdate - datenow).days
+					datenow =  pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(datenow)
+					day_difference = abs(event_datetime - datenow).days
 					if day_difference == 0:
 						timedelay = '[COLOR white] (Today)[/COLOR]'
 					elif day_difference == 1:
 						timedelay = '[COLOR white] (Tomorrow)[/COLOR]'
 					else:
-						timedelay = '[COLOR white] (' + str(day_difference) + ' days)[/COLOR]'
+						timedelay = '[COLOR white] (In ' + str(day_difference) + ' days)[/COLOR]'
 				else: timedelay = ''
 				
-				
 				# date + time + timedelay
-				event_timestring = extensiveday + event_time + timedelay
-				game.setProperty('date',event_timestring)
+				event_fullstring = event_timestring + timedelay
+				game.setProperty('date',event_fullstring)
 				if event_race: 
 					game.setProperty('EventName',event_name) 
 				if event_round and event_round != '0': game.setProperty('round',round_label)
@@ -547,24 +537,18 @@ class dialog_league(xbmcgui.WindowXML):
 		if event_last_list:
 			for event in event_last_list:
 
-				event_date = thesportsdb.Events().get_eventdate(event)
+				
 				event_fullname = thesportsdb.Events().get_eventtitle(event)
 				event_race = thesportsdb.Events().get_racelocation(event)
 				event_id = thesportsdb.Events().get_eventid(event)
-				#event time processing is done here as it is independent from sport
-				event_time = thesportsdb.Events().get_time(event)
-				if event_time and event_time != 'null':
-					event_timematch = re.compile('(.+?)\+').findall(event_time)
-					if event_timematch:
-						#timezone manipulation goes here
-						event_timetmp = event_timematch[0].split(':')
-						if len(event_timetmp) == 3:
-							hour = event_timetmp[0]
-							minute = event_timetmp[1]
-							event_time = ' - ' + hour + ':' + minute
-						else: event_time = event_timematch[0]
-					else: event_time = ''
-				else: event_time = ''
+				
+				event_datetime = thesportsdb.Events().get_datetime_object(event)
+				print event_datetime
+				if event_datetime:
+					#datetime object conversion goes here
+					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
+					event_datetime=db_time.astimezone(my_location)
+				
 				if event_race:
 					home_team_logo = os.path.join(addonpath,art,'raceflag.png')
 					event_name = thesportsdb.Events().get_eventtitle(event)
@@ -598,28 +582,29 @@ class dialog_league(xbmcgui.WindowXML):
 					home_score = thesportsdb.Events().get_homescore(event)
 					away_score = thesportsdb.Events().get_awayscore(event)
 					result = str(home_score) + '-' + str(away_score)
-					print "FUCKING RESULT",result
 					event_round = thesportsdb.Events().get_round(event)
 					if event_round:
 						round_label = 'Round ' + str(event_round)
 				
-				#Extensive date manipulation here x/x/x to -> x Month Year
-				date_vector = event_date.split('-')
-				try:
-					if len(date_vector) == 3:
-						day = date_vector[2]
-						year = date_vector[0]
-						month = get_month_long(date_vector[1])
+				if event_datetime:
+					try:
+						day = str(event_datetime.day)
+						month = get_month_long(event_datetime.month)
+						year = str(event_datetime.year)
 						extensiveday = '%s %s %s' % (day,month,year)
-				except: extensiveday = event_date
+						fmt = "%H:%M"
+						extensivetime=event_datetime.strftime(fmt)
+						extensiveday = '%s %s %s' % (day,month,year)
+						event_timestring = extensiveday + ' - ' + extensivetime
+					except: event_timestring = ''
+				else: event_timestring = ''
 				
 				#day difference is calculated here
-				nextdate = event_date.split('-')
-				if len(nextdate) == 3:
+				if event_datetime:
 					now = datetime.datetime.now()
-					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day))
-					eventdate = datetime.datetime(int(nextdate[0]), int(nextdate[1]), int(nextdate[2]))
-					day_difference = abs(eventdate - datenow).days
+					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day),int(now.hour),int(now.minute))
+					datenow =  pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(datenow)
+					day_difference = abs(event_datetime - datenow).days
 					if day_difference == 0:
 						timedelay = '[COLOR white] (Today)[/COLOR]'
 					elif day_difference == 1:
@@ -647,8 +632,8 @@ class dialog_league(xbmcgui.WindowXML):
 				else:
 					game.setProperty('EventName',event_name)
 				# date + time + timedelay
-				event_timestring = extensiveday + event_time + timedelay
-				game.setProperty('date',event_timestring)
+				event_fullstring = event_timestring + timedelay
+				game.setProperty('date',event_fullstring)
 				self.getControl(988).addItem(game)
 				
 		
@@ -702,24 +687,20 @@ class dialog_league(xbmcgui.WindowXML):
 				event_result_present = ''
 				event_vs_present = ''
 				#
-				event_date = thesportsdb.Events().get_eventdate(event)
+				
+				event_datetime = thesportsdb.Events().get_datetime_object(event)
+				if event_datetime:
+					#datetime object conversion goes here
+					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
+					my_timezone= settings.getSetting('timezone')
+					my_location=pytzimp.timezone(pytzimp.all_timezones[int(my_timezone)])
+					event_datetime=db_time.astimezone(my_location)
+				
+				
 				event_fullname = thesportsdb.Events().get_eventtitle(event)
 				event_race = thesportsdb.Events().get_racelocation(event)
 				event_id = thesportsdb.Events().get_eventid(event)
-				#event time processing is done here as it is independent from sport
-				event_time = thesportsdb.Events().get_time(event)
-				if event_time and event_time != 'null':
-					event_timematch = re.compile('(.+?)\+').findall(event_time)
-					if event_timematch:
-						#timezone manipulation goes here
-						event_timetmp = event_timematch[0].split(':')
-						if len(event_timetmp) == 3:
-							hour = event_timetmp[0]
-							minute = event_timetmp[1]
-							event_time = ' - ' + hour + ':' + minute
-						else: event_time = event_timematch[0]
-					else: event_time = ''
-				else: event_time = ''
+
 				if event_race:
 					home_team_logo = os.path.join(addonpath,art,'raceflag.png')
 					event_name = thesportsdb.Events().get_eventtitle(event)
@@ -757,15 +738,18 @@ class dialog_league(xbmcgui.WindowXML):
 					if result == 'None-None': event_vs_present = 'vs'
 					else: event_result_present = result
 				
-				#Extensive date manipulation here x/x/x to -> x Month Year
-				date_vector = event_date.split('-')
-				try:
-					if len(date_vector) == 3:
-						day = date_vector[2]
-						year = date_vector[0]
-						month = get_month_long(date_vector[1])
+				if event_datetime:
+					try:
+						day = str(event_datetime.day)
+						month = get_month_long(event_datetime.month)
+						year = str(event_datetime.year)
 						extensiveday = '%s %s %s' % (day,month,year)
-				except: extensiveday = event_date
+						fmt = "%H:%M"
+						extensivetime=event_datetime.strftime(fmt)
+						extensiveday = '%s %s %s' % (day,month,year)
+						event_timestring = extensiveday + ' - ' + extensivetime
+					except: event_timestring = ''
+				else: event_timestring = ''
 				
 				game = xbmcgui.ListItem(event_fullname)
 				game.setProperty('HomeTeamLogo',home_team_logo)
@@ -780,7 +764,6 @@ class dialog_league(xbmcgui.WindowXML):
 				else:
 					game.setProperty('EventName',event_name)
 				# date + time + timedelay
-				event_timestring = extensiveday + event_time
 				game.setProperty('date',event_timestring)
 				items_to_add.append(game)
 		
