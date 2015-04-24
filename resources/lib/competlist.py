@@ -14,6 +14,7 @@ from random import randint
 import homemenu as home
 import thesportsdb
 import leagueview as leagueview
+import seasonlist as seasonlist
 import contextmenubuilder
 
 def start(sportname):
@@ -29,6 +30,7 @@ class dialog_compet(xbmcgui.WindowXML):
 		xbmcgui.WindowXML.__init__(self)
 		self.sport = eval(args[3])[0]
 		self.is_library = eval(args[3])[1]
+		#self.fanart = eval(args[3])[2]
 		if not self.is_library:
 			self.ignored_leagues = os.listdir(ignoredleaguesfolder)
 
@@ -99,7 +101,7 @@ class dialog_compet(xbmcgui.WindowXML):
 				all_leagues = sc_database.Retriever().get_all_leagues(self.sport,None)
 			except: all_leagues = []
 			
-		print all_leagues
+		#print all_leagues
 		self.list_listitems = []
 		
 		if all_leagues:
@@ -297,6 +299,12 @@ class dialog_compet(xbmcgui.WindowXML):
 			listControl = self.getControl(controlId)
 			seleccionado=listControl.getSelectedItem()
 			league_object = seleccionado.getProperty('league_object')
-			#self.close()
-			leagueview.start([league_object,self.sport])
+			league_fanart = seleccionado.getProperty('fanart')
+			try: league_id = thesportsdb.Leagues().get_id(eval(league_object))
+			except: league_id = ''
+			if not self.is_library:
+				leagueview.start([league_object,self.sport])
+			else:
+				if league_id:
+					seasonlist.start([self.sport,league_id,league_fanart])
 			

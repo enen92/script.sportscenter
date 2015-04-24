@@ -28,19 +28,14 @@ class dialog_compet(xbmcgui.WindowXML):
 		xbmcgui.WindowXML.__init__(self)
 		self.sport = eval(args[3])[0]
 		self.league_id = eval(args[3])[1]
+		self.fanart = eval(args[3])[2]
 
 	def onInit(self,):
 		self.addseasons()
 		
 	
 	def addseasons(self,):
-		#set top bar info
-		#TODO translate strings
-		if self.league_id: self.season_label = urllib.unquote(self.sport) + ' - Season ' + self.league_id
-		else: self.season_label = urllib.unquote(self.sport)
-		self.getControl(333).setLabel('Season List - ' + self.season_label)
-		
-	
+		#set global fanart	
 		self.getControl(907).setImage(addon_fanart) #common_variables
 		
 		#Def das vistas
@@ -58,6 +53,14 @@ class dialog_compet(xbmcgui.WindowXML):
 		season_list = []	
 		if not self.league_id: #assume we want all seasons for a given sport
 			events_list = sc_database.Retriever().get_all_events(self.sport,None,None,None)
+			if events_list:
+				for event in events_list:
+					event_season = thesportsdb.Events().get_season(event)
+					if event_season not in season_list: season_list.append(event_season)
+		else:
+			self.league = sc_database.Retriever().get_all_leagues(self.sport,self.league_id)
+			if self.league: self.league = self.league[0]
+			events_list = sc_database.Retriever().get_all_events(self.sport,None,self.league_id,None)
 			if events_list:
 				for event in events_list:
 					event_season = thesportsdb.Events().get_season(event)
@@ -98,19 +101,69 @@ class dialog_compet(xbmcgui.WindowXML):
 
 					seasonItem = xbmcgui.ListItem(season_label, iconImage = sport_icon)
 					seasonItem.setProperty('season_id', season)
-					seasonItem.setProperty('league_identifier', urllib.unquote(self.sport))
+					seasonItem.setProperty('league_id', '')
+					seasonItem.setProperty('season_identifier', urllib.unquote(self.sport))
 					if sport_fanart: seasonItem.setProperty('fanart',sport_fanart)
 					seasonItem.setProperty('trophy',sport_icon)
 					seasonItem.setProperty('badge',sport_icon)
 					self.list_listitems.append(seasonItem)
-		else:
-			pass
+			else:
+				trophy = thesportsdb.Leagues().get_trophy(self.league)
+				if self.fanart and self.fanart != 'null' and self.fanart != 'None':
+					fanart = self.fanart
+				else: 
+					fanart_list = thesportsdb.Leagues().get_fanart(self.league)
+					if fanart_list:
+						fanart = fanart_list[randint(0,len(fanart_list)-1)]
+					else:
+						if settings.getSetting('season-background') != '0':
+							if settings.getSetting('season-background') == '1':
+								fanart = os.path.join(addonpath,art,'sports',self.sport + '.jpg')
+							elif settings.getSetting('season-background') == '2':
+								fanart = self.get_sport_fav_fanart(self.sport,'fans')
+							elif settings.getSetting('season-background') == '3':
+								fanart = self.get_sport_fav_fanart(self.sport,'general')
+							elif settings.getSetting('season-background') == '4':
+								if settings.getSetting('season-custom') != '':
+									fanart = settings.getSetting('season-custom')
+				badge = thesportsdb.Leagues().get_badge(self.league)
+				league_name = thesportsdb.Leagues().get_name(self.league)
+				for season in season_list:
+					#manipulate strSeason return for better label presentation
+					if len(season) == 4:
+						i = 0
+						start_year=''
+						end_year=''
+						for char in season:
+							if i == 0 or i == 1: start_year = start_year + char
+							else: end_year = end_year + char
+							i+=1
+						if int(start_year) > 30 and int(start_year) < 1900: start_year = '19'+start_year
+						else: start_year = '20'+start_year
+						if int(end_year) > 30 and int(end_year) < 1900: end_year = '19'+end_year
+						else: end_year = '20'+end_year
+						season_label = start_year + '/' + end_year
+					else: season_label = season
+					seasonItem = xbmcgui.ListItem(season_label, iconImage = trophy)
+					seasonItem.setProperty('season_id', season)
+					seasonItem.setProperty('league_id',self.league_id)
+					seasonItem.setProperty('season_identifier', league_name)
+					seasonItem.setProperty('fanart',fanart)
+					seasonItem.setProperty('trophy',trophy)
+					seasonItem.setProperty('badge',badge)
+					self.list_listitems.append(seasonItem)
+
 			
 		xbmc.sleep(200)	
 		self.getControl(self.controler).addItems(self.list_listitems)
 			
 		number_of_leagues=len(self.list_listitems)
 		self.getControl(334).setLabel(str(number_of_leagues) + ' '+'Seasons') #TODO string
+		
+		#set top bar info
+		if self.league_id: self.season_label = urllib.unquote(self.sport) + ' - ' + league_name
+		else: self.season_label = urllib.unquote(self.sport)
+		self.getControl(333).setLabel('Season List - ' + self.season_label)
 		
 		xbmc.executebuiltin("SetProperty("+self.preferred_view+",1,home)")
 		self.getControl(2).setLabel(self.preferred_label)

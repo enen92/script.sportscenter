@@ -243,7 +243,7 @@
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>$INFO[ListItem.Property(league_identifier)]</label>
+						<label>$INFO[ListItem.Property(season_identifier)]</label>
 						<animation effect="fade" start="100" end="70" time="300" tween="sine" easing="inout" condition="!Control.HasFocus(50)">Conditional</animation>
 					</control>
 				</itemlayout>
@@ -292,7 +292,7 @@
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>$INFO[ListItem.Property(league_identifier)]</label>
+						<label>$INFO[ListItem.Property(season_identifier)]</label>
 					</control>
 				</focusedlayout>
 			</control>
@@ -422,9 +422,7 @@
 					<textwidth>352</textwidth>
 					<onright condition="!IsEmpty(Window(home).Property(listview))">983</onright>
 					<onright condition="!IsEmpty(Window(home).Property(listview))">SetFocus(983)</onright>
-					<!--<onright condition="!IsEmpty(Window(home).Property(panelview))">984</onright>
-					<onright condition="!IsEmpty(Window(home).Property(panelview))">SetFocus(984)</onright>
-					<onright>ClearProperty(MediaMenu,Home)</onright>-->
+					<onright>ClearProperty(MediaMenu,Home)</onright>
 					<label></label>
 				</control>
 			</control>

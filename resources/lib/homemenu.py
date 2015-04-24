@@ -581,8 +581,8 @@ class dialog_home(xbmcgui.WindowXML):
 				#usage -> competlist.start(['sport','True for library False for Current Season'])
 				competlist.start([self.sport,True])
 			elif key == 'seasons':
-				#usage -> seasonlist.start(['sport','None for all seasons league id for seasons of a league'])
-				seasonlist.start([self.sport,''])
+				#usage -> seasonlist.start(['sport','None for all seasons league id for seasons of a league',fanart = none to get a new one])
+				seasonlist.start([self.sport,'',''])
 
 			
 	def onAction(self,action):
