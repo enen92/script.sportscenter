@@ -23,6 +23,7 @@ import threading
 from centerutils.common_variables import *
 from centerutils.datemanipulation import *
 from centerutils.caching import *
+from centerutils import pytzimp
 import matchdetails
 
 
@@ -99,14 +100,28 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 						if len(time_match[0].split(':')) == 3:
 							hour = time_match[0].split(':')[0]
 							minute = time_match[0].split(':')[1]
-							time_match = hour + ':' + minute
+							#Timezone conversion based on addon settings
+							try:
+								#Get actual year,month,day
+								now = datetime.datetime.now()
+								year = now.year
+								month = now.month
+								day = now.day
+								#Do the conversion
+								db_time = pytzimp.timezone(str(pytzimp.timezone('Atlantic/Azores'))).localize(datetime.datetime(int(year), int(month), int(day), hour=int(hour), minute=int(minute)))
+								my_timezone= settings.getSetting('timezone')
+								my_location=pytzimp.timezone(pytzimp.all_timezones[int(my_timezone)])
+								converted_time=db_time.astimezone(my_location)
+								fmt = "%H:%M"
+								time_match=converted_time.strftime(fmt)
+							except: time_match = hour + ':' + minute
 						else: time_match = time_match[0]
 						game.setProperty('event_time',time_match)
 					
-					#TODO
-					#roundnum = thesportsdb.Livematch().get_round(event)
-					#if roundnum and roudnum != 'None':
-					#	competition = competition + ' - Round ' + roundnum
+					roundnum = thesportsdb.Livematch().get_round(event)
+					if roundnum and roundnum != 'None' and roundnum != '0':
+						competition = competition + ' - Round ' + roundnum
+
 					#Game progress
 					progress = thesportsdb.Livematch().get_time(event)
 					if progress.lower() == 'finished' or progress.lower() == 'finished after awarded win':
@@ -213,7 +228,7 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 					for item in items_finished: items_to_add.append(item)
 			if settings.getSetting('livescores-hidenotstarted') != 'true':
 				if items_not_started:
-					for item in items_not_started: items_to_add.append(item)
+					for item in reversed(items_not_started): items_to_add.append(item)
 			
 			
 			self.getControl(987).addItems(items_to_add)
