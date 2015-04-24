@@ -7,6 +7,7 @@ from centerutils.database import sc_database
 import competlist as competlist
 import teamview as teamview
 import seasonlist as seasonlist
+import teamlist as teamlist
 from wizzard import wizzard
 
 
@@ -583,6 +584,8 @@ class dialog_home(xbmcgui.WindowXML):
 			elif key == 'seasons':
 				#usage -> seasonlist.start(['sport','None for all seasons league id for seasons of a league',fanart = none to get a new one])
 				seasonlist.start([self.sport,'',''])
+			elif key == 'teams':
+				teamlist.start([self.sport])
 
 			
 	def onAction(self,action):

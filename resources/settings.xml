@@ -88,5 +88,6 @@
 	<setting id="username" type="text" default="" visible="false"/>
  	<setting id="view_type_leaguelist" type="text" default="" visible="false"/>
  	<setting id="view_type_seasonlist" type="text" default="" visible="false"/>
+ 	<setting id="view_type_teamlist" type="text" default="" visible="false"/>
   	<setting id="view_type_league" type="text" default="" visible="false"/>
 </settings>
