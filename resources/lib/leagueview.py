@@ -21,6 +21,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmcgui.WindowXML.__init__(self)
 		self.league = eval(eval(args[3])[0])
 		self.sport = eval(args[3])[1]
+		self.league_fanart = eval(args[3])[2]
 		if type(self.league) != dict:
 			self.league = thesportsdb.Lookups(tsdbkey).lookupleague(self.league)["leagues"][0]
 
@@ -61,12 +62,14 @@ class dialog_league(xbmcgui.WindowXML):
 			self.getControl(983).addItem(menu_entry)
 			
 		#set league fanart
-		self.league_fanartlist = thesportsdb.Leagues().get_fanart(self.league)
-		if self.league_fanartlist:
-			self.league_fanart = self.league_fanartlist[randint(0,len(self.league_fanartlist)-1)]
-			self.getControl(912).setImage(self.league_fanart)
-			self.getControl(429).setImage(self.league_fanart)
-		else: self.league_fanart = None
+		if not self.league_fanart:
+			self.league_fanartlist = thesportsdb.Leagues().get_fanart(self.league)
+			if self.league_fanartlist:
+				self.league_fanart = self.league_fanartlist[randint(0,len(self.league_fanartlist)-1)]
+			else: self.league_fanart = None
+		self.getControl(912).setImage(self.league_fanart)
+		self.getControl(429).setImage(self.league_fanart)
+			
 			
 		self.setplotview()
 		
@@ -901,8 +904,9 @@ class dialog_league(xbmcgui.WindowXML):
 			
 					
 		elif controlId == 980 or controlId == 984 or controlId == 985 or controlId == 981 or controlId == 990:
-			self.team = self.getControl(controlId).getSelectedItem().getProperty('team_id')
-			teamview.start([self.team,self.sport,'',''])
+			team = self.getControl(controlId).getSelectedItem().getProperty('team_id')
+			team_fanart = self.getControl(controlId).getSelectedItem().getProperty('team_fanart')
+			teamview.start([team,self.sport,team_fanart,''])
 		
 
 

@@ -304,7 +304,7 @@ class dialog_compet(xbmcgui.WindowXML):
 			try: league_id = thesportsdb.Leagues().get_id(eval(league_object))
 			except: league_id = ''
 			if not self.is_library:
-				leagueview.start([league_object,self.sport])
+				leagueview.start([league_object,self.sport,league_fanart])
 			else:
 				if league_id:
 					seasonlist.start([self.sport,league_id,league_fanart])

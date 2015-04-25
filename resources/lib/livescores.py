@@ -78,9 +78,11 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 					home_team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(event_home_id)["teams"][0]
 					away_team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(event_away_id)["teams"][0]
 					#set hometeamname
-					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
+					home_default_name = thesportsdb.Teams().get_name(home_team_dict)
+					if settings.getSetting('team-naming')=='0': home_team_name = home_default_name
 					else: home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
-					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
+					away_default_name = thesportsdb.Teams().get_name(away_team_dict)
+					if settings.getSetting('team-naming')=='0': away_team_name = away_default_name
 					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
 					#logos
 					home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
@@ -149,12 +151,14 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 						if len(home_team_name) > 12: game.setProperty('HomeTeamLong',home_team_name)
 						else: game.setProperty('HomeTeamShort',home_team_name)
 					else: game.setProperty('HomeTeamShort',home_team_name)
+					game.setProperty('HomeTeamDefault',home_default_name)
 					#home_team_logo = cache_image(home_team_logo)
 					game.setProperty('HomeTeamLogo',home_team_logo)
 					if ' ' in away_team_name:
 						if len(away_team_name) > 12: game.setProperty('AwayTeamLong',away_team_name)
 						else: game.setProperty('AwayTeamShort',away_team_name)
 					else: game.setProperty('AwayTeamShort',away_team_name)
+					game.setProperty('AwayTeamDefault',away_default_name)
 					#set progress
 					#xbmc.sleep(100)
 					#print "away",away_team_logo,'teste', cache_image(away_team_logo)
@@ -249,10 +253,8 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 			
 		elif controlId == 987:
 			listControl = self.getControl(controlId)
-			hometeam = listControl.getSelectedItem().getProperty('HomeTeamLong')
-			if not hometeam: hometeam = listControl.getSelectedItem().getProperty('HomeTeamShort')
-			awayteam = listControl.getSelectedItem().getProperty('AwayTeamLong')
-			if not awayteam: awayteam = listControl.getSelectedItem().getProperty('AwayTeamShort')
+			hometeam = listControl.getSelectedItem().getProperty('HomeTeamDefault')
+			awayteam = listControl.getSelectedItem().getProperty('AwayTeamDefault')
 			event_string = hometeam + '###' + awayteam
 			matchdetails.start([True,event_string])
 	

@@ -220,6 +220,7 @@ class dialog_team(xbmcgui.WindowXML):
 		xbmcgui.WindowXML.__init__(self)
 		self.team_id = eval(args[3])[0]
 		self.sport = eval(args[3])[1]
+		self.team_fanart = eval(args[3])[2]
 		self.team = thesportsdb.Lookups(tsdbkey).lookupteam(self.team_id)['teams'][0]
 		self.event_next_list = thesportsdb.Schedules(tsdbkey).eventsnext(self.team_id)['events']
 		
@@ -241,11 +242,12 @@ class dialog_team(xbmcgui.WindowXML):
 		#populate panel left
 					
 		#set team fanart
-		self.team_fanartlist = thesportsdb.Teams().get_fanart_general_list(self.team)
-		if self.team_fanartlist:
-			self.team_fanart = self.team_fanartlist[randint(0,len(self.team_fanartlist)-1)]
-			self.getControl(912).setImage(self.team_fanart)
-		else: self.team_fanart = os.path.join(addonpath,art,'sports',self.sport+'.jpg')
+		if not self.team_fanart:
+			self.team_fanartlist = thesportsdb.Teams().get_fanart_general_list(self.team)
+			if self.team_fanartlist:
+				self.team_fanart = self.team_fanartlist[randint(0,len(self.team_fanartlist)-1)]
+			else: self.team_fanart = os.path.join(addonpath,art,'sports',self.sport+'.jpg')
+		self.getControl(912).setImage(self.team_fanart)
 
 		self.player_fanart = thesportsdb.Teams().get_fanart_player(self.team)
 		if self.player_fanart:

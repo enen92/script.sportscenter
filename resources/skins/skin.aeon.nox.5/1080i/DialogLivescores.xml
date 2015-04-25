@@ -4,6 +4,7 @@
 	<onload>ClearProperty(MediaMenu,Home)</onload>
 	<onunload>ClearProperty(Window.HasSettings,Home)</onunload>
 	<allowoverlay>no</allowoverlay>
+	<defaultcontrol always="true">987</defaultcontrol>
 	<controls>
 		<!-- Background!-->
 		<control type="group">

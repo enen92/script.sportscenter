@@ -28,6 +28,7 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 			self.event_details(self.event_id)
 		else:
 			self.event_string = self.params[1]
+			print self.event_string
 			#event is live
 			event_list = self.event_string.split('###')
 			self.home_team = event_list[0]
@@ -40,6 +41,7 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 					self.live_dict = match
 					self.event_details(match)
 					break
+			#print self.live_dict
 			
 	def event_lineup(self,event_dict,home_away):
 		xbmc.executebuiltin("ClearProperty(detail,Home)")
@@ -108,7 +110,8 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 		
 			
 		#set team info
-		self.getControl(309).setText('[B]%s[/B]' % (self.formation))
+		if self.formation != {}:
+			self.getControl(309).setText('[B]%s[/B]' % (self.formation))
 		self.getControl(310).setText('[B]%s[/B]' % (self.team_name))
 		self.getControl(306).setImage(self.badge)
 		self.getControl(311).setText('[COLOR labelheader][B]Coach:[/B][/COLOR] %s' %(self.coach))
@@ -120,55 +123,65 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 		self.forwarders = []
 		self.subs = []
 		
-		for player in self.goalkeeper.split(';'):
-			if player == '': pass
-			else:
-				if player.startswith(' '): player = player[1:]
-				self.goalkeeper = player
+		if self.goalkeeper != {}:
+			for player in self.goalkeeper.split(';'):
+				if player == '': pass
+				else:
+					if player.startswith(' '): player = player[1:]
+					self.goalkeeper = player
+		else: self.goalkeeper = ''
 		
-		for player in self.defenders_raw.split(';'):
-			if player == '': pass
-			else:
-				if player.startswith(' '): player = player[1:]
-				self.defenders.append(player)
-				
-		for player in self.midfielders_raw.split(';'):
-			if player == '': pass
-			else:
-				if player.startswith(' '): player = player[1:]
-				self.midfielders.append(player)
-				
-		for player in self.forwarders_raw.split(';'):
-			if player == '': pass
-			else:
-				if player.startswith(' '): player = player[1:]
-				self.forwarders.append(player)
-				
-		for player in self.subs_raw.split(';'):
-			if player == '': pass
-			else:
-				if player.startswith(' '): player = player[1:]
-				self.subs.append(player)
+		if self.defenders_raw != {}:
+			for player in self.defenders_raw.split(';'):
+				if player == '': pass
+				else:
+					if player.startswith(' '): player = player[1:]
+					self.defenders.append(player)
+		
+		if self.midfielders_raw != {}:	
+			for player in self.midfielders_raw.split(';'):
+				if player == '': pass
+				else:
+					if player.startswith(' '): player = player[1:]
+					self.midfielders.append(player)
+		
+		if self.forwarders_raw != {}:
+			for player in self.forwarders_raw.split(';'):
+				if player == '': pass
+				else:
+					if player.startswith(' '): player = player[1:]
+					self.forwarders.append(player)
+		
+		if self.subs_raw != {}:
+			for player in self.subs_raw.split(';'):
+				if player == '': pass
+				else:
+					if player.startswith(' '): player = player[1:]
+					self.subs.append(player)
 				
 		#set lineup and subs info
-		lineup = self.goalkeeper + '[CR]'
-		for player in self.defenders:
-			lineup = lineup + player + '[CR]'
-		for player in self.midfielders:
-			lineup = lineup + player + '[CR]'
-		for player in self.forwarders:
-			lineup = lineup + player + '[CR]'
+		lineup = str(self.goalkeeper) + '[CR]'
+		if self.defenders:
+			for player in self.defenders:
+				lineup = lineup + player + '[CR]'
+		if self.midfielders:
+			for player in self.midfielders:
+				lineup = lineup + player + '[CR]'
+		if self.forwarders:
+			for player in self.forwarders:
+				lineup = lineup + player + '[CR]'
 		
 		subs = ''
-		for player in self.subs:
-			subs = subs + player + '[CR]'
+		if self.subs:
+			for player in self.subs:
+				subs = subs + player + '[CR]'
 
 		self.getControl(32150).setText(lineup)
 		self.getControl(32151).setText(subs)
 		
 		#set goalkeeper
 		self.getControl(32000).setImage(self.jersey)
-		self.getControl(32001).setText(self.goalkeeper)
+		self.getControl(32001).setText(str(self.goalkeeper))
 		
 		self._controlimage = []
 		self._controltextbox = []
@@ -1246,45 +1259,60 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 		#fill home team match details
 		self.home_details = {}
 			
-		if self.is_live == False: self.home_goaldetails = thesportsdb.Events().get_homegoaldetails(self.event_dict).split(';')
-		else: self.home_goaldetails = str(thesportsdb.Livematch().get_homegoals_detail(self.event_dict)).split(';')
-		for goal in self.home_goaldetails:
-			homegoaldetails = re.compile("(\d+).+?\:(.*)").findall(goal)
-			if homegoaldetails:
-				for minute,player in homegoaldetails:
-					if int(minute) in self.home_details.keys():
-						if player != '&nbsp':
-							self.home_details[int(minute)].append((os.path.join(addonpath,art,'goal.png'),player))
-					else:
-						if player != '&nbsp':
-							self.home_details[int(minute)] = [(os.path.join(addonpath,art,'goal.png'),player)]
+		if self.is_live == False: 
+			try: self.home_goaldetails = thesportsdb.Events().get_homegoaldetails(self.event_dict).split(';')
+			except: self.home_goaldetails = []
+		else: 
+			try: self.home_goaldetails = str(thesportsdb.Livematch().get_homegoals_detail(self.event_dict)).split(';')
+			except: self.home_goaldetails = []
+		if self.home_goaldetails:
+			for goal in self.home_goaldetails:
+				homegoaldetails = re.compile("(\d+).+?\:(.*)").findall(goal)
+				if homegoaldetails:
+					for minute,player in homegoaldetails:
+						if int(minute) in self.home_details.keys():
+							if player != '&nbsp':
+								self.home_details[int(minute)].append((os.path.join(addonpath,art,'goal.png'),player))
+						else:
+							if player != '&nbsp':
+								self.home_details[int(minute)] = [(os.path.join(addonpath,art,'goal.png'),player)]
 							
-		if self.is_live == False: self.home_yellowcards = thesportsdb.Events().get_homeyellowcards(self.event_dict).split(';')
-		else: self.home_yellowcards = str(thesportsdb.Livematch().get_homeyellowcards(self.event_dict)).split(';')
+		if self.is_live == False: 
+			try: self.home_yellowcards = thesportsdb.Events().get_homeyellowcards(self.event_dict).split(';')
+			except: self.home_yellowcards = []
+		else: 
+			try: self.home_yellowcards = str(thesportsdb.Livematch().get_homeyellowcards(self.event_dict)).split(';')
+			except: self.home_yellowcards = []
 		
-		for yellow in self.home_yellowcards:
-			homeyellowdetails = re.compile("(\d+).+?\:(.*)").findall(yellow)
-			if homeyellowdetails:
-				for minute,player in homeyellowdetails:
-					if int(minute) in self.home_details.keys():
-						if player != '&nbsp':
-							self.home_details[int(minute)].append((os.path.join(addonpath,art,'yellowcard2.png'),player))
-					else:
-						if player != '&nbsp':
-							self.home_details[int(minute)] = [(os.path.join(addonpath,art,'yellowcard2.png'),player)]
+		if self.home_yellowcards:
+			for yellow in self.home_yellowcards:
+				homeyellowdetails = re.compile("(\d+).+?\:(.*)").findall(yellow)
+				if homeyellowdetails:
+					for minute,player in homeyellowdetails:
+						if int(minute) in self.home_details.keys():
+							if player != '&nbsp':
+								self.home_details[int(minute)].append((os.path.join(addonpath,art,'yellowcard2.png'),player))
+						else:
+							if player != '&nbsp':
+								self.home_details[int(minute)] = [(os.path.join(addonpath,art,'yellowcard2.png'),player)]
 							
-		if self.is_live == False: self.home_redcards = thesportsdb.Events().get_homeredcards(self.event_dict).split(';')
-		else: self.home_redcards = str(thesportsdb.Livematch().get_homeredcards(self.event_dict)).split(';')
-		for red in self.home_redcards:
-			homereddetails = re.compile("(\d+).+?\:(.*)").findall(red)
-			if homereddetails:
-				for minute,player in homereddetails:
-					if int(minute) in self.home_details.keys():
-						if player != '&nbsp':
-							self.home_details[int(minute)].append((os.path.join(addonpath,art,'redcard2.png'),player))
-					else:
-						if player != '&nbsp':
-							self.home_details[int(minute)] = [(os.path.join(addonpath,art,'redcard2.png'),player)]
+		if self.is_live == False: 
+			try: self.home_redcards = thesportsdb.Events().get_homeredcards(self.event_dict).split(';')
+			except: self.home_redcards = []
+		else: 
+			try: self.home_redcards = str(thesportsdb.Livematch().get_homeredcards(self.event_dict)).split(';')
+			except: self.home_redcards = []
+		if self.home_redcards:
+			for red in self.home_redcards:
+				homereddetails = re.compile("(\d+).+?\:(.*)").findall(red)
+				if homereddetails:
+					for minute,player in homereddetails:
+						if int(minute) in self.home_details.keys():
+							if player != '&nbsp':
+								self.home_details[int(minute)].append((os.path.join(addonpath,art,'redcard2.png'),player))
+						else:
+							if player != '&nbsp':
+								self.home_details[int(minute)] = [(os.path.join(addonpath,art,'redcard2.png'),player)]
 			
 		self.home_details_listitems = []			
 		for key in reversed(sorted(self.home_details.keys())):
@@ -1303,42 +1331,57 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 		#fill away team match details
 		self.away_details = {}
 			
-		if self.is_live == False: self.away_goaldetails = thesportsdb.Events().get_awaygoaldetails(self.event_dict).split(';')
-		else: self.away_goaldetails = str(thesportsdb.Livematch().get_away_goaldetails(self.event_dict)).split(';')
-		for goal in self.away_goaldetails:
-			awaygoaldetails = re.compile("(\d+).+?\:(.*)").findall(goal)
-			if awaygoaldetails:
-				for minute,player in awaygoaldetails:
-					if int(minute) in self.away_details.keys():
-						self.away_details[int(minute)].append((os.path.join(addonpath,art,'goal.png'),player))
-					else:
-						self.away_details[int(minute)] = [(os.path.join(addonpath,art,'goal.png'),player)]
+		if self.is_live == False:
+			try: self.away_goaldetails = thesportsdb.Events().get_awaygoaldetails(self.event_dict).split(';')
+			except: self.away_goaldetails = []
+		else: 
+			try: self.away_goaldetails = str(thesportsdb.Livematch().get_away_goaldetails(self.event_dict)).split(';')
+			except: self.away_goaldetails = []
+		if self.away_goaldetails:
+			for goal in self.away_goaldetails:
+				awaygoaldetails = re.compile("(\d+).+?\:(.*)").findall(goal)
+				if awaygoaldetails:
+					for minute,player in awaygoaldetails:
+						if int(minute) in self.away_details.keys():
+							self.away_details[int(minute)].append((os.path.join(addonpath,art,'goal.png'),player))
+						else:
+							self.away_details[int(minute)] = [(os.path.join(addonpath,art,'goal.png'),player)]
 							
-		if self.is_live == False: self.away_yellowcards = thesportsdb.Events().get_awayyellowcards(self.event_dict).split(';')
-		else: self.away_yellowcards = str(thesportsdb.Livematch().get_awayyellow(self.event_dict)).split(';')
-		for yellow in self.away_yellowcards:
-			awayyellowdetails = re.compile("(\d+).+?\:(.*)").findall(yellow)
-			if awayyellowdetails:
-				for minute,player in awayyellowdetails:
-					if int(minute) in self.away_details.keys():
-						if player != '&nbsp':
-							self.away_details[int(minute)].append((os.path.join(addonpath,art,'yellowcard2.png'),player))
-					else:
-						if player != '&nbsp':
-							self.away_details[int(minute)] = [(os.path.join(addonpath,art,'yellowcard2.png'),player)]
+		if self.is_live == False: 
+			try: self.away_yellowcards = thesportsdb.Events().get_awayyellowcards(self.event_dict).split(';')
+			except: self.away_yellowcards = []
+		else: 
+			try: self.away_yellowcards = str(thesportsdb.Livematch().get_awayyellow(self.event_dict)).split(';')
+			except: self.away_yellowcards = []
+		if self.away_yellowcards:
+			for yellow in self.away_yellowcards:
+				awayyellowdetails = re.compile("(\d+).+?\:(.*)").findall(yellow)
+				if awayyellowdetails:
+					for minute,player in awayyellowdetails:
+						if int(minute) in self.away_details.keys():
+							if player != '&nbsp':
+								self.away_details[int(minute)].append((os.path.join(addonpath,art,'yellowcard2.png'),player))
+						else:
+							if player != '&nbsp':
+								self.away_details[int(minute)] = [(os.path.join(addonpath,art,'yellowcard2.png'),player)]
 							
-		if self.is_live == False: self.away_redcards = thesportsdb.Events().get_awayredcards(self.event_dict).split(';')
-		else: self.away_redcards = str(thesportsdb.Livematch().get_away_redcards(self.event_dict)).split(';')
-		for red in self.away_redcards:
-			awayreddetails = re.compile("(\d+).+?\:(.*)").findall(red)
-			if awayreddetails:
-				for minute,player in awayreddetails:
-					if int(minute) in self.away_details.keys():
-						if player != '&nbsp':
-							self.away_details[int(minute)].append((os.path.join(addonpath,art,'redcard2.png'),player))
-					else:
-						if player != '&nbsp':
-							self.away_details[int(minute)] = [(os.path.join(addonpath,art,'redcard2.png'),player)]
+		if self.is_live == False:
+			try: self.away_redcards = thesportsdb.Events().get_awayredcards(self.event_dict).split(';')
+			except: self.away_redcards = []
+		else:
+			try: self.away_redcards = str(thesportsdb.Livematch().get_away_redcards(self.event_dict)).split(';')
+			except: self.away_redcards = []
+		if self.away_redcards:
+			for red in self.away_redcards:
+				awayreddetails = re.compile("(\d+).+?\:(.*)").findall(red)
+				if awayreddetails:
+					for minute,player in awayreddetails:
+						if int(minute) in self.away_details.keys():
+							if player != '&nbsp':
+								self.away_details[int(minute)].append((os.path.join(addonpath,art,'redcard2.png'),player))
+						else:
+							if player != '&nbsp':
+								self.away_details[int(minute)] = [(os.path.join(addonpath,art,'redcard2.png'),player)]
 			
 		self.away_details_listitems = []			
 		for key in reversed(sorted(self.away_details.keys())):
