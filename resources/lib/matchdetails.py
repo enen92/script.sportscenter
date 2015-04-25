@@ -28,7 +28,6 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 			self.event_details(self.event_id)
 		else:
 			self.event_string = self.params[1]
-			print self.event_string
 			#event is live
 			event_list = self.event_string.split('###')
 			self.home_team = event_list[0]
@@ -41,7 +40,6 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 					self.live_dict = match
 					self.event_details(match)
 					break
-			#print self.live_dict
 			
 	def event_lineup(self,event_dict,home_away):
 		xbmc.executebuiltin("ClearProperty(detail,Home)")
