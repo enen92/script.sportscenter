@@ -178,12 +178,10 @@ class dialog_calendar(xbmcgui.WindowXML):
 						if event_race: 
 							game.setProperty('EventName',event_name)
 						try:
-							now = datetime.datetime.now()
-							print datestring.split('-')
-							eventdate = datetime.datetime(year=int(datestring.split('-')[0]),month=int(datestring.split('-')[1]),day=int(datestring.split('-')[2]),hour=int(event_time.split(':')[0]),minute=int(event_time.split(':')[1]))
-							if eventdate > now:
-								hour_diff = (eventdate-now).seconds/3600
-							else: hour_diff = ((now-eventdate).seconds/3600)*(-1)
+							date_now_mytz = pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(datetime.datetime.now())
+							if event_datetime > date_now_mytz:
+								hour_diff = (event_datetime-date_now_mytz).seconds/3600
+							else: hour_diff = ((date_now_mytz-event_datetime).seconds/3600)*(-1)
 							if settings.getsetting('calendar-disabledpassed') == 'true' and hour_diff > int(settings.getSetting('calendar-disabledpassed-delay')): pass
 							else: items_to_add.append(game)
 						
