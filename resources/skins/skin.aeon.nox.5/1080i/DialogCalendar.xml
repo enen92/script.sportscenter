@@ -318,7 +318,7 @@
 				<visible>IsEmpty(Window(home).Property(loading))+!Player.HasMedia</visible>
 				<posx>522</posx>
 				<posy>150</posy>
-				<width>1300</width>
+				<width>1310</width>
 				<height>825</height>
 				<onleft>983</onleft>
 				<onright>49</onright>
@@ -329,11 +329,11 @@
 				<orientation>vertical</orientation>
 				
 
-				<itemlayout height="244" width="1300">
+				<itemlayout height="244" width="1315">
 					<control type="image">
 						<posx>10</posx>
 						<posy>10</posy>
-						<width>1300</width>
+						<width>1315</width>
 						<height>244</height>
 						<texture border="1">separator2.png</texture>
 					</control>
@@ -483,18 +483,18 @@
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
 				</itemlayout>	
-				<focusedlayout height="230" width="1300">
+				<focusedlayout height="230" width="1315">
 					<control type="image">
 						<posx>10</posx>
 						<posy>10</posy>
-						<width>1300</width>
+						<width>1315</width>
 						<height>244</height>
 						<texture border="1">separator2.png</texture>
 					</control>
 					<control type="image">
 						<posx>10</posx>
 						<posy>10</posy>
-						<width>1300</width>
+						<width>1315</width>
 						<height>244</height>
 						<texture border="5">listselect_fo.png</texture>
 					</control>

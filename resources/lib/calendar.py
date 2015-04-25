@@ -8,6 +8,7 @@ import threading
 from random import randint
 from centerutils.common_variables import *
 from centerutils.datemanipulation import *
+from centerutils import pytzimp
 import competlist as competlist
 import teamview as teamview
 import contextmenubuilder
@@ -35,16 +36,20 @@ class dialog_calendar(xbmcgui.WindowXML):
 		
 		#Populate week days
 		menu = []
-		date = datetime.datetime.now()
-		menu.append(('Today, %s' % (date.day),'%s-%s-%s' % (str(date.year),str(date.month),str(date.day))))
-
+		#grab datetime now and transform into a timezone object based on user timezone
+		date_now = datetime.datetime.now()
+		date_now_mytz = pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(date_now)
+		#convert datetime timezone object to the timezone of the database
+		date_now_tsdb = date_now_mytz.astimezone(my_location)
+		menu.append(('Today, %s' % (date_now_mytz.day),'%s-%s-%s' % (str(date_now_tsdb.year),str(date_now_tsdb.month),str(date_now_tsdb.day))))
 
 		for i in range(7): 
-			date += datetime.timedelta(days=1)
-			if i == 0: day_string ='%s, %s' % ('Tomorrow',date.day)
+			date_now_mytz += datetime.timedelta(days=1)
+			date_now_tsdb += datetime.timedelta(days=1)
+			if i == 0: day_string ='%s, %s' % ('Tomorrow',date_now_mytz.day)
 			else:
-				day_string = '%s, %s' % (get_weekday(date.weekday()),date.day)
-			date_string = '%s-%s-%s' % (str(date.year),str(date.month),str(date.day))
+				day_string = '%s, %s' % (get_weekday(date_now_mytz.weekday()),date_now_mytz.day)
+			date_string = '%s-%s-%s' % (str(date_now_tsdb.year),str(date_now_tsdb.month),str(date_now_tsdb.day))
 			menu.append((day_string,date_string))
 			
 		self.getControl(983).reset()	   
@@ -94,7 +99,6 @@ class dialog_calendar(xbmcgui.WindowXML):
 					league_id = thesportsdb.Events().get_leagueid(event)
 					if ((league_id + '.txt') in self.ignored_leagues and settings.getSetting('calendar-disabledleagues') == 'true') or ((league_id + '.txt') in self.rmleaguescalendar): pass
 					else:
-						event_date = thesportsdb.Events().get_eventdate(event)
 						event_fullname = thesportsdb.Events().get_eventtitle(event)
 						event_race = thesportsdb.Events().get_racelocation(event)
 						event_league = thesportsdb.Events().get_league(event)
@@ -109,23 +113,23 @@ class dialog_calendar(xbmcgui.WindowXML):
 						elif event_sport == 'Golf': sport_logo = os.path.join(addonpath,art,'loadingsports','golf.png')
 						elif event_sport == 'American Football': sport_logo = os.path.join(addonpath,art,'loadingsports','american%20football.png')
 						
-						#time stuff is indendent from the sport of the event
-						try:
-							event_time = thesportsdb.Events().get_time(event)
-							time_match = re.compile('(.+?)\+').findall(event_time)
-							if time_match:
-								timetmp = time_match[0].split(':')
-								if len(timetmp) == 3:
-									event_time = timetmp[0] + ':' + timetmp[1]
-									event_order = int(timetmp[0] + timetmp[1])
-							
+						fmt = "%y-%m-%d"
+						fmt_time = "%H:%M"
+						event_datetime = thesportsdb.Events().get_datetime_object(event)
+						if event_datetime:
+							#datetime object conversion goes here
+							db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
+							event_datetime=db_time.astimezone(my_location)
+							event_date = thesportsdb.Events().get_date(event)
+							if event_date and event_date != 'null' and event_date != 'None':
+								event_time = event_datetime.strftime(fmt_time)
+								event_order = int(str(event_datetime.hour) + str(event_datetime.minute))
 							else:
 								event_time = 'N/A'
 								event_order = 30000
-						except:
+						else:
 							event_time = 'N/A'
 							event_order = 30000
-							
 						
 						
 						if event_race:
@@ -169,7 +173,8 @@ class dialog_calendar(xbmcgui.WindowXML):
 							else: game.setProperty('AwayTeamShort',away_team_name)
 							game.setProperty('StadiumThumb',stadium_fanart)
 							game.setProperty('vs','VS')
-						game.setProperty('date',event_date)
+						try: game.setProperty('date',event_datetime.strftime(fmt))
+						except: pass
 						if event_race: 
 							game.setProperty('EventName',event_name)
 						try:
