@@ -120,8 +120,8 @@ class dialog_calendar(xbmcgui.WindowXML):
 							#datetime object conversion goes here
 							db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
 							event_datetime=db_time.astimezone(my_location)
-							event_date = thesportsdb.Events().get_date(event)
-							if event_date and event_date != 'null' and event_date != 'None':
+							event_strtime = thesportsdb.Events().get_time(event)
+							if event_strtime and event_strtime != 'null' and event_strtime != 'None':
 								event_time = event_datetime.strftime(fmt_time)
 								event_order = int(str(event_datetime.hour) + str(event_datetime.minute))
 							else:
