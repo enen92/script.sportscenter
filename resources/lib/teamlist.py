@@ -78,7 +78,7 @@ class dialog_compet(xbmcgui.WindowXML):
 			self.controler = 985
 		
 		try:
-			all_teams = sc_database.Retriever().get_all_teams(self.sport,None)
+			all_teams = sc_database.Retriever().get_all_teams(self.sport,None,None)
 		except: all_teams = []
 			
 		#print all_leagues

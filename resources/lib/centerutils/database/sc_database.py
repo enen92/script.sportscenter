@@ -318,15 +318,17 @@ class Retriever:
 	def __init__(self,):
 		pass
 	
-	def get_all_teams(self,sport,league):
+	def get_all_teams(self,sport,league,team):
 		teams = []
 		#decide which sql_string to use here
-		if not sport and not league:
+		if not sport and not league and not team:
 			sql_cmd = "SELECT * FROM Team"
-		elif sport and not league:
+		elif sport and not league and not team:
 			sql_cmd = "SELECT * FROM Team where strSport = '"+sport+"'"
-		elif sport and league:
+		elif sport and league and not team:
 			sql_cmd = "SELECT * FROM Team where strSport = '"+sport+"' AND idLeague = '"+league+'"'
+		else:
+			sql_cmd = "SELECT * FROM Team where idTeam = '"+team+"'"
 		#All looks the same below
 		con = lite.connect(sc_database)
 		with con:
