@@ -15,6 +15,7 @@ import homemenu as home
 import thesportsdb
 import leagueview as leagueview
 import contextmenubuilder
+import eventlist
 
 def start(strlist):
 	window = dialog_compet('DialogSeasonList.xml',addonpath,'Default',str(strlist))
@@ -206,15 +207,6 @@ class dialog_compet(xbmcgui.WindowXML):
 				self.setFocusId(self.controler)
 			else: 
 				self.close()
-
-		#elif action.getId() == 117: #contextmenu
-		#	if xbmc.getCondVisibility("Control.HasFocus(983)"): container = 983
-		#	elif xbmc.getCondVisibility("Control.HasFocus(981)"): container = 981
-		#	elif xbmc.getCondVisibility("Control.HasFocus(984)"): container = 984
-		#	elif xbmc.getCondVisibility("Control.HasFocus(982)"): container = 982
-		#	elif xbmc.getCondVisibility("Control.HasFocus(980)"): container = 980
-		#	self.specific_id = self.getControl(container).getSelectedItem().getProperty('league_id')
-		#	contextmenubuilder.start(['leaguelist',self.specific_id])	
 		else:
 			self.set_info()
 		
@@ -223,15 +215,6 @@ class dialog_compet(xbmcgui.WindowXML):
 		if active_view_type == "Season: ListView":
 			self.controler = 983
 			self.listControl = self.getControl(self.controler)
-		#elif active_view_type == "Season BannerView":
-		#	self.controler = 981
-		#	self.listControl = self.getControl(self.controler)
-		#elif active_view_type == "Season ClearArtView":
-		#	self.controler = 982
-		#	self.listControl = self.getControl(self.controler)
-		#elif active_view_type == "League PanelView":
-		#	self.controler = 984
-		#	self.listControl = self.getControl(self.controler)
 		
 		try:seleccionado=self.listControl.getSelectedItem()
 		except:seleccionado = ''
@@ -313,7 +296,8 @@ class dialog_compet(xbmcgui.WindowXML):
 		elif controlId == 983 or controlId == 980 or controlId == 981 or controlId == 982 or controlId == 984:
 			listControl = self.getControl(controlId)
 			seleccionado=listControl.getSelectedItem()
-			league_object = seleccionado.getProperty('league_object')
-			#self.close()
-			leagueview.start([league_object,self.sport])
+			season_id = seleccionado.getProperty('season_id')
+			league_id = seleccionado.getProperty('league_id')
+			#usage start(sport,season,league,team)
+			eventlist.start([self.sport,season_id,league_id,''])
 			

@@ -24,7 +24,7 @@ from centerutils.common_variables import *
 from centerutils.datemanipulation import *
 from centerutils.caching import *
 from centerutils import pytzimp
-import matchdetails
+import soccermatchdetails
 
 def start(data_list):
 	window = dialog_livescores('DialogLivescores.xml',addonpath,'Default',str(data_list))
@@ -256,6 +256,6 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 			hometeam = listControl.getSelectedItem().getProperty('HomeTeamDefault')
 			awayteam = listControl.getSelectedItem().getProperty('AwayTeamDefault')
 			event_string = hometeam + '###' + awayteam
-			matchdetails.start([True,event_string])
+			soccermatchdetails.start([True,event_string])
 	
 		

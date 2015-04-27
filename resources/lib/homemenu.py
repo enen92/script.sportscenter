@@ -564,7 +564,26 @@ class dialog_home(xbmcgui.WindowXML):
 			listControl = self.getControl(980)
 			seleccionado=listControl.getSelectedItem()
 			#usage -> competlist.start(['sport','True for library False for Current Season'])
-			competlist.start([seleccionado.getProperty('sport_name'),False])
+			if self.sport == 'soccer' or self.sport == 'football':
+				library = settings.getSetting('football-home-item')
+			elif self.sport == 'basketball':
+				library = settings.getSetting('basketball-home-item')
+			elif self.sport == 'rugby':
+				library = settings.getSetting('rugby-home-item')
+			elif self.sport == 'american%20football':
+				library = settings.getSetting('amfootball-home-item')
+			elif self.sport == 'motorsport':
+				library = settings.getSetting('motorsport-home-item')
+			elif self.sport == 'ice%20hockey':
+				library = settings.getSetting('icehockey-home-item')
+			elif self.sport == 'baseball':
+				library = settings.getSetting('baseball-home-item')
+			elif self.sport == 'golf':
+				library = settings.getSetting('golf-home-item')
+			if library == '0':
+				competlist.start([seleccionado.getProperty('sport_name'),False])
+			else:
+				competlist.start([self.sport,True])
 		elif controlId == 983:
 			self.team_id = self.getControl(983).getSelectedItem().getProperty('favourite_id')
 			self.favteam_sport = urllib.quote(self.getControl(983).getSelectedItem().getProperty('favourite_team_sport').lower())

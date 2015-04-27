@@ -46,6 +46,14 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 				menu_items.append(('View away team details','awayteamdetails'))
 				menu_items.append(('Navigate to away team','awayteammain'))
 			menu_items.append(('Ignore competition from calendar','rmleaguecalendar_calendar'))
+		#below is for library
+		elif self.mode == 'leaguelist-lib' or self.mode == 'teamlist':
+			menu_items = []
+			menu_items.append(('Update information','updateinfo'))
+			menu_items.append(('Re-scrape all content','rescrape'))
+		elif self.mode == 'eventlist':
+			menu_items = []
+			menu_items.append(('Update information','updateinfo'))
 			
 		
 		#set menu dimensions according to the number of menu items

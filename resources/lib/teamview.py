@@ -9,7 +9,7 @@ from centerutils.rssparser import *
 from centerutils.datemanipulation import *
 from centerutils import pytzimp
 import competlist as competlist
-import matchdetails as matchdetails
+import soccermatchdetails as soccermatchdetails
 import stadium as stadium
 import tweetbuild as tweetbuild
 import imageviewer as imageviewer
@@ -919,7 +919,7 @@ class dialog_team(xbmcgui.WindowXML):
 		elif controlId == 988:
 			event_id = self.getControl(988).getSelectedItem().getProperty('event_id')
 			self.fanart_setter()
-			matchdetails.start([False,event_id])
+			soccermatchdetails.start([False,event_id])
 				
 		elif controlId == 989:
 			youtube_id = self.getControl(989).getSelectedItem().getProperty('video_id')

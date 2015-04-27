@@ -380,6 +380,8 @@ class Retriever:
 		#decide which sql_string to use here
 		if not sport and not season and not league and not team:
 			sql_cmd = "SELECT * FROM Event"
+		elif sport and league and season and not team:
+			sql_cmd = "SELECT * FROM Event where strSport = '"+sport+"' AND idLeague = '"+league+"' AND strSeason = '"+season+"'"
 		elif sport and not season and not league and not team:
 			sql_cmd = "SELECT * FROM Event where strSport = '"+sport+"'"
 		elif sport and season and not league and not team:

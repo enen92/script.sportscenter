@@ -10,7 +10,7 @@ from centerutils.datemanipulation import *
 from centerutils import pytzimp
 import competlist as competlist
 import teamview as teamview
-import matchdetails as matchdetails
+import soccermatchdetails as soccermatchdetails
 
 def start(data_list):
 	window = dialog_league('DialogLeague.xml',addonpath,'Default',str(data_list))
@@ -943,7 +943,7 @@ class dialog_league(xbmcgui.WindowXML):
 			
 		elif controlId == 988 or controlId == 991:
 			event_id = self.getControl(controlId).getSelectedItem().getProperty('event_id')
-			matchdetails.start([False,event_id])
+			soccermatchdetails.start([False,event_id])
 			
 		elif controlId == 9024: #previous round
 			if self.roundnum and self.roundnum != '0':

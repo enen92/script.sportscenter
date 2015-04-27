@@ -189,7 +189,7 @@ class dialog_compet(xbmcgui.WindowXML):
 			elif xbmc.getCondVisibility("Control.HasFocus(982)"): container = 982
 			elif xbmc.getCondVisibility("Control.HasFocus(980)"): container = 980
 			self.specific_id = self.getControl(container).getSelectedItem().getProperty('league_id')
-			contextmenubuilder.start(['leaguelist',self.specific_id])	
+			contextmenubuilder.start(['leaguelist-lib',self.specific_id])	
 		else:
 			self.set_info()
 		

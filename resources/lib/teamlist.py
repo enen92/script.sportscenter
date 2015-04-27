@@ -16,6 +16,7 @@ import thesportsdb
 import leagueview as leagueview
 import seasonlist as seasonlist
 import contextmenubuilder
+import eventlist
 
 def start(sportname):
 	window = dialog_compet('DialogTeamList.xml',addonpath,'Default',str(sportname))
@@ -178,7 +179,7 @@ class dialog_compet(xbmcgui.WindowXML):
 			elif xbmc.getCondVisibility("Control.HasFocus(980)"): container = 980
 			elif xbmc.getCondVisibility("Control.HasFocus(985)"): container = 985
 			self.specific_id = self.getControl(container).getSelectedItem().getProperty('league_id')
-			contextmenubuilder.start(['leaguelist',self.specific_id])	
+			contextmenubuilder.start(['teamlist',self.specific_id])	
 		else:
 			self.set_info()
 		
@@ -302,15 +303,7 @@ class dialog_compet(xbmcgui.WindowXML):
 				self.controler = 983
 		elif controlId == 983 or controlId == 980 or controlId == 981 or controlId == 982 or controlId == 984:
 			listControl = self.getControl(controlId)
-			#TODO -> start events listing
-			#seleccionado=listControl.getSelectedItem()
-			#league_object = seleccionado.getProperty('league_object')
-			#league_fanart = seleccionado.getProperty('fanart')
-			#try: league_id = thesportsdb.Leagues().get_id(eval(league_object))
-			#except: league_id = ''
-			#if not self.is_library:
-			#	leagueview.start([league_object,self.sport])
-			#else:
-			#	if league_id:
-			#		seasonlist.start([self.sport,league_id,league_fanart])
+			seleccionado=listControl.getSelectedItem()
+			team_id = seleccionado.getProperty('team_id')
+			eventlist.start([self.sport,"","",team_id])
 			
