@@ -228,7 +228,7 @@
         				</control>
         				<control type="textbox">
 						<description>Event name</description>
-						<posx>220</posx>
+						<posx>130</posx>
 						<posy>105</posy>
 						<width>800</width>
 						<height>40</height>
@@ -265,7 +265,7 @@
 					</control>
 					<control type="label">
 						<description>vs tag</description>
-						<posx>430</posx>
+						<posx>440</posx>
 						<posy>120</posy>
 						<width>170</width>
 						<height>20</height>
@@ -277,7 +277,7 @@
 					</control>
 					<control type="label">
 						<description>vs tag</description>
-						<posx>430</posx>
+						<posx>440</posx>
 						<posy>120</posy>
 						<width>170</width>
 						<height>20</height>
@@ -320,12 +320,12 @@
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
 					<control type="label">
-						<description>round</description>
+						<description>league name</description>
 						<posx>130</posx>
-						<posy>20</posy>
+						<posy>30</posy>
 						<width>800</width>
 						<height>20</height>
-						<label>[B]$INFO[ListItem.Property(league_info)][/B]</label>
+						<label>[B]$INFO[ListItem.Property(event_league_name)][/B]</label>
 						<font>font12_title</font>
 						<align>center</align>
 						<textcolor>FFB2D4F5</textcolor>
@@ -333,7 +333,7 @@
 					</control>
 					<control type="label">
 						<description>date of the event</description>
-						<posx>140</posx>
+						<posx>120</posx>
 						<posy>210</posy>
 						<width>800</width>
 						<height>20</height>
@@ -343,16 +343,6 @@
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<!--<control type="image">
-						<width>1040</width>
-						<height>250</height>
-						<aspectratio>scale</aspectratio>
-						<texture>transpar.png</texture>
-						<fadetime>400</fadetime>
-						<bordertexture border="2">thumbs/panel_border3.png</bordertexture>
-						<bordersize>2</bordersize>
-						<colordiffuse>BAffffff</colordiffuse>
-					</control>-->
 				</itemlayout>
 				<focusedlayout height="250" width="1040">
 					<control type="group">
@@ -384,7 +374,7 @@
         				</control>
         				<control type="textbox">
 						<description>Event name</description>
-						<posx>220</posx>
+						<posx>130</posx>
 						<posy>105</posy>
 						<width>800</width>
 						<height>40</height>
@@ -421,7 +411,7 @@
 					</control>
 					<control type="label">
 						<description>vs tag</description>
-						<posx>430</posx>
+						<posx>440</posx>
 						<posy>120</posy>
 						<width>170</width>
 						<height>20</height>
@@ -433,7 +423,7 @@
 					</control>
 					<control type="label">
 						<description>vs tag</description>
-						<posx>430</posx>
+						<posx>440</posx>
 						<posy>120</posy>
 						<width>170</width>
 						<height>20</height>
@@ -478,10 +468,10 @@
 					<control type="label">
 						<description>round</description>
 						<posx>130</posx>
-						<posy>20</posy>
+						<posy>40</posy>
 						<width>800</width>
 						<height>20</height>
-						<label>[B]$INFO[ListItem.Property(league_info)][/B]</label>
+						<label>[B]$INFO[ListItem.Property(event_league_name)][/B]</label>
 						<font>font12_title</font>
 						<align>center</align>
 						<textcolor>FFB2D4F5</textcolor>
@@ -489,7 +479,7 @@
 					</control>
 					<control type="label">
 						<description>date of the event</description>
-						<posx>140</posx>
+						<posx>120</posx>
 						<posy>210</posy>
 						<width>800</width>
 						<height>20</height>
@@ -499,15 +489,6 @@
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-						<!--<control type="image">
-							<width>1040</width>
-							<height>250</height>
-							<aspectratio>scale</aspectratio>
-							<texture>transpar.png</texture>
-							<fadetime>400</fadetime>
-							<bordertexture border="8">thumbs/thumbnail_focused.png</bordertexture>
-							<bordersize>8</bordersize>
-						</control>-->
 					</control>
 				</focusedlayout>
 			</control>
@@ -524,36 +505,25 @@
 				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
 				<animation effect="fade" start="100" end="0" time="500" delay="500" condition="!Control.HasFocus(980) + !Container.Scrolling">Conditional</animation>
 			</control>
-			<control type="label" id="934">
-				<left>1120</left>
-				<top>580</top>
-				<width>560</width>
-				<height>60</height>
-				<font>font16_title</font>
-				<textcolor>grey</textcolor>
-				<scroll>true</scroll>
-				<label></label>
-				<textoffsetx>15</textoffsetx>
-			</control>
 			<control type="image" id="911">
-					<left>1133</left>
-					<top>179</top>
-					<width>685</width>
-					<height>400</height>
-					<texture></texture>
-					<aspectratio>scale</aspectratio>
-					<fadetime>400</fadetime>			
+				<left>1133</left>
+				<top>179</top>
+				<width>685</width>
+				<height>400</height>
+				<texture></texture>
+				<aspectratio>scale</aspectratio>
+				<fadetime>400</fadetime>			
 			</control>
 			<control type="image" id="910">
-					<left>1668</left>
-					<top>587</top>
-					<width>150</width>
-					<height>150</height>
-					<texture></texture>
+				<left>1668</left>
+				<top>617</top>
+				<width>150</width>
+				<height>150</height>
+				<texture></texture>
 			</control>
 			<control type="grouplist">
 				<left>1120</left>
-				<top>640</top>
+				<top>630</top>
 				<width>680</width>
 				<height>270</height>
 				<control type="label" id="935">
@@ -570,7 +540,7 @@
 					<include>ShowCaseInfoPanelButtonsValues</include>
 				</control>
 				<control type="label" id="937">
-					<label>Tese</label>
+					<label></label>
 					<width>680</width>
 					<height>40</height>
 					<include>ShowCaseInfoPanelButtonsValues</include>
@@ -583,19 +553,20 @@
 				<width>670</width>
 				<height>302</height>
 				<font>font14_textbox</font>
-				<autoscroll time="3000" delay="4000" repeat="5000">Skin.HasSetting(Enable.AutoScroll) + !Control.HasFocus(68)</autoscroll>
-				<pagecontrol>68</pagecontrol>
+				<autoscroll time="3000" delay="4000" repeat="5000">Skin.HasSetting(Enable.AutoScroll)</autoscroll>
+				<pagecontrol>69</pagecontrol>
 				<include>ShowCaseInfoPanelButtonsValues</include>
 			</control>
-			<control type="scrollbar" id="68">
+			<control type="scrollbar" id="69">
 				<left>1817</left>
-				<top>734</top>
+				<top>784</top>
 				<width>14</width>
 				<height>642</height>
 				<onleft>50</onleft>
 				<onright>SetProperty(MediaMenu,True,home)</onright>
 				<onright>SetFocus(9050)</onright>
-				<showonepage>false</showonepage>
+				<ondown>noop</ondown>
+				<showonepage>true</showonepage>
 				<texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
 				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
@@ -653,10 +624,10 @@
         				</control>
         				<control type="textbox">
 						<description>Event name</description>
-						<posx>220</posx>
+						<posx>470</posx>
 						<posy>105</posy>
 						<width>800</width>
-						<height>40</height>
+						<height>70</height>
 						<label>$INFO[ListItem.Property(EventName)]</label>
 						<wrapmultiline>true</wrapmultiline>
 						<font>font28_title</font>
@@ -747,10 +718,10 @@
 					<control type="label">
 						<description>round</description>
 						<posx>470</posx>
-						<posy>20</posy>
+						<posy>40</posy>
 						<width>800</width>
 						<height>20</height>
-						<label>[B]$INFO[ListItem.Property(league_info)][/B]</label>
+						<label>[B]$INFO[ListItem.Property(event_league_name)][/B]</label>
 						<font>font12_title</font>
 						<align>center</align>
 						<textcolor>FFB2D4F5</textcolor>
@@ -758,7 +729,7 @@
 					</control>
 					<control type="label">
 						<description>date of the event</description>
-						<posx>140</posx>
+						<posx>465</posx>
 						<posy>210</posy>
 						<width>800</width>
 						<height>20</height>
@@ -768,16 +739,6 @@
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>AA000000</shadowcolor>
 					</control>
-					<!--<control type="image">
-						<width>1730</width>
-						<height>250</height>
-						<aspectratio>scale</aspectratio>
-						<texture>transpar.png</texture>
-						<fadetime>400</fadetime>
-						<bordertexture border="2">thumbs/panel_border3.png</bordertexture>
-						<bordersize>2</bordersize>
-						<colordiffuse>BAffffff</colordiffuse>
-					</control>-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -788,10 +749,6 @@
 				</itemlayout>
 				<focusedlayout height="260" width="1730">
 					<control type="group">
-						<!--<animation type="Focus" reversible="false">
-							<effect type="zoom" start="95" end="100" time="200" tween="sine" easing="inout" center="auto" />
-							<effect type="fade" start="80" end="100" time="200" tween="sine" easing="in" />
-						</animation>-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -816,10 +773,10 @@
         				</control>
         				<control type="textbox">
 						<description>Event name</description>
-						<posx>220</posx>
+						<posx>470</posx>
 						<posy>105</posy>
 						<width>800</width>
-						<height>40</height>
+						<height>70</height>
 						<label>$INFO[ListItem.Property(EventName)]</label>
 						<wrapmultiline>true</wrapmultiline>
 						<font>font28_title</font>
@@ -910,10 +867,10 @@
 					<control type="label">
 						<description>round</description>
 						<posx>470</posx>
-						<posy>20</posy>
+						<posy>40</posy>
 						<width>800</width>
 						<height>20</height>
-						<label>[B]$INFO[ListItem.Property(league_info)][/B]</label>
+						<label>[B]$INFO[ListItem.Property(event_league_name)][/B]</label>
 						<font>font12_title</font>
 						<align>center</align>
 						<textcolor>FFB2D4F5</textcolor>
@@ -921,7 +878,7 @@
 					</control>
 					<control type="label">
 						<description>date of the event</description>
-						<posx>140</posx>
+						<posx>465</posx>
 						<posy>210</posy>
 						<width>800</width>
 						<height>20</height>
@@ -1001,7 +958,7 @@
         				</control>
         				<control type="textbox">
 						<description>Event name</description>
-						<posx>220</posx>
+						<posx>130</posx>
 						<posy>105</posy>
 						<width>800</width>
 						<height>40</height>
@@ -1041,7 +998,7 @@
 					</control>
 					<control type="label">
 						<description>vs tag</description>
-						<posx>430</posx>
+						<posx>440</posx>
 						<posy>120</posy>
 						<width>170</width>
 						<height>20</height>
@@ -1054,7 +1011,7 @@
 					</control>
 					<control type="label">
 						<description>vs tag</description>
-						<posx>430</posx>
+						<posx>440</posx>
 						<posy>120</posy>
 						<width>170</width>
 						<height>20</height>
@@ -1103,10 +1060,10 @@
 					<control type="label">
 						<description>round</description>
 						<posx>130</posx>
-						<posy>20</posy>
+						<posy>40</posy>
 						<width>800</width>
 						<height>20</height>
-						<label>[B]$INFO[ListItem.Property(league_info)][/B]</label>
+						<label>[B]$INFO[ListItem.Property(event_league_name)][/B]</label>
 						<visible>!ListItem.Property(banner)</visible>
 						<font>font12_title</font>
 						<align>center</align>
@@ -1115,7 +1072,7 @@
 					</control>
 					<control type="label">
 						<description>date of the event</description>
-						<posx>140</posx>
+						<posx>120</posx>
 						<posy>210</posy>
 						<width>800</width>
 						<height>20</height>
@@ -1166,7 +1123,7 @@
         				</control>
         				<control type="textbox">
 						<description>Event name</description>
-						<posx>220</posx>
+						<posx>130</posx>
 						<posy>105</posy>
 						<width>800</width>
 						<height>40</height>
@@ -1206,7 +1163,7 @@
 					</control>
 					<control type="label">
 						<description>vs tag</description>
-						<posx>430</posx>
+						<posx>440</posx>
 						<posy>120</posy>
 						<width>170</width>
 						<height>20</height>
@@ -1219,7 +1176,7 @@
 					</control>
 					<control type="label">
 						<description>vs tag</description>
-						<posx>430</posx>
+						<posx>440</posx>
 						<posy>120</posy>
 						<width>170</width>
 						<height>20</height>
@@ -1268,10 +1225,10 @@
 					<control type="label">
 						<description>round</description>
 						<posx>130</posx>
-						<posy>20</posy>
+						<posy>40</posy>
 						<width>800</width>
 						<height>20</height>
-						<label>[B]$INFO[ListItem.Property(league_info)][/B]</label>
+						<label>[B]$INFO[ListItem.Property(event_league_name)][/B]</label>
 						<visible>!ListItem.Property(banner)</visible>
 						<font>font12_title</font>
 						<align>center</align>
@@ -1280,7 +1237,7 @@
 					</control>
 					<control type="label">
 						<description>date of the event</description>
-						<posx>140</posx>
+						<posx>120</posx>
 						<posy>210</posy>
 						<width>800</width>
 						<height>20</height>
@@ -1337,7 +1294,7 @@
 				<label></label>
 				<textoffsetx>15</textoffsetx>
 			</control>
-			<control type="image" id="911">
+			<control type="image" id="913">
 					<left>1133</left>
 					<top>179</top>
 					<width>685</width>
@@ -1346,7 +1303,7 @@
 					<aspectratio>scale</aspectratio>
 					<fadetime>400</fadetime>			
 			</control>
-			<control type="image" id="910">
+			<control type="image" id="954">
 					<left>1668</left>
 					<top>587</top>
 					<width>150</width>
@@ -1435,60 +1392,22 @@
 					<top>92</top>
 					<width>448</width>
 					<height>270</height>
-					<control type="button">
-						<label>[COLOR labelheader]$LOCALIZE[31000]:[/COLOR][CR]coiso</label>
+					<control type="button" id="958">
+						<label></label>
 						<width>448</width>
 						<include>ShowCaseInfoPanelButtonsValues</include>
 					</control>
-					<control type="button">
-						<label>[COLOR labelheader]$LOCALIZE[31000]:[/COLOR][CR]$INFO[Window(home).Property(Set.Movies.Director)]</label>
+					<control type="button" id="959">
+						<label></label>
 						<width>448</width>
 						<include>ShowCaseInfoPanelButtonsValues</include>
 					</control>
-					<control type="button">
-						<label>[COLOR labelheader]$LOCALIZE[126]:[/COLOR][CR]$INFO[Window(Home).Property(NextAired.Status)]</label>
+					<control type="button" id="960">
+						<label></label>
 						<width>448</width>
 						<include>ShowCaseInfoPanelButtonsValues</include>
 					</control>
-					<control type="button">
-						<label>[COLOR labelheader]$LOCALIZE[20416]:[/COLOR][CR]$INFO[ListItem.Premiered]</label>
-						<width>448</width>
-						<include>ShowCaseInfoPanelButtonsValues</include>
 					</control>
-					<control type="button">
-						<label>[COLOR labelheader]$LOCALIZE[31019]:[/COLOR][CR]$INFO[ListItem.Studio]</label>
-						<width>448</width>
-						<include>ShowCaseInfoPanelButtonsValues</include>					
-					</control>
-					<control type="button">
-						<label>[COLOR labelheader]$LOCALIZE[31010]:[/COLOR][CR]$INFO[Window(Home).Property(NextAired.NextDate),,: ]$INFO[Window(Home).Property(NextAired.NextTitle)]</label>
-						<include>ShowCaseInfoPanelButtonsValues</include>
-					</control>
-					<control type="button">
-						<label>[COLOR labelheader]$LOCALIZE[31011]:[/COLOR][CR]$INFO[Window(Home).Property(NextAired.LatestNumber),, - ]$INFO[Window(Home).Property(NextAired.LatestTitle)]</label>
-						<include>ShowCaseInfoPanelButtonsValues</include>
-					</control>
-					<control type="button">
-						<label>[COLOR labelheader]$LOCALIZE[515]:[/COLOR][CR]$INFO[ListItem.Genre]</label>
-						<width>448</width>
-						<include>ShowCaseInfoPanelButtonsValues</include>
-					</control>
-					<control type="button">
-						<label>[COLOR labelheader]$LOCALIZE[515]:[/COLOR][CR]$INFO[Window(home).Property(Set.Movies.Genre)]</label>
-						<width>448</width>
-						<include>ShowCaseInfoPanelButtonsValues</include>
-					</control>
-					<control type="button">
-						<label>[COLOR labelheader]$LOCALIZE[2050]:[/COLOR][CR]$INFO[ListItem.Duration,, $LOCALIZE[12391]]</label>
-						<width>448</width>
-						<include>ShowCaseInfoPanelButtonsValues</include>
-					</control>
-					<control type="button">
-						<label>[COLOR labelheader]$LOCALIZE[2050]:[/COLOR][CR]$INFO[Window(home).Property(Set.Movies.Runtime),, $LOCALIZE[12391]]</label>
-						<width>448</width>
-						<include>ShowCaseInfoPanelButtonsValues</include>
-					</control>
-				</control>
 				<control type="textbox" id="70">
 					<label>$VAR[VideoPlotVar]</label>
 					<left>15</left>
@@ -1521,24 +1440,22 @@
 				<left>846</left>
 				<top>154</top>
 				<visible>!IsEmpty(Window(home).Property(posterview))</visible>
-				<control type="image">
-					<width>570</width>
-					<height>835</height>
+				<control type="image" id="956">
+					<width>550</width>
+					<height>815</height>
 					<aspectratio aligny="bottom" align="right">scale</aspectratio>
-					<texture background="true">benfica.png</texture>
+					<texture></texture>
 					<fadetime>IconCrossfadeTime</fadetime>
-					<bordertexture border="20">thumbs/thumb_shadow.png</bordertexture>
-					<bordersize>20</bordersize>
 				</control>
-				<control type="image">
+				<control type="image" id="957">
 					<left>30</left>
 					<top>797</top>
-					<width>540</width>
-					<height>835</height>
+					<width>550</width>
+					<height>815</height>
 					<aspectratio aligny="top" align="right">scale</aspectratio>
 					<fadetime>IconCrossfadeTime</fadetime>
-					<texture diffuse="thumbs/thumb_reflect.png" flipy="true" background="true">benfica.png</texture>
-					<bordersize>20</bordersize>
+					<texture diffuse="thumbs/thumb_reflect.png" flipy="true"></texture>
+					<texture></texture>
 				</control>
 				<control type="image">
 					<left>550</left>
@@ -1728,14 +1645,12 @@
 					<textwidth>352</textwidth>
 					<onright condition="!IsEmpty(Window(home).Property(infoview))">980</onright>
 					<onright condition="!IsEmpty(Window(home).Property(infoview))">SetFocus(980)</onright>
-					<onright condition="!IsEmpty(Window(home).Property(bannerview))">981</onright>
-					<onright condition="!IsEmpty(Window(home).Property(bannerview))">SetFocus(981)</onright>
-					<onright condition="!IsEmpty(Window(home).Property(clearview))">982</onright>
-					<onright condition="!IsEmpty(Window(home).Property(clearview))">SetFocus(982)</onright>
-					<onright condition="!IsEmpty(Window(home).Property(listview))">983</onright>
-					<onright condition="!IsEmpty(Window(home).Property(listview))">SetFocus(983)</onright>
-					<onright condition="!IsEmpty(Window(home).Property(panelview))">984</onright>
-					<onright condition="!IsEmpty(Window(home).Property(panelview))">SetFocus(984)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">983</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">SetFocus(983)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">982</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">SetFocus(982)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">984</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">SetFocus(984)</onright>
 					<onright>ClearProperty(MediaMenu,Home)</onright>
 
 
