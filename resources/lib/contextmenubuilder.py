@@ -5,6 +5,7 @@ from centerutils.common_variables import *
 from centerutils.iofile import *
 import competlist as competlist
 import teamview
+import leagueview
 
 def start(data_list):
 	window = dialog_context('DialogContext.xml',addonpath,'Default',str(data_list))
@@ -47,13 +48,22 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 				menu_items.append(('Navigate to away team','awayteammain'))
 			menu_items.append(('Ignore competition from calendar','rmleaguecalendar_calendar'))
 		#below is for library
-		elif self.mode == 'leaguelist-lib' or self.mode == 'teamlist':
+		elif self.mode == 'leaguelist-lib':
 			menu_items = []
 			menu_items.append(('Update information','updateinfo'))
 			menu_items.append(('Re-scrape all content','rescrape'))
+			menu_items.append(('Navigate to current league','currentleague'))
+		elif self.mode == 'teamlist-lib':
+			menu_items = []
+			menu_items.append(('Update information','updateinfo'))
+			menu_items.append(('Re-scrape all content','rescrape'))
+			menu_items.append(('Team details','teamdetails'))
+			menu_items.append(('Navigate to team actual season','currenteamseason'))
 		elif self.mode == 'eventlist':
 			menu_items = []
 			menu_items.append(('Update information','updateinfo'))
+			menu_items.append(('Home Team details','hometeamdetails-lib'))
+			menu_items.append(('Away Team details','awayteamdetails-lib'))
 			
 		
 		#set menu dimensions according to the number of menu items
@@ -117,11 +127,39 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 				self.close()
 				add_leaguelivescores(self.specific_id)
 				
+			elif self.identifier == 'teamdetails':
+				self.close()
+				teamview.teamdetails(self.specific_id)
+				
+			elif self.identifier == 'currenteamseason':
+				self.close()
+				self.team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(self.specific_id)["teams"][0]
+				self.sport = thesportsdb.Teams().get_sport(self.team_dict).lower()				
+				teamview.start([self.specific_id,self.sport,'',''])
+				
 			elif self.identifier == 'hometeamdetails':
 				self.team_id = thesportsdb.Events().get_hometeamid(self.event_dict)
 				teamview.teamdetails(self.team_id)
 				
 			elif self.identifier == 'awayteamdetails':
+				self.team_id = thesportsdb.Events().get_awayteamid(self.event_dict)
+				teamview.teamdetails(self.team_id)
+				
+			elif self.identifier == 'currentleague':
+				self.close()
+				self.league_dict = thesportsdb.Lookups(tsdbkey).lookupleague(self.specific_id)["leagues"][0]
+				self.sport = thesportsdb.Leagues().get_sport(self.league_dict)
+				leagueview.start([self.specific_id,self.sport.lower(),''])
+				
+			elif self.identifier == 'hometeamdetails-lib':
+				self.close()
+				self.event_dict = thesportsdb.Lookups(tsdbkey).lookupevent(self.specific_id)["events"][0]
+				self.team_id = thesportsdb.Events().get_hometeamid(self.event_dict)
+				teamview.teamdetails(self.team_id)
+				
+			elif self.identifier == 'awayteamdetails-lib':
+				self.close()
+				self.event_dict = thesportsdb.Lookups(tsdbkey).lookupevent(self.specific_id)["events"][0]
 				self.team_id = thesportsdb.Events().get_awayteamid(self.event_dict)
 				teamview.teamdetails(self.team_id)
 				

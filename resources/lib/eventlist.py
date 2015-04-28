@@ -253,6 +253,7 @@ class dialog_eventlist(xbmcgui.WindowXML):
 				game.setProperty('event_timestring',event_timestring)
 				game.setProperty('event_round',event_round)
 				game.setProperty('event_season',season_label)
+				game.setProperty('event_id',event_id)
 
 
 				if event_year:
@@ -273,7 +274,6 @@ class dialog_eventlist(xbmcgui.WindowXML):
 					
 					game.setProperty('event_result',event_result_present)
 					game.setProperty('event_vs',event_vs_present)
-					game.setProperty('event_id',event_id)
 				else:
 					game.setProperty('EventName',event_name)
 				# date + time + timedelay
@@ -312,7 +312,7 @@ class dialog_eventlist(xbmcgui.WindowXML):
 			elif xbmc.getCondVisibility("Control.HasFocus(984)"): container = 984
 			elif xbmc.getCondVisibility("Control.HasFocus(982)"): container = 982
 			elif xbmc.getCondVisibility("Control.HasFocus(980)"): container = 980
-			self.specific_id = self.getControl(container).getSelectedItem().getProperty('league_id')
+			self.specific_id = self.getControl(container).getSelectedItem().getProperty('event_id')
 			contextmenubuilder.start(['eventlist',self.specific_id])	
 		else:
 			self.set_info()
