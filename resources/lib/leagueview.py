@@ -11,6 +11,7 @@ from centerutils import pytzimp
 import competlist as competlist
 import teamview as teamview
 import soccermatchdetails as soccermatchdetails
+import eventdetails as eventdetails
 
 def start(data_list):
 	window = dialog_league('DialogLeague.xml',addonpath,'Default',str(data_list))
@@ -426,6 +427,7 @@ class dialog_league(xbmcgui.WindowXML):
 			for event in event_next_list:
 				event_fullname = thesportsdb.Events().get_eventtitle(event)
 				event_race = thesportsdb.Events().get_racelocation(event)
+				event_fanart = thesportsdb.Events().get_fanart(event)
 				
 				event_datetime = thesportsdb.Events().get_datetime_object(event)
 				if event_datetime:
@@ -463,6 +465,9 @@ class dialog_league(xbmcgui.WindowXML):
 					event_round = thesportsdb.Events().get_round(event)
 					if event_round and event_round != '0':
 						round_label = 'Round ' + str(event_round)
+						
+				if event_fanart and event_fanart != 'None' and event_fanart != 'null':
+					stadium_fanart = event_fanart
 				
 				game = xbmcgui.ListItem(event_fullname)
 				game.setProperty('HomeTeamLogo',home_team_logo)
@@ -478,6 +483,9 @@ class dialog_league(xbmcgui.WindowXML):
 					else: game.setProperty('AwayTeamShort',away_team_name)
 					game.setProperty('StadiumThumb',stadium_fanart)
 					game.setProperty('vs','VS')
+				else:
+					if event_fanart and event_fanart != 'None' and event_fanart != 'null':
+						game.setProperty('StadiumThumb',event_fanart)
 					
 				if event_datetime:
 					try:
@@ -544,6 +552,7 @@ class dialog_league(xbmcgui.WindowXML):
 				event_fullname = thesportsdb.Events().get_eventtitle(event)
 				event_race = thesportsdb.Events().get_racelocation(event)
 				event_id = thesportsdb.Events().get_eventid(event)
+				event_fanart = thesportsdb.Events().get_fanart(event)
 				
 				event_datetime = thesportsdb.Events().get_datetime_object(event)
 				if event_datetime:
@@ -614,9 +623,13 @@ class dialog_league(xbmcgui.WindowXML):
 					else:
 						timedelay = '[COLOR white] (' + str(day_difference) + ' days ago)[/COLOR]'
 				else: timedelay = ''
+				
+				if event_fanart and event_fanart != 'None' and event_fanart != 'null':
+					stadium_fanart = event_fanart
 			
 				game = xbmcgui.ListItem(event_fullname)
 				game.setProperty('HomeTeamLogo',home_team_logo)
+				game.setProperty('event_id',event_id)
 				if not event_race:
 					if ' ' in home_team_name:
 						if len(home_team_name) > 12: game.setProperty('HomeTeamLong',home_team_name)
@@ -629,10 +642,11 @@ class dialog_league(xbmcgui.WindowXML):
 						else: game.setProperty('AwayTeamShort',away_team_name)
 					else: game.setProperty('AwayTeamShort',away_team_name)
 					game.setProperty('match_result',result)
-					game.setProperty('event_id',event_id)
 					if event_round and event_round != '0': game.setProperty('round',round_label)
 				else:
 					game.setProperty('EventName',event_name)
+					if event_fanart and event_fanart != 'None' and event_fanart != 'null':
+						game.setProperty('StadiumThumb',event_fanart)
 				# date + time + timedelay
 				event_fullstring = event_timestring + timedelay
 				game.setProperty('date',event_fullstring)
@@ -943,7 +957,10 @@ class dialog_league(xbmcgui.WindowXML):
 			
 		elif controlId == 988 or controlId == 991:
 			event_id = self.getControl(controlId).getSelectedItem().getProperty('event_id')
-			soccermatchdetails.start([False,event_id])
+			if self.sport.lower() == 'soccer' or self.sport.lower() == 'football':
+				soccermatchdetails.start([False,event_id])
+			else:
+				eventdetails.start([event_id])
 			
 		elif controlId == 9024: #previous round
 			if self.roundnum and self.roundnum != '0':

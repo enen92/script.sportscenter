@@ -5,6 +5,7 @@
 	<onunload>ClearProperty(Window.HasSettings,Home)</onunload>
 	<allowoverlay>no</allowoverlay>
 	<onload>SetFocus(67)</onload>
+	<defaultcontrol always="true">6</defaultcontrol>
 	<controls>
 		<!-- Background!-->
 		<control type="group">
@@ -22,8 +23,6 @@
 				<height>1082</height>
 				<aspectratio>keep</aspectratio>
 				<texture></texture>
-				<!--<bordertexture border="5">dialogs/default/inner.png</bordertexture>
-				<bordersize>1</bordersize>-->
 			</control>
 			<control type="label" id="1">
 				<left>350</left>

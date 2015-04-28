@@ -98,6 +98,8 @@ if mode==None or url==None or len(url)<1:
 			#teamview.start(['134806','motorsport'])
 			#from resources.lib import eventlist
 			#eventlist.start(["soccer",'','',''])
+			#from resources.lib import eventdetails
+			#eventdetails.start(['483982'])
 		else:
 			mensagemok('Sports Center', 'Only available for Aeon Nox 5 and Helix for now...')
 			sys.exit(0)

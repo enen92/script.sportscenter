@@ -10,6 +10,7 @@ from centerutils.datemanipulation import *
 from centerutils import pytzimp
 import competlist as competlist
 import soccermatchdetails as soccermatchdetails
+import eventdetails as eventdetails
 import stadium as stadium
 import tweetbuild as tweetbuild
 import imageviewer as imageviewer
@@ -115,20 +116,30 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 		#set next match information
 		if self.event_next_list:
 			self.nextevent = self.event_next_list[0]
-			self.hometeam = thesportsdb.Events().get_hometeamid(self.nextevent)
-			self.awayteam = thesportsdb.Events().get_awayteamid(self.nextevent)
-			self.home_away = ''
-			if self.team_id == self.hometeam:
-				self.home_away = 'HOME'
-				self.searchid = thesportsdb.Events().get_awayteamid(self.nextevent)
+			if self.sport.lower() != 'motorsport':
+				self.hometeam = thesportsdb.Events().get_hometeamid(self.nextevent)
+				self.awayteam = thesportsdb.Events().get_awayteamid(self.nextevent)
+				self.home_away = ''
+				if self.team_id == self.hometeam:
+					self.home_away = 'HOME'
+					self.searchid = thesportsdb.Events().get_awayteamid(self.nextevent)
+				else:
+					self.home_away = 'AWAY'
+					self.searchid = thesportsdb.Events().get_hometeamid(self.nextevent)
+				self.getControl(41).setLabel(self.home_away)
+				try:
+					self.nexteam = thesportsdb.Lookups(tsdbkey).lookupteam(self.searchid)['teams'][0]
+					self.nextlogo = thesportsdb.Teams().get_badge(self.nexteam)
+					self.getControl(40).setImage(self.nextlogo)
+				except: pass
 			else:
-				self.home_away = 'AWAY'
-				self.searchid = thesportsdb.Events().get_hometeamid(self.nextevent)
-			self.getControl(41).setLabel(self.home_away)
+				self.getControl(40).setImage(os.path.join(addonpath,art,'raceflag.png'))
+				self.location = thesportsdb.Events().get_racelocation(self.nextevent)
+				if self.location and self.location != 'None' and self.location != 'null':
+					self.getControl(46).setLabel(self.location)
+				self.getControl(44).setVisible(False)
+			#datestuff is independent from the sport
 			try:
-				self.nexteam = thesportsdb.Lookups(tsdbkey).lookupteam(self.searchid)['teams'][0]
-				self.nextlogo = thesportsdb.Teams().get_badge(self.nexteam)
-				self.getControl(40).setImage(self.nextlogo)
 				#date
 				self.nextdate = thesportsdb.Events().get_datetime_object(self.nextevent)
 				if self.nextdate:
@@ -150,11 +161,12 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 						string = 'In ' + str(day_difference) + ' days'
 				else: string = ''
 				self.getControl(42).setLabel(string)
+
+				if self.nextdate:
+					fmt = "%H:%M"
+					self.event_time = self.nextdate.strftime(fmt)
+					self.getControl(45).setLabel(self.event_time)
 			except: pass
-			if self.nextdate:
-				fmt = "%H:%M"
-				self.event_time = self.nextdate.strftime(fmt)
-				self.getControl(45).setLabel(self.event_time)
 
 
 		
@@ -271,8 +283,13 @@ class dialog_team(xbmcgui.WindowXML):
 			
 		if self.team_youtube and self.team_youtube != 'None':
 			menu.append(('Videos','videos'))
-			
-		menu.append(('Players','players'))
+		
+		if self.sport.lower() == 'motorsport':
+			menu.append(('Racers','players'))
+		elif self.sport.lower() == 'golf':
+			menu.append(('Golfers','players'))
+		else:	
+			menu.append(('Players','players'))
 	
 		if self.team_stadium and self.team_stadium != 'None':
 			menu.append(('Stadium','stadium'))
@@ -346,20 +363,30 @@ class dialog_team(xbmcgui.WindowXML):
 		#set next match information
 		if self.event_next_list:
 			self.nextevent = self.event_next_list[0]
-			self.hometeam = thesportsdb.Events().get_hometeamid(self.nextevent)
-			self.awayteam = thesportsdb.Events().get_awayteamid(self.nextevent)
-			self.home_away = ''
-			if self.team_id == self.hometeam:
-				self.home_away = 'HOME'
-				self.searchid = thesportsdb.Events().get_awayteamid(self.nextevent)
+			if self.sport.lower() != 'motorsport':
+				self.hometeam = thesportsdb.Events().get_hometeamid(self.nextevent)
+				self.awayteam = thesportsdb.Events().get_awayteamid(self.nextevent)
+				self.home_away = ''
+				if self.team_id == self.hometeam:
+					self.home_away = 'HOME'
+					self.searchid = thesportsdb.Events().get_awayteamid(self.nextevent)
+				else:
+					self.home_away = 'AWAY'
+					self.searchid = thesportsdb.Events().get_hometeamid(self.nextevent)
+				self.getControl(41).setLabel(self.home_away)
+				try:
+					self.nexteam = thesportsdb.Lookups(tsdbkey).lookupteam(self.searchid)['teams'][0]
+					self.nextlogo = thesportsdb.Teams().get_badge(self.nexteam)
+					self.getControl(40).setImage(self.nextlogo)
+				except: pass
 			else:
-				self.home_away = 'AWAY'
-				self.searchid = thesportsdb.Events().get_hometeamid(self.nextevent)
-			self.getControl(41).setLabel(self.home_away)
+				self.getControl(40).setImage(os.path.join(addonpath,art,'raceflag.png'))
+				self.location = thesportsdb.Events().get_racelocation(self.nextevent)
+				if self.location and self.location != 'None' and self.location != 'null':
+					self.getControl(45).setLabel(self.location)
+			
+			#datestuff is independent from the sport
 			try:
-				self.nexteam = thesportsdb.Lookups(tsdbkey).lookupteam(self.searchid)['teams'][0]
-				self.nextlogo = thesportsdb.Teams().get_badge(self.nexteam)
-				self.getControl(40).setImage(self.nextlogo)
 				#date
 				self.nextdate = thesportsdb.Events().get_datetime_object(self.nextevent)
 				if self.nextdate:
@@ -541,6 +568,7 @@ class dialog_team(xbmcgui.WindowXML):
 		if event_next_list:
 			for event in event_next_list:
 				event_datetime = thesportsdb.Events().get_datetime_object(event)
+				event_fanart = thesportsdb.Events().get_fanart(event)
 				if event_datetime:
 					#datetime object conversion goes here
 					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
@@ -594,6 +622,9 @@ class dialog_team(xbmcgui.WindowXML):
 					if event_round and event_round != '0':
 						round_label = 'Round ' + str(event_round)
 				
+				if event_fanart and event_fanart != 'None' and event_fanart != 'null':
+					stadium_fanart = event_fanart
+				
 				game = xbmcgui.ListItem(event_fullname)
 				game.setProperty('HomeTeamLogo',home_team_logo)
 				if not event_race:
@@ -603,6 +634,8 @@ class dialog_team(xbmcgui.WindowXML):
 				game.setProperty('date',presented_date)
 				if event_race: 
 					game.setProperty('EventName',event_name) 
+					if event_fanart and event_fanart != 'None' and event_fanart != 'null':
+						game.setProperty('StadiumThumb',stadium_fanart)
 				if event_round and event_round != '0': game.setProperty('round',round_label)
 				self.getControl(987).addItem(game)
 				
@@ -637,6 +670,7 @@ class dialog_team(xbmcgui.WindowXML):
 				awayscore = thesportsdb.Events().get_awayscore(event)
 				homescore = thesportsdb.Events().get_homescore(event)
 				event_id = thesportsdb.Events().get_eventid(event)
+				event_fanart = thesportsdb.Events().get_fanart(event)
 				if hometeam == self.team_id:
 					if int(homescore) > int(awayscore):
 						self.getControl(controlinicial+i).setImage(os.path.join(addonpath,'resources','img','greensquare.png'))
@@ -720,6 +754,8 @@ class dialog_team(xbmcgui.WindowXML):
 						timedelay = '[COLOR white] (' + str(day_difference) + ' days ago)[/COLOR]'
 				else: timedelay = ''
 				
+				if event_fanart and event_fanart != 'None' and event_fanart != 'null':
+					stadium_fanart = event_fanart
 				
 				game = xbmcgui.ListItem(event_fullname)
 				game.setProperty('HomeTeamLogo',home_team_logo)
@@ -739,6 +775,8 @@ class dialog_team(xbmcgui.WindowXML):
 					if event_round and event_round != '0': game.setProperty('round',round_label)
 				else:
 					game.setProperty('EventName',event_name)
+					if event_fanart and event_fanart != 'None' and event_fanart != 'null':
+						game.setProperty('StadiumThumb',stadium_fanart)
 				# date + time + timedelay
 				event_fullstring = event_timestring + timedelay
 				game.setProperty('date',event_fullstring)
@@ -919,7 +957,10 @@ class dialog_team(xbmcgui.WindowXML):
 		elif controlId == 988:
 			event_id = self.getControl(988).getSelectedItem().getProperty('event_id')
 			self.fanart_setter()
-			soccermatchdetails.start([False,event_id])
+			if self.sport.lower() == 'soccer' or self.sport.lower() == 'football':
+				soccermatchdetails.start([False,event_id])
+			else:
+				eventdetails.start([event_id])
 				
 		elif controlId == 989:
 			youtube_id = self.getControl(989).getSelectedItem().getProperty('video_id')
