@@ -518,22 +518,22 @@ class dialog_home(xbmcgui.WindowXML):
 			self.sport = sport
 			self.initsubmenu = True
 			if self.sport == 'soccer' or self.sport == 'football':
-				library = settings.getSetting('haslibrary-football')
+				library = haslibrary_football
 			elif self.sport == 'basketball':
-				library = settings.getSetting('haslibrary-basketball')
+				library = haslibrary_basketball
 			elif self.sport == 'rugby':
-				library = settings.getSetting('haslibrary-rugby')
+				library = haslibrary_rugby
 			elif self.sport == 'american%20football':
-				library = settings.getSetting('haslibrary-amfootball')
+				library = haslibrary_amfootball
 			elif self.sport == 'motorsport':
-				library = settings.getSetting('haslibrary-motorsport')
+				library = haslibrary_motorsport
 			elif self.sport == 'ice%20hockey':
-				library = settings.getSetting('haslibrary-icehockey')
+				library = haslibrary_icehockey
 			elif self.sport == 'baseball':
-				library = settings.getSetting('haslibrary-baseball')
+				library = haslibrary_baseball
 			elif self.sport == 'golf':
-				library = settings.getSetting('haslibrary-golf')
-			if library == 'true':
+				library = haslibrary_golf
+			if library:
 				if self.has_diff_submenu == 'has_library': #self.has_diff_submenu can only have 'has_library' or 'no_library' as values
 					pass
 				else:

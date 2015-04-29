@@ -32,6 +32,49 @@ tsdbtimezone = 'Atlantic/Azores'
 
 #Internal database variables
 sc_database = os.path.join(profilepath,'sc_database.sql')
+database_userdata = os.path.join(profilepath,'database')
+if not os.path.isdir(database_userdata): xbmcvfs.mkdir(database_userdata)
+
+football_library = os.path.join(database_userdata,'football.txt')
+if os.path.exists(football_library):
+	haslibrary_football = True
+else:
+	haslibrary_football = False
+basketball_library = os.path.join(database_userdata,'basketball.txt')
+if os.path.exists(basketball_library):
+	haslibrary_basketball = True
+else:
+	haslibrary_basketball = False
+icehockey_library = os.path.join(database_userdata,'icehockey.txt')
+if os.path.exists(icehockey_library):
+	haslibrary_icehockey = True
+else:
+	haslibrary_icehockey = True
+baseball_library = os.path.join(database_userdata,'baseball.txt')
+if os.path.exists(baseball_library):
+	haslibrary_baseball = True
+else:
+	haslibrary_baseball = False
+motorsport_library = os.path.join(database_userdata,'motorsport.txt')
+if os.path.exists(motorsport_library):
+	haslibrary_motorsport = True
+else:
+	haslibrary_motorsport = False
+rugby_library = os.path.join(database_userdata,'rugby.txt')
+if os.path.exists(rugby_library):
+	haslibrary_rugby = True
+else:
+	haslibrary_rugby = False
+golf_library = os.path.join(database_userdata,'golf.txt')
+if os.path.exists(golf_library):
+	haslibrary_golf = True
+else:
+	haslibrary_golf = False
+amfootball_library = os.path.join(database_userdata,'amfootball.txt')
+if os.path.exists(amfootball_library):
+	haslibrary_amfootball = True
+else:
+	haslibrary_amfootball = False
 
 #Wizzard variables
 football_file = os.path.join(profilepath,'football.txt')
@@ -63,8 +106,6 @@ if not os.path.isdir(favleaguesfolder): xbmcvfs.mkdir(favleaguesfolder)
 if not os.path.isdir(ignoreleaguecalendar): xbmcvfs.mkdir(ignoreleaguecalendar)
 if not os.path.isdir(ignoreleaguelivescores): xbmcvfs.mkdir(ignoreleaguelivescores)
 
-
-      
 def translate(text):
       return settings.getLocalizedString(text).encode('utf-8')
 
