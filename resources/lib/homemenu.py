@@ -33,9 +33,9 @@ class dialog_home(xbmcgui.WindowXML):
 		if settings.getSetting('enable-football') == 'true':
 			table.append(('Football','soccer.png','soccer'))
 		if settings.getSetting('enable-rugby') == 'true':
-			table.append(('Rugby','Rugby.png','rugby'))
+			table.append(('Rugby','rugby.png','rugby'))
 		if settings.getSetting('enable-motorsport') == 'true':
-			table.append(('MotorSport','Racing.png','motorsport'))
+			table.append(('MotorSport','motorsport.png','motorsport'))
 		if settings.getSetting('enable-basketball') == 'true':
 			table.append(('Basketball','basketball.png','basketball'))
 		if settings.getSetting('enable-amfootball') == 'true':

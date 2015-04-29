@@ -98,6 +98,7 @@ class dialog_compet(xbmcgui.WindowXML):
 				teamItem.setProperty('year', thesportsdb.Teams().get_formedyear(team))
 				teamItem.setProperty('sport', thesportsdb.Teams().get_sport(team))
 				teamItem.setProperty('country', thesportsdb.Teams().get_country(team))
+				teamItem.setProperty('league_id', thesportsdb.Teams().get_league_id(team))
 				#manipulate languages here
 				if settings.getSetting('addon-language') == '0':
 					teamItem.setProperty('plot', thesportsdb.Teams().get_plot_en(team))
@@ -305,5 +306,9 @@ class dialog_compet(xbmcgui.WindowXML):
 			listControl = self.getControl(controlId)
 			seleccionado=listControl.getSelectedItem()
 			team_id = seleccionado.getProperty('team_id')
-			eventlist.start([self.sport,"","",team_id])
+			league_id = seleccionado.getProperty('league_id')
+			if self.sport != 'motorsport':
+				eventlist.start([self.sport,"","",team_id])
+			else:
+				eventlist.start([self.sport,"",league_id,""])
 			

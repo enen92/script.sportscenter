@@ -71,7 +71,8 @@ class dialog_compet(xbmcgui.WindowXML):
 		self.list_listitems = []
 		if season_list:
 			if not self.league_id:
-				sport_icon = os.path.join(addonpath,art,self.sport + '.png')
+				sport_icon = os.path.join(addonpath,art,self.sport.lower() + '.png')
+				print "fucking icon",sport_icon
 				sport_fanart = ''
 				if settings.getSetting('season-background') != '0':
 					if settings.getSetting('season-background') == '1':
@@ -85,7 +86,7 @@ class dialog_compet(xbmcgui.WindowXML):
 							sport_fanart = settings.getSetting('season-custom')
 				for season in season_list:
 					#manipulate strSeason return for better label presentation
-					if len(season) == 4:
+					if len(season) == 4 and int(season) < 1900:
 						i = 0
 						start_year=''
 						end_year=''
@@ -131,7 +132,8 @@ class dialog_compet(xbmcgui.WindowXML):
 				league_name = thesportsdb.Leagues().get_name(self.league)
 				for season in season_list:
 					#manipulate strSeason return for better label presentation
-					if len(season) == 4:
+					print "fuk season",season
+					if len(season) == 4 and int(season) < 1900:
 						i = 0
 						start_year=''
 						end_year=''
