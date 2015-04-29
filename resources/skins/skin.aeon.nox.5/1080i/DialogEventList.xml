@@ -1329,7 +1329,7 @@
 					<include>ShowCaseInfoPanelButtonsValues</include>
 				</control>
 				<control type="label" id="937">
-					<label>Tese</label>
+					<label></label>
 					<width>680</width>
 					<height>40</height>
 					<include>ShowCaseInfoPanelButtonsValues</include>
@@ -1628,7 +1628,7 @@
 				<onleft>9050</onleft>
 				<onright>ClearProperty(MediaMenu,Home)</onright>
 				<onup>9050</onup>
-				<ondown>9050</ondown>
+				<ondown>9051</ondown>
 				<onback>ClearProperty(MediaMenu,Home)</onback>
 				<itemgap>0</itemgap>
 				<control type="label" id="200">
@@ -1652,8 +1652,22 @@
 					<onright condition="!IsEmpty(Window(home).Property(posterview))">984</onright>
 					<onright condition="!IsEmpty(Window(home).Property(posterview))">SetFocus(984)</onright>
 					<onright>ClearProperty(MediaMenu,Home)</onright>
+					<ondown>9051</ondown>
+					<onup>5</onup>
 					<label></label>
 				</control>
+			</control>
+			<control type="grouplist" id="9051">
+				<left>0</left>
+				<top>240</top>
+				<width>400</width>
+				<height>1080</height>
+				<onleft>9050</onleft>
+				<onright>ClearProperty(MediaMenu,Home)</onright>
+				<onup>9050</onup>
+				<ondown>9052</ondown>
+				<onback>ClearProperty(MediaMenu,Home)</onback>
+				<itemgap>0</itemgap>
 				<control type="label" id="200">
 					<width>400</width>
 					<height>52</height>
@@ -1662,6 +1676,107 @@
 					<label>Filter:</label>
 					<textcolor>themecolor</textcolor>
 					<aligny>center</aligny>
+				</control>
+				<control type="button" id="6">
+					<description>View As button</description>
+					<textwidth>352</textwidth>
+					<onup>9050</onup>
+					<ondown>7</ondown>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">980</onright>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">SetFocus(980)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">983</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">SetFocus(983)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">982</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">SetFocus(982)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">984</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">SetFocus(984)</onright>
+					<onright>ClearProperty(MediaMenu,Home)</onright>
+					<label>Season</label>
+				</control>
+				<control type="button" id="7">
+					<description>View As button</description>
+					<textwidth>352</textwidth>
+					<onup>6</onup>
+					<ondown>5</ondown>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">980</onright>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">SetFocus(980)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">983</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">SetFocus(983)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">982</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">SetFocus(982)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">984</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">SetFocus(984)</onright>
+					<onright>ClearProperty(MediaMenu,Home)</onright>
+					<label>Team</label>
+				</control>
+				<control type="button" id="5">
+					<description>View As button</description>
+					<textwidth>352</textwidth>
+					<onup>7</onup>
+					<ondown>8</ondown>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">980</onright>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">SetFocus(980)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">983</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">SetFocus(983)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">982</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">SetFocus(982)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">984</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">SetFocus(984)</onright>
+					<onright>ClearProperty(MediaMenu,Home)</onright>
+					<label>League</label>
+				</control>
+				<control type="button" id="8">
+					<description>View As button</description>
+					<textwidth>352</textwidth>
+					<onup>5</onup>
+					<ondown>8</ondown>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">980</onright>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">SetFocus(980)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">983</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">SetFocus(983)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">982</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">SetFocus(982)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">984</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">SetFocus(984)</onright>
+					<onright>ClearProperty(MediaMenu,Home)</onright>
+					<label>Reset</label>
+				</control>
+			</control>
+			<control type="grouplist" id="9052">
+				<left>0</left>
+				<top>550</top>
+				<width>400</width>
+				<height>1080</height>
+				<onleft>9050</onleft>
+				<onright>ClearProperty(MediaMenu,Home)</onright>
+				<onup>9051</onup>
+				<ondown>9050</ondown>
+				<onback>ClearProperty(MediaMenu,Home)</onback>
+				<itemgap>0</itemgap>
+				<control type="label" id="200">
+					<width>400</width>
+					<height>52</height>
+					<textoffsetx>15</textoffsetx>
+					<font>font13_title</font>
+					<label>Order:</label>
+					<textcolor>themecolor</textcolor>
+					<aligny>center</aligny>
+				</control>
+				<control type="button" id="9">
+					<description>order label is set and controled in python</description>
+					<textwidth>352</textwidth>
+					<onup>9051</onup>
+					<ondown>9050</ondown>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">980</onright>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">SetFocus(980)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">983</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">SetFocus(983)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">982</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">SetFocus(982)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">984</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">SetFocus(984)</onright>
+					<onright>ClearProperty(MediaMenu,Home)</onright>
+					<label></label>
 				</control>
 			</control>
 		</control>

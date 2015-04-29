@@ -8,6 +8,7 @@ import xbmcplugin
 import os
 import threading
 import urllib
+import time
 from centerutils.common_variables import *
 from centerutils.database import sc_database
 from centerutils import pytzimp
@@ -18,6 +19,8 @@ import thesportsdb
 import leagueview as leagueview
 import seasonlist as seasonlist
 import contextmenubuilder
+
+dialog = xbmcgui.Dialog()
 
 def start(arguments):
 	window = dialog_eventlist('DialogEventList.xml',addonpath,'Default',str(arguments))
@@ -33,8 +36,23 @@ class dialog_eventlist(xbmcgui.WindowXML):
 		self.team = eval(args[3])[3]
 
 	def onInit(self,):
+		self.set_order_preference()
 		self.addevents()
 		#pass
+		
+	def set_order_preference(self,):
+		if settings.getSetting('event_order_pref') == '':
+			settings.setSetting('event_order_pref','add_lib_recent')
+			self.getControl(9).setLabel('Recently added')
+		elif settings.getSetting('event_order_pref') == 'add_lib_recent':
+			self.getControl(9).setLabel('Recently added')
+		elif settings.getSetting('event_order_pref') == 'add_lib_older':
+			self.getControl(9).setLabel('First added')
+		elif settings.getSetting('event_order_pref') == 'most_recent':
+			self.getControl(9).setLabel('Most Recent')
+		elif settings.getSetting('event_order_pref') == 'less_recent':
+			self.getControl(9).setLabel('Older')
+		return
 		
 	def addevents(self,):
 		#set top bar info
@@ -80,6 +98,11 @@ class dialog_eventlist(xbmcgui.WindowXML):
 			
 		self.list_listitems = []
 		
+		#filters
+		self.leagues_filter = []
+		self.teams_filter = []
+		self.season_filter = []
+		
 		if all_events:
 		
 			for event in all_events:
@@ -95,6 +118,12 @@ class dialog_eventlist(xbmcgui.WindowXML):
 					my_timezone= settings.getSetting('timezone')
 					my_location=pytzimp.timezone(pytzimp.all_timezones[int(my_timezone)])
 					event_datetime=db_time.astimezone(my_location)
+				
+				#Convert time based on my timezone to unixtime so we can order the events later
+				if event_datetime:	
+					unixtime = str(int(time.mktime(event_datetime.timetuple())))
+				else:
+					unixtime = 0
 				
 				#Define event year for listitem property
 				event_year = ''
@@ -136,8 +165,10 @@ class dialog_eventlist(xbmcgui.WindowXML):
 					else: season_label = event_season
 				else: season_label = event_season
 				
-				print "fucking season library",season_label
-					
+				#add season to list
+				if str(event_season) not in str(self.season_filter):
+					self.season_filter.append((season_label,event_season))
+				
 				#round
 				event_round = thesportsdb.Events().get_round(event)
 				if not event_round or event_round == 'null' or event_round == 'None' or event_round == '0':
@@ -150,6 +181,11 @@ class dialog_eventlist(xbmcgui.WindowXML):
 				event_league_dict = sc_database.Retriever().get_all_leagues(event_sport,event_leagueid)[0]
 				event_league_name = thesportsdb.Leagues().get_name(event)
 				event_league_trophy = thesportsdb.Leagues().get_trophy(event_league_dict)
+				event_internal_id = str(event["Id"])
+				
+				#filter leagues
+				if str(event_leagueid) not in str(self.leagues_filter):
+					self.leagues_filter.append((event_league_name,event_leagueid))
 				
 				if not event_league_trophy or event_league_trophy == 'None' or event_league_trophy == 'null':
 					event_league_trophy = ''
@@ -171,6 +207,9 @@ class dialog_eventlist(xbmcgui.WindowXML):
 					if settings.getSetting('team-naming')=='0': home_team_name = thesportsdb.Teams().get_name(home_team_dict)
 					else: home_team_name = thesportsdb.Teams().get_alternativefirst(home_team_dict)
 					home_team_logo = thesportsdb.Teams().get_badge(home_team_dict)
+					if str(home_team_id) not in str(self.teams_filter):
+						self.teams_filter.append((home_team_name,home_team_id))
+					
 					away_team_id = thesportsdb.Events().get_awayteamid(event)
 					away_team_dict = sc_database.Retriever().get_all_teams(None,None,away_team_id)[0]
 					#make the request only if we can't match the team
@@ -179,6 +218,9 @@ class dialog_eventlist(xbmcgui.WindowXML):
 					if settings.getSetting('team-naming')=='0': away_team_name = thesportsdb.Teams().get_name(away_team_dict)
 					else: away_team_name = thesportsdb.Teams().get_alternativefirst(away_team_dict)
 					away_team_logo = thesportsdb.Teams().get_badge(away_team_dict)
+					if str(away_team_id) not in str(self.teams_filter):
+						self.teams_filter.append((away_team_name,away_team_id))
+					
 					home_score = thesportsdb.Events().get_homescore(event)
 					away_score = thesportsdb.Events().get_awayscore(event)
 					result = str(home_score) + '-' + str(away_score)
@@ -253,7 +295,17 @@ class dialog_eventlist(xbmcgui.WindowXML):
 				game.setProperty('event_timestring',event_timestring)
 				game.setProperty('event_round',event_round)
 				game.setProperty('event_season',season_label)
+				game.setProperty('event_seasonid',event_season)
 				game.setProperty('event_id',event_id)
+				game.setProperty('unixtime',unixtime)
+				game.setProperty('league_id',event_leagueid)
+				game.setProperty('event_internal_id',event_internal_id)
+				try:
+					game.setProperty('home_team_id',home_team_id)
+					game.setProperty('away_team_id',away_team_id)
+					game.setProperty('home_team_name',home_team_name)
+					game.setProperty('away_team_name',away_team_name)
+				except: pass
 
 
 				if event_year:
@@ -280,8 +332,16 @@ class dialog_eventlist(xbmcgui.WindowXML):
 				game.setProperty('date',event_timestring)
 				self.list_listitems.append(game)
 		
-		xbmc.sleep(200)	
-		self.getControl(self.controler).addItems(self.list_listitems)
+		xbmc.sleep(200)
+		#order items here
+		self.ordered_items = []
+		for item in reversed(self.list_listitems):
+			self.ordered_items.append(item)
+		self.list_listitems = self.ordered_items
+		
+		#order events here
+		listitems_events_list = self.order_events(self.list_listitems)
+		self.getControl(self.controler).addItems(listitems_events_list)
 			
 		number_of_events=len(self.list_listitems)
 		self.getControl(334).setLabel(str(number_of_events) + ' '+'Events') #TODO string
@@ -289,13 +349,97 @@ class dialog_eventlist(xbmcgui.WindowXML):
 		xbmc.executebuiltin("SetProperty("+self.preferred_view+",1,home)")
 		self.getControl(2).setLabel(self.preferred_label)
 		xbmc.sleep(100)
-
+		
 		#select 1st item
 		self.setFocusId(self.controler)
 		self.getControl(self.controler).selectItem(0)
 		self.set_info()
-		
-		
+
+
+	def eventfilter(self,mode,specific_id):
+		filtered_items = []
+		if mode == "league":
+			for item in self.list_listitems:
+				if item.getProperty('league_id') == specific_id:
+					filtered_items.append(item)
+			self.list_listitems = filtered_items
+			self.getControl(self.controler).reset()
+			self.getControl(self.controler).addItems(filtered_items)
+			return
+		elif mode == "team":
+			try:
+				for item in self.list_listitems:
+					if item.getProperty('home_team_id') == specific_id or item.getProperty('away_team_id') == specific_id:
+						filtered_items.append(item)
+				self.list_listitems = filtered_items
+				self.getControl(self.controler).reset()
+				self.getControl(self.controler).addItems(filtered_items)
+			except: pass
+			return
+		elif mode == "season":
+			for item in self.list_listitems:
+				if item.getProperty('event_seasonid') == specific_id:
+					filtered_items.append(item)
+			self.list_listitems = filtered_items
+			self.getControl(self.controler).reset()
+			self.getControl(self.controler).addItems(filtered_items)
+				
+	def order_events(self,listitems):
+		if settings.getSetting('event_order_pref') == '' or settings.getSetting('event_order_pref') == 'add_lib_recent':
+			listit = []
+			ordered_ids = []
+			for item in listitems:
+				ordered_ids.append(int(item.getProperty('event_internal_id')))
+			for id_ in reversed(sorted(ordered_ids)):
+				for item in listitems:
+					if int(id_) == int(item.getProperty('event_internal_id')):
+						listit.append(item)
+						listitems.remove(item)
+						break
+			self.list_listitems = listit
+			return listit
+
+		elif settings.getSetting('event_order_pref') == 'add_lib_older':
+			listit = []
+			ordered_ids = []
+			for item in listitems:
+				ordered_ids.append(int(item.getProperty('event_internal_id')))
+			for id_ in sorted(ordered_ids):
+				for item in listitems:
+					if int(id_) == int(item.getProperty('event_internal_id')):
+						listit.append(item)
+						listitems.remove(item)
+						break
+			self.list_listitems = listit
+			return listit
+
+		elif settings.getSetting('event_order_pref') == 'most_recent':
+			listit = []
+			listit_unix = []
+			for item in listitems:
+				listit_unix.append(int(item.getProperty('unixtime')))
+			for unixtime in reversed(sorted(listit_unix)):
+				for item_ in listitems:
+					if int(item_.getProperty('unixtime')) == unixtime:
+						listit.append(item_)
+						listitems.remove(item_)
+						break
+			self.list_listitems = listit
+			return listit
+
+		elif settings.getSetting('event_order_pref') == 'less_recent':
+			listit = []
+			listit_unix = []
+			for item in listitems:
+				listit_unix.append(int(item.getProperty('unixtime')))
+			for unixtime in sorted(listit_unix,key=int):
+				for item_ in listitems:
+					if int(item_.getProperty('unixtime')) == unixtime:
+						listit.append(item_)
+						listitems.remove(item_)
+						break
+			self.list_listitems = listit
+			return listit
 			
 	def onAction(self,action):
 		if action.getId() == 92 or action.getId() == 10:
@@ -305,7 +449,6 @@ class dialog_eventlist(xbmcgui.WindowXML):
 				self.setFocusId(self.controler)
 			else: 
 				self.close()
-				#home.start(self.sport)
 		elif action.getId() == 117: #contextmenu
 			if xbmc.getCondVisibility("Control.HasFocus(983)"): container = 983
 			elif xbmc.getCondVisibility("Control.HasFocus(981)"): container = 981
@@ -369,6 +512,34 @@ class dialog_eventlist(xbmcgui.WindowXML):
 			try: self.getControl(954).setImage(seleccionado.getProperty('event_league_trophy'))
 			except: pass
 		return
+		
+	def refresh_filters(self,):
+		self.leagues_filter = []
+		self.teams_filter = []
+		self.season_filter = []
+		for item in self.list_listitems:
+			#league stuff
+			league_name = item.getProperty('event_league_name')
+			league_id = item.getProperty('league_id')
+			if str(league_id) not in str(self.leagues_filter):
+				self.leagues_filter.append((league_name,league_id))
+			#season_filter
+			season_label = item.getProperty('event_season')
+			season_id = item.getProperty('event_seasonid')
+			if str(season_id) not in str(self.season_filter):
+				self.season_filter.append((season_label,season_id))
+			#team filter
+			try:
+				home_team_label = item.getProperty('home_team_name')
+				home_team_id = item.getProperty('home_team_id')
+				away_team_label = item.getProperty('away_team_name')
+				away_team_id = item.getProperty('away_team_id')
+				if str(home_team_id) not in str(self.teams_filter):
+					self.teams_filter.append((home_team_label,home_team_id))
+				if str(away_team_id) not in str(self.teams_filter):
+					self.teams_filter.append((away_team_label,away_team_id))
+			except: pass
+		return
 				
 	def onClick(self,controlId):
 		if controlId == 2:
@@ -379,7 +550,8 @@ class dialog_eventlist(xbmcgui.WindowXML):
 				xbmc.sleep(200)
 				self.getControl(controlId).setLabel("EventList: BigList")
 				self.getControl(982).reset()
-				self.getControl(982).addItems(self.list_listitems)
+				items = self.order_events(self.list_listitems)
+				self.getControl(982).addItems(items)
 				xbmc.executebuiltin("SetProperty(biglist,1,home)")
 				settings.setSetting('view_type_eventlist','biglist')
 				self.controler = 982
@@ -389,7 +561,8 @@ class dialog_eventlist(xbmcgui.WindowXML):
 				xbmc.sleep(200)
 				self.getControl(controlId).setLabel("EventList: PosterView")
 				self.getControl(984).reset()
-				self.getControl(984).addItems(self.list_listitems)
+				items = self.order_events(self.list_listitems)
+				self.getControl(984).addItems(items)
 				xbmc.executebuiltin("SetProperty(posterview,1,home)")
 				settings.setSetting('view_type_eventlist','posterview')
 				self.controler = 984
@@ -399,7 +572,8 @@ class dialog_eventlist(xbmcgui.WindowXML):
 				xbmc.sleep(200)
 				self.getControl(controlId).setLabel("EventList: BannerView")
 				self.getControl(983).reset()
-				self.getControl(983).addItems(self.list_listitems)
+				items = self.order_events(self.list_listitems)
+				self.getControl(983).addItems(items)
 				xbmc.executebuiltin("SetProperty(bannerview,1,home)")
 				settings.setSetting('view_type_eventlist','bannerview')
 				self.controler = 983
@@ -409,7 +583,8 @@ class dialog_eventlist(xbmcgui.WindowXML):
 				xbmc.sleep(200)
 				self.getControl(controlId).setLabel("EventList: InfoView")
 				self.getControl(980).reset()
-				self.getControl(980).addItems(self.list_listitems)
+				items = self.order_events(self.list_listitems)
+				self.getControl(980).addItems(items)
 				xbmc.executebuiltin("SetProperty(infoview,1,home)")
 				settings.setSetting('view_type_eventlist','infoview')
 				self.controler = 980
@@ -426,4 +601,62 @@ class dialog_eventlist(xbmcgui.WindowXML):
 			else:
 				if league_id:
 					seasonlist.start([self.sport,league_id,league_fanart])
+					
+		elif controlId == 6:
+			self.refresh_filters()
+			season_name = []
+			season_id = []
+			if self.season_filter:
+				for season,s_id in self.season_filter:
+					season_name.append(season)
+					season_id.append(s_id)
+			ret = dialog.select("Select season", season_name)
+			self.eventfilter('season',season_id[ret])
+			
+		elif controlId == 7:
+			self.refresh_filters()
+			team_name = []
+			team_id = []
+			if self.teams_filter:
+				for team,t_id in self.teams_filter:
+					team_name.append(team)
+					team_id.append(t_id)
+			ret = dialog.select("Select team", team_name)
+			self.eventfilter('team',team_id[ret])
+			
+		elif controlId == 5:
+			self.refresh_filters()
+			league_name = []
+			league_id = []
+			if self.leagues_filter:
+				for league,l_id in self.leagues_filter:
+					league_name.append(league)
+					league_id.append(l_id)
+			ret = dialog.select("Select league", league_name)
+			self.eventfilter('league',league_id[ret])
+			
+		elif controlId == 8:
+			self.getControl(self.controler).reset()
+			self.set_order_preference()
+			self.addevents()
+			
+		elif controlId == 9:
+			if settings.getSetting('event_order_pref') == '':
+				settings.setSetting('event_order_pref','add_lib_recent')
+				self.set_order_preference()
+			elif settings.getSetting('event_order_pref') == 'add_lib_recent':
+				settings.setSetting('event_order_pref','add_lib_older')
+				self.set_order_preference()
+			elif settings.getSetting('event_order_pref') == 'add_lib_older':
+				settings.setSetting('event_order_pref','most_recent')
+				self.set_order_preference()
+			elif settings.getSetting('event_order_pref') == 'most_recent':
+				settings.setSetting('event_order_pref','less_recent')
+				self.set_order_preference()
+			elif settings.getSetting('event_order_pref') == 'less_recent':
+				settings.setSetting('event_order_pref','add_lib_recent')
+				self.set_order_preference()
+			items = self.order_events(self.list_listitems)
+			self.getControl(self.controler).reset()
+			self.getControl(self.controler).addItems(items)
 			

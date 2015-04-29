@@ -6,6 +6,8 @@ from centerutils.iofile import *
 import competlist as competlist
 import teamview
 import leagueview
+import soccermatchdetails
+import eventdetails
 
 def start(data_list):
 	window = dialog_context('DialogContext.xml',addonpath,'Default',str(data_list))
@@ -62,6 +64,7 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 		elif self.mode == 'eventlist':
 			menu_items = []
 			menu_items.append(('Update information','updateinfo'))
+			menu_items.append(('View Event Details','eventdetails-lib'))
 			menu_items.append(('Home Team details','hometeamdetails-lib'))
 			menu_items.append(('Away Team details','awayteamdetails-lib'))
 			
@@ -162,6 +165,16 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 				self.event_dict = thesportsdb.Lookups(tsdbkey).lookupevent(self.specific_id)["events"][0]
 				self.team_id = thesportsdb.Events().get_awayteamid(self.event_dict)
 				teamview.teamdetails(self.team_id)
+			
+			elif self.identifier == 'eventdetails-lib':
+				self.close()
+				self.event_dict = thesportsdb.Lookups(tsdbkey).lookupevent(self.specific_id)["events"][0]
+				self.sport = thesportsdb.Events().get_sport(self.event_dict)
+				if self.sport.lower() == 'soccer' or self.sport.lower() == 'football':
+					soccermatchdetails.start([False,self.specific_id])
+				else:
+					eventdetails.start([self.specific_id])
+				
 				
 			elif self.identifier == 'hometeammain':
 				self.close()
@@ -184,7 +197,7 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 			
 						
 # Specific functions called by context menu go here	
-#TO-DO threads are needed to restart stuff
+#TODO threads are needed to restart stuff
 
 def ignore_league(league_id):
 	ficheiro = os.path.join(ignoredleaguesfolder,str(league_id)+'.txt')
