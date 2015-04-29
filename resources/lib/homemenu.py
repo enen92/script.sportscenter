@@ -528,7 +528,7 @@ class dialog_home(xbmcgui.WindowXML):
 			elif self.sport == 'motorsport':
 				library = haslibrary_motorsport
 			elif self.sport == 'ice%20hockey':
-				library = haslibrary_icehockey
+				library = os.path.exists(icehockey_library)
 			elif self.sport == 'baseball':
 				library = haslibrary_baseball
 			elif self.sport == 'golf':
