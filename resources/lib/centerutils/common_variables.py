@@ -24,6 +24,7 @@ mensagemprogresso = xbmcgui.DialogProgress()
 MainURL = 'http'
 addon_icon = settings.getAddonInfo('icon')
 addon_fanart = os.path.join(addonpath,'fanart.jpg')
+dialog = xbmcgui.Dialog()
 
 #Timezones
 my_timezone = settings.getSetting('timezone')

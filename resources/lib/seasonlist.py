@@ -72,7 +72,6 @@ class dialog_compet(xbmcgui.WindowXML):
 		if season_list:
 			if not self.league_id:
 				sport_icon = os.path.join(addonpath,art,self.sport.lower() + '.png')
-				print "fucking icon",sport_icon
 				sport_fanart = ''
 				if settings.getSetting('season-background') != '0':
 					if settings.getSetting('season-background') == '1':

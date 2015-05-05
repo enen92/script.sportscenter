@@ -470,7 +470,7 @@
 			<!-- Button controls -->
 			<control type="button" id="9022">
 				<top>979</top>
-				<left>180</left>
+				<left>100</left>
 				<label>Home Team Lineup</label>
 				<textoffsetx>0</textoffsetx>
 				<width>300</width>
@@ -494,7 +494,7 @@
 			</control>
 			<control type="button" id="9023">
 				<top>979</top>
-				<left>500</left>
+				<left>420</left>
 				<label>Away Team Lineup</label>
 				<textoffsetx>0</textoffsetx>
 				<width>300</width>
@@ -518,10 +518,10 @@
 			</control>
 			<control type="button" id="9024">
 				<top>979</top>
-				<left>820</left>
+				<left>740</left>
 				<label>Stadium</label>
 				<textoffsetx>0</textoffsetx>
-				<width>250</width>
+				<width>200</width>
 				<height>61</height>
 				<align>center</align>
 				<font>font14</font>
@@ -542,10 +542,10 @@
 			</control>
 			<control type="button" id="9025">
 				<top>979</top>
-				<left>1090</left>
-				<label>Search Highlights(!)</label>
+				<left>955</left>
+				<label>Plot</label>
 				<textoffsetx>0</textoffsetx>
-				<width>300</width>
+				<width>200</width>
 				<height>61</height>
 				<align>center</align>
 				<font>font14</font>
@@ -566,8 +566,8 @@
 			</control>
 			<control type="button" id="9026">
 				<top>979</top>
-				<left>1410</left>
-				<label>Search Full Match(!)</label>
+				<left>1170</left>
+				<label>Search Highlights(!)</label>
 				<textoffsetx>0</textoffsetx>
 				<width>300</width>
 				<height>61</height>
@@ -576,6 +576,30 @@
 				<textcolor>grey</textcolor>
 				<shadowcolor>shadow</shadowcolor>
 				<onleft>9025</onleft>
+				<onright>9027</onright>
+				<onup>988</onup>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+				<animation type="Visible">
+					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+				<animation type="Hidden">
+					<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+			</control>
+			<control type="button" id="9027">
+				<top>979</top>
+				<left>1490</left>
+				<label>Search Full Match(!)</label>
+				<textoffsetx>0</textoffsetx>
+				<width>300</width>
+				<height>61</height>
+				<align>center</align>
+				<font>font14</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>shadow</shadowcolor>
+				<onleft>9026</onleft>
 				<onright>9022</onright>
 				<onup>988</onup>
 				<visible>!IsEmpty(Window(home).Property(detail))</visible>

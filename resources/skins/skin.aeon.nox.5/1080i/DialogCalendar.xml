@@ -413,7 +413,7 @@
 					</control>
 					<control type="label" id="310">
 						<description>competition tag</description>
-						<posx>235</posx>
+						<posx>365</posx>
 						<posy>105</posy>
 						<width>800</width>
 						<height>40</height>
@@ -574,7 +574,7 @@
 					</control>
 					<control type="label" id="310">
 						<description>competition tag</description>
-						<posx>235</posx>
+						<posx>365</posx>
 						<posy>105</posy>
 						<width>800</width>
 						<height>40</height>

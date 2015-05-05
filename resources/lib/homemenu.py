@@ -9,6 +9,7 @@ import teamview as teamview
 import seasonlist as seasonlist
 import teamlist as teamlist
 import eventlist as eventlist
+import libconfig as libconfig
 from wizzard import wizzard
 
 
@@ -528,7 +529,7 @@ class dialog_home(xbmcgui.WindowXML):
 			elif self.sport == 'motorsport':
 				library = haslibrary_motorsport
 			elif self.sport == 'ice%20hockey':
-				library = haslibrary_icehockey
+				library = os.path.exists(icehockey_library)
 			elif self.sport == 'baseball':
 				library = haslibrary_baseball
 			elif self.sport == 'golf':
@@ -609,6 +610,8 @@ class dialog_home(xbmcgui.WindowXML):
 			elif key == 'events':
 				#usage start(sport,season,league,team)
 				eventlist.start([self.sport,'','',''])
+			elif key == 'configure':
+				libconfig.start([self.sport])
 
 			
 	def onAction(self,action):

@@ -1413,7 +1413,10 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 			stadium_hometeam = thesportsdb.Teams().get_stadium(self.hometeam_dict)
 			if stadium_hometeam == self.stadium:
 				stadium.start(self.hometeam_dict)
-			
+				
+		elif controlId == 9025:
+			import eventdetails as eventdetails
+			eventdetails.start([self.event_id])			
 			
 		elif controlId == 9027:
 			if self.home_away == 'home':
