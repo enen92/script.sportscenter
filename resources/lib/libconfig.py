@@ -13,13 +13,13 @@ def start(data_list):
 class dialog_libconfig(xbmcgui.WindowXMLDialog):
 	def __init__( self, *args, **kwargs ):
 		xbmcgui.WindowXML.__init__(self)
-		self.sport = eval(args[3])[0]
+		self.sport = urllib.quote(eval(args[3])[0]).lower()
 		self.sport_img = os.path.join(addonpath,art,self.sport.lower() + '.png')
 		
 		self.options = ['leagues(or year)/seasons/events','season(or year)/events','All events on the same folder']
 		
 		#define configuration files for sport library
-		if self.sport == 'soccer' or sport == 'football': self.lib_config_file = football_library
+		if self.sport == 'soccer' or self.sport == 'football': self.lib_config_file = football_library
 		elif self.sport == 'rugby': self.lib_config_file = rugby_library
 		elif self.sport == 'motorsport': self.lib_config_file = motorsport_library
 		elif self.sport == 'basketball': self.lib_config_file = basketball_library
@@ -29,7 +29,7 @@ class dialog_libconfig(xbmcgui.WindowXMLDialog):
 		elif self.sport == 'golf': self.lib_config_file = golf_library
 
 	def onInit(self):
-		self.getControl(2).setLabel(self.sport.replace('%20',' '))
+		self.getControl(2).setLabel(self.sport.replace('%2520',' '))
 		self.getControl(3).setImage(self.sport_img)
 		self.setInfo()
 		

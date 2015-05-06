@@ -88,7 +88,7 @@ if mode==None or url==None or len(url)<1:
 	skin = xbmc.getSkinDir()
 	try:
 		if skin == 'skin.aeon.nox.5':# or skin == 'skin.mimic' or skin == 'skin.confluence':
-			home.start(None)
+			#home.start(None)
 			
 			#from resources.lib import tables as tables
 			#tables.start(None)
@@ -100,6 +100,9 @@ if mode==None or url==None or len(url)<1:
 			#eventlist.start(["soccer",'','',''])
 			#from resources.lib import eventdetails
 			#eventdetails.start(['483982'])
+			
+			from resources.lib import onscreen as onscreen
+			onscreen.start(None)
 		else:
 			mensagemok('Sports Center', 'Only available for Aeon Nox 5 and Helix for now...')
 			sys.exit(0)

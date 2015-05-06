@@ -14,3 +14,10 @@ def get_tweets(twitter_user):
 	for tweet in tweet_list:
 		return_twitter.append([tweet['text'],tweet['created_at']])
 	return return_twitter
+	
+def get_hashtag_tweets(twitter_hash):
+	return_twitter = []
+	tweet_list = t.search.tweets(q=twitter_hash.replace('#',''),count=20)['statuses']
+	for tweet in tweet_list:
+		return_twitter.append([tweet['user']['name']+'-'+tweet['text'],tweet['created_at']])
+	return return_twitter

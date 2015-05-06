@@ -3,7 +3,7 @@
 	<onload>SetProperty(Window.HasSettings,True,home)</onload>
 	<onload>ClearProperty(MediaMenu,Home)</onload>
 	<onunload>ClearProperty(Window.HasSettings,Home)</onunload>
-	<allowoverlay>no</allowoverlay>
+	<defaultcontrol always="true">980</defaultcontrol>
 	<controls>
 		<!-- Background!-->
 		<control type="group">
@@ -20,7 +20,7 @@
 				<width>1308</width>
 				<height>40</height>
 				<font>font48_bold</font>
-				<label>[B]Premier League - Tables 2014/2015[/B]</label>
+				<label></label>
 				<align>center</align>
 				<textcolor>gold</textcolor>
 			</control>

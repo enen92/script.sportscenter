@@ -79,6 +79,20 @@
 		<setting id="hide-results" type="bool" label="Hide result spoilers from library" default="false"/>
 
 	</category>
+	<category label="On-Screen Information">
+		<setting label="General" type="lsep" />
+		<setting id="enable-onscreenservice" type="bool" label="Allow on-screen service" default="true"/>
+		<setting label="Menu icons" type="lsep" />
+		<setting id="enable-matchdetails" type="bool" label="Show match details for on-screen menu" default="true"/>
+		<setting id="enable-homedetails" type="bool" label="Show home team details for on-screen menu" default="true"/>
+		<setting id="enable-awaydetails" type="bool" label="Show away team details for on-screen menu" default="true"/>
+		<setting id="enable-hometwitter" type="bool" label="Show home team twitter for on-screen menu" default="true"/>
+		<setting id="enable-awaytwitter" type="bool" label="Show away team twitter for on-screen menu" default="true"/>
+		<setting id="enable-matchtwitter" type="bool" label="Show match twitter for on-screen menu" default="true"/>
+		<setting id="enable-leaguetables" type="bool" label="Show league tables for on-screen menu" default="true"/>
+		<setting id="enable-livescores" type="bool" label="Show livescores for on-screen menu" default="true"/>
+		<setting label="Actions" type="lsep" />
+	</category>
 	<setting id="username" type="text" default="" visible="false"/>
  	<setting id="view_type_leaguelist" type="text" default="" visible="false"/>
  	<setting id="view_type_seasonlist" type="text" default="" visible="false"/>

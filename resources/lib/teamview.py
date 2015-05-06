@@ -216,7 +216,7 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 			twitter_name = thesportsdb.Teams().get_team_twitter(self.team)
 			if twitter_name: 
 				twitter_name = twitter_name.split('/')[-1]
-				tweetbuild.tweets(twitter_name)
+				tweetbuild.tweets(['user',twitter_name])
 		elif controlId == 214:
 			imageviewer.view_images(str(self.team_fanartlist))
 			
@@ -925,7 +925,7 @@ class dialog_team(xbmcgui.WindowXML):
 				twitter_name = thesportsdb.Teams().get_team_twitter(self.team)
 				if twitter_name: 
 					twitter_name = twitter_name.split('/')[-1]
-					tweetbuild.tweets(twitter_name)
+					tweetbuild.tweets(['user',twitter_name])
 				else: pass
 					
 					
@@ -1003,7 +1003,7 @@ class dialog_team(xbmcgui.WindowXML):
 						window.getControl(5).setText(player_details)
 					elif function == 'tweet':
 						twitter_name = player_twitter.split('/')[-1]
-						tweetbuild.tweets(twitter_name)
+						tweetbuild.tweets(['user',twitter_name])
 					elif function == 'art':
 						imageviewer.view_images(str(player_fanartlist))
 						self.getControl(912).setImage(self.player_fanart)

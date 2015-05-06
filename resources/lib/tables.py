@@ -1,7 +1,9 @@
 import xbmc,xbmcgui,xbmcaddon,xbmcplugin
 import urllib,re
 import thesportsdb
+import teamview as teamview
 from centerutils.common_variables import *
+
 
 def start(data_list):
 	window = dialog_stadium('DialogTables.xml',addonpath,'Default',str(data_list))
@@ -11,9 +13,13 @@ class dialog_stadium(xbmcgui.WindowXMLDialog):
 	def __init__( self, *args, **kwargs ):
 		xbmcgui.WindowXML.__init__(self)
 		self.league_id = str(args[3])
-		self.league_id = '4328'
 
 	def onInit(self):
+		#set league information
+		self.league_dict = thesportsdb.Lookups(tsdbkey).lookupleague(self.league_id)["leagues"][0]
+		self.league_name = thesportsdb.Leagues().get_name(self.league_dict)
+		self.getControl(1).setLabel('[B]' + self.league_name + '[/B]')
+		#set teams
 		teams_list = thesportsdb.Lookups(tsdbkey).lookup_all_teams(self.league_id)["teams"]
 		table_list = thesportsdb.Lookups(tsdbkey).lookup_leaguetables(self.league_id,None)["table"]
 		pos=0
@@ -48,7 +54,12 @@ class dialog_stadium(xbmcgui.WindowXMLDialog):
 						teamitem.setProperty('team_id',team_id)
 						teamitem.setProperty('team_points',team_points)
 						self.getControl(980).addItem(teamitem)
-		
+						
+	def onClick(self,controlId):	
+		if controlId == 980:
+			team_id = self.getControl(controlId).getSelectedItem().getProperty('team_id')
+			teamview.teamdetails(team_id)
+	
 
 	
 		
