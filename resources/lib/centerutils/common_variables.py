@@ -1,4 +1,16 @@
 # -*- coding: utf-8 -*-
+# Copyright (C) 2015 enen92
+#
+# This program is free software; you can redistribute it and/or modify it under the terms 
+# of the GNU General Public License as published by the Free Software Foundation; 
+# either version 2 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with this program; 
+# if not, see <http://www.gnu.org/licenses/>.
 
 """ 
    	
@@ -76,6 +88,16 @@ if os.path.exists(amfootball_library):
 	haslibrary_amfootball = True
 else:
 	haslibrary_amfootball = False
+	
+#onscreen variables	
+onscreen_userdata = os.path.join(profilepath,'onscreen')
+if not os.path.isdir(onscreen_userdata): xbmcvfs.mkdir(onscreen_userdata)
+onscreen_userdata_teams = os.path.join(profilepath,'onscreen','teams')
+if not os.path.isdir(onscreen_userdata_teams): xbmcvfs.mkdir(onscreen_userdata_teams)
+onscreen_userdata_leagues = os.path.join(profilepath,'onscreen','leagues')
+if not os.path.isdir(onscreen_userdata_leagues): xbmcvfs.mkdir(onscreen_userdata_leagues)
+onscreen_livescores = os.path.join(profilepath,'onscreen','livescores.txt')
+onscreen_playingmatch = os.path.join(profilepath,'onscreen','playingmatch.txt')
 
 #Wizzard variables
 football_file = os.path.join(profilepath,'football.txt')

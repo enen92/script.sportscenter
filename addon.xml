@@ -10,6 +10,8 @@
   <extension point="xbmc.python.script" library="default.py">
     <provides>game</provides>
   </extension>
+  <extension point="xbmc.service" library="service.py" start="startup">
+  </extension>
   <extension point="xbmc.addon.metadata">
     <summary lang="en">Sports for Kodi</summary>
     <description lang="en">SportsCenter is a Kodi frontend for sports. It lets you organize colection of sports recordings, access actual season information, livescores, tables, players and general sports metadata courtesy of thesportsdb.com. It can be integrated with third party scripts. Heavily skin dependent (supported skins: Aeon Nox 5)</description> 

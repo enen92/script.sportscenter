@@ -119,7 +119,9 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 						else: time_match = time_match[0]
 						game.setProperty('event_time',time_match)
 					
-					roundnum = thesportsdb.Livematch().get_round(event)
+					try:roundnum = thesportsdb.Livematch().get_round(event)
+					except: roundnum = ''
+					
 					if roundnum and roundnum != 'None' and roundnum != '0':
 						competition = competition + ' - Round ' + roundnum
 
