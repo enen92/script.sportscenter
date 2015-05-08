@@ -21,13 +21,14 @@ import json
 import datetime
 import time
 
-#Check all files you feed to the player to guess if it is a live match
+#Watcher class checks all files feeded to the player and tries to match it with livescores information from thesportsdb
 class watcher:
 	def __init__(self,):
 		self.t1 = datetime.datetime(1970, 1, 1)
 		self.videowatcher()
 
 	def videowatcher(self,):
+		#TODO proper service handling (xbmc.Monitor())
 		while 1:
 			do_check = False
 			#Check time interval between checks
@@ -54,18 +55,16 @@ class watcher:
 						try: ch_title = json.loads(curr_item)['result']['item']['title']	# title of the channel program being played
 						except: ch_title = ''
 						if ch_title and ch_title != settings.getSetting('last_played_programtitle'): do_check = True
-					
-						#Note: important info to match with livescores is both ch_title and ch_plot
 				else:
+					#TODO
 					ch_title = 'coiso'
 					ch_plot = 'coiso'
 				
-			#Now the process of updating livescores,teams and do the match
+			#Update and match with playing file
 			if do_check:
 				update_and_match_livescores(ch_title,ch_plot,False)
 				settings.setSetting('last_played_channel',playingfile)
 				settings.setSetting('last_played_programtitle',ch_title)	
-				
 			xbmc.sleep(200)
 		
 		

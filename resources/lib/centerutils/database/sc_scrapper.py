@@ -11,3 +11,100 @@
 #
 # You should have received a copy of the GNU General Public License along with this program; 
 # if not, see <http://www.gnu.org/licenses/>.
+
+import re
+
+class Parser:
+	def __init__(self,):
+		pass
+		
+	def from_string_get_home_and_away_teams(self,string,mode):
+		home_away = []
+		if mode == 'full' or mode == 'short':
+			match = re.compile('(.+?) x (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+			match = re.compile('(.+?) .+? x .+? (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+			match = re.compile('(.+?) vs. (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+			match = re.compile('(.+?) .+? vs. .+? (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+			match = re.compile('(.+?) vs (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+			match = re.compile('(.+?) .+? vs .+? (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+			
+			match = re.compile('(.+?) v (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+			match = re.compile('(.+?) .+? v .+? (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+					
+			match = re.compile('(.+?) at (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+			match = re.compile('(.+?) .+? at .+? (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+					
+			match = re.compile('(.+?) - (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+			match = re.compile('(.+?) .+? - .+? (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+					
+			match = re.compile('(.+?)-(.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+			match = re.compile('(.+?) .+?-.+? (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+		
+		if mode == 'full':
+			match = re.compile('(.+?) face (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+			match = re.compile('(.+?) .+? face .+? (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+			match = re.compile('(.+?) take (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+			match = re.compile('(.+?) .+? take .+? (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+			match = re.compile('(.+?) play (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+			match = re.compile('(.+?) .+? play .+? (.+?) ').findall(string.lower())
+			if match:
+				for home,away in match:
+					home_away.append((home.lower(),away.lower()))
+		return home_away
