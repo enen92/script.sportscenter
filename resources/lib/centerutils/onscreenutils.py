@@ -18,10 +18,71 @@ from database import sc_scrapper
 import thesportsdb
 import os
 import difflib
+import time
+import datetime
+import json
+import socket
+import threading
+
+
+#Watcher class checks all files feeded to the player and tries to match it with livescores information from thesportsdb
+class watcher:
+	def __init__(self,):
+		self.t1 = datetime.datetime(1970, 1, 1)
+		self.videowatcher()
+
+	def videowatcher(self,):
+		#TODO proper service handling (xbmc.Monitor())
+		while 1:
+			do_check = False
+			#Check time interval between checks
+			t2 = datetime.datetime.now()
+			interval = int(settings.getSetting("videowatcher"))
+			update = (abs(t2 - self.t1).seconds)/60 > interval
+
+			if xbmc.getCondVisibility('Player.HasMedia'):
+				#get the playing file and compare it with the value stored in the hidden setting
+				playingfile = xbmc.Player().getPlayingFile()
+				if settings.getSetting('last_played_channel') != playingfile: do_check = True
+			
+				#check if playing file is PVR or a regular video
+			
+				if xbmc.getCondVisibility('Pvr.IsPlayingTv') or xbmc.getCondVisibility('Pvr.IsPlayingRadio'):
+					#get program title and plot
+					active_players = xbmc.executeJSONRPC('{"jsonrpc":"2.0","id":1,"method":"Player.GetActivePlayers","params":[]}')
+					try: playerid = json.loads(active_players)['result'][0]['playerid']
+					except: playerid = ''
+					if playerid:
+						curr_item = xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "plot", "streamdetails"], "playerid":'+str(playerid)+' }, "id": 1 }')
+						try: ch_plot = json.loads(curr_item)['result']['item']['plot']	# plot of the channel program being played
+						except: ch_plot = ''
+						try: ch_title = json.loads(curr_item)['result']['item']['title']	# title of the channel program being played
+						except: ch_title = ''
+						if ch_title and ch_title != settings.getSetting('last_played_programtitle'): do_check = True
+				else:
+					#TODO
+					ch_title = 'coiso'
+					ch_plot = 'coiso'
+				
+			#Update and match with playing file
+			if do_check:
+				update_and_match_livescores(ch_title,ch_plot,False)
+				settings.setSetting('last_played_channel',playingfile)
+				settings.setSetting('last_played_programtitle',ch_title)	
+			xbmc.sleep(200)
+
 
 #This function updates and saves the information about livescores and livematches to the userdata
 #usage: highpriority-title,lowpriority-plot,mode is True False and depends if we want to enable loading on the onscreen dialog or not
 def update_and_match_livescores(ch_title,ch_plot,mode):
+	#variable init
+	home_dict = {}
+	away_dict = {}
+	event_league_id = ''
+	#
+	if mode == True:
+		xbmc.executebuiltin("SetProperty(loading,1,home)")
+		save(loading_onscreenlock,'')
 	#remove all files
 	if os.path.isfile(onscreen_livescores): os.remove(onscreen_livescores)
 	if os.path.isfile(onscreen_playingmatch): os.remove(onscreen_playingmatch)
@@ -68,7 +129,13 @@ def update_and_match_livescores(ch_title,ch_plot,mode):
 						event['awaykeywords'] = team_keywords
 						save(ficheiro,str(away_dict))	
 				livescores_list.append(event)
-			#TODO save leagues @ zag feature request
+			#TODO proper league determination - need  @ zag feature request
+			if home_dict and away_dict:
+				home_league_id = thesportsdb.Teams().get_league_id(home_dict)
+				away_league_id = thesportsdb.Teams().get_league_id(away_dict)
+				if home_league_id == away_league_id:
+					event_league_id = home_league_id
+					event['league_id'] = event_league_id
 		#Save livescores
 		if livescores_list:
 			save(onscreen_livescores,str(livescores_list))
@@ -110,8 +177,15 @@ def update_and_match_livescores(ch_title,ch_plot,mode):
 				for key in sorted(probability_dictionary).keys():
 					hometeam_id = thesportsdb.Livematch().get_home_id(probability_dictionary[key])
 					awayteam_id = thesportsdb.Livematch().get_away_id(probability_dictionary[key])
+					if 'league_id' in probability_dictionary[key].keys():
+						league_id = probability_dictionary[key]['league_id']
+					else:
+						league_id = ''
 					videofile = settings.getSetting('last_played_channel')
-					txt = { 'hometeamid':hometeam_id,'awayteamid':awayteam_id,'videofile':videofile }
+					txt = { 'hometeamid':hometeam_id,'awayteamid':awayteam_id,'league_id':league_id,'videofile':videofile }
 					save(onscreen_playingmatch,str(txt))
-					break		
+					break	
+		if mode == True:
+			xbmc.executebuiltin("ClearProperty(loading,Home)")
+			os.remove(loading_onscreenlock)
 	return	

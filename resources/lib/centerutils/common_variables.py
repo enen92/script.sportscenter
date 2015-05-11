@@ -89,8 +89,9 @@ if os.path.exists(amfootball_library):
 else:
 	haslibrary_amfootball = False
 	
-#onscreen variables	
+#onscreen variables
 onscreen_userdata = os.path.join(profilepath,'onscreen')
+loading_onscreenlock = os.path.join(onscreen_userdata,'loading.lock')
 if not os.path.isdir(onscreen_userdata): xbmcvfs.mkdir(onscreen_userdata)
 onscreen_userdata_teams = os.path.join(profilepath,'onscreen','teams')
 if not os.path.isdir(onscreen_userdata_teams): xbmcvfs.mkdir(onscreen_userdata_teams)
