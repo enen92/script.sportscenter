@@ -17,6 +17,7 @@ from iofile import *
 from database import sc_scrapper
 import thesportsdb
 import os
+import difflib
 
 #This function updates and saves the information about livescores and livematches to the userdata
 #usage: highpriority-title,lowpriority-plot,mode is True False and depends if we want to enable loading on the onscreen dialog or not
@@ -37,8 +38,9 @@ def update_and_match_livescores(ch_title,ch_plot,mode):
 		livescores = livescores["Match"]
 	if livescores:
 		for event in livescores:
-			timestring = thesportsdb.Livematch().get_time(event)
-			if 'finished' not in timestring.lower() and timestring.lower() != 'postponed' and timestring.lower() != 'not started':
+			try:	timestring = thesportsdb.Livematch().get_time(event)
+			except: timestring = ''
+			if timestring and 'finished' not in timestring.lower() and timestring.lower() != 'postponed' and timestring.lower() != 'not started':
 				event_home_id = thesportsdb.Livematch().get_home_id(event)
 				event_away_id = thesportsdb.Livematch().get_away_id(event)
 				if event_home_id:
@@ -71,72 +73,45 @@ def update_and_match_livescores(ch_title,ch_plot,mode):
 		if livescores_list:
 			save(onscreen_livescores,str(livescores_list))
 		#Match match being watched
-		#1)Start by creating lists for: matched hometeam; matched awayteam; matched both teams
-		livescores_homematch = []
-		livescores_awaymatch = []
-		livescores_bothmatch = []
 		match_patterns_title = sc_scrapper.Parser().from_string_get_home_and_away_teams(ch_title,'short')
 		match_patterns_plot = sc_scrapper.Parser().from_string_get_home_and_away_teams(ch_plot,'full')
 		print match_patterns_title,match_patterns_plot
+		
+		#the idea is to have a percentage of similarity for every home and away entry in the match patterns list. Then sum both and add it to the empty dictionary. The comparison is only made for len > 3 to avoid comparing rubish. Every home and away teams will be a key in the dictionary and their value will be the assigned event. Later we sort the dictionary keys is descending order and grab the higher value. If the value exceeds a X value we assume we found the match we are watching.
+		
+		probability_dictionary = {}
 		if livescores_list:
 			for event in livescores_list:
-				matchhome = False
-				matchaway = False
+				
+				#Title
+				
 				if match_patterns_title:
 					for hometeam,awayteam in match_patterns_title:
 						if len(hometeam) > 3:
-							if hometeam in event['homekeywords']:
-								livescores_homematch.append(event)
-								matchhome = True
+							ratio = difflib.SequenceMatcher(None, hometeam.lower(), event['homekeywords'].lower()).ratio()
 						if len(awayteam) > 3:
-							if awayteam in event['awaykeywords']:
-								livescores_awaymatch.append(event)
-								matchaway = True
-						if matchhome and matchaway:
-							livescores_bothmatch.append(event)
-							break
-							
-			if not livescores_bothmatch:
-				for event in livescores_list:
-					matchhome = False
-					matchaway = False
-					if match_patterns_plot:
-						for hometeam,awayteam in match_patterns_plot:
-							if len(hometeam) > 3:
-								if hometeam in event['homekeywords']:
-									livescores_homematch.append(event)
-									matchhome = True
-							if len(awayteam) > 3:
-								if awayteam in event['awaykeywords']:
-									livescores_awaymatch.append(event)
-									matchaway = True
-							if matchhome and matchaway:
-								livescores_bothmatch.append(event)
-								break
-
-		#now decide and save the information to playingmatch.txt
-		if livescores_bothmatch:
-			hometeam_id = thesportsdb.Livematch().get_home_id(livescores_bothmatch[0])
-			awayteam_id = thesportsdb.Livematch().get_away_id(livescores_bothmatch[0])
-			videofile = settings.getSetting(last_played_channel)
-			txt = { 'hometeamid':hometeam_id,'awayteamid':awayteam_id,'videofile':videofile }
-			save(onscreen_playingmatch,str(txt))	
-		else:
-			#give priority to hometeam since grabbing away teams might fail
-			if livescores_homematch:
-				hometeam_id = thesportsdb.Livematch().get_home_id(livescores_homematch[0])
-				awayteam_id = thesportsdb.Livematch().get_away_id(livescores_homematch[0])
-				videofile = settings.getSetting(last_played_channel)
-				txt = { 'hometeamid':hometeam_id,'awayteamid':awayteam_id,'videofile':videofile }
-				save(onscreen_playingmatch,str(txt))	
-			else:
-				if livescores_awaymatch:
-					hometeam_id = thesportsdb.Livematch().get_home_id(livescores_awaymatch[0])
-					awayteam_id = thesportsdb.Livematch().get_away_id(livescores_awaymatch[0])
-					videofile = settings.getSetting(last_played_channel)
+							ratio = ratio + difflib.SequenceMatcher(None, awayteam.lower(), event['awaykeywords'].lower()).ratio()
+					if ratio: probability_dictionary[ratio] = event
+					
+				#Plot	
+				
+				if match_patterns_plot:
+					for hometeam,awayteam in match_patterns_plot:
+						if len(hometeam) > 3:
+							ratio = difflib.SequenceMatcher(None, hometeam.lower(), event['homekeywords'].lower()).ratio()
+						if len(awayteam) > 3:
+							ratio = ratio + difflib.SequenceMatcher(None, awayteam.lower(), event['awaykeywords'].lower()).ratio()
+					if ratio: probability_dictionary[ratio] = event	
+					
+			print probability_dictionary
+			
+		if probability_dictionary:
+			if len(probability_dictionary.keys()) >= 1:
+				for key in sorted(probability_dictionary).keys():
+					hometeam_id = thesportsdb.Livematch().get_home_id(probability_dictionary[key])
+					awayteam_id = thesportsdb.Livematch().get_away_id(probability_dictionary[key])
+					videofile = settings.getSetting('last_played_channel')
 					txt = { 'hometeamid':hometeam_id,'awayteamid':awayteam_id,'videofile':videofile }
-					save(onscreen_playingmatch,str(txt))	
-				else:
-					txt = { 'hometeamid':'','awayteamid':'','videofile':'' }
-					save(onscreen_playingmatch,str(txt))		
+					save(onscreen_playingmatch,str(txt))
+					break		
 	return	
