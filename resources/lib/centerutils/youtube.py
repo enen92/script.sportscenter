@@ -8,24 +8,28 @@ def return_youtubevideos(author):
     ind = 1
     videos = []
     while not foundAll:
-        inp = urllib.urlopen(r'http://gdata.youtube.com/feeds/api/videos?start-index={0}&max-results=20&alt=json&orderby=published&author={1}'.format( ind, author ) )
-        try:
+        inp = urllib.urlopen('https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername='+author+'&key=AIzaSyAxaHJTQ5zgh86wk7geOwm-y0YyNMcEkSc')
+        try
             resp = json.load(inp)
             inp.close()
-            returnedVideos = resp['feed']['entry']
+            playlist_id = resp["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
+            inp = urllib.urlopen('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId='+playlist_id+'&key=AIzaSyAxaHJTQ5zgh86wk7geOwm-y0YyNMcEkSc&maxResults=50')
+            resp = json.load(inp)
+            inp.close()
+            returnedVideos = resp["items"]
             for video in returnedVideos:
                 videos.append( video ) 
-
-            ind += 50
-            if ( len( returnedVideos ) < 50 ):
-                foundAll = True
-        except:
             foundAll = True
+        except:
+            foundAll = False
 
     video_list = []
-    for video in videos:
-        video_id = re.compile('v=(.+?)&').findall(video['link'][0]['href'])
-        if video_id:
-            video_list.append([video['title']['$t'],video_id[0],video['media$group']['media$thumbnail'][0]['url']])
+    if foundAll:
+        for video in videos:
+            video_id = video["snippet"]["resourceId"]["videoId"]
+            video_title = video["snippet"]["title"]
+            video_thumb = video["snippet"]["thumbnails"]["high"]["url"]
+            if video_id:
+                video_list.append([video_title,video_id,video_thumb])
     return video_list
 

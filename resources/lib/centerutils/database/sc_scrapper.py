@@ -13,6 +13,26 @@
 # if not, see <http://www.gnu.org/licenses/>.
 
 import re
+import difflib
+import thesportsdb
+
+class Scrapper:
+	def __init__(self,):
+		pass
+
+
+	def scrape_league(self,folder,sport):
+		#check if [tsdbid:xxx] is defined first
+		pass
+		
+	def scrape_season(self,folder,sport,league):
+		pass
+		
+	def scrape_event(self,folder,sport,league,season):
+		pass
+
+
+
 
 class Parser:
 	def __init__(self,):
