@@ -26,93 +26,48 @@ from resources.lib.centerutils.common_variables import *
 
 
 def get_params():
-	try:
-		param=[]
-		paramstring=sys.argv[2]
-		if len(paramstring)>=2:
-			params=sys.argv[2]
-			cleanedparams=params.replace('?','')
-			if (params[len(params)-1]=='/'):
-				params=params[0:len(params)-2]
-			pairsofparams=cleanedparams.split('&')
-			param={}
-			for i in range(len(pairsofparams)):
-				splitparams={}
-				splitparams=pairsofparams[i].split('=')
-				if (len(splitparams))==2:
-					param[splitparams[0]]=splitparams[1]
-	except: pass                     
-	return param
+	param=[]
+	try: paramstring=sys.argv[2]
+	except: paramstring = ''
+	if len(paramstring)>=2:
+		params=sys.argv[2]
+		if (params[len(params)-1]=='/'):
+			params=params[0:len(params)-2]
+		pairsofparams=params.split('/')
+		for parm in pairsofparams:
+			if parm == '':
+				pairsofparams.remove(parm)      
+	return pairsofparams
 
-      
-params=get_params()
-url=None
-name=None
-mode=None
-iconimage=None
-regexs=None
+try: params=get_params()
+except: params = []
 
+#Usage for external calls
+#xbmc.executebuiltin("RunScript(script.sportscenter,,/teste1/teste2/teste3)")
 
-try:
-        url=urllib.unquote_plus(params["url"])
-except:
-        pass
-try:
-        name=urllib.unquote_plus(params["name"])
-except:
-        pass
-try:
-        mode=int(params["mode"])
-except:
-        pass
+if not params:
+	home.start(None)
+else:
+	if params[0] == 'home':
+		home.start(None)
+	elif params[0] == 'calendar':
+		from resources.lib import calendar as calendar
+		calendar.start(None)
+	elif params[0] == 'onscreen':
+		from resources.lib import onscreen as onscreen
+		onscreen.start(None)
+	elif params[0] == 'league':
+		sport = params[1]
+		leagueid = params[2]
+		from resources.lib import leagueview
+		leagueview.start([leagueid,sport])
+	elif params[0] == 'team':
+		sport = params[1]
+		teamid = params[2]
+		from resources.lib import teamview
+		teamview.start([teamid,sport])
 
-try:        
-        iconimage=urllib.unquote_plus(params["iconimage"])
-except:
-        pass
+	#TODO - Finish modes
 
-try:
-    regexs=params["regexs"]
-except:
-    pass
-
-
-print "Mode: "+str(mode)
-print "URL: "+str(url)
-print "Name: "+str(name)
-print "Iconimage: "+str(iconimage)
-
-
-if mode==None or url==None or len(url)<1:
-	print ""
-	skin = xbmc.getSkinDir()
-	try:
-		if skin == 'skin.aeon.nox.5':# or skin == 'skin.mimic' or skin == 'skin.confluence':
-			home.start(None)
-			
-			#from resources.lib import tables as tables
-			#tables.start(None)
-			#from resources.lib import leagueview
-			#leagueview.start(['4328','soccer'])
-			#from resources.lib import teamview
-			#teamview.start(['134806','motorsport'])
-			#from resources.lib import eventlist
-			#eventlist.start(["soccer",'','',''])
-			#from resources.lib import eventdetails
-			#eventdetails.start(['483982'])
-			
-			#from resources.lib import onscreen as onscreen
-			#onscreen.start(None)
-		else:
-			mensagemok('Sports Center', 'Only available for Aeon Nox 5 and Helix for now...')
-			sys.exit(0)
-	except: pass
-
-
-elif mode==1:
-	calendar()
-	
-	
-try:		
-	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+try: xbmcplugin.endOfDirectory(int(sys.argv[1]))
 except: sys.exit(0)

@@ -111,9 +111,9 @@ def update_and_match_livescores(ch_title,ch_plot,mode):
 						#define keyword array for home team
 						hometeam_name = thesportsdb.Teams().get_name(home_dict)
 						hometeam_alternative = thesportsdb.Teams().get_alternativename(home_dict)
-						team_keywords = ''
-						if hometeam_name and hometeam_name != 'None': team_keywords = team_keywords + hometeam_name
-						if hometeam_alternative and hometeam_alternative != 'None': team_keywords = team_keywords +';'+ hometeam_alternative
+						team_keywords = []
+						if hometeam_name and hometeam_name != 'None': team_keywords.append(hometeam_name)
+						if hometeam_alternative and hometeam_alternative != 'None': team_keywords.append(hometeam_alternative)
 						event['homekeywords'] = team_keywords
 						save(ficheiro,str(home_dict))
 				if event_away_id:
@@ -123,9 +123,9 @@ def update_and_match_livescores(ch_title,ch_plot,mode):
 						#define keyword array for home team
 						awayteam_name = thesportsdb.Teams().get_name(away_dict)
 						awayteam_alternative = thesportsdb.Teams().get_alternativename(away_dict)
-						team_keywords = ''
-						if awayteam_name and awayteam_name != 'None': team_keywords = team_keywords + awayteam_name
-						if awayteam_alternative and awayteam_alternative != 'None': team_keywords = team_keywords +';'+ awayteam_alternative
+						team_keywords = []
+						if awayteam_name and awayteam_name != 'None': team_keywords.append(awayteam_name)
+						if awayteam_alternative and awayteam_alternative != 'None': team_keywords.append(awayteam_alternative)
 						event['awaykeywords'] = team_keywords
 						save(ficheiro,str(away_dict))	
 				livescores_list.append(event)
@@ -151,40 +151,50 @@ def update_and_match_livescores(ch_title,ch_plot,mode):
 			for event in livescores_list:
 				
 				#Title
-				
+				ratio = 0.0
 				if match_patterns_title:
 					for hometeam,awayteam in match_patterns_title:
-						if len(hometeam) > 3:
-							ratio = difflib.SequenceMatcher(None, hometeam.lower(), event['homekeywords'].lower()).ratio()
-						if len(awayteam) > 3:
-							ratio = ratio + difflib.SequenceMatcher(None, awayteam.lower(), event['awaykeywords'].lower()).ratio()
-					if ratio: probability_dictionary[ratio] = event
+						for keyword in event['homekeywords']:
+							if len(hometeam) > 3:
+								ratio += difflib.SequenceMatcher(None, hometeam.lower(), keyword.lower() ).ratio()
+						for keyword in  event['awaykeywords']:
+							if len(awayteam) > 3:
+								ratio += difflib.SequenceMatcher(None, awayteam.lower(),keyword.lower()).ratio()
+						if ratio > 0.0: probability_dictionary[ratio] = event
 					
 				#Plot	
 				
 				if match_patterns_plot:
 					for hometeam,awayteam in match_patterns_plot:
-						if len(hometeam) > 3:
-							ratio = difflib.SequenceMatcher(None, hometeam.lower(), event['homekeywords'].lower()).ratio()
-						if len(awayteam) > 3:
-							ratio = ratio + difflib.SequenceMatcher(None, awayteam.lower(), event['awaykeywords'].lower()).ratio()
-					if ratio: probability_dictionary[ratio] = event	
+						for keyword in event['homekeywords']:
+							if len(hometeam) > 3:
+								ratio += difflib.SequenceMatcher(None, hometeam.lower(), keyword.lower()).ratio()
+						for keyword in event['awaykeywords']:
+							if len(awayteam) > 3:
+								ratio += difflib.SequenceMatcher(None, awayteam.lower(),keyword.lower() ).ratio()
+						if ratio>0.0: probability_dictionary[ratio] = event	
 					
-			print probability_dictionary
+			for key in probability_dictionary:
+				print key
+				print thesportsdb.Livematch().get_home_name(probability_dictionary[key])
 			
 		if probability_dictionary:
 			if len(probability_dictionary.keys()) >= 1:
-				for key in sorted(probability_dictionary).keys():
-					hometeam_id = thesportsdb.Livematch().get_home_id(probability_dictionary[key])
-					awayteam_id = thesportsdb.Livematch().get_away_id(probability_dictionary[key])
-					if 'league_id' in probability_dictionary[key].keys():
-						league_id = probability_dictionary[key]['league_id']
-					else:
-						league_id = ''
-					videofile = settings.getSetting('last_played_channel')
-					txt = { 'hometeamid':hometeam_id,'awayteamid':awayteam_id,'league_id':league_id,'videofile':videofile }
-					save(onscreen_playingmatch,str(txt))
-					break	
+				ratios = []
+				for key in sorted(probability_dictionary.keys()):
+					ratios.append(key)
+				
+				key = max(ratios)	
+				hometeam_id = thesportsdb.Livematch().get_home_id(probability_dictionary[key])
+				awayteam_id = thesportsdb.Livematch().get_away_id(probability_dictionary[key])
+				if 'league_id' in probability_dictionary[key].keys():
+					league_id = probability_dictionary[key]['league_id']
+				else:
+					league_id = ''
+				videofile = settings.getSetting('last_played_channel')
+				txt = { 'hometeamid':hometeam_id,'awayteamid':awayteam_id,'league_id':league_id,'videofile':videofile }
+				save(onscreen_playingmatch,str(txt))
+
 		if mode == True:
 			xbmc.executebuiltin("ClearProperty(loading,Home)")
 			os.remove(loading_onscreenlock)

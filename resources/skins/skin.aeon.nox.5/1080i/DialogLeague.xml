@@ -1327,7 +1327,7 @@
 				<top>764</top>
 				<left>605</left>
 				<width>700</width>
-				<height>372</height>
+				<height>202</height>
 				<font>font14_textbox</font>
 				<autoscroll time="3000" delay="4000" repeat="5000">Skin.HasSetting(Enable.AutoScroll) + !Control.HasFocus(68)</autoscroll>
 				<pagecontrol>68</pagecontrol>
@@ -1373,7 +1373,7 @@
 						<posx>50</posx>
 						<posy>10</posy>
 						<width>490</width>
-						<height>303</height>
+						<height>115</height>
 						<label>$INFO[ListItem.Label]</label>
 						<font>font30</font>
 						<align>left</align>
@@ -1424,7 +1424,7 @@
 						<posx>50</posx>
 						<posy>10</posy>
 						<width>490</width>
-						<height>303</height>
+						<height>115</height>
 						<label>$INFO[ListItem.Label]</label>
 						<font>font30</font>
 						<align>left</align>

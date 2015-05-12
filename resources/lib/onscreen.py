@@ -28,15 +28,15 @@ class dialog_libconfig(xbmcgui.WindowXMLDialog):
 		has_media = False
 		if os.path.exists(onscreen_playingmatch):
 			match = eval(readfile(onscreen_playingmatch))
-			hometeam_id = match['hometeamid']
-			awayteam_id = match['awayteamid']
-			playingfile = match['videofile']
+			self.hometeam_id = match['hometeamid']
+			self.awayteam_id = match['awayteamid']
+			self.playingfile = match['videofile']
 			self.league_id = match['league_id']
 			if xbmc.getCondVisibility('Player.HasMedia'):
 				has_media = True
-				if xbmc.Player().getPlayingFile() == playingfile:
-					self.hometeambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(hometeam_id) + '.txt' ))))
-					self.awayteambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(awayteam_id) + '.txt' ))))
+				if xbmc.Player().getPlayingFile() == self.playingfile:
+					self.hometeambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.hometeam_id) + '.txt' ))))
+					self.awayteambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.awayteam_id) + '.txt' ))))
 				else:
 					if xbmc.getCondVisibility('Pvr.IsPlayingTv') or xbmc.getCondVisibility('Pvr.IsPlayingRadio'):
 						#get program title and plot
@@ -61,8 +61,8 @@ class dialog_libconfig(xbmcgui.WindowXMLDialog):
 			if xbmc.getCondVisibility('Player.HasMedia'):
 				has_media = True
 				if xbmc.Player().getPlayingFile() == playingfile:
-					self.hometeambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(hometeam_id) + '.txt' ))))
-					self.awayteambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(awayteam_id) + '.txt' ))))
+					self.hometeambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.hometeam_id) + '.txt' ))))
+					self.awayteambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.awayteam_id) + '.txt' ))))
 				else:
 					if xbmc.getCondVisibility('Pvr.IsPlayingTv') or xbmc.getCondVisibility('Pvr.IsPlayingRadio'):
 						#get program title and plot
@@ -93,12 +93,12 @@ class dialog_libconfig(xbmcgui.WindowXMLDialog):
 		menu = []
 		
 		if os.path.exists(onscreen_playingmatch):
-			self.hometeambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(hometeam_id) + '.txt' ))))
-			self.awayteambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(awayteam_id) + '.txt' ))))
-			self.hometwitter = thesportsdb.Teams().get_team_twitter(eval(readfile(os.path.join(onscreen_userdata_teams,str(hometeam_id) + '.txt' ))))
-			self.awaytwitter = thesportsdb.Teams().get_team_twitter(eval(readfile(os.path.join(onscreen_userdata_teams,str(awayteam_id) + '.txt' ))))
+			self.hometeambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.hometeam_id) + '.txt' ))))
+			self.awayteambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.awayteam_id) + '.txt' ))))
+			self.hometwitter = thesportsdb.Teams().get_team_twitter(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.hometeam_id) + '.txt' ))))
+			self.awaytwitter = thesportsdb.Teams().get_team_twitter(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.awayteam_id) + '.txt' ))))
 			if self.league_id:
-				league_dict = thesportsdb.Lookups(tsdbkey).lookupleague(self.league_id)
+				league_dict = thesportsdb.Lookups(tsdbkey).lookupleague(self.league_id)["leagues"][0]
 				self.league_badge = thesportsdb.Leagues().get_badge(league_dict)
 		
 		if settings.getSetting('enable-matchdetails') == 'true' and self.hometeambadge and self.awayteambadge:

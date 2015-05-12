@@ -123,7 +123,9 @@ class dialog_calendar(xbmcgui.WindowXML):
 							event_strtime = thesportsdb.Events().get_time(event)
 							if event_strtime and event_strtime != 'null' and event_strtime != 'None':
 								event_time = event_datetime.strftime(fmt_time)
-								event_order = int(str(event_datetime.hour) + str(event_datetime.minute))
+								if len(str(event_datetime.minute)) == 1: event_minute = str(event_datetime.minute) + '0'
+								else: event_minute = str(event_datetime.minute)
+								event_order = int(str(event_datetime.hour) + str(event_minute))
 							else:
 								event_time = 'N/A'
 								event_order = 30000

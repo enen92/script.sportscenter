@@ -9,7 +9,7 @@ def return_youtubevideos(author):
     videos = []
     while not foundAll:
         inp = urllib.urlopen('https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername='+author+'&key=AIzaSyAxaHJTQ5zgh86wk7geOwm-y0YyNMcEkSc')
-        try
+        try:
             resp = json.load(inp)
             inp.close()
             playlist_id = resp["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
