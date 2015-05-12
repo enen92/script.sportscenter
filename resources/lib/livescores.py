@@ -23,7 +23,6 @@ import threading
 from centerutils.common_variables import *
 from centerutils.datemanipulation import *
 from centerutils.caching import *
-from centerutils import pytzimp
 import soccermatchdetails
 
 def start(data_list):
@@ -109,9 +108,9 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 								month = now.month
 								day = now.day
 								#Do the conversion
-								db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(datetime.datetime(int(year), int(month), int(day), hour=int(hour), minute=int(minute)))
+								db_time = pytz.timezone(str(pytz.timezone(tsdbtimezone))).localize(datetime.datetime(int(year), int(month), int(day), hour=int(hour), minute=int(minute)))
 								my_timezone= settings.getSetting('timezone')
-								my_location=pytzimp.timezone(pytzimp.all_timezones[int(my_timezone)])
+								my_location=pytz.timezone(pytz.all_timezones[int(my_timezone)])
 								converted_time=db_time.astimezone(my_location)
 								fmt = "%H:%M"
 								time_match=converted_time.strftime(fmt)

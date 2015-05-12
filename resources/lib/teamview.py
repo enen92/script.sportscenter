@@ -7,7 +7,6 @@ from centerutils.common_variables import *
 from centerutils.youtube import *
 from centerutils.rssparser import *
 from centerutils.datemanipulation import *
-from centerutils import pytzimp
 import competlist as competlist
 import soccermatchdetails as soccermatchdetails
 import eventdetails as eventdetails
@@ -144,14 +143,14 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 				self.nextdate = thesportsdb.Events().get_datetime_object(self.nextevent)
 				if self.nextdate:
 					#datetime object conversion goes here
-					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(self.nextdate)
+					db_time = pytz.timezone(str(pytz.timezone(tsdbtimezone))).localize(self.nextdate)
 					self.nextdate=db_time.astimezone(my_location)
 				#next date
 				#day difference is calculated here
 				if self.nextdate:
 					now = datetime.datetime.now()
 					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day))
-					datenow =  pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(datenow)
+					datenow =  pytz.timezone(str(pytz.timezone(str(my_location)))).localize(datenow)
 					day_difference = abs(self.nextdate - datenow).days
 					if day_difference == 0:
 						string = 'Today'
@@ -391,14 +390,14 @@ class dialog_team(xbmcgui.WindowXML):
 				self.nextdate = thesportsdb.Events().get_datetime_object(self.nextevent)
 				if self.nextdate:
 					#datetime object conversion goes here
-					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(self.nextdate)
+					db_time = pytz.timezone(str(pytz.timezone(tsdbtimezone))).localize(self.nextdate)
 					self.nextdate=db_time.astimezone(my_location)
 				#next date
 				#day difference is calculated here
 				if self.nextdate:
 					now = datetime.datetime.now()
 					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day))
-					datenow =  pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(datenow)
+					datenow =  pytz.timezone(str(pytz.timezone(str(my_location)))).localize(datenow)
 					day_difference = abs(self.nextdate - datenow).days
 					if day_difference == 0:
 						string = 'Today'
@@ -571,7 +570,7 @@ class dialog_team(xbmcgui.WindowXML):
 				event_fanart = thesportsdb.Events().get_fanart(event)
 				if event_datetime:
 					#datetime object conversion goes here
-					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
+					db_time = pytz.timezone(str(pytz.timezone(tsdbtimezone))).localize(event_datetime)
 					event_datetime=db_time.astimezone(my_location)
 				
 				if event_datetime:
@@ -589,7 +588,7 @@ class dialog_team(xbmcgui.WindowXML):
 				if event_datetime:
 					now = datetime.datetime.now()
 					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day))
-					datenow =  pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(datenow)
+					datenow =  pytz.timezone(str(pytz.timezone(str(my_location)))).localize(datenow)
 					day_difference = abs(event_datetime - datenow).days
 					if day_difference == 0:
 						timedelay = '[COLOR white] (Today)[/COLOR]'
@@ -700,7 +699,7 @@ class dialog_team(xbmcgui.WindowXML):
 				event_datetime = thesportsdb.Events().get_datetime_object(event)
 				if event_datetime:
 					#datetime object conversion goes here
-					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
+					db_time = pytz.timezone(str(pytz.timezone(tsdbtimezone))).localize(event_datetime)
 					event_datetime=db_time.astimezone(my_location)
 				
 				if event_race:
@@ -744,7 +743,7 @@ class dialog_team(xbmcgui.WindowXML):
 				if event_datetime:
 					now = datetime.datetime.now()
 					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day),int(now.hour),int(now.minute))
-					datenow =  pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(datenow)
+					datenow =  pytz.timezone(str(pytz.timezone(str(my_location)))).localize(datenow)
 					day_difference = abs(event_datetime - datenow).days
 					if day_difference == 0:
 						timedelay = '[COLOR white] (Today)[/COLOR]'

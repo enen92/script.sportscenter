@@ -11,7 +11,6 @@ import urllib
 import time
 from centerutils.common_variables import *
 from centerutils.database import sc_database
-from centerutils import pytzimp
 from random import randint
 from centerutils.datemanipulation import *
 import homemenu as home
@@ -114,9 +113,9 @@ class dialog_eventlist(xbmcgui.WindowXML):
 				event_datetime = thesportsdb.Events().get_datetime_object(event)
 				if event_datetime:
 					#datetime object conversion goes here
-					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
+					db_time = pytz.timezone(str(pytz.timezone(tsdbtimezone))).localize(event_datetime)
 					my_timezone= settings.getSetting('timezone')
-					my_location=pytzimp.timezone(pytzimp.all_timezones[int(my_timezone)])
+					my_location=pytz.timezone(pytz.all_timezones[int(my_timezone)])
 					event_datetime=db_time.astimezone(my_location)
 				
 				#Convert time based on my timezone to unixtime so we can order the events later

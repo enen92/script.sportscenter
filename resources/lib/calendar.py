@@ -8,7 +8,6 @@ import threading
 from random import randint
 from centerutils.common_variables import *
 from centerutils.datemanipulation import *
-from centerutils import pytzimp
 import competlist as competlist
 import teamview as teamview
 import contextmenubuilder
@@ -38,7 +37,7 @@ class dialog_calendar(xbmcgui.WindowXML):
 		menu = []
 		#grab datetime now and transform into a timezone object based on user timezone
 		date_now = datetime.datetime.now()
-		date_now_mytz = pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(date_now)
+		date_now_mytz = pytz.timezone(str(pytz.timezone(str(my_location)))).localize(date_now)
 		#convert datetime timezone object to the timezone of the database
 		date_now_tsdb = date_now_mytz.astimezone(my_location)
 		menu.append(('Today, %s' % (date_now_mytz.day),'%s-%s-%s' % (str(date_now_tsdb.year),str(date_now_tsdb.month),str(date_now_tsdb.day))))
@@ -118,7 +117,7 @@ class dialog_calendar(xbmcgui.WindowXML):
 						event_datetime = thesportsdb.Events().get_datetime_object(event)
 						if event_datetime:
 							#datetime object conversion goes here
-							db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
+							db_time = pytz.timezone(str(pytz.timezone(tsdbtimezone))).localize(event_datetime)
 							event_datetime=db_time.astimezone(my_location)
 							event_strtime = thesportsdb.Events().get_time(event)
 							if event_strtime and event_strtime != 'null' and event_strtime != 'None':
@@ -180,7 +179,7 @@ class dialog_calendar(xbmcgui.WindowXML):
 						if event_race: 
 							game.setProperty('EventName',event_name)
 						try:
-							date_now_mytz = pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(datetime.datetime.now())
+							date_now_mytz = pytz.timezone(str(pytz.timezone(str(my_location)))).localize(datetime.datetime.now())
 							if event_datetime > date_now_mytz:
 								hour_diff = (event_datetime-date_now_mytz).seconds/3600
 							else: hour_diff = ((date_now_mytz-event_datetime).seconds/3600)*(-1)

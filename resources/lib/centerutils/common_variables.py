@@ -22,7 +22,7 @@ import xbmcvfs
 import xbmcgui 
 import xbmcaddon
 import os
-import pytzimp
+import pytz
 
 addon_id = 'script.sportscenter'
 tsdbkey = '5261590715995'
@@ -40,7 +40,7 @@ dialog = xbmcgui.Dialog()
 
 #Timezones
 my_timezone = settings.getSetting('timezone')
-my_location = pytzimp.timezone(pytzimp.all_timezones[int(my_timezone)])
+my_location = pytz.timezone(pytz.all_timezones[int(my_timezone)])
 tsdbtimezone = 'Atlantic/Azores'
 
 #Internal database variables

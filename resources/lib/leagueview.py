@@ -7,7 +7,6 @@ from centerutils.common_variables import *
 from centerutils.youtube import *
 from centerutils.rssparser import *
 from centerutils.datemanipulation import *
-from centerutils import pytzimp
 import competlist as competlist
 import teamview as teamview
 import soccermatchdetails as soccermatchdetails
@@ -432,7 +431,7 @@ class dialog_league(xbmcgui.WindowXML):
 				event_datetime = thesportsdb.Events().get_datetime_object(event)
 				if event_datetime:
 					#datetime object conversion goes here
-					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
+					db_time = pytz.timezone(str(pytz.timezone(tsdbtimezone))).localize(event_datetime)
 					event_datetime=db_time.astimezone(my_location)				
 				
 				if event_race:
@@ -504,7 +503,7 @@ class dialog_league(xbmcgui.WindowXML):
 				if event_datetime:
 					now = datetime.datetime.now()
 					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day))
-					datenow =  pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(datenow)
+					datenow =  pytz.timezone(str(pytz.timezone(str(my_location)))).localize(datenow)
 					day_difference = abs(event_datetime - datenow).days
 					if day_difference == 0:
 						timedelay = '[COLOR white] (Today)[/COLOR]'
@@ -557,7 +556,7 @@ class dialog_league(xbmcgui.WindowXML):
 				event_datetime = thesportsdb.Events().get_datetime_object(event)
 				if event_datetime:
 					#datetime object conversion goes here
-					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
+					db_time = pytz.timezone(str(pytz.timezone(tsdbtimezone))).localize(event_datetime)
 					event_datetime=db_time.astimezone(my_location)
 				
 				if event_race:
@@ -614,7 +613,7 @@ class dialog_league(xbmcgui.WindowXML):
 				if event_datetime:
 					now = datetime.datetime.now()
 					datenow = datetime.datetime(int(now.year), int(now.month), int(now.day),int(now.hour),int(now.minute))
-					datenow =  pytzimp.timezone(str(pytzimp.timezone(str(my_location)))).localize(datenow)
+					datenow =  pytz.timezone(str(pytz.timezone(str(my_location)))).localize(datenow)
 					day_difference = abs(event_datetime - datenow).days
 					if day_difference == 0:
 						timedelay = '[COLOR white] (Today)[/COLOR]'
@@ -707,9 +706,9 @@ class dialog_league(xbmcgui.WindowXML):
 				event_datetime = thesportsdb.Events().get_datetime_object(event)
 				if event_datetime:
 					#datetime object conversion goes here
-					db_time = pytzimp.timezone(str(pytzimp.timezone(tsdbtimezone))).localize(event_datetime)
+					db_time = pytz.timezone(str(pytz.timezone(tsdbtimezone))).localize(event_datetime)
 					my_timezone= settings.getSetting('timezone')
-					my_location=pytzimp.timezone(pytzimp.all_timezones[int(my_timezone)])
+					my_location=pytz.timezone(pytz.all_timezones[int(my_timezone)])
 					event_datetime=db_time.astimezone(my_location)
 				
 				
