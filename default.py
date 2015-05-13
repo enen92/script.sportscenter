@@ -59,8 +59,10 @@ else:
 	elif params[0] == 'league':
 		sport = params[1]
 		leagueid = params[2]
+		try: mode = params[3]
+		except: mode = 'plotview'
 		from resources.lib import leagueview
-		leagueview.start([leagueid,sport])
+		leagueview.start([leagueid,sport,'',mode])
 	elif params[0] == 'team':
 		sport = params[1]
 		teamid = params[2]
@@ -68,7 +70,13 @@ else:
 		except: mode = 'plotview'
 		from resources.lib import teamview
 		teamview.start([teamid,sport,'',mode])
-
+	elif params[0] == 'player':
+		player_id = params[1]
+		try: mode = params[3]
+		except: mode = 'plotview'
+		from resources.lib import playerview as playerview
+		playerview.start([player_id,mode])
+		
 	#TODO - Finish modes
 
 try: xbmcplugin.endOfDirectory(int(sys.argv[1]))

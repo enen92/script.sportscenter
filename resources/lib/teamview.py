@@ -13,6 +13,7 @@ import eventdetails as eventdetails
 import stadium as stadium
 import tweetbuild as tweetbuild
 import imageviewer as imageviewer
+import playerview as playerview
 
 
 def teamdetails(team_id):
@@ -325,6 +326,8 @@ class dialog_team(xbmcgui.WindowXML):
 			self.setlastmatchview()
 		elif mode == 'videosview':
 			self.setvideosview()
+		else:
+			self.setplotview()
 			
 	def setplotview(self):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
@@ -463,6 +466,7 @@ class dialog_team(xbmcgui.WindowXML):
 			for player in players:
 				player_face = thesportsdb.Players().get_face(player)
 				player_name = thesportsdb.Players().get_name(player)
+				player_id = thesportsdb.Players().get_id(player)
 				player_fanart_list = thesportsdb.Players().get_fanart_list(player)
 				player_position = thesportsdb.Players().get_position(player)
 				player_twitter = thesportsdb.Players().get_twitter(player)
@@ -515,6 +519,7 @@ class dialog_team(xbmcgui.WindowXML):
 				playeritem.setProperty('player_position',player_position)
 				playeritem.setProperty('player_value',player_value)
 				playeritem.setProperty('player_age',player_age)
+				playeritem.setProperty('player_id',player_id)
 				playeritem.setProperty('player_location',player_location)
 				playeritem.setProperty('player_height',player_height)
 				playeritem.setProperty('player_weight',player_weight)
@@ -997,36 +1002,6 @@ class dialog_team(xbmcgui.WindowXML):
 			self.getControl(938).setLabel(news_title)
 			
 		elif controlId == 985:
-			options = []
-			functions = []
-			player_name = self.getControl(985).getSelectedItem().getProperty('player_name')
-			player_details = self.getControl(985).getSelectedItem().getProperty('player_plot')
-			if player_details and player_details != 'None': 
-				options.append('Read Player details')
-				functions.append('details')
-			player_twitter = self.getControl(985).getSelectedItem().getProperty('player_twitter')
-			if player_twitter and player_twitter != 'None': 
-				options.append('Tweets')
-				functions.append('tweet')
-			player_fanartlist = eval(self.getControl(985).getSelectedItem().getProperty('player_fanartlist'))
-			if player_fanartlist and player_fanartlist != 'None': 
-				options.append('View Art')
-				functions.append('art')
-			
-			if functions:
-				choose = xbmcgui.Dialog().select('',options)
-				if choose > -1:
-					function = functions[choose]
-					if function == 'details':
-						xbmc.executebuiltin("ActivateWindow(10147)")
-						window = xbmcgui.Window(10147)
-						xbmc.sleep(100)
-						window.getControl(1).setLabel(player_name)
-						window.getControl(5).setText(player_details)
-					elif function == 'tweet':
-						twitter_name = player_twitter.split('/')[-1]
-						tweetbuild.tweets(['user',twitter_name])
-					elif function == 'art':
-						imageviewer.view_images(str(player_fanartlist))
-						self.getControl(912).setImage(self.player_fanart)
+			player_id = self.getControl(985).getSelectedItem().getProperty('player_id')
+			playerview.start([player_id,'plotview'])
 	

@@ -679,7 +679,7 @@
 						<texture border="1">separator3.png</texture>
 					</control>
 					<control type="button" id="213">
-						<description>Cast/Plot</description>
+						<description>Instagram</description>
 						<include>ButtonInfoDialogsCommonValues</include>
 						<label>Instagram</label>
 					</control>

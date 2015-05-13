@@ -22,6 +22,7 @@ class dialog_league(xbmcgui.WindowXML):
 		self.league = eval(eval(args[3])[0])
 		self.sport = eval(args[3])[1]
 		self.league_fanart = eval(args[3])[2]
+		self.mode = eval(args[3])[3]
 		if type(self.league) != dict:
 			self.league = thesportsdb.Lookups(tsdbkey).lookupleague(self.league)["leagues"][0]
 
@@ -70,9 +71,35 @@ class dialog_league(xbmcgui.WindowXML):
 		self.getControl(912).setImage(self.league_fanart)
 		self.getControl(429).setImage(self.league_fanart)
 			
+		if self.mode:
+			mode = self.mode
+		else:
+			mode = settings.getSetting('view_type_league')
+		if mode == 'plotview':
+			self.setplotview()
+		elif mode == 'badgeview':
+			self.setbadgeview()
+		elif mode == 'jerseyview':
+			self.setjerseyview()
+		elif mode == 'bannerview':
+			self.setbannerview()
+		elif mode == 'newsview':
+			self.setnewsview()
+		elif mode == 'tablesview':
+			self.settablesview()
+		elif mode == 'nextmatchview':
+			self.setnextmatchview()
+		elif mode == 'lastmatchview':
+			self.setlastmatchview()
+		elif mode == 'fixturesview':
+			self.setfixturesview()
+		elif mode == 'videosview':
+			self.setvideosview()
+		else:
+			self.setplotview()
 			
-		self.setplotview()
-		
+			
+			
 	def setleagueinfo(self):
 		
 		#set league badge
@@ -255,7 +282,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("SetProperty(plotview,1,home)")
 		settings.setSetting("view_type_league",'plotview')
-		
+		self.mode = ''
 
 		self.getControl(2).setLabel("League: PlotView")
 		self.setFocusId(983)
@@ -277,6 +304,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
 		xbmc.executebuiltin("SetProperty(badgeview,1,home)")
 		settings.setSetting("view_type_league",'badgeview')
+		self.mode = ''
 
 		self.getControl(2).setLabel("League: BadgeView")
 		
@@ -296,6 +324,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
 		xbmc.executebuiltin("SetProperty(jerseyview,1,home)")
 		settings.setSetting("view_type_league",'jerseyview')
+		self.mode = ''
 
 		self.getControl(2).setLabel("League: JerseyView")
 		
@@ -315,6 +344,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
 		xbmc.executebuiltin("SetProperty(bannerview,1,home)")
 		settings.setSetting("view_type_league",'bannerview')
+		self.mode = ''
 
 		self.getControl(2).setLabel("League: BannerView")
 			
@@ -350,6 +380,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(badgeview,Home)")
 		xbmc.executebuiltin("SetProperty(newsview,1,home)")
 		settings.setSetting("view_type_league",'newsview')
+		self.mode = ''
 
 		self.getControl(2).setLabel("League: NewsView")
 		
@@ -410,6 +441,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("SetProperty(tablesview,1,home)")
 		settings.setSetting("view_type_league",'tablesview')
+		self.mode = ''
 
 		self.getControl(2).setLabel("League: TablesView")
 	
@@ -535,6 +567,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("SetProperty(nextmatchview,1,home)")
 		settings.setSetting("view_type_league",'nextmatchview')
+		self.mode = ''
 
 		self.getControl(2).setLabel("League: NextMatchView")
 
@@ -665,6 +698,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("SetProperty(lastmatchview,1,home)")
 		settings.setSetting("view_type_league",'lastmatchview')
+		self.mode = ''
 
 		self.getControl(2).setLabel("League: LastMatchView")
 		
@@ -801,6 +835,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("SetProperty(fixturesview,1,home)")
 		settings.setSetting("view_type_league",'fixturesview')
+		self.mode = ''
 
 		self.getControl(2).setLabel("League: FixturesView")
 		
@@ -838,6 +873,7 @@ class dialog_league(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("SetProperty(videosview,1,home)")
 		settings.setSetting("view_type_league",'videosview')
+		self.mode = ''
 
 		self.getControl(2).setLabel("League: VideosView")			
 		

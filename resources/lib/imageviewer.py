@@ -14,7 +14,7 @@ class dialog_viewimage(xbmcgui.WindowXMLDialog):
 	def onInit(self):
 		if self.image_array:
 			self.actual_img = self.image_array[0]
-			self.getControl(901).setImage(os.path.join(addonpath,'fanart.jpg'))
+			self.getControl(901).setImage(os.path.join(addonpath,art,'black.jpg'))
 			self.getControl(900).setImage(self.actual_img)
 		
 	def onAction(self,action):

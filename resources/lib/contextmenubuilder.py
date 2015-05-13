@@ -152,7 +152,7 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 				self.close()
 				self.league_dict = thesportsdb.Lookups(tsdbkey).lookupleague(self.specific_id)["leagues"][0]
 				self.sport = thesportsdb.Leagues().get_sport(self.league_dict)
-				leagueview.start([self.specific_id,self.sport.lower(),''])
+				leagueview.start([self.specific_id,self.sport.lower(),'','plotview'])
 				
 			elif self.identifier == 'hometeamdetails-lib':
 				self.close()

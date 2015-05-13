@@ -13,7 +13,6 @@ from centerutils.database import sc_database
 from random import randint
 import homemenu as home
 import thesportsdb
-import leagueview as leagueview
 import contextmenubuilder
 import eventlist
 
