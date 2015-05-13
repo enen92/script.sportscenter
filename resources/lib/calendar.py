@@ -76,9 +76,9 @@ class dialog_calendar(xbmcgui.WindowXML):
 		self.getControl(987).reset()
 		#next matches stuff
 		event_next_list = thesportsdb.Schedules(tsdbkey).eventsday(datestring,None,None)["events"]
-		total_events = len(event_next_list)
 		j = 0
 		if event_next_list:
+			total_events = len(event_next_list)
 			for event in event_next_list:
 				event_sport = thesportsdb.Events().get_sport(event)
 				event_id = thesportsdb.Events().get_eventid(event)
@@ -215,6 +215,9 @@ class dialog_calendar(xbmcgui.WindowXML):
 			else:
 				self.getControl(93).setVisible(True)
 				self.getControl(93).setLabel('No events available!')
+		else:
+			self.getControl(93).setVisible(True)
+			self.getControl(93).setLabel('No events available!')
 									
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
 		xbmc.executebuiltin("ClearProperty(lastmatchview,Home)")
@@ -258,7 +261,7 @@ class dialog_calendar(xbmcgui.WindowXML):
 					
 		elif controlId == 980 or controlId == 984 or controlId == 985 or controlId == 981:
 			self.team = self.getControl(controlId).getSelectedItem().getProperty('team_id')
-			teamview.start([self.team,self.sport,'',''])
+			teamview.start([self.team,self.sport,'','plotview'])
 		
 
 

@@ -101,6 +101,7 @@
  	<setting id="view_type_seasonlist" type="text" default="" visible="false"/>
  	<setting id="view_type_teamlist" type="text" default="" visible="false"/>
   	<setting id="view_type_league" type="text" default="" visible="false"/>
+  	<setting id="view_type_team" type="text" default="" visible="false"/>
   	<setting id="view_type_eventlist" type="text" default="" visible="false"/>
   	<setting id="event_order_pref" type="text" default="" visible="false"/>
 </settings>

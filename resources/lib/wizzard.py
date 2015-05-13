@@ -6,6 +6,7 @@ import thesportsdb
 from centerutils.common_variables import *
 from centerutils.iofile import *
 from centerutils.downloadtools import *
+from centerutils import keymaper
 
 class wizzard:
 	def __init__(self):
@@ -422,7 +423,12 @@ class wizzard:
 					try:t8logo.join()
 					except:pass
 					
-					#FUTURE SCRAPPER CODE GOES HERE			
+					#Keymap stuff
+					dialog = xbmcgui.Dialog()
+					yes_no = dialog.yesno('Sports Center Wizzard', 'Do want to enable on-screen information and define a keymap?')
+					if yes_no:
+						settings.setSetting('enable-onscreenservice','true')
+						keymaper.run()			
 				settings.setSetting('wizzard_check','false')
 				xbmc.executebuiltin( "Dialog.Close(busydialog)" )	
 							

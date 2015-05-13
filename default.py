@@ -64,8 +64,10 @@ else:
 	elif params[0] == 'team':
 		sport = params[1]
 		teamid = params[2]
+		try: mode = params[3]
+		except: mode = 'plotview'
 		from resources.lib import teamview
-		teamview.start([teamid,sport])
+		teamview.start([teamid,sport,'',mode])
 
 	#TODO - Finish modes
 

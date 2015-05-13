@@ -232,6 +232,7 @@ class dialog_team(xbmcgui.WindowXML):
 		self.team_id = eval(args[3])[0]
 		self.sport = eval(args[3])[1]
 		self.team_fanart = eval(args[3])[2]
+		self.mode = eval(args[3])[3]
 		self.team = thesportsdb.Lookups(tsdbkey).lookupteam(self.team_id)['teams'][0]
 		self.event_next_list = thesportsdb.Schedules(tsdbkey).eventsnext(self.team_id)['events']
 		
@@ -307,8 +308,24 @@ class dialog_team(xbmcgui.WindowXML):
 			self.getControl(983).addItem(menu_entry)
 		
 		#initialize view
-		self.setplotview()
+		if self.mode and self.mode != 'None':
+			mode = self.mode
+		else:
+			mode = settings.getSetting('view_type_team')
 		
+		if mode == 'plotview' or mode == '':
+			self.setplotview()
+		elif mode == 'playersview':
+			self.setplayersview()
+		elif mode == 'setnewsview':
+			self.newsview()
+		elif mode == 'nextmatchview':
+			self.setnextmatchview()
+		elif mode == 'lastmatchview':
+			self.setlastmatchview()
+		elif mode == 'videosview':
+			self.setvideosview()
+			
 	def setplotview(self):
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
 		xbmc.executebuiltin("SetProperty(loading,1,home)")
@@ -423,9 +440,10 @@ class dialog_team(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("SetProperty(plotview,1,home)")
-		settings.setSetting("view_type_league",'plotview')
+		settings.setSetting("view_type_team",'plotview')
+		self.mode = ''
 
-		self.getControl(2).setLabel("League: PlotView")
+		self.getControl(2).setLabel("Team: PlotView")
 		#select first item only if mediamenu is not active
 		if not xbmc.getCondVisibility("Control.HasFocus(2)"):
 			self.setFocusId(983)
@@ -514,9 +532,10 @@ class dialog_team(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("ClearProperty(videosview,Home)")
 		xbmc.executebuiltin("SetProperty(playersview,1,home)")
-		settings.setSetting("view_type_league",'playersview')
+		settings.setSetting("view_type_team",'playersview')
+		self.mode=''
 
-		self.getControl(2).setLabel("League: PlayersView")
+		self.getControl(2).setLabel("Team: PlayersView")
 		
 		#select first item only if mediamenu is not active
 		if not xbmc.getCondVisibility("Control.HasFocus(2)"):
@@ -550,9 +569,10 @@ class dialog_team(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(nextmatchview,Home)")
 		xbmc.executebuiltin("ClearProperty(playersview,Home)")
 		xbmc.executebuiltin("SetProperty(newsview,1,home)")
-		settings.setSetting("view_type_league",'newsview')
+		settings.setSetting("view_type_team",'newsview')
+		self.mode = ''
 
-		self.getControl(2).setLabel("League: LastMatchView")
+		self.getControl(2).setLabel("Team: NewsView")
 		#select first item only if mediamenu is not active
 		if not xbmc.getCondVisibility("Control.HasFocus(2)"):	
 			try:self.getControl(986).selectItem(0)
@@ -647,9 +667,10 @@ class dialog_team(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(playersview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("SetProperty(nextmatchview,1,home)")
-		settings.setSetting("view_type_league",'nextmatchview')
+		settings.setSetting("view_type_team",'nextmatchview')
+		self.mode = ''
 
-		self.getControl(2).setLabel("League: NextMatchView")
+		self.getControl(2).setLabel("Team: NextMatchView")
 
 	def setlastmatchview(self):	
 		self.getControl(92).setImage(os.path.join(addonpath,art,'loadingsports',self.sport+'.png'))
@@ -795,9 +816,10 @@ class dialog_team(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(playersview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("SetProperty(lastmatchview,1,home)")
-		settings.setSetting("view_type_league",'lastmatchview')
+		settings.setSetting("view_type_team",'lastmatchview')
+		self.mode = ''
 
-		self.getControl(2).setLabel("League: LastMatchView")
+		self.getControl(2).setLabel("Team: LastMatchView")
 		
 	def setvideosview(self):
 	
@@ -827,9 +849,10 @@ class dialog_team(xbmcgui.WindowXML):
 		xbmc.executebuiltin("ClearProperty(playersview,Home)")
 		xbmc.executebuiltin("ClearProperty(newsview,Home)")
 		xbmc.executebuiltin("SetProperty(videosview,1,home)")
-		settings.setSetting("view_type_league",'videosview')
+		settings.setSetting("view_type_team",'videosview')
+		self.mode = ''
 
-		self.getControl(2).setLabel("League: VideosView")	
+		self.getControl(2).setLabel("Team: VideosView")	
 		
 	def setplayerinfo(self):
 		fanart = self.getControl(985).getSelectedItem().getProperty('player_fanart')
@@ -931,14 +954,14 @@ class dialog_team(xbmcgui.WindowXML):
 
 		elif controlId == 2:
 			active_view_type = self.getControl(controlId).getLabel()
-			if active_view_type == "League: PlotView":
+			if active_view_type == "Team: PlotView":
 				self.setplayersview()
-			elif active_view_type == "League: VideosView":
+			elif active_view_type == "Team: VideosView":
 				if self.team_rss and self.team_rss != 'None':
 					self.setnewsview()
 				else:
 					self.setnextmatchview()
-			elif active_view_type == "League: PlayersView":
+			elif active_view_type == "Team: PlayersView":
 				if self.team_youtube and self.team_youtube != 'None':
 					self.setvideosview()
 				else:
@@ -946,11 +969,11 @@ class dialog_team(xbmcgui.WindowXML):
 						self.setnewsview()
 					else:
 						self.setnextmatchview()
-			elif active_view_type == "League: NewsView":
+			elif active_view_type == "Team: NewsView":
 				self.setnextmatchview()
-			elif active_view_type == "League: NextMatchView":
+			elif active_view_type == "Team: NextMatchView":
 				self.setlastmatchview()
-			elif active_view_type == "League: LastMatchView":
+			elif active_view_type == "Team: LastMatchView":
 				self.setplotview()
 				
 		elif controlId == 988:
@@ -1006,10 +1029,4 @@ class dialog_team(xbmcgui.WindowXML):
 					elif function == 'art':
 						imageviewer.view_images(str(player_fanartlist))
 						self.getControl(912).setImage(self.player_fanart)
-
-							
-				
-					
-			
 	
-		

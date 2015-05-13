@@ -60,7 +60,7 @@ class dialog_libconfig(xbmcgui.WindowXMLDialog):
 		else:
 			if xbmc.getCondVisibility('Player.HasMedia'):
 				has_media = True
-				if xbmc.Player().getPlayingFile() == playingfile:
+				if xbmc.Player().getPlayingFile() == settings.getSetting('last_played_channel'):
 					self.hometeambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.hometeam_id) + '.txt' ))))
 					self.awayteambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.awayteam_id) + '.txt' ))))
 				else:

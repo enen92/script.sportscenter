@@ -588,7 +588,7 @@ class dialog_home(xbmcgui.WindowXML):
 		elif controlId == 983:
 			self.team_id = self.getControl(983).getSelectedItem().getProperty('favourite_id')
 			self.favteam_sport = urllib.quote(self.getControl(983).getSelectedItem().getProperty('favourite_team_sport').lower())
-			teamview.start([self.team_id,self.favteam_sport,'',''])
+			teamview.start([self.team_id,self.favteam_sport,'','plotview'])
 		elif controlId == 9024:
 			from resources.lib import livescores as livescores
 			livescores.start(None)

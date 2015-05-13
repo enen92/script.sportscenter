@@ -919,7 +919,7 @@ class dialog_league(xbmcgui.WindowXML):
 		elif controlId == 980 or controlId == 984 or controlId == 985 or controlId == 981 or controlId == 990:
 			team = self.getControl(controlId).getSelectedItem().getProperty('team_id')
 			team_fanart = self.getControl(controlId).getSelectedItem().getProperty('team_fanart')
-			teamview.start([team,self.sport,team_fanart,''])
+			teamview.start([team,self.sport,team_fanart,'plotview'])
 		
 
 

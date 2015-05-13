@@ -138,7 +138,7 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 				self.close()
 				self.team_dict = thesportsdb.Lookups(tsdbkey).lookupteam(self.specific_id)["teams"][0]
 				self.sport = thesportsdb.Teams().get_sport(self.team_dict).lower()				
-				teamview.start([self.specific_id,self.sport,'',''])
+				teamview.start([self.specific_id,self.sport,'','plotview'])
 				
 			elif self.identifier == 'hometeamdetails':
 				self.team_id = thesportsdb.Events().get_hometeamid(self.event_dict)
@@ -180,14 +180,14 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 				self.close()
 				self.team_id = thesportsdb.Events().get_hometeamid(self.event_dict)
 				self.sport = thesportsdb.Events().get_sport(self.event_dict)
-				teamview.start([self.team_id,self.sport,'',''])
+				teamview.start([self.team_id,self.sport,'','plotview'])
 				
 				
 			elif self.identifier == 'awayteammain':
 				self.close()
 				self.team_id = thesportsdb.Events().get_awayteamid(self.event_dict)
 				self.sport = thesportsdb.Events().get_sport(self.event_dict)
-				teamview.start([self.team_id,self.sport,'',''])
+				teamview.start([self.team_id,self.sport,'','plotview'])
 			
 			elif self.identifier == 'rmleaguecalendar_calendar':
 				self.close()

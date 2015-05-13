@@ -21,13 +21,16 @@ import xbmcvfs
 import os
 import shutil
 import xml.etree.ElementTree as ET
+from xbmcgui import Dialog, WindowXMLDialog
+from threading import Timer
+from common_variables import *
 
 default = xbmc.translatePath('special://xbmc/system/keymaps/keyboard.xml')
 userdata = xbmc.translatePath('special://userdata/keymaps')
 gen_file = os.path.join(userdata, 'gen.xml')
 
 ### Key mapp			
-def run(start):
+def run():
 	## load mappings ##
 	try:
 		setup_keymap_folder()
@@ -47,8 +50,7 @@ def run(start):
 		if os.path.exists(gen_file):
 			shutil.copyfile(gen_file, gen_file + ".old")
 			
-		if start: new = ('global', u'RunScript(special://home/addons/cona/resources/lib/recs.py, start)', newkey)
-		else: new = ('global', u'RunScript(special://home/addons/cona/resources/lib/recs.py, stop)', newkey)
+		new = ('global', u'RunScript(script.sportscenter,,/onscreen)', newkey)
 		
 		done = False
 		if len(userkeymap) !=0:
@@ -71,7 +73,7 @@ def run(start):
 			userkeymap.append(new)
 			write_keymap(userkeymap, gen_file)
 		xbmc.executebuiltin("Action(reloadkeymaps)")
-		xbmc.executebuiltin("Notification(%s,%s,%i,%s)" % (traducao(1023), traducao(1024), 1,addonfolder+"/icon.png"))
+		xbmc.executebuiltin("Notification(%s,%s,%i,%s)" % ('Setting successfully changed', 'Please restart kodi!', 1,os.path.join(addonpath,'icon.png')))
 
 class KeyListener(WindowXMLDialog):
     TIMEOUT = 5
@@ -84,11 +86,11 @@ class KeyListener(WindowXMLDialog):
 
     def onInit(self):
         try:
-            self.getControl(401).addLabel(traducao(1021))
-            self.getControl(402).addLabel(traducao(1022) % self.TIMEOUT)
+            self.getControl(401).addLabel('SportsCenter')
+            self.getControl(402).addLabel('Timeout in %.0f seconds...' % self.TIMEOUT)
         except AttributeError:
-            self.getControl(401).setLabel(traducao(1021))
-            self.getControl(402).setLabel(traducao(1022) % self.TIMEOUT)
+            self.getControl(401).setLabel('SportsCenter')
+            self.getControl(402).setLabel('Timeout in %.0f seconds...' % self.TIMEOUT)
 
     def onAction(self, action):
         code = action.getButtonCode()
