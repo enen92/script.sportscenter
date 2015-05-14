@@ -793,6 +793,7 @@
 						<description>twitter</description>
 						<include>ButtonInfoDialogsCommonValues</include>
 						<label>Tweets</label>
+						<enable>!IsEmpty(Window(home).Property(hasteam_twitter))</enable>
 					</control>
 					<control type="image" id="202">
 						<width>2</width>
@@ -803,6 +804,7 @@
 						<description>Videos youtube</description>
 						<include>ButtonInfoDialogsCommonValues</include>
 						<label>Youtube</label>
+						<enable>!IsEmpty(Window(home).Property(hasteam_youtube))</enable>
 					</control>
 					<control type="image" id="203">
 						<width>2</width>
@@ -813,6 +815,7 @@
 						<description>Instagram</description>
 						<include>ButtonInfoDialogsCommonValues</include>
 						<label>Instagram</label>
+						<enable>!IsEmpty(Window(home).Property(hasteam_instagram))</enable>
 					</control>
 					<control type="image" id="204">
 						<width>2</width>

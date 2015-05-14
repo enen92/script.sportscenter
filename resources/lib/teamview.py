@@ -52,6 +52,7 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 		self.team_clear = thesportsdb.Teams().get_logo(self.team)
 		self.team_jersey = thesportsdb.Teams().get_team_jersey(self.team)
 		self.founded = thesportsdb.Teams().get_formedyear(self.team)
+		self.twitter = thesportsdb.Teams().get_team_twitter(self.team)
 		
 		if settings.getSetting('addon-language') == '0':
 			self.plot = thesportsdb.Teams().get_plot_en(self.team)
@@ -223,7 +224,13 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 			self.getControl(44).setPercent(int(winpercentage))
 
 		self.setplotview()
-		xbmc.executebuiltin("SetProperty(focusteam_plot,1,home)")
+		#check if twitter,youtube and instagram exists
+		xbmc.executebuiltin("ClearProperty(hasteam_instagram,Home)")
+		xbmc.executebuiltin("ClearProperty(hasteam_youtube,Home)")
+		xbmc.executebuiltin("ClearProperty(hasteam_twitter,Home)")
+		if self.youtube and self.youtube != 'None': xbmc.executebuiltin("SetProperty(hasteam_youtube,1,home)")
+		if self.instagram and self.instagram != 'None': xbmc.executebuiltin("SetProperty(hasteam_instagram,1,home)")
+		if self.twitter and self.twitter != 'None': xbmc.executebuiltin("SetProperty(hasteam_twitter,1,home)")
 
 	def setvideosview(self,):
 		ytuser = self.youtube.split('/')[-1]
