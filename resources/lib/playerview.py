@@ -204,8 +204,8 @@ class dialog_playerdetails(xbmcgui.WindowXMLDialog):
 			self.getControl(985).reset()
 			xbmc.executebuiltin( "ActivateWindow(busydialog)" )
 			self.image_array = get_recent_instagram_images(instauser)
-			for thumb,fullscreen in self.image_array:
-				image = xbmcgui.ListItem(thumb)
+			for caption,thumb,fullscreen in self.image_array:
+				image = xbmcgui.ListItem(caption.replace('\n',''))
 				image.setProperty('thumb',thumb)
 				image.setProperty('fullscreen',fullscreen)
 				self.getControl(985).addItem(image)

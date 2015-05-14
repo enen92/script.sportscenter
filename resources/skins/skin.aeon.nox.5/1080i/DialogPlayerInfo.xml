@@ -411,6 +411,15 @@
 						<bordersize>2</bordersize>
 						<colordiffuse>88ffffff</colordiffuse>
 					</control>
+					<control type="label">
+						<top>310</top>
+						<width>420</width>
+						<height>40</height>
+						<align>center</align>
+						<textoffsetx>10</textoffsetx>
+						<textcolor>grey2</textcolor>
+						<info>ListItem.Label</info>
+					</control>
 				</itemlayout>
 				<focusedlayout height="350" width="420">
 					<control type="group">
@@ -434,6 +443,15 @@
 							<texture>black.png</texture>
 							<bordersize>2</bordersize>
 							<colordiffuse>88ffffff</colordiffuse>
+						</control>
+						<control type="label">
+							<top>310</top>
+							<width>420</width>
+							<height>40</height>
+							<align>center</align>
+							<textoffsetx>10</textoffsetx>
+							<textcolor>grey2</textcolor>
+							<info>ListItem.Label</info>
 						</control>
 					</control>
 				</focusedlayout>

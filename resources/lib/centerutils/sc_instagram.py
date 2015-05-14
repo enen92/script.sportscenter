@@ -25,11 +25,11 @@ def get_recent_instagram_images(username):
 	for data in data_list:
  	   img_id = data["id"]
  	   url = 'https://api.instagram.com/v1/media/'+img_id+'?client_id=12838ddc295141b0b8243593c9ce3317'
- 	   print url
  	   img_data = json.load(urllib2.urlopen(url))["data"]
  	   lowres = img_data["images"]["low_resolution"]["url"]
 	   stdres = img_data["images"]["standard_resolution"]["url"]
- 	   image_array.append((lowres,stdres))
+	   caption = img_data["caption"]["text"]
+ 	   image_array.append((caption,lowres,stdres))
 
 	return image_array
 
