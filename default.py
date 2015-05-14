@@ -12,8 +12,6 @@
 # You should have received a copy of the GNU General Public License along with this program; 
 # if not, see <http://www.gnu.org/licenses/>.
 
-
-
 import xbmcplugin
 import xbmcgui
 import xbmc 
@@ -22,8 +20,6 @@ import os
 import sys
 from resources.lib import homemenu as home
 from resources.lib.centerutils.common_variables import *
-
-
 
 def get_params():
 	param=[]
@@ -76,6 +72,10 @@ else:
 		except: mode = 'plotview'
 		from resources.lib import playerview as playerview
 		playerview.start([player_id,mode])
+	elif params[0] == 'teamdetails':
+		team_id = params[1]
+		import teamview
+		teamview.teamdetails(team_id)
 		
 	#TODO - Finish modes
 
