@@ -21,12 +21,13 @@ import thesportsdb
 import teamview
 import playerview
 from centerutils.common_variables import *
+import eventdetails
+import soccermatchdetails
 
-#TODO wait for @zag
+dialog = xbmcgui.Dialog()
 
 def search(tipo,keyword):
 	if not tipo:
-		dialog = xbmcgui.Dialog()
 		options = ["Teams","Players","Events"]
 		options_translate = ["teams","players","events"]
 		ret = dialog.select("Search option", options)
@@ -53,9 +54,17 @@ def search(tipo,keyword):
 					team_id = thesportsdb.Teams().get_id(team_list[0])
 					teamview.teamdetails(team_id)
 				else:
-					pass
+					team_names = []
+					team_ids = []
+					for team in team_list:
+						team_id = thesportsdb.Teams().get_id(team)
+						team_name = thesportsdb.Teams().get_name(team)
+						team_names.append(team_name)
+						team_ids.append(team_id)
+					ret = dialog.select("Select team", team_names)
+					teamview.teamdetails(team_ids[ret])
 		elif selected == 'players':
-			players_list = thesportsdb.Search(tsdbkey).searchplayers(None,search_parameter)["players"]
+			players_list = thesportsdb.Search(tsdbkey).searchplayers(None,search_parameter)["player"]
 			if not players_list:
 				mensagemok('SportsCenter','No results!')
 			else:
@@ -63,16 +72,43 @@ def search(tipo,keyword):
 					player_id = thesportsdb.Players().get_id(players_list[0])
 					playerview.start([player_id,'plotview'])
 				else:
-					pass
+					player_names = []
+					player_ids = []
+					for player in players_list:
+						player_id = thesportsdb.Players().get_id(player)
+						player_name = thesportsdb.Players().get_name(player)
+						player_names.append(player_name)
+						player_ids.append(player_id)
+					ret = dialog.select("Select player", player_names)
+					playerview.start([player_ids[ret],'plotview'])
 		elif selected == 'events':
-			event_list = thesportsdb.Search(tsdbkey).searchevents(search_parameter,None)["events"]
+			event_list = thesportsdb.Search(tsdbkey).searchevents(search_parameter,None)["event"]
 			if not event_list:
 				mensagemok('SportsCenter','No results!')
 			else:
 				if len(event_list) == 1:
-					event_id = thesportsdb.Events().get_id(event_list[0])
-					#teamview.teamdetails(team_id)
+					event_id = thesportsdb.Events().get_eventid(event_list[0])
+					event_sport = thesportsdb.Events().get_sport(event_list[0])
+					if event_sport.lower() == 'soccer' or event_sport.lower() == 'football':
+						soccermatchdetails.start([False,event_id])
+					else:
+						eventdetails.start([event_id])
 				else:
-					pass
+					event_ids = []
+					event_names = []
+					event_sports = []
+					for event in event_list:
+						event_id = thesportsdb.Events().get_eventid(event)
+						event_name = thesportsdb.Events().get_eventtitle(event)
+						event_sport = thesportsdb.Events().get_sport(event)
+						event_ids.append(event_id)
+						event_names.append(event_name)
+						event_sports.append(event_sport)
+					ret = dialog.select("Select event", event_names)
+					sport = event_sports[ret]
+					if sport.lower() == 'soccer' or sport.lower() == 'football':
+						soccermatchdetails.start([False,event_ids[ret]])
+					else:
+						eventdetails.start([event_ids[ret]])
 	return
 				
