@@ -43,6 +43,8 @@ except: params = []
 
 if not params:
 	home.start(None)
+	#from resources.lib import soccermatchdetails
+	#soccermatchdetails.start([False,'441779'])
 else:
 	if params[0] == 'home':
 		home.start(None)

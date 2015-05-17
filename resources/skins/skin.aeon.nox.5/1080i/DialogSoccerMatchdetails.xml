@@ -677,8 +677,17 @@
 			</control>
 			<!-- -->
 			<!-- Team Members -->
+			<control type="image">
+				<description>panel to be filled</description>
+				<posx>1060</posx>
+				<posy>290</posy>
+				<width>760</width>
+				<height>566</height>
+				<texture border="5">dialogs/default/inner.png</texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
 			<control type="button" id="8">
-				<top>250</top>
+				<top>260</top>
 				<left>1070</left>
 				<label>[COLOR labelheader][CR][B]Squad:[/B][/COLOR]</label>
 				<width>729</width>
@@ -701,7 +710,7 @@
 			</control>
 			
 			<control type="button" id="8">
-				<top>250</top>
+				<top>260</top>
 				<left>1080</left>
 				<align>right</align>
 				<label>[COLOR labelheader][CR][B]Substitutes:[/B][/COLOR]</label>

@@ -4,6 +4,10 @@ import thesportsdb
 from centerutils.common_variables import *
 from centerutils.iofile import *
 from centerutils.onscreenutils import *
+import soccermatchdetails
+import teamview
+import tweetbuild as tweetbuild
+import tables as tables
 
 dialog = xbmcgui.Dialog()
 
@@ -22,6 +26,8 @@ class dialog_libconfig(xbmcgui.WindowXMLDialog):
 		self.awaytwitter = ''
 		self.league_id = ''
 		self.league_badge = ''
+		self.hometeam_id = ''
+		self.awayteam_id = ''
 
 	def onInit(self):
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
@@ -61,8 +67,9 @@ class dialog_libconfig(xbmcgui.WindowXMLDialog):
 			if xbmc.getCondVisibility('Player.HasMedia'):
 				has_media = True
 				if xbmc.Player().getPlayingFile() == settings.getSetting('last_played_channel'):
-					self.hometeambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.hometeam_id) + '.txt' ))))
-					self.awayteambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.awayteam_id) + '.txt' ))))
+					if self.hometeam_id and self.awayteam_id:
+						self.hometeambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.hometeam_id) + '.txt' ))))
+						self.awayteambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.awayteam_id) + '.txt' ))))
 				else:
 					if xbmc.getCondVisibility('Pvr.IsPlayingTv') or xbmc.getCondVisibility('Pvr.IsPlayingRadio'):
 						#get program title and plot
@@ -97,7 +104,7 @@ class dialog_libconfig(xbmcgui.WindowXMLDialog):
 			self.awayteambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.awayteam_id) + '.txt' ))))
 			self.hometwitter = thesportsdb.Teams().get_team_twitter(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.hometeam_id) + '.txt' ))))
 			self.awaytwitter = thesportsdb.Teams().get_team_twitter(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.awayteam_id) + '.txt' ))))
-			if self.league_id:
+			if self.league_id and self.league_id != 'None':
 				league_dict = thesportsdb.Lookups(tsdbkey).lookupleague(self.league_id)["leagues"][0]
 				self.league_badge = thesportsdb.Leagues().get_badge(league_dict)
 		
@@ -144,6 +151,18 @@ class dialog_libconfig(xbmcgui.WindowXMLDialog):
 		
 		return
 
+	def get_info_from_txt(self,):
+		if os.path.exists(onscreen_playingmatch):
+			matchinfo = eval(readfile(onscreen_playingmatch))
+			hometeamid = matchinfo['hometeamid']
+			awayteamid = matchinfo['awayteamid']
+			leagueid = matchinfo['league_id']
+			if 'matchtwitter' in matchinfo.keys():
+				matchtwitter = matchinfo['matchtwitter']
+			else:
+				matchtwitter = ''
+			return hometeamid,awayteamid,leagueid,matchtwitter
+
 	def onClick(self,controlId):	
 		if controlId == 983:
 			entry_id = self.getControl(controlId).getSelectedItem().getProperty('entryid')
@@ -152,22 +171,60 @@ class dialog_libconfig(xbmcgui.WindowXMLDialog):
 				livescores.start(None)
 			
 			elif entry_id == 'leaguetables':
-				import tables as tables
-				tables.start('4328')
-			
-			elif entry_id == 'hometwitter':
-				import tweetbuild as tweetbuild
-				tweetbuild.tweets(['user','sl_benfica'])
+				if os.path.exists(onscreen_playingmatch):
+					hometeamid,awayteamid,leagueid,matchtwitter = self.get_info_from_txt()
+					tables.start(leagueid)
 			
 			elif entry_id == 'matchtwitter':
-				import tweetbuild as tweetbuild
 				keyb = xbmc.Keyboard('#', 'Please write the hashtag to assign to this match')
 				keyb.doModal()
 				if (keyb.isConfirmed()):
 					hashtag = keyb.getText()
 					tweetbuild.tweets(['hash',hashtag])
-				#assign hash to match
 
+			elif entry_id == 'matchdetails':
+				if os.path.exists(onscreen_playingmatch):
+					hometeamid,awayteamid,leagueid,matchtwitter = self.get_info_from_txt()
+					event_list = thesportsdb.LiveScores(tsdbkey).latestsoccer()["teams"]["Match"]
+					if event_list:
+						for event in event_list:
+							home_event_id = thesportsdb.Livematch().get_home_id(event)
+							away_event_id = thesportsdb.Livematch().get_away_id(event)
+							if home_event_id == hometeamid and away_event_id == awayteamid:
+								home_event_name = thesportsdb.Livematch().get_home_name(event)
+								away_event_name = thesportsdb.Livematch().get_away_name(event)
+								event_string = home_event_name + '###' + away_event_name
+								soccermatchdetails.start([True,event_string])
+			
+			elif entry_id == 'homedetails':
+				if os.path.exists(onscreen_playingmatch):
+					hometeamid,awayteamid,leagueid,matchtwitter = self.get_info_from_txt()
+					teamview.teamdetails(hometeamid)
+			
+			elif entry_id == 'awaydetails':
+				if os.path.exists(onscreen_playingmatch):
+					hometeamid,awayteamid,leagueid,matchtwitter = self.get_info_from_txt()
+					teamview.teamdetails(awayteamid)
+					
+			elif entry_id == 'hometwitter':
+				if os.path.exists(onscreen_playingmatch):
+					hometeamid,awayteamid,leagueid,matchtwitter = self.get_info_from_txt()
+					teamdict = thesportsdb.Lookups(tsdbkey).lookupteam(hometeamid)["teams"][0]
+					hometwitter = thesportsdb.Teams().get_team_twitter(teamdict)
+					if hometwitter:
+						twitter_name = hometwitter.split('/')[-1]
+						tweetbuild.tweets(['user',twitter_name])
+						
+			elif entry_id == 'awaytwitter':
+				if os.path.exists(onscreen_playingmatch):
+					hometeamid,awayteamid,leagueid,matchtwitter = self.get_info_from_txt()
+					teamdict = thesportsdb.Lookups(tsdbkey).lookupteam(awayteamid)["teams"][0]
+					awaytwitter = thesportsdb.Teams().get_team_twitter(teamdict)
+					if awaytwitter:
+						twitter_name = awaytwitter.split('/')[-1]
+						tweetbuild.tweets(['user',twitter_name])
+						
+			
 			
 
 	

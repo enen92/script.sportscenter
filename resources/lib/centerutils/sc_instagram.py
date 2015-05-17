@@ -28,7 +28,8 @@ def get_recent_instagram_images(username):
  	   img_data = json.load(urllib2.urlopen(url))["data"]
  	   lowres = img_data["images"]["low_resolution"]["url"]
 	   stdres = img_data["images"]["standard_resolution"]["url"]
-	   caption = img_data["caption"]["text"]
+	   try:caption = img_data["caption"]["text"]
+	   except: caption = ''
  	   image_array.append((caption,lowres,stdres))
 
 	return image_array

@@ -102,47 +102,53 @@ def update_and_match_livescores(ch_title,ch_plot,mode):
 			try:	timestring = thesportsdb.Livematch().get_time(event)
 			except: timestring = ''
 			if timestring and 'finished' not in timestring.lower() and timestring.lower() != 'postponed' and timestring.lower() != 'not started':
-				event_home_id = thesportsdb.Livematch().get_home_id(event)
-				event_away_id = thesportsdb.Livematch().get_away_id(event)
-				if event_home_id:
-					ficheiro = os.path.join(onscreen_userdata_teams,str(event_home_id)+'.txt')
-					if not os.path.exists(ficheiro):
-						home_dict = thesportsdb.Lookups(tsdbkey).lookupteam(event_home_id)["teams"][0]
-						#define keyword array for home team
-						hometeam_name = thesportsdb.Teams().get_name(home_dict)
-						hometeam_alternative = thesportsdb.Teams().get_alternativename(home_dict)
-						team_keywords = []
-						if hometeam_name and hometeam_name != 'None': team_keywords.append(hometeam_name)
-						if hometeam_alternative and hometeam_alternative != 'None': team_keywords.append(hometeam_alternative)
-						event['homekeywords'] = team_keywords
-						save(ficheiro,str(home_dict))
-				if event_away_id:
-					ficheiro = os.path.join(onscreen_userdata_teams,str(event_away_id)+'.txt')
-					if not os.path.exists(ficheiro):
-						away_dict = thesportsdb.Lookups(tsdbkey).lookupteam(event_away_id)["teams"][0]
-						#define keyword array for home team
-						awayteam_name = thesportsdb.Teams().get_name(away_dict)
-						awayteam_alternative = thesportsdb.Teams().get_alternativename(away_dict)
-						team_keywords = []
-						if awayteam_name and awayteam_name != 'None': team_keywords.append(awayteam_name)
-						if awayteam_alternative and awayteam_alternative != 'None': team_keywords.append(awayteam_alternative)
-						event['awaykeywords'] = team_keywords
-						save(ficheiro,str(away_dict))	
-				livescores_list.append(event)
-			#TODO proper league determination - need  @ zag feature request
-			if home_dict and away_dict:
-				home_league_id = thesportsdb.Teams().get_league_id(home_dict)
-				away_league_id = thesportsdb.Teams().get_league_id(away_dict)
-				if home_league_id == away_league_id:
-					event_league_id = home_league_id
-					event['league_id'] = event_league_id
+				try:
+					event_home_id = thesportsdb.Livematch().get_home_id(event)
+					event_away_id = thesportsdb.Livematch().get_away_id(event)
+				except:
+					event_home_id = ''
+					event_away_id = ''
+				if event_home_id and event_home_id != '{}' and event_away_id and event_away_id != '{}':
+					print event_home_id,event_away_id
+					if event_home_id:
+						ficheiro = os.path.join(onscreen_userdata_teams,str(event_home_id)+'.txt')
+						if not os.path.exists(ficheiro):
+							home_dict = thesportsdb.Lookups(tsdbkey).lookupteam(event_home_id)["teams"][0]
+							#define keyword array for home team
+							hometeam_name = thesportsdb.Teams().get_name(home_dict)
+							hometeam_alternative = thesportsdb.Teams().get_alternativename(home_dict)
+							team_keywords = []
+							if hometeam_name and hometeam_name != 'None': team_keywords.append(hometeam_name)
+							if hometeam_alternative and hometeam_alternative != 'None': team_keywords.append(hometeam_alternative)
+							event['homekeywords'] = team_keywords
+							save(ficheiro,str(home_dict))
+					if event_away_id:
+						ficheiro = os.path.join(onscreen_userdata_teams,str(event_away_id)+'.txt')
+						if not os.path.exists(ficheiro):
+							away_dict = thesportsdb.Lookups(tsdbkey).lookupteam(event_away_id)["teams"][0]
+							#define keyword array for home team
+							awayteam_name = thesportsdb.Teams().get_name(away_dict)
+							awayteam_alternative = thesportsdb.Teams().get_alternativename(away_dict)
+							team_keywords = []
+							if awayteam_name and awayteam_name != 'None': team_keywords.append(awayteam_name)
+							if awayteam_alternative and awayteam_alternative != 'None': team_keywords.append(awayteam_alternative)
+							event['awaykeywords'] = team_keywords
+							save(ficheiro,str(away_dict))	
+					livescores_list.append(event)
+				#TODO proper league determination - need  @ zag feature request
+				if home_dict and away_dict:
+					home_league_id = thesportsdb.Teams().get_league_id(home_dict)
+					away_league_id = thesportsdb.Teams().get_league_id(away_dict)
+					if home_league_id == away_league_id:
+						event_league_id = home_league_id
+						event['league_id'] = event_league_id
 		#Save livescores
 		if livescores_list:
 			save(onscreen_livescores,str(livescores_list))
 		#Match match being watched
 		match_patterns_title = sc_scrapper.Parser().from_string_get_home_and_away_teams(ch_title,'short')
 		match_patterns_plot = sc_scrapper.Parser().from_string_get_home_and_away_teams(ch_plot,'full')
-		print match_patterns_title,match_patterns_plot
+		#print match_patterns_title,match_patterns_plot
 		
 		#the idea is to have a percentage of similarity for every home and away entry in the match patterns list. Then sum both and add it to the empty dictionary. The comparison is only made for len > 3 to avoid comparing rubish. Every home and away teams will be a key in the dictionary and their value will be the assigned event. Later we sort the dictionary keys is descending order and grab the higher value. If the value exceeds a X value we assume we found the match we are watching.
 		
@@ -174,9 +180,9 @@ def update_and_match_livescores(ch_title,ch_plot,mode):
 								ratio += difflib.SequenceMatcher(None, awayteam.lower(),keyword.lower() ).ratio()
 						if ratio>0.0: probability_dictionary[ratio] = event	
 					
-			for key in probability_dictionary:
-				print key
-				print thesportsdb.Livematch().get_home_name(probability_dictionary[key])
+			#for key in probability_dictionary:
+				#print key
+				#print thesportsdb.Livematch().get_home_name(probability_dictionary[key])
 			
 		if probability_dictionary:
 			if len(probability_dictionary.keys()) >= 1:
@@ -197,5 +203,6 @@ def update_and_match_livescores(ch_title,ch_plot,mode):
 
 		if mode == True:
 			xbmc.executebuiltin("ClearProperty(loading,Home)")
-			os.remove(loading_onscreenlock)
+			try:os.remove(loading_onscreenlock)
+			except:pass
 	return	

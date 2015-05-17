@@ -11,6 +11,8 @@ from centerutils.datemanipulation import *
 import competlist as competlist
 import teamview as teamview
 import contextmenubuilder
+import tweetbuild
+
 
 def start(data_list):
 	window = dialog_calendar('DialogCalendar.xml',addonpath,'Default',str(data_list))
