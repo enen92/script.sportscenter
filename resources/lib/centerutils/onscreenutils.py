@@ -32,8 +32,7 @@ class watcher:
 		self.videowatcher()
 
 	def videowatcher(self,):
-		#TODO proper service handling (xbmc.Monitor())
-		while 1:
+		while not xbmc.Monitor().abortRequested():
 			do_check = False
 			#Check time interval between checks
 			t2 = datetime.datetime.now()
@@ -79,10 +78,6 @@ def update_and_match_livescores(ch_title,ch_plot,mode):
 	home_dict = {}
 	away_dict = {}
 	event_league_id = ''
-	#
-	if mode == True:
-		xbmc.executebuiltin("SetProperty(loading,1,home)")
-		save(loading_onscreenlock,'')
 	#remove all files
 	if os.path.isfile(onscreen_livescores): os.remove(onscreen_livescores)
 	if os.path.isfile(onscreen_playingmatch): os.remove(onscreen_playingmatch)
@@ -114,25 +109,11 @@ def update_and_match_livescores(ch_title,ch_plot,mode):
 						ficheiro = os.path.join(onscreen_userdata_teams,str(event_home_id)+'.txt')
 						if not os.path.exists(ficheiro):
 							home_dict = thesportsdb.Lookups(tsdbkey).lookupteam(event_home_id)["teams"][0]
-							#define keyword array for home team
-							hometeam_name = thesportsdb.Teams().get_name(home_dict)
-							hometeam_alternative = thesportsdb.Teams().get_alternativename(home_dict)
-							team_keywords = []
-							if hometeam_name and hometeam_name != 'None': team_keywords.append(hometeam_name)
-							if hometeam_alternative and hometeam_alternative != 'None': team_keywords.append(hometeam_alternative)
-							event['homekeywords'] = team_keywords
 							save(ficheiro,str(home_dict))
 					if event_away_id:
 						ficheiro = os.path.join(onscreen_userdata_teams,str(event_away_id)+'.txt')
 						if not os.path.exists(ficheiro):
 							away_dict = thesportsdb.Lookups(tsdbkey).lookupteam(event_away_id)["teams"][0]
-							#define keyword array for home team
-							awayteam_name = thesportsdb.Teams().get_name(away_dict)
-							awayteam_alternative = thesportsdb.Teams().get_alternativename(away_dict)
-							team_keywords = []
-							if awayteam_name and awayteam_name != 'None': team_keywords.append(awayteam_name)
-							if awayteam_alternative and awayteam_alternative != 'None': team_keywords.append(awayteam_alternative)
-							event['awaykeywords'] = team_keywords
 							save(ficheiro,str(away_dict))	
 					livescores_list.append(event)
 				#TODO proper league determination - need  @ zag feature request
@@ -169,21 +150,14 @@ def update_and_match_livescores(ch_title,ch_plot,mode):
 						if ratio > 0.0: probability_dictionary[ratio] = event
 					
 				#Plot	
-				
 				if match_patterns_plot:
 					for hometeam,awayteam in match_patterns_plot:
-						for keyword in event['homekeywords']:
-							if len(hometeam) > 3:
-								ratio += difflib.SequenceMatcher(None, hometeam.lower(), keyword.lower()).ratio()
-						for keyword in event['awaykeywords']:
-							if len(awayteam) > 3:
-								ratio += difflib.SequenceMatcher(None, awayteam.lower(),keyword.lower() ).ratio()
+						home_team_event = thesportsdb.Events().get_hometeamname(event)
+						away_team_event = thesportsdb.Events().get_awayteamname(event)
+						ratio += difflib.SequenceMatcher(None, hometeam.lower(), home_team_event.lower()).ratio()
+						ratio += difflib.SequenceMatcher(None, awayteam.lower(), away_team_event.lower()).ratio()
 						if ratio>0.0: probability_dictionary[ratio] = event	
 					
-			#for key in probability_dictionary:
-				#print key
-				#print thesportsdb.Livematch().get_home_name(probability_dictionary[key])
-			
 		if probability_dictionary:
 			if len(probability_dictionary.keys()) >= 1:
 				ratios = []
@@ -201,8 +175,4 @@ def update_and_match_livescores(ch_title,ch_plot,mode):
 				txt = { 'hometeamid':hometeam_id,'awayteamid':awayteam_id,'league_id':league_id,'videofile':videofile }
 				save(onscreen_playingmatch,str(txt))
 
-		if mode == True:
-			xbmc.executebuiltin("ClearProperty(loading,Home)")
-			try:os.remove(loading_onscreenlock)
-			except:pass
 	return	

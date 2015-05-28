@@ -28,70 +28,29 @@ class dialog_libconfig(xbmcgui.WindowXMLDialog):
 		self.league_badge = ''
 		self.hometeam_id = ''
 		self.awayteam_id = ''
+		self.matchtwitter = ''
 
 	def onInit(self):
 		xbmc.executebuiltin("ClearProperty(loading,Home)")
-		has_media = False
 		if os.path.exists(onscreen_playingmatch):
 			match = eval(readfile(onscreen_playingmatch))
-			self.hometeam_id = match['hometeamid']
-			self.awayteam_id = match['awayteamid']
-			self.playingfile = match['videofile']
-			self.league_id = match['league_id']
-			if xbmc.getCondVisibility('Player.HasMedia'):
-				has_media = True
-				if xbmc.Player().getPlayingFile() == self.playingfile:
-					self.hometeambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.hometeam_id) + '.txt' ))))
-					self.awayteambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.awayteam_id) + '.txt' ))))
-				else:
-					if xbmc.getCondVisibility('Pvr.IsPlayingTv') or xbmc.getCondVisibility('Pvr.IsPlayingRadio'):
-						#get program title and plot
-						active_players = xbmc.executeJSONRPC('{"jsonrpc":"2.0","id":1,"method":"Player.GetActivePlayers","params":[]}')
-						try: playerid = json.loads(active_players)['result'][0]['playerid']
-						except: playerid = ''
-						if playerid:
-							curr_item = xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "plot", "streamdetails"], "playerid":'+str(playerid)+' }, "id": 1 }')
-							try: ch_plot = json.loads(curr_item)['result']['item']['plot']	# plot of the channel program being played
-							except: ch_plot = ''
-							try: ch_title = json.loads(curr_item)['result']['item']['title']	# title of the channel program being played
-							except: ch_title = ''
-							if ch_title and ch_title != settings.getSetting('last_played_programtitle'): do_check = True
-					else:
-						#TODO
-						ch_title = 'coiso'
-						ch_plot = 'coiso'
-					update_and_match_livescores(ch_title,ch_plot,True)
-			else:
-				has_media = False	
-		else:
-			if xbmc.getCondVisibility('Player.HasMedia'):
-				has_media = True
-				if xbmc.Player().getPlayingFile() == settings.getSetting('last_played_channel'):
-					if self.hometeam_id and self.awayteam_id:
-						self.hometeambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.hometeam_id) + '.txt' ))))
-						self.awayteambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.awayteam_id) + '.txt' ))))
-				else:
-					if xbmc.getCondVisibility('Pvr.IsPlayingTv') or xbmc.getCondVisibility('Pvr.IsPlayingRadio'):
-						#get program title and plot
-						active_players = xbmc.executeJSONRPC('{"jsonrpc":"2.0","id":1,"method":"Player.GetActivePlayers","params":[]}')
-						try: playerid = json.loads(active_players)['result'][0]['playerid']
-						except: playerid = ''
-						if playerid:
-							curr_item = xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "plot", "streamdetails"], "playerid":'+str(playerid)+' }, "id": 1 }')
-							try: ch_plot = json.loads(curr_item)['result']['item']['plot']	# plot of the channel program being played
-							except: ch_plot = ''
-							try: ch_title = json.loads(curr_item)['result']['item']['title']	# title of the channel program being played
-							except: ch_title = ''
-							if ch_title and ch_title != settings.getSetting('last_played_programtitle'): do_check = True
-					else:
-						#TODO
-						ch_title = 'coiso'
-						ch_plot = 'coiso'
-					update_and_match_livescores(ch_title,ch_plot,True)
-			else:
-				has_media = False
-		while os.path.exists(loading_onscreenlock):
-			xbmc.sleep(200)
+			try: self.hometeam_id = match['hometeamid']
+			except: pass
+			try: self.awayteam_id = match['awayteamid']
+			except: pass
+			try:	self.playingfile = match['videofile']
+			except: pass
+			try: self.league_id = match['league_id']
+			except: pass
+			try: 
+				self.matchtwitter = match['matchtwitter']
+				if self.matchtwitter:
+					if xbmc.Player().isPlaying():
+						if self.playingfile != xbmc.Player().getPlayingFile():
+							self.matchtwitter = ''
+					else: self.matchtwitter = ''
+			except: pass
+			
 		self.set_menu()
 		
 		
@@ -100,10 +59,15 @@ class dialog_libconfig(xbmcgui.WindowXMLDialog):
 		menu = []
 		
 		if os.path.exists(onscreen_playingmatch):
-			self.hometeambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.hometeam_id) + '.txt' ))))
-			self.awayteambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.awayteam_id) + '.txt' ))))
-			self.hometwitter = thesportsdb.Teams().get_team_twitter(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.hometeam_id) + '.txt' ))))
-			self.awaytwitter = thesportsdb.Teams().get_team_twitter(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.awayteam_id) + '.txt' ))))
+			try: self.hometeambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.hometeam_id) + '.txt' ))))
+			except: pass
+			try: self.awayteambadge = thesportsdb.Teams().get_badge(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.awayteam_id) + '.txt' ))))
+			except: pass
+			try: self.hometwitter = thesportsdb.Teams().get_team_twitter(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.hometeam_id) + '.txt' ))))
+			except: pass
+			try: self.awaytwitter = thesportsdb.Teams().get_team_twitter(eval(readfile(os.path.join(onscreen_userdata_teams,str(self.awayteam_id) + '.txt' ))))
+			except: pass
+			
 			if self.league_id and self.league_id != 'None':
 				league_dict = thesportsdb.Lookups(tsdbkey).lookupleague(self.league_id)["leagues"][0]
 				self.league_badge = thesportsdb.Leagues().get_badge(league_dict)
@@ -176,11 +140,24 @@ class dialog_libconfig(xbmcgui.WindowXMLDialog):
 					tables.start(leagueid)
 			
 			elif entry_id == 'matchtwitter':
-				keyb = xbmc.Keyboard('#', 'Please write the hashtag to assign to this match')
-				keyb.doModal()
-				if (keyb.isConfirmed()):
-					hashtag = keyb.getText()
-					tweetbuild.tweets(['hash',hashtag])
+				if self.matchtwitter:
+					tweetbuild.tweets(['hash',self.matchtwitter])
+				else:
+					keyb = xbmc.Keyboard('#', 'Please write the hashtag to assign to this match')
+					keyb.doModal()
+					if (keyb.isConfirmed()):
+						hashtag = keyb.getText()
+						#save if playing
+						if xbmc.Player().isPlaying():
+							playingfile = xbmc.Player().getPlayingFile()
+							if os.path.exists(onscreen_playingmatch):
+								matchinfo = eval(readfile(onscreen_playingmatch))
+							else:
+								matchinfo = {}
+							matchinfo['matchtwitter'] = hashtag
+							matchinfo['videofile'] = playingfile
+							save(onscreen_playingmatch,str(matchinfo))
+						tweetbuild.tweets(['hash',hashtag])
 
 			elif entry_id == 'matchdetails':
 				if os.path.exists(onscreen_playingmatch):
@@ -223,9 +200,4 @@ class dialog_libconfig(xbmcgui.WindowXMLDialog):
 					if awaytwitter:
 						twitter_name = awaytwitter.split('/')[-1]
 						tweetbuild.tweets(['user',twitter_name])
-						
-			
-			
-
 	
-		
