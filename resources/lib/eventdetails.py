@@ -59,7 +59,7 @@ class dialog_eventdetails(xbmcgui.WindowXMLDialog):
 		self.map = thesportsdb.Events().get_map(self.event_dict)
 		
 		
-		if self.sport.lower() != 'motorsport':
+		if self.sport.lower() != 'motorsport' and self.sport.lower() != 'golf':
 			#Set motorsport stuff visible false
 			self.getControl(772).setVisible(False)
 			self.getControl(773).setVisible(False)
@@ -147,15 +147,21 @@ class dialog_eventdetails(xbmcgui.WindowXMLDialog):
 			if self.map and self.map != 'None':
 				xbmc.executebuiltin("SetProperty(has_map,1,home)")
 			
-			self.getControl(776).setImage(os.path.join(addonpath,art,'raceflag.png'))
+			if self.sport.lower() == 'motorsport':
+				self.getControl(776).setImage(os.path.join(addonpath,art,'raceflag.png'))
+			elif self.sport.lower() == 'golf':
+				self.getControl(776).setImage(os.path.join(addonpath,art,'golf.png'))
 			self.event_name = thesportsdb.Events().get_eventtitle(self.event_dict)
 			self.getControl(775).setText(self.event_name)
 			self.race_circuit = thesportsdb.Events().get_racecircuit(self.event_dict)
-			self.getControl(772).setLabel('[COLOR labelheader]Race Circuit:[/COLOR][CR]' + self.race_circuit)
+			try: self.getControl(772).setLabel('[COLOR labelheader]Race Circuit:[/COLOR][CR]' + self.race_circuit)
+			except: pass
 			self.race_location = thesportsdb.Events().get_racelocation(self.event_dict)
-			self.getControl(773).setLabel('[COLOR labelheader]Race Location:[/COLOR][CR]' + self.race_location)
+			try:self.getControl(773).setLabel('[COLOR labelheader]Race Location:[/COLOR][CR]' + self.race_location)
+			except: pass
 			self.race_country = thesportsdb.Events().get_racecountry(self.event_dict)
-			self.getControl(774).setLabel('[COLOR labelheader]Race Country:[/COLOR][CR]' + self.race_country)
+			try: self.getControl(774).setLabel('[COLOR labelheader]Race Country:[/COLOR][CR]' + self.race_country)
+			except: pass
 		
 		
 		#COMMON STUFF TO ALL SPORTS

@@ -585,6 +585,7 @@ class dialog_league(xbmcgui.WindowXML):
 				event_race = thesportsdb.Events().get_racelocation(event)
 				event_id = thesportsdb.Events().get_eventid(event)
 				event_fanart = thesportsdb.Events().get_fanart(event)
+				event_sport = thesportsdb.Events().get_sport(event)
 				
 				event_datetime = thesportsdb.Events().get_datetime_object(event)
 				if event_datetime:
@@ -592,8 +593,11 @@ class dialog_league(xbmcgui.WindowXML):
 					db_time = pytz.timezone(str(pytz.timezone(tsdbtimezone))).localize(event_datetime)
 					event_datetime=db_time.astimezone(my_location)
 				
-				if event_race:
-					home_team_logo = os.path.join(addonpath,art,'raceflag.png')
+				if event_sport.lower() == 'motorsport' or event_sport.lower() == 'golf':
+					if event_sport.lower() == 'motorsport':
+						home_team_logo = os.path.join(addonpath,art,'raceflag.png')
+					elif event_sport.lower() == 'golf':
+						home_team_logo = os.path.join(addonpath,art,'golf.png')
 					event_name = thesportsdb.Events().get_eventtitle(event)
 					event_round = ''
 				else:
@@ -662,7 +666,7 @@ class dialog_league(xbmcgui.WindowXML):
 				game = xbmcgui.ListItem(event_fullname)
 				game.setProperty('HomeTeamLogo',home_team_logo)
 				game.setProperty('event_id',event_id)
-				if not event_race:
+				if event_sport.lower() != 'golf' and event_sport.lower() != 'motorsport':
 					if ' ' in home_team_name:
 						if len(home_team_name) > 12: game.setProperty('HomeTeamLong',home_team_name)
 						else: game.setProperty('HomeTeamShort',home_team_name)
