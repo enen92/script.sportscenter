@@ -30,6 +30,7 @@ def get_recent_instagram_images(username):
 	   stdres = img_data["images"]["standard_resolution"]["url"]
 	   try:caption = img_data["caption"]["text"]
 	   except: caption = ''
+	   print stdres
  	   image_array.append((caption,lowres,stdres))
 
 	return image_array

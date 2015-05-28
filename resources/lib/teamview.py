@@ -21,6 +21,7 @@ from centerutils.youtube import *
 from centerutils.rssparser import *
 from centerutils.datemanipulation import *
 from centerutils.sc_instagram import *
+from centerutils import instagramviewer
 import competlist as competlist
 import soccermatchdetails as soccermatchdetails
 import eventdetails as eventdetails
@@ -369,6 +370,10 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 			player_id = self.getControl(987).getSelectedItem().getProperty('player_id')
 			playerview.start([player_id,'plotview'])
 			
+		elif controlId == 985:
+			image_std = self.getControl(985).getSelectedItem().getProperty('fullscreen')
+			image_description = self.getControl(985).getSelectedItem().getLabel()
+			instagramviewer.start(str([image_std,image_description]))
 			
 
 
