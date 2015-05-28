@@ -2,10 +2,12 @@
 <window>
 	<onload>SetProperty(Window.HasSettings,True,home)</onload>
 	<onload>ClearProperty(MediaMenu,Home)</onload>
+	<onunload>ClearProperty(has_results,Home)</onunload>
+	<onunload>ClearProperty(has_map,Home)</onunload>
 	<onload>setFocus(9022)</onload>
 	<onunload>ClearProperty(Window.HasSettings,Home)</onunload>
 	<allowoverlay>no</allowoverlay>
-	<defaultcontrol always="true">9024</defaultcontrol>
+	<defaultcontrol always="true">9025</defaultcontrol>
 	<controls>
 		<!-- Background!-->
 		<control type="group">
@@ -240,14 +242,14 @@
 				<description>Event Thumb</description>
 				<left>82</left>
 				<top>432</top>
-				<width>780</width>
+				<width>850</width>
 				<height>523</height>
 				<texture></texture>
 			</control>
 			<control type="textbox" id="795">
-				<left>880</left>
+				<left>940</left>
 				<top>436</top>
-				<width>907</width>
+				<width>867</width>
 				<height>512</height>
 				<label></label>
 				<pagecontrol>67</pagecontrol>
@@ -271,7 +273,7 @@
 			<control type="button" id="9023">
 				<top>979</top>
 				<left>320</left>
-				<label>Side-by-side</label>
+				<label>Results</label>
 				<textoffsetx>0</textoffsetx>
 				<width>250</width>
 				<height>61</height>
@@ -282,7 +284,7 @@
 				<onleft>9026</onleft>
 				<onright>9024</onright>
 				<onup>67</onup>
-				<visible></visible>
+				<enable>!IsEmpty(Window(home).Property(has_results))</enable>
 				<animation type="Visible">
 					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
 					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
@@ -293,9 +295,10 @@
 				</animation>
 			</control>
 			<control type="button" id="9024">
+				<description>Stadium or map</description>
 				<top>979</top>
 				<left>620</left>
-				<label>Location</label>
+				<label></label>
 				<textoffsetx>0</textoffsetx>
 				<width>250</width>
 				<height>61</height>
@@ -306,7 +309,7 @@
 				<onleft>9023</onleft>
 				<onright>9025</onright>
 				<onup>67</onup>
-				<visible></visible>
+				<enable>!IsEmpty(Window(home).Property(has_map))</enable>
 				<animation type="Visible">
 					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
 					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />

@@ -43,7 +43,7 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 		threading.Thread(name='livescoreupdater', target=self.livescore_updthrd).start()
 		number_of_items = self.getControl(987).size()
 		if number_of_items <= 0:
-			xbmc.executebuiltin("SetProperty(loading,1,home)")
+			xbmc.executebuiltin("SetProperty(loadinglivescores,1,home)")
 			self.fill_livescores()
 		
 	def livescore_updthrd(self,):
@@ -222,7 +222,7 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 					
 				except: pass
 			self.getControl(987).reset
-			xbmc.executebuiltin("ClearProperty(loading,Home)")
+			xbmc.executebuiltin("ClearProperty(loadinglivescores,Home)")
 			
 			#iterate to all different lists to add the events by order of progress
 			if items_in_progress:
@@ -241,7 +241,7 @@ class dialog_livescores(xbmcgui.WindowXMLDialog):
 			self.getControl(987).selectItem(1)
 		else:
 			print "no matches"
-			xbmc.executebuiltin("ClearProperty(loading,Home)")
+			xbmc.executebuiltin("ClearProperty(loadinglivescores,Home)")
 			self.getControl(93).setLabel('No matches!')
 		return
 

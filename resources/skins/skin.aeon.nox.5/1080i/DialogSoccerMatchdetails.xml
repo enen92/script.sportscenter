@@ -4,6 +4,9 @@
 	<onload>ClearProperty(MediaMenu,Home)</onload>
 	<onload>setFocus(9022)</onload>
 	<onunload>ClearProperty(Window.HasSettings,Home)</onunload>
+	<onunload>ClearProperty(has_plot,Home)</onunload>
+	<onunload>ClearProperty(has_home_lineup,Home)</onunload>
+	<onunload>ClearProperty(has_away_lineup,Home)</onunload>
 	<allowoverlay>no</allowoverlay>
 	<controls>
 		<!-- Background!-->
@@ -483,6 +486,7 @@
 				<onright>9023</onright>
 				<onup>987</onup>
 				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+				<enable>!IsEmpty(Window(home).Property(has_home_lineup))</enable>
 				<animation type="Visible">
 					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
 					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
@@ -507,6 +511,7 @@
 				<onright>9024</onright>
 				<onup>987</onup>
 				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+				<enable>!IsEmpty(Window(home).Property(has_away_lineup))</enable>
 				<animation type="Visible">
 					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
 					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
@@ -555,6 +560,7 @@
 				<onright>9026</onright>
 				<onup>988</onup>
 				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+				<enable>!IsEmpty(Window(home).Property(has_plot))</enable>
 				<animation type="Visible">
 					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
 					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
@@ -576,7 +582,7 @@
 				<textcolor>grey</textcolor>
 				<shadowcolor>shadow</shadowcolor>
 				<onleft>9025</onleft>
-				<onright>9027</onright>
+				<onright>9029</onright>
 				<onup>988</onup>
 				<visible>!IsEmpty(Window(home).Property(detail))</visible>
 				<animation type="Visible">
@@ -588,7 +594,7 @@
 					<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
 				</animation>
 			</control>
-			<control type="button" id="9027">
+			<control type="button" id="9029">
 				<top>979</top>
 				<left>1490</left>
 				<label>Search Full Match(!)</label>
@@ -682,7 +688,7 @@
 				<posx>1060</posx>
 				<posy>290</posy>
 				<width>760</width>
-				<height>566</height>
+				<height>610</height>
 				<texture border="5">dialogs/default/inner.png</texture>
 				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
 			</control>
@@ -694,21 +700,139 @@
 				<include>ShowCaseInfoPanelButtonsValues</include>
 				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
 			</control>
-			<control type="textbox" id="32150">
-				<description>starting 11</description>
-				<posx>1080</posx>
-				<posy>350</posy>
-				<width>550</width>
-				<height>500</height>
-				<label></label>
-				<wrapmultiline>true</wrapmultiline>
-				<font>font16</font>
-				<align>left</align>
-				<textcolor>white</textcolor>
-				<shadowcolor>AA000000</shadowcolor>
+			<control type="panel" id="32151">
+				<posx>1440</posx>
+				<posy>345</posy>
+				<width>374</width>
+				<height>552</height>
+				<onleft>32150</onleft>
+				<onup>600</onup>
+				<ondown>9027</ondown>
+				<viewtype>icon</viewtype>
+				<pagecontrol>61</pagecontrol>
+				<scrolltime>100</scrolltime>
+				<preloaditems>1</preloaditems>
+				<orientation>vertical</orientation>
 				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+				<itemlayout height="50" width="374">
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>374</width>
+						<height>45</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="label">
+						<description>Team name presented on panel right</description>
+						<posx>45</posx>
+						<posy>12</posy>
+						<width>310</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Label]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16</font>
+						<align>right</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+				</itemlayout>	
+				<focusedlayout height="50" width="374">
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>374</width>
+						<height>45</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>374</width>
+						<height>45</height>
+						<texture border="5">listselect_fo.png</texture>
+					</control>
+					<control type="label">
+						<description>Team name presented on panel right</description>
+						<posx>45</posx>
+						<posy>12</posy>
+						<width>310</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Label]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16</font>
+						<align>right</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+				</focusedlayout>
 			</control>
-			
+			<control type="panel" id="32150">
+				<posx>1060</posx>
+				<posy>345</posy>
+				<width>374</width>
+				<height>552</height>
+				<onright>32151</onright>
+				<onup>600</onup>
+				<ondown>9027</ondown>
+				<viewtype>icon</viewtype>
+				<pagecontrol>61</pagecontrol>
+				<scrolltime>100</scrolltime>
+				<preloaditems>1</preloaditems>
+				<orientation>vertical</orientation>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+				<itemlayout height="50" width="374">
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>374</width>
+						<height>45</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="label">
+						<description>Team name presented on panel right</description>
+						<posx>15</posx>
+						<posy>12</posy>
+						<width>330</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Label]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16</font>
+						<align>left</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+				</itemlayout>	
+				<focusedlayout height="50" width="374">
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>374</width>
+						<height>45</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>374</width>
+						<height>45</height>
+						<texture border="5">listselect_fo.png</texture>
+					</control>
+					<control type="label">
+						<description>Team name presented on panel right</description>
+						<posx>15</posx>
+						<posy>12</posy>
+						<width>330</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Label]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16</font>
+						<align>left</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+				</focusedlayout>
+			</control>
+		
 			<control type="button" id="8">
 				<top>260</top>
 				<left>1080</left>
@@ -719,25 +843,10 @@
 				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
 			</control>
 			
-			<control type="textbox" id="32151">
-				<description>subs</description>
-				<posx>1240</posx>
-				<posy>350</posy>
-				<width>550</width>
-				<height>500</height>
-				<label></label>
-				<wrapmultiline>true</wrapmultiline>
-				<font>font16</font>
-				<align>right</align>
-				<textcolor>white</textcolor>
-				<shadowcolor>AA000000</shadowcolor>
-				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
-			</control>
-			
 			<control type="textbox" id="311">
-				<description>awayteamshort</description>
+				<description>coach</description>
 				<posx>1180</posx>
-				<posy>865</posy>
+				<posy>915</posy>
 				<width>550</width>
 				<height>60</height>
 				<label></label>
@@ -2607,7 +2716,7 @@
 			
 
 			<control type="button" id="9027">
-				<top>949</top>
+				<top>969</top>
 				<left>1090</left>
 				<label></label>
 				<textoffsetx>0</textoffsetx>
@@ -2617,6 +2726,7 @@
 				<font>font14</font>
 				<textcolor>grey</textcolor>
 				<shadowcolor>shadow</shadowcolor>
+				<onup>32150</onup>
 				<onleft>9028</onleft>
 				<onright>9028</onright>
 				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
@@ -2630,7 +2740,7 @@
 				</animation>
 			</control>
 			<control type="button" id="9028">
-				<top>949</top>
+				<top>969</top>
 				<left>1480</left>
 				<label>Back to match</label>
 				<textoffsetx>0</textoffsetx>
@@ -2640,6 +2750,7 @@
 				<font>font14</font>
 				<textcolor>grey</textcolor>
 				<shadowcolor>shadow</shadowcolor>
+				<onup>32150</onup>
 				<onleft>9027</onleft>
 				<onright>9027</onright>
 				<visible>!IsEmpty(Window(home).Property(lineup))</visible>

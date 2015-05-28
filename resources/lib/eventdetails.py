@@ -1,4 +1,17 @@
 # -*- coding: utf-8 -*-
+# Copyright (C) 2015 enen92
+#
+# This program is free software; you can redistribute it and/or modify it under the terms 
+# of the GNU General Public License as published by the Free Software Foundation; 
+# either version 2 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with this program; 
+# if not, see <http://www.gnu.org/licenses/>.
+
 import xbmc
 import xbmcgui
 import xbmcaddon
@@ -10,9 +23,7 @@ import urllib
 from random import randint
 from centerutils.common_variables import *
 from centerutils.datemanipulation import *
-
-			
-
+import imageviewer as imageviewer
 
 def start(data_list):
 	window = dialog_eventdetails('DialogEventdetails.xml',addonpath,'Default',str(data_list))
@@ -29,6 +40,7 @@ class dialog_eventdetails(xbmcgui.WindowXMLDialog):
 
 				
 	def event_details(self,event):
+		self.is_plot = True
 		self.event_dict = thesportsdb.Lookups(tsdbkey).lookupevent(event)["events"]
 		if self.event_dict and self.event_dict != 'None':
 			self.event_dict = self.event_dict[0]
@@ -39,11 +51,28 @@ class dialog_eventdetails(xbmcgui.WindowXMLDialog):
 		self.league_id = thesportsdb.Events().get_leagueid(self.event_dict)
 		self.league_dict = thesportsdb.Lookups(tsdbkey).lookupleague(self.league_id)["leagues"][0]
 		
+		#Check if event has extended results & map
+		self.results = thesportsdb.Events().get_result(self.event_dict)
+		if self.results and self.results != 'None':
+			xbmc.executebuiltin("SetProperty(has_results,1,home)")
+			
+		self.map = thesportsdb.Events().get_map(self.event_dict)
+		
+		
 		if self.sport.lower() != 'motorsport':
 			#Set motorsport stuff visible false
 			self.getControl(772).setVisible(False)
 			self.getControl(773).setVisible(False)
 			self.getControl(774).setVisible(False)
+			
+			if self.sport.lower() != 'golf':
+				self.getControl(9024).setLabel('Stadium')
+				xbmc.executebuiltin("SetProperty(has_map,1,home)")
+			else:
+				self.getControl(9024).setLabel('Map')
+				if self.map and self.map != 'None':
+					xbmc.executebuiltin("SetProperty(has_map,1,home)")
+			
 			
 			#Teams dict
 			self.hometeam_id = thesportsdb.Events().get_hometeamid(self.event_dict)
@@ -114,6 +143,10 @@ class dialog_eventdetails(xbmcgui.WindowXMLDialog):
 		else:
 			#motorsport stuff
 			self.getControl(790).setVisible(False)
+			self.getControl(9024).setLabel('Map')
+			if self.map and self.map != 'None':
+				xbmc.executebuiltin("SetProperty(has_map,1,home)")
+			
 			self.getControl(776).setImage(os.path.join(addonpath,art,'raceflag.png'))
 			self.event_name = thesportsdb.Events().get_eventtitle(self.event_dict)
 			self.getControl(775).setText(self.event_name)
@@ -172,18 +205,27 @@ class dialog_eventdetails(xbmcgui.WindowXMLDialog):
 
 	def onClick(self,controlId):
 
-		if controlId == 9022:
-			self.event_lineup(self.event_dict,"home")
-			
-		elif controlId == 9023:
-			self.event_lineup(self.event_dict,"away")
+		if controlId == 9023:
+			if self.is_plot:
+				self.getControl(795).setText(self.results)
+				self.getControl(9023).setLabel('Plot')
+				self.is_plot = False
+			else:
+				self.getControl(795).setText(self.plot)
+				self.getControl(9023).setLabel('Results')
+				self.is_plot = True
 			
 		elif controlId == 9024:
-			#stadium
-			import stadium as stadium
-			stadium_hometeam = thesportsdb.Teams().get_stadium(self.hometeam_dict)
-			if stadium_hometeam == self.stadium:
-				stadium.start(self.hometeam_dict)
+			if self.sport.lower() == 'motorsport' or self.sport.lower() == 'golf':
+				#map
+				self.map = thesportsdb.Events().get_map(self.event_dict)
+				imageviewer.view_images(str([self.map]))
+			else:
+				#stadium
+				import stadium as stadium
+				stadium_hometeam = thesportsdb.Teams().get_stadium(self.hometeam_dict)
+				if stadium_hometeam == self.stadium:
+					stadium.start(self.hometeam_dict)
 			
 			
 		elif controlId == 9027:

@@ -19,6 +19,7 @@ import xbmcplugin
 import thesportsdb
 import datetime
 import re
+from search import *
 from centerutils.common_variables import *
 from centerutils.datemanipulation import *
 
@@ -46,6 +47,8 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 			self.home_team = event_list[0]
 			self.away_team = event_list[1]
 			self.livescores = thesportsdb.LiveScores(tsdbkey).latestsoccer()["teams"]["Match"]
+			if type(self.livescores) == dict:
+				self.livescores = [self.livescores]
 			for match in self.livescores:
 				home_team = thesportsdb.Livematch().get_home_name(match)
 				away_team = thesportsdb.Livematch().get_away_name(match)
@@ -171,24 +174,34 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 					self.subs.append(player)
 				
 		#set lineup and subs info
-		lineup = str(self.goalkeeper) + '[CR]'
-		if self.defenders:
+		lineup_list = []
+		if self.goalkeeper and self.goalkeeper != 'None':
+			item = xbmcgui.ListItem(self.goalkeeper + ' (GK)')
+			lineup_list.append(item)
+		if self.defenders and self.defenders != 'None':
 			for player in self.defenders:
-				lineup = lineup + player + '[CR]'
+				lineup_list.append(xbmcgui.ListItem(player))
 		if self.midfielders:
 			for player in self.midfielders:
-				lineup = lineup + player + '[CR]'
+				lineup_list.append(xbmcgui.ListItem(player))
 		if self.forwarders:
 			for player in self.forwarders:
-				lineup = lineup + player + '[CR]'
-		
-		subs = ''
+				lineup_list.append(xbmcgui.ListItem(player))
+				
+		subs_list = []
 		if self.subs:
 			for player in self.subs:
-				subs = subs + player + '[CR]'
-
-		self.getControl(32150).setText(lineup)
-		self.getControl(32151).setText(subs)
+				item = xbmcgui.ListItem(player)
+				subs_list.append(item)
+		
+		self.getControl(32150).reset()
+		self.getControl(32151).reset()
+		
+		if lineup_list:
+			self.getControl(32150).addItems(lineup_list)
+			
+		if subs_list:
+			self.getControl(32151).addItems(subs_list)
 		
 		#set goalkeeper
 		self.getControl(32000).setImage(self.jersey)
@@ -1172,6 +1185,24 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 		else: self.awayteam_name = thesportsdb.Teams().get_alternativefirst(self.awayteam_dict)
 		self.getControl(784).setText('[B]%s[/B]' % (self.hometeam_name))
 		self.getControl(785).setText('[B]%s[/B]' % (self.awayteam_name))
+		
+		#Check if formations are available
+		if self.is_live == False:
+			home_formation = thesportsdb.Events().get_homeformation(self.event_dict)
+			away_formation = thesportsdb.Events().get_awayformation(self.event_dict)
+			has_plot = thesportsdb.Events().get_plot(self.event_dict)
+		else:
+			home_formation = thesportsdb.Livematch().get_homeformation(self.event_dict)
+			away_formation = thesportsdb.Livematch().get_awayformation(self.event_dict)
+			has_plot = ''
+		if home_formation and home_formation != {}:
+			xbmc.executebuiltin("SetProperty(has_home_lineup,1,home)")
+		if away_formation and away_formation != {}:
+			xbmc.executebuiltin("SetProperty(has_away_lineup,1,home)")
+		if has_plot and has_plot != None and has_plot != 'None':
+			xbmc.executebuiltin("SetProperty(has_plot,1,home)")
+			
+
 			
 		#event stadium and spectactors
 		self.stadium = thesportsdb.Teams().get_stadium(self.hometeam_dict)
@@ -1261,6 +1292,10 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 		if self.is_live == False:
 			self.home_shots = thesportsdb.Events().get_homeshots(self.event_dict)
 			self.away_shots = thesportsdb.Events().get_awayshots(self.event_dict)
+			try:
+				if str(self.home_shots) == '0' and str(self.home_scored) != '0': self.home_shots = 'None'
+				if str(self.away_shots) == '0' and str(self.away_scored) != '0': self.away_shots = 'None'
+			except: pass
 		else:
 			self.home_shots = 'None'
 			self.away_shots = 'None'
@@ -1444,6 +1479,11 @@ class dialog_matchdetails(xbmcgui.WindowXMLDialog):
 				self.event_details(self.event_id)
 			else:
 				self.event_details(self.live_dict)
+				
+		elif controlId == 32150 or controlId == 32151:
+			player = self.getControl(controlId).getSelectedItem().getLabel().replace(' (GK)','')
+			search('players',player)
+			
 			
 	
 		

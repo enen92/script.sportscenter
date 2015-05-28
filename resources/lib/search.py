@@ -33,7 +33,7 @@ def search(tipo,keyword):
 		ret = dialog.select("Search option", options)
 	else:
 		selected = tipo
-		search_parameter = keyword
+		search_parameter = urllib.quote(keyword)
 		ret = 1
 	if ret > -1:
 		if not tipo:
