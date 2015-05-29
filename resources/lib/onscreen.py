@@ -176,12 +176,12 @@ class dialog_libconfig(xbmcgui.WindowXMLDialog):
 			elif entry_id == 'homedetails':
 				if os.path.exists(onscreen_playingmatch):
 					hometeamid,awayteamid,leagueid,matchtwitter = self.get_info_from_txt()
-					teamview.teamdetails(hometeamid)
+					teamview.teamdetails(str([hometeamid,'plotview']))
 			
 			elif entry_id == 'awaydetails':
 				if os.path.exists(onscreen_playingmatch):
 					hometeamid,awayteamid,leagueid,matchtwitter = self.get_info_from_txt()
-					teamview.teamdetails(awayteamid)
+					teamview.teamdetails(str([awayteamid,'plotview']))
 					
 			elif entry_id == 'hometwitter':
 				if os.path.exists(onscreen_playingmatch):

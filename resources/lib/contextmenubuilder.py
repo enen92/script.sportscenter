@@ -132,7 +132,7 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 				
 			elif self.identifier == 'teamdetails':
 				self.close()
-				teamview.teamdetails(self.specific_id)
+				teamview.teamdetails(str([self.specific_id,'plotview']))
 				
 			elif self.identifier == 'currenteamseason':
 				self.close()
@@ -142,11 +142,11 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 				
 			elif self.identifier == 'hometeamdetails':
 				self.team_id = thesportsdb.Events().get_hometeamid(self.event_dict)
-				teamview.teamdetails(self.team_id)
+				teamview.teamdetails(str([self.team_id,'plotview']))
 				
 			elif self.identifier == 'awayteamdetails':
 				self.team_id = thesportsdb.Events().get_awayteamid(self.event_dict)
-				teamview.teamdetails(self.team_id)
+				teamview.teamdetails(str([self.team_id,'plotview']))
 				
 			elif self.identifier == 'currentleague':
 				self.close()
@@ -158,13 +158,13 @@ class dialog_context(xbmcgui.WindowXMLDialog):
 				self.close()
 				self.event_dict = thesportsdb.Lookups(tsdbkey).lookupevent(self.specific_id)["events"][0]
 				self.team_id = thesportsdb.Events().get_hometeamid(self.event_dict)
-				teamview.teamdetails(self.team_id)
+				teamview.teamdetails(str([self.team_id,'plotview']))
 				
 			elif self.identifier == 'awayteamdetails-lib':
 				self.close()
 				self.event_dict = thesportsdb.Lookups(tsdbkey).lookupevent(self.specific_id)["events"][0]
 				self.team_id = thesportsdb.Events().get_awayteamid(self.event_dict)
-				teamview.teamdetails(self.team_id)
+				teamview.teamdetails(str([self.team_id,'plotview']))
 			
 			elif self.identifier == 'eventdetails-lib':
 				self.close()

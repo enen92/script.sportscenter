@@ -21,6 +21,7 @@ from centerutils.youtube import *
 from centerutils.rssparser import *
 from centerutils.datemanipulation import *
 from centerutils.sc_instagram import *
+from centerutils.sc_player import *
 from centerutils import instagramviewer
 import competlist as competlist
 import soccermatchdetails as soccermatchdetails
@@ -38,7 +39,9 @@ def teamdetails(team_id):
 class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 	def __init__( self, *args, **kwargs ):
 		xbmcgui.WindowXML.__init__(self)
-		self.team_id = str(args[3])
+		self.team_id = str(eval(args[3])[0])
+		self.mode = str(eval(args[3])[1])
+		
 		self.event_last_list = thesportsdb.Schedules(tsdbkey).eventslast(self.team_id)['results']
 		self.event_next_list = thesportsdb.Schedules(tsdbkey).eventsnext(self.team_id)['events']
 
@@ -224,7 +227,21 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 			self.getControl(43).setLabel(str(int(winpercentage))+'% WINS')
 			self.getControl(44).setPercent(int(winpercentage))
 
-		self.setplotview()
+		if self.mode:
+			mode = self.mode
+		else:
+			mode = 'plotview'
+			
+		if mode == 'plotview':
+			xbmc.executebuiltin("SetProperty(focus_plot,1,home)")
+			
+		elif mode == 'videoview':
+			self.setvideosview()
+			
+		elif mode == 'imagesview':
+			self.setimagesview()
+		
+		
 		#check if twitter,youtube and instagram exists
 		xbmc.executebuiltin("ClearProperty(hasteam_instagram,Home)")
 		xbmc.executebuiltin("ClearProperty(hasteam_youtube,Home)")
@@ -374,6 +391,14 @@ class dialog_teamdetails(xbmcgui.WindowXMLDialog):
 			image_std = self.getControl(985).getSelectedItem().getProperty('fullscreen')
 			image_description = self.getControl(985).getSelectedItem().getLabel()
 			instagramviewer.start(str([image_std,image_description]))
+			
+		elif controlId == 989:
+			youtube_id = self.getControl(989).getSelectedItem().getProperty('video_id')
+			player = SCPlayer(function="RunScript(script.sportscenter,,/teamdetails/"+str(self.team_id)+"/videoview)")
+			self.close()
+			player.play('plugin://plugin.video.youtube/play/?video_id='+youtube_id)
+			while player.isPlaying():
+				xbmc.sleep(200)
 			
 
 
@@ -1098,7 +1123,7 @@ class dialog_team(xbmcgui.WindowXML):
 			elif seleccionado == 'stadium':
 				stadium.start(self.team)	
 			elif seleccionado == 'details':
-				teamdetails(self.team_id)
+				teamdetails(str([self.team_id,'plotview']))
 			elif seleccionado == 'players':
 				self.setplayersview()
 			elif seleccionado == 'tweets':

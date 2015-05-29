@@ -58,7 +58,7 @@ class dialog_stadium(xbmcgui.WindowXMLDialog):
 	def onClick(self,controlId):	
 		if controlId == 980:
 			team_id = self.getControl(controlId).getSelectedItem().getProperty('team_id')
-			teamview.teamdetails(team_id)
+			teamview.teamdetails(str([team_id,'plotview']))
 	
 
 	

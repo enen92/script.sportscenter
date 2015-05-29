@@ -21,6 +21,7 @@ from centerutils.youtube import *
 from centerutils.sc_instagram import *
 from centerutils.rssparser import *
 from centerutils.datemanipulation import *
+from centerutils.sc_player import *
 from centerutils import instagramviewer
 import competlist as competlist
 import soccermatchdetails as soccermatchdetails
@@ -253,8 +254,11 @@ class dialog_playerdetails(xbmcgui.WindowXMLDialog):
 			
 		elif controlId == 989:
 			youtube_id = self.getControl(989).getSelectedItem().getProperty('video_id')
+			player = SCPlayer(function="RunScript(script.sportscenter,,/player/"+str(self.player_id)+"/videoview)")
 			self.close()
-			xbmc.executebuiltin('PlayMedia(plugin://plugin.video.youtube/play/?video_id='+youtube_id+')')
+			player.play('plugin://plugin.video.youtube/play/?video_id='+youtube_id)
+			while player.isPlaying():
+				xbmc.sleep(200)
 			
 		elif controlId == 985:
 			image_std = self.getControl(985).getSelectedItem().getProperty('fullscreen')

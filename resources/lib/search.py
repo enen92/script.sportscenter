@@ -52,7 +52,7 @@ def search(tipo,keyword):
 			else:
 				if len(team_list) == 1:
 					team_id = thesportsdb.Teams().get_id(team_list[0])
-					teamview.teamdetails(team_id)
+					teamview.teamdetails(str([team_id,'plotview']))
 				else:
 					team_names = []
 					team_ids = []
@@ -62,7 +62,7 @@ def search(tipo,keyword):
 						team_names.append(team_name)
 						team_ids.append(team_id)
 					ret = dialog.select("Select team", team_names)
-					teamview.teamdetails(team_ids[ret])
+					teamview.teamdetails(str([team_ids[ret],'plotview']))
 		elif selected == 'players':
 			players_list = thesportsdb.Search(tsdbkey).searchplayers(None,search_parameter)["player"]
 			if not players_list:
