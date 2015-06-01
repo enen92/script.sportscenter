@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window>
+	<defaultcontrol always="true">980</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+	<!-- Background
+		<include>CommonBackground</include>-->
+		<control type="group">
+			<animation effect="fade" time="600">WindowOpen</animation>
+			<animation effect="fade" time="600">WindowClose</animation>
+			<control type="image" id="912">
+				<width>1920</width>
+				<height>1080</height>
+				<texture></texture>
+			</control>
+			<control type="image" id="913">
+				<description>Changeable background</description>
+				<width>1920</width>
+				<height>1080</height>
+				<texture></texture>
+			</control>
+		</control>
+	<!-- End Background -->
+	
+	<!-- RSS -->
+	<control type="group">
+			<animation effect="slide" end="1870,0" time="240">WindowClose</animation>
+			<animation effect="slide" start="1870,0" end="0,0" delay="300" time="240" condition="!window.previous(startup)">WindowOpen</animation>
+			<animation effect="slide" start="1870" end="0" time="240">VisibleChange</animation>
+			<animation effect="slide" start="1870,0" end="0,0" delay="800" time="480" condition="window.previous(startup)">WindowOpen</animation>
+			<animation effect="slide" end="0,-90" time="300" tween="cubic" easing="inout" condition="ControlGroup(9001).HasFocus()">conditional</animation>
+			<animation effect="fade" start="100" end="0" time="300" condition="ControlGroup(9001).HasFocus()">conditional</animation>
+			<animation effect="slide" end="0,340" time="320" tween="cubic" easing="inout" condition="Skin.HasSetting(lowermainmenu)">Conditional</animation>
+			<top>-345</top>
+			<control type="group">
+				<control type="image" id="90101">
+					<left>450</left>
+					<width>90</width>
+					<height>87</height>
+					<texture>submenu_end.png</texture>
+				</control>
+				<control type="image">
+					<left>540</left>
+					<width>1380</width>
+					<height>87</height>
+					<texture>submenu_bar.png</texture>
+				</control>
+			</control>
+			<control type="group">
+				<control type="label">
+					<left>1880</left>
+					<top>0</top>
+					<width>60</width>
+					<height>41</height>
+					<label></label>
+					<font>IconSmall</font>
+					<textcolor>themecolor</textcolor>
+				</control>
+				<control type="rss">
+					<description>RSS feed</description>
+					<left>540</left>
+					<top>0</top>
+					<height>30</height>
+					<width>1330</width>
+					<font>font13</font>
+					<urlset>1</urlset>
+					<textcolor>themecolor</textcolor>
+					<titlecolor>themecolor</titlecolor>
+					<headlinecolor>grey</headlinecolor>
+					<shadowcolor>shadow</shadowcolor>
+				</control>
+			</control>
+		</control>
+	<!-- RSS -->
+	
+	<!-- Favourite team panel -->
+	<control type="group">
+		<animation effect="fade" time="600">WindowOpen</animation>
+		<animation effect="fade" time="600">WindowClose</animation>
+		<control type="image" id="502">
+			<top>0</top>
+			<width>400</width>
+			<height>327</height>
+			<texture>submenu_bar.png</texture>
+		</control>
+		<control type="image" id="501">
+			<top>0</top>
+			<left>400</left>
+			<width>90</width>
+			<height>327</height>
+			<texture flipx="true">submenu_end.png</texture>
+		</control>
+		<control type="panel" id="983">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>425</width>
+				<height>154</height>
+				<ondown>980</ondown>
+				<preloaditems>0</preloaditems>
+				<orientation>horizontal</orientation>
+				<itemlayout height="630" width="650">
+					<control type="image" id="901">
+						<top>10</top>
+						<left>10</left>
+						<width>130</width>
+						<height>130</height>
+						<texture>$INFO[ListItem.Property(favourite_logo)]</texture>
+					</control>
+					<control type="textbox" id="902">
+						<top>5</top>
+						<left>140</left>
+						<width>280</width>
+						<height>101</height>
+						<font>font30_title</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<align>center</align>
+						<label>$INFO[ListItem.Property(favourite_name_long)]</label>
+					</control>
+					<control type="textbox" id="903">
+						<top>40</top>
+						<left>140</left>
+						<width>280</width>
+						<height>101</height>
+						<font>font30_title</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<align>center</align>
+						<label>$INFO[ListItem.Property(favourite_name_short)]</label>
+					</control>
+					<control type="label" id="900">
+						<top>105</top>
+						<width>540</width>
+						<height>41</height>
+						<font>font13_title</font>
+						<textcolor>grey</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(username)]</label>
+					</control>
+				</itemlayout>	
+				<focusedlayout height="239" width="240">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>416</width>
+						<height>153</height>
+						<texture border="5">listselect_fo.png</texture>
+					</control>
+					<control type="image" id="901">
+						<top>10</top>
+						<left>10</left>
+						<width>130</width>
+						<height>130</height>
+						<texture>$INFO[ListItem.Property(favourite_logo)]</texture>
+					</control>
+					<control type="textbox" id="902">
+						<top>5</top>
+						<left>140</left>
+						<width>280</width>
+						<height>101</height>
+						<font>font30_title</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<align>center</align>
+						<label>$INFO[ListItem.Property(favourite_name_long)]</label>
+					</control>
+					<control type="textbox" id="903">
+						<top>40</top>
+						<left>140</left>
+						<width>280</width>
+						<height>101</height>
+						<font>font30_title</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<align>center</align>
+						<label>$INFO[ListItem.Property(favourite_name_short)]</label>
+					</control>
+					<control type="label" id="900">
+						<top>105</top>
+						<width>540</width>
+						<height>41</height>
+						<font>font13_title</font>
+						<textcolor>grey</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(username)]</label>
+					</control>
+				</focusedlayout>
+			</control>
+	</control>
+
+		<control type="group">
+			<top>336</top>
+			<control type="group">
+				<animation effect="slide" end="0,338" time="320" tween="cubic" easing="inout" condition="Skin.HasSetting(lowermainmenu)">Conditional</animation>
+				<animation effect="slide" end="-1870,0" time="240">WindowClose</animation>
+				<animation effect="slide" start="-1870,0" end="0,0" delay="300" time="240" condition="!Window.Previous(startup)">WindowOpen</animation>
+				<animation effect="slide" start="-1870" end="0" time="240">VisibleChange</animation>
+				<animation effect="slide" start="-1870,0" end="0,0" delay="800" time="480" condition="Window.Previous(startup)">WindowOpen</animation>
+				<control type="image">
+					<width>1780</width>
+					<height>87</height>
+					<texture flipy="true">submenu_bar.png</texture>
+				</control>-->
+				<control type="image">
+					<left>1780</left>
+					<width>90</width>
+					<height>87</height>
+					<texture flipx="true" flipy="true">submenu_end.png</texture>
+				</control>
+
+				<control type="grouplist" id="9020">
+					<left>0</left>
+					<top>46</top>
+					<width>1790</width>
+					<height>41</height>
+					<align>right</align>
+					<orientation>horizontal</orientation>
+					<onup condition="Control.IsVisible(9003)">9003</onup>
+					<onup condition="!Control.IsVisible(9003)">9000</onup>
+					<ondown>9000</ondown>
+									
+					
+					<control type="button" id="9021">
+						<label></label>
+						<textoffsetx>0</textoffsetx>
+						<width>50</width>
+						<height>41</height>
+						<align>center</align>
+						<font>IconTiny</font>
+						<textcolor>grey</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<onright>9023</onright>
+						<onup>983</onup>
+						<ondown>980</ondown>
+						<animation type="Visible">
+							<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+							<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+						</animation>
+						<animation type="Hidden">
+							<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+							<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+						</animation>
+					</control>
+					<control type="button" id="9022">
+						<label></label>
+						<textoffsetx>0</textoffsetx>
+						<width>50</width>
+						<height>41</height>
+						<align>center</align>
+						<font>IconTiny</font>
+						<textcolor>grey</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<onright>9023</onright>
+						<onup>983</onup>
+						<ondown>980</ondown>
+						<animation type="Visible">
+							<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+							<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+						</animation>
+						<animation type="Hidden">
+							<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+							<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+						</animation>
+					</control>
+					<control type="button" id="9023">
+						<label></label>
+						<textoffsetx>0</textoffsetx>
+						<width>50</width>
+						<height>41</height>
+						<align>center</align>
+						<font>IconTiny</font>
+						<textcolor>grey</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<onleft>9024</onleft>
+						<ondown>980</ondown>
+						<onup>983</onup>
+						<animation type="Visible">
+							<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+							<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+						</animation>
+						<animation type="Hidden">
+							<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+							<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+						</animation>
+					</control>
+					<control type="button" id="9024">
+						<label></label>
+						<textoffsetx>0</textoffsetx>
+						<width>50</width>
+						<height>41</height>
+						<align>center</align>
+						<font>IconTiny</font>
+						<textcolor>grey</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+						<onright>9023</onright>
+						<onup>983</onup>
+						<ondown>980</ondown>
+						<animation type="Visible">
+							<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+							<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+						</animation>
+						<animation type="Hidden">
+							<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+							<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+						</animation>
+					</control>
+					
+					<control type="label" id="9026">
+						<width>5</width>
+						<height>41</height>
+						<label>-</label>
+						<font>font13_title</font>
+						<textcolor>themecolor</textcolor>
+					</control>
+					<control type="label" id="9025">
+						<width>auto</width>
+						<height>41</height>
+						<label>$INFO[System.Date,[COLOR grey],  |  [/COLOR]]$INFO[System.Time]</label>
+						<font>font13_title</font>
+						<textcolor>themecolor</textcolor>
+						<shadowcolor>shadow</shadowcolor>
+					</control>
+				</control>
+			</control>
+		</control>
+	
+		<control type="group">
+			<top>250</top>
+			<animation effect="slide" end="0,338" time="320" tween="cubic" easing="inout" condition="Skin.HasSetting(lowermainmenu)">Conditional</animation>
+			<animation type="WindowOpen" reversible="false" condition="Window.Previous(Startup)">
+				<effect type="zoom" start="0" end="100" center="960,540" delay="500" time="300" tween="cubic" />
+			</animation>
+			<animation type="WindowOpen" reversible="false" condition="!Window.Previous(Startup)">
+				<effect type="zoom" start="150" end="100" center="960,540" time="300" tween="cubic" />
+				<effect type="fade" start="50" end="100" time="300" />
+			</animation>
+			<animation type="WindowClose" reversible="false">
+				<effect type="fade" start="100" end="0" time="300" />
+				<effect type="zoom" start="100" end="130" center="960,540" time="300" tween="cubic" easing="in" />
+			</animation>
+			<control type="group" id="9001">
+				<left>0</left>
+				<top>345</top>
+				<onup>9000</onup>
+				<ondown>9002</ondown>
+				<!--<include condition="system.getbool(lookandfeel.enablerssfeeds)">SubMenuAnimation</include>-->
+				<animation effect="slide" start="1870,0" end="0,0" delay="300" time="240" condition="!Window.Previous(startup)">WindowOpen</animation>
+				<animation effect="slide" start="1870,0" end="0,0" delay="200" time="480" condition="Window.Previous(startup)">WindowOpen</animation>
+				<control type="image" id="90101">
+					<left>50</left>
+					<width>90</width>
+					<height>100</height>
+					<texture>submenu_end.png</texture>
+				</control>
+				<control type="image">
+					<left>140</left>
+					<width>1780</width>
+					<height>100</height>
+					<texture>submenu_bar.png</texture>
+				</control>
+				<!-- Submenu fixedlist -->
+				<control type="fixedlist" id="9010">
+					<left>210</left>
+					<top>5</top>
+					<width>1500</width>
+					<height>87</height>
+					<align>center</align>
+					<onup>980</onup>
+					<pagecontrol>-</pagecontrol>
+					<scrolltime tween="quadratic" easing="out">300</scrolltime>
+					<focusposition>2</focusposition>
+					<movement>2</movement>
+					<orientation>Horizontal</orientation>
+					<animation effect="fade" time="600">WindowClose</animation>
+					<itemlayout height="87" width="300">
+						<control type="label">
+							<width>300</width>
+							<height>41</height>
+							<font>font13_title</font>
+							<textcolor>grey</textcolor>
+							<shadowcolor>shadow</shadowcolor>
+							<align>center</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</itemlayout>
+					<focusedlayout height="87" width="300">
+						<control type="group">
+							<visible>Control.HasFocus(9010)</visible>
+							<control type="image">
+							<width>300</width>
+							<height>41</height>
+							<texture>listselect_fo.png</texture>
+						</control>
+						<control type="label">
+							<width>300</width>
+							<height>41</height>
+							<font>font13_title</font>
+							<shadowcolor>shadow</shadowcolor>
+							<align>center</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+						</control>
+						<control type="group">
+							<visible>!Control.HasFocus(9010)</visible>
+							<control type="label">
+								<width>300</width>
+								<height>41</height>
+								<font>font13_title</font>
+								<textcolor>grey</textcolor>
+								<shadowcolor>shadow</shadowcolor>
+								<align>center</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+						</control>
+					</focusedlayout>
+				</control>
+			</control>
+			
+			<control type="image">
+				<top>70</top>
+				<width>1920</width>
+				<height>390</height>
+				<texture>homemenu_back.png</texture>
+			</control>
+
+			
+			<control type="group">
+				<control type="wraplist" id="980">
+					<left>-850</left>
+					<top>185</top>
+					<width>4800</width>
+					<height>165</height>
+					<onup>9024</onup>
+					<ondown>9010</ondown>
+					<movement>1</movement>
+					<pagecontrol>-</pagecontrol>
+					<scrolltime tween="quadratic" easing="out">300</scrolltime>
+					<focusposition>2</focusposition>
+					<orientation>Horizontal</orientation>
+					<animation effect="slide" start="0" end="-350,0" time="320" tween="cubic" easing="inout" condition="Skin.HasSetting(biggergap)">Conditional</animation>
+					<animation effect="slide" start="0" end="126,0" time="320" tween="cubic" easing="inout" condition="Skin.HasSetting(mainmenuicons)">Conditional</animation>
+
+				
+
+					<itemlayout height="200" width="700">
+						<control type="image" id="90101">
+							<top>0</top>
+							<left>50</left>
+							<width>150</width>
+							<height>150</height>
+							<texture>$INFO[ListItem.Property(sport_clearlogo)]</texture>
+						</control>
+						<control type="label">
+							<top>25</top>
+							<left>130</left>
+							<width>650</width>
+							<height>90</height>
+							<font>font_MainMenu</font>
+							<textcolor>grey3</textcolor>
+							<aligny>center</aligny>
+							<align>center</align>
+							<label>$INFO[ListItem.Label]</label>
+							<include>VisibleFadeEffect</include>
+						</control>
+					</itemlayout>	
+					<focusedlayout height="200" width="700">
+						<control type="image" id="90101">
+							<top>0</top>
+							<left>50</left>
+							<width>150</width>
+							<height>150</height>
+							<texture>$INFO[ListItem.Property(sport_clearlogo)]</texture>
+						</control>
+						<control type="label">
+							<top>25</top>
+							<left>130</left>
+							<width>650</width>
+							<height>90</height>
+							<font>font_MainMenu</font>
+							<textcolor>grey3</textcolor>
+							<aligny>center</aligny>
+							<align>center</align>
+							<label>$INFO[ListItem.Label]</label>
+							<include>VisibleFadeEffect</include>
+						</control>
+						<control type="label">
+							<top>25</top>
+							<left>130</left>
+							<width>650</width>
+							<height>90</height>
+							<font>font_MainMenu</font>
+							<textcolor>white</textcolor>
+							<aligny>center</aligny>
+							<align>center</align>
+							<label>$INFO[ListItem.Label]</label>
+							<visible>Control.HasFocus(980)</visible>
+							<include>VisibleFadeEffect</include>
+						</control>
+					</focusedlayout>
+				</control>-->
+			</control>
+			<control type="image">
+				<left>0</left>
+				<top>170</top>
+				<width>100</width>
+				<height>180</height>
+				<texture border="1">side_fade.png</texture>
+			</control>
+			<control type="image">
+				<left>1820</left>
+				<top>170</top>
+				<width>100</width>
+				<height>180</height>
+				<texture flipx="true" border="1">side_fade.png</texture>
+			</control>
+			<control type="image">
+				<top>170</top>
+				<width>1920</width>
+				<height>180</height>
+				<texture border="1">gradient_floor.png</texture>
+			</control>
+		</control>
+		
+		
+		
+		
+	</controls>
+</window>

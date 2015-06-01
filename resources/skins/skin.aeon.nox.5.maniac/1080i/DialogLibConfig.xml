@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+	<onload>SetProperty(Window.HasSettings,True,home)</onload>
+	<onload>ClearProperty(MediaMenu,Home)</onload>
+	<onunload>ClearProperty(Window.HasSettings,Home)</onunload>
+	<allowoverlay>no</allowoverlay>
+	<onload>SetFocus(67)</onload>
+	<defaultcontrol always="true">10</defaultcontrol>
+	<controls>
+		<!-- Background!-->
+		<control type="group">
+			<control type="image">
+				<left>70</left>
+				<top>120</top>
+				<width>1788</width>
+				<height>860</height>
+				<texture border="40">dialogs/default/bg.png</texture>
+			</control>
+			<control type="label" id="1">
+				<left>350</left>
+				<top>192</top>
+				<width>1308</width>
+				<height>40</height>
+				<font>font_MainMenu</font>
+				<label>Library Configuration</label>
+				<align>center</align>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="label" id="2">
+				<left>350</left>
+				<top>292</top>
+				<width>1308</width>
+				<height>40</height>
+				<font>font_MainMenu</font>
+				<label></label>
+				<align>center</align>
+				<textcolor>white</textcolor>
+			</control>
+			
+			<control type="image">
+				<left>130</left>
+				<top>386</top>
+				<width>1060</width>
+				<height>542</height>
+				<texture border="5">dialogs/default/inner.png</texture>
+			</control>
+			<control type="image">
+				<left>1200</left>
+				<top>386</top>
+				<width>610</width>
+				<height>542</height>
+				<texture border="5">dialogs/default/inner.png</texture>
+			</control>
+			<control type="button" id="10">
+				<description>Browse Button</description>
+				<top>480</top>
+				<left>133</left>
+				<width>1057</width>
+				<label>Media organization...</label>
+				<font>font14</font>
+				<ondown>11</ondown>
+				<onup>9025</onup>
+				<onright>9026</onright>
+				<onleft>9026</onleft>
+			</control>
+			<control type="label" id="13">
+				<left>460</left>
+				<top>490</top>
+				<width>700</width>
+				<height>40</height>
+				<font>font14</font>
+				<label></label>
+				<align>right</align>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="button" id="11">
+				<description>Browse Button</description>
+				<top>540</top>
+				<left>133</left>
+				<width>1057</width>
+				<label>Media Folder...</label>
+				<font>font14</font>
+				<onup>10</onup>
+				<ondown>9025</ondown>
+				<onright>9026</onright>
+				<onleft>9026</onleft>
+			</control>
+			<control type="label" id="15">
+				<left>460</left>
+				<top>550</top>
+				<width>700</width>
+				<height>40</height>
+				<font>font14</font>
+				<label></label>
+				<align>right</align>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="button">
+				<left>130</left>
+				<top>390</top>
+				<label>[COLOR labelheader]Configure:[/COLOR]</label>
+				<width>1057</width>
+				<align>left</align>
+				<include>ShowCaseInfoPanelButtonsValues</include>
+			</control>
+			
+			<control type="button" id="9025">
+				<top>865</top>
+				<left>130</left>
+				<label>Save</label>
+				<textoffsetx>0</textoffsetx>
+				<width>1060</width>
+				<height>61</height>
+				<align>center</align>
+				<font>font14</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>shadow</shadowcolor>
+				<onright>9026</onright>
+				<onleft>9026</onleft>
+				<onup>11</onup>
+				<ondown>10</ondown>
+				<animation type="Visible">
+					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+				<animation type="Hidden">
+					<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+			</control>
+			<control type="button">
+				<left>1202</left>
+				<top>390</top>
+				<label>[COLOR labelheader]Actions:[/COLOR]</label>
+				<width>610</width>
+				<align>left</align>
+				<include>ShowCaseInfoPanelButtonsValues</include>
+			</control>
+			<control type="button" id="9026">
+				<top>479</top>
+				<left>1205</left>
+				<label>Scrape new content</label>
+				<textoffsetx>0</textoffsetx>
+				<width>605</width>
+				<height>61</height>
+				<align>center</align>
+				<font>font14</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>shadow</shadowcolor>
+				<onleft>10</onleft>
+				<onup>9028</onup>
+				<ondown>9027</ondown>
+				<onright>10</onright>
+				<animation type="Visible">
+					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+				<animation type="Hidden">
+					<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+			</control>
+			<control type="button" id="9027">
+				<top>540</top>
+				<left>1205</left>
+				<label>Scrape All</label>
+				<textoffsetx>0</textoffsetx>
+				<width>605</width>
+				<height>61</height>
+				<align>center</align>
+				<font>font14</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>shadow</shadowcolor>
+				<onleft>10</onleft>
+				<onup>9026</onup>
+				<ondown>9028</ondown>
+				<onright>10</onright>
+				<animation type="Visible">
+					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+				<animation type="Hidden">
+					<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+			</control>
+			<control type="button" id="9028">
+				<top>601</top>
+				<left>1205</left>
+				<label>Delete sport library</label>
+				<textoffsetx>0</textoffsetx>
+				<width>605</width>
+				<height>61</height>
+				<align>center</align>
+				<font>font14</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>shadow</shadowcolor>
+				<onleft>10</onleft>
+				<onup>9027</onup>
+				<ondown>9026</ondown>
+				<onright>10</onright>
+				<animation type="Visible">
+					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+				<animation type="Hidden">
+					<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+			</control>
+			<control type="image" id="3">
+				<left>1550</left>
+				<top>180</top>
+				<width>200</width>
+				<height>200</height>
+				<aspectratio>keep</aspectratio>
+				<texture></texture>
+			</control>
+		</control>
+	</controls>
+</window>

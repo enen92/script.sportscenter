@@ -1,0 +1,2772 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+	<onload>SetProperty(Window.HasSettings,True,home)</onload>
+	<onload>ClearProperty(MediaMenu,Home)</onload>
+	<onload>setFocus(9022)</onload>
+	<onunload>ClearProperty(Window.HasSettings,Home)</onunload>
+	<onunload>ClearProperty(has_plot,Home)</onunload>
+	<onunload>ClearProperty(has_home_lineup,Home)</onunload>
+	<onunload>ClearProperty(has_away_lineup,Home)</onunload>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<!-- Background!-->
+		<control type="group">
+			<control type="image">
+				<left>30</left>
+				<top>40</top>
+				<width>1850</width>
+				<height>1040</height>
+				<texture border="40">dialogs/default/bg.png</texture>
+			</control>
+		<!-- Background!-->
+			
+			
+			
+		<!--Details-->
+			<control type="image" id="777">
+				<description>home team badge if jersey available</description>
+				<left>320</left>
+				<top>70</top>
+				<width>270</width>
+				<height>270</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="image" id="778">
+				<description>home team badge if jersey not available</description>
+				<left>320</left>
+				<top>70</top>
+				<width>270</width>
+				<height>270</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="image" id="779">
+				<description>home team jersey</description>
+				<left>430</left>
+				<top>120</top>
+				<width>230</width>
+				<height>230</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="image" id="780">
+				<description>away team badge if jersey available</description>
+				<left>1320</left>
+				<top>70</top>
+				<width>270</width>
+				<height>270</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="image" id="781">
+				<description>away team badge if jersey not available</description>
+				<left>1320</left>
+				<top>70</top>
+				<width>270</width>
+				<height>270</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="image" id="782">
+				<description>away jersey </description>
+				<left>1230</left>
+				<top>120</top>
+				<width>230</width>
+				<height>230</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="label" id="783">
+				<description>Result</description>
+				<left>585</left>
+				<top>110</top>
+				<width>700</width>
+				<height>200</height>
+				<label></label>
+				<font>font_MainMenu</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="textbox" id="784">
+				<description>hometeamshort</description>
+				<posx>210</posx>
+				<posy>335</posy>
+				<width>550</width>
+				<height>170</height>
+				<label></label>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font45caps_title</font>
+				<align>center</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="textbox" id="785">
+				<description>awayteamshort</description>
+				<posx>1120</posx>
+				<posy>335</posy>
+				<width>550</width>
+				<height>170</height>
+				<label></label>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font45caps_title</font>
+				<align>center</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="image" id="786">
+				<description>panel to be filled</description>
+				<left>170</left>
+				<top>430</top>
+				<width>1552</width>
+				<height>526</height>
+				<texture border="5">dialogs/default/inner.png</texture>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="label" id="787">
+				<description>Competition and round</description>
+				<posx>540</posx>
+				<posy>80</posy>
+				<width>800</width>
+				<height>20</height>
+				<label></label>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>FFB2D4F5</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="label" id="788">
+				<description>date</description>
+				<posx>540</posx>
+				<posy>130</posy>
+				<width>800</width>
+				<height>20</height>
+				<label></label>
+				<font>font12</font>
+				<align>center</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="label" id="789">
+				<description>current played time</description>
+				<posx>540</posx>
+				<posy>280</posy>
+				<width>800</width>
+				<height>20</height>
+				<label></label>
+				<font>font12</font>
+				<align>center</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="progress" id="790">
+				<description>Progressbar</description>
+				<left>855</left>
+				<top>317</top>
+				<width>180</width>
+				<height>16</height>
+				<colordiffuse>88FFFFFF</colordiffuse>
+				<info></info>
+				<texturebg border="2">osd/texturebg2.png</texturebg>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="image" id="791">
+				<description>live,notlive,halftime indicator</description>
+				<left>970</left>
+				<top>276</top>
+				<width>30</width>
+				<height>30</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="label" id="792">
+				<description>Stadium</description>
+				<posx>540</posx>
+				<posy>360</posy>
+				<width>800</width>
+				<height>20</height>
+				<label></label>
+				<font>font12</font>
+				<align>center</align>
+				<textcolor>FFB2D4F5</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="label" id="793">
+				<description>spectactors nb</description>
+				<posx>540</posx>
+				<posy>400</posy>
+				<width>800</width>
+				<height>20</height>
+				<label></label>
+				<font>font12</font>
+				<align>center</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			
+			<control type="image">
+				<description>Place for number of shots</description>
+				<posx>171</posx>
+				<posy>430</posy>
+				<width>1550</width>
+				<height>86</height>
+				<texture border="1">separator2.png</texture>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="label" id="794">
+				<description>Shots label</description>
+				<posx>540</posx>
+				<posy>470</posy>
+				<width>800</width>
+				<height>20</height>
+				<label></label>
+				<font>font16</font>
+				<align>center</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="label" id="795">
+				<description>home shots</description>
+				<posx>500</posx>
+				<posy>470</posy>
+				<width>800</width>
+				<height>20</height>
+				<label></label>
+				<font>font16</font>
+				<align>left</align>
+				<textcolor>FFB2D4F5</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			<control type="label" id="796">
+				<description>away shots</description>
+				<posx>1350</posx>
+				<posy>470</posy>
+				<width>800</width>
+				<height>20</height>
+				<label></label>
+				<font>font16</font>
+				<align>left</align>
+				<textcolor>FFB2D4F5</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+			</control>
+			
+			<control type="panel" id="987">
+				<visible>IsEmpty(Window(home).Property(loading))</visible>
+				<posx>163</posx>
+				<posy>516</posy>
+				<width>750</width>
+				<height>434</height>
+				<onleft>988</onleft>
+				<onright>988</onright>
+				<ondown>9022</ondown>
+				<viewtype>icon</viewtype>
+				<pagecontrol>49</pagecontrol>
+				<orientation>vertical</orientation>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+				
+
+				<itemlayout height="86" width="750">
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>750</width>
+						<height>86</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="image">
+						<posx>20</posx>
+						<posy>10</posy>
+						<width>80</width>
+						<height>80</height>
+						<texture>$INFO[ListItem.Property(detail_img)]</texture>
+					</control>
+					<control type="label">
+						<description>Minute</description>
+						<posx>105</posx>
+						<posy>45</posy>
+						<width>84</width>
+						<height>20</height>
+						<label>$INFO[ListItem.Property(minute)]</label>
+						<font>font16</font>
+						<align>left</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>Minute</description>
+						<posx>175</posx>
+						<posy>45</posy>
+						<width>550</width>
+						<height>20</height>
+						<label>$INFO[ListItem.Property(player)]</label>
+						<font>font16</font>
+						<align>left</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+				</itemlayout>	
+				<focusedlayout height="86" width="750">
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>750</width>
+						<height>86</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>750</width>
+						<height>86</height>
+						<texture border="5">listselect_fo.png</texture>
+					</control>
+					<control type="image">
+						<posx>20</posx>
+						<posy>10</posy>
+						<width>80</width>
+						<height>80</height>
+						<texture>$INFO[ListItem.Property(detail_img)]</texture>
+					</control>
+					<control type="label">
+						<description>Minute</description>
+						<posx>105</posx>
+						<posy>45</posy>
+						<width>84</width>
+						<height>20</height>
+						<label>$INFO[ListItem.Property(minute)]</label>
+						<font>font16</font>
+						<align>left</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>Minute</description>
+						<posx>175</posx>
+						<posy>45</posy>
+						<width>550</width>
+						<height>20</height>
+						<label>$INFO[ListItem.Property(player)]</label>
+						<font>font16</font>
+						<align>left</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+				</focusedlayout>
+			</control>
+			
+			<control type="panel" id="988">
+				<visible>IsEmpty(Window(home).Property(loading))</visible>
+				<posx>971</posx>
+				<posy>515</posy>
+				<width>750</width>
+				<height>434</height>
+				<onleft>987</onleft>
+				<onright>987</onright>
+				<ondown>9025</ondown>
+				<viewtype>icon</viewtype>
+				<pagecontrol>49</pagecontrol>
+				<orientation>vertical</orientation>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+				
+
+				<itemlayout height="86" width="750">
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>750</width>
+						<height>86</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="image">
+						<posx>20</posx>
+						<posy>10</posy>
+						<width>80</width>
+						<height>80</height>
+						<texture>$INFO[ListItem.Property(detail_img)]</texture>
+					</control>
+					<control type="label">
+						<description>Minute</description>
+						<posx>105</posx>
+						<posy>45</posy>
+						<width>84</width>
+						<height>20</height>
+						<label>$INFO[ListItem.Property(minute)]</label>
+						<font>font16</font>
+						<align>left</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>Minute</description>
+						<posx>175</posx>
+						<posy>45</posy>
+						<width>550</width>
+						<height>20</height>
+						<label>$INFO[ListItem.Property(player)]</label>
+						<font>font16</font>
+						<align>left</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+				</itemlayout>	
+				<focusedlayout height="86" width="750">
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>750</width>
+						<height>86</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>750</width>
+						<height>86</height>
+						<texture border="5">listselect_fo.png</texture>
+					</control>
+					<control type="image">
+						<posx>20</posx>
+						<posy>10</posy>
+						<width>80</width>
+						<height>80</height>
+						<texture>$INFO[ListItem.Property(detail_img)]</texture>
+					</control>
+					<control type="label">
+						<description>Minute</description>
+						<posx>105</posx>
+						<posy>45</posy>
+						<width>84</width>
+						<height>20</height>
+						<label>$INFO[ListItem.Property(minute)]</label>
+						<font>font16</font>
+						<align>left</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>Minute</description>
+						<posx>175</posx>
+						<posy>45</posy>
+						<width>550</width>
+						<height>20</height>
+						<label>$INFO[ListItem.Property(player)]</label>
+						<font>font16</font>
+						<align>left</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+				</focusedlayout>
+			</control>
+			
+			<!-- Button controls -->
+			<control type="button" id="9022">
+				<top>979</top>
+				<left>100</left>
+				<label>Home Team Lineup</label>
+				<textoffsetx>0</textoffsetx>
+				<width>300</width>
+				<height>61</height>
+				<align>center</align>
+				<font>font14</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>shadow</shadowcolor>
+				<onleft>9026</onleft>
+				<onright>9023</onright>
+				<onup>987</onup>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+				<enable>!IsEmpty(Window(home).Property(has_home_lineup))</enable>
+				<animation type="Visible">
+					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+				<animation type="Hidden">
+					<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+			</control>
+			<control type="button" id="9023">
+				<top>979</top>
+				<left>420</left>
+				<label>Away Team Lineup</label>
+				<textoffsetx>0</textoffsetx>
+				<width>300</width>
+				<height>61</height>
+				<align>center</align>
+				<font>font14</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>shadow</shadowcolor>
+				<onleft>9022</onleft>
+				<onright>9024</onright>
+				<onup>987</onup>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+				<enable>!IsEmpty(Window(home).Property(has_away_lineup))</enable>
+				<animation type="Visible">
+					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+				<animation type="Hidden">
+					<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+			</control>
+			<control type="button" id="9024">
+				<top>979</top>
+				<left>740</left>
+				<label>Stadium</label>
+				<textoffsetx>0</textoffsetx>
+				<width>200</width>
+				<height>61</height>
+				<align>center</align>
+				<font>font14</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>shadow</shadowcolor>
+				<onleft>9023</onleft>
+				<onright>9025</onright>
+				<onup>988</onup>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+				<animation type="Visible">
+					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+				<animation type="Hidden">
+					<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+			</control>
+			<control type="button" id="9025">
+				<top>979</top>
+				<left>955</left>
+				<label>Plot</label>
+				<textoffsetx>0</textoffsetx>
+				<width>200</width>
+				<height>61</height>
+				<align>center</align>
+				<font>font14</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>shadow</shadowcolor>
+				<onleft>9024</onleft>
+				<onright>9026</onright>
+				<onup>988</onup>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+				<enable>!IsEmpty(Window(home).Property(has_plot))</enable>
+				<animation type="Visible">
+					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+				<animation type="Hidden">
+					<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+			</control>
+			<control type="button" id="9026">
+				<top>979</top>
+				<left>1170</left>
+				<label>Search Highlights(!)</label>
+				<textoffsetx>0</textoffsetx>
+				<width>300</width>
+				<height>61</height>
+				<align>center</align>
+				<font>font14</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>shadow</shadowcolor>
+				<onleft>9025</onleft>
+				<onright>9029</onright>
+				<onup>988</onup>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+				<animation type="Visible">
+					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+				<animation type="Hidden">
+					<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+			</control>
+			<control type="button" id="9029">
+				<top>979</top>
+				<left>1490</left>
+				<label>Search Full Match(!)</label>
+				<textoffsetx>0</textoffsetx>
+				<width>300</width>
+				<height>61</height>
+				<align>center</align>
+				<font>font14</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>shadow</shadowcolor>
+				<onleft>9026</onleft>
+				<onright>9022</onright>
+				<onup>988</onup>
+				<visible>!IsEmpty(Window(home).Property(detail))</visible>
+				<animation type="Visible">
+					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+				<animation type="Hidden">
+					<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+			</control>
+			
+			<!--Line-ups-->
+			<control type="image">
+				<left>50</left>
+				<top>220</top>
+				<width>1040</width>
+				<height>834</height>
+				<texture>pitch.png</texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+								
+			<!--LINEUPS
+			<!-- Team identification -->
+			<control type="image" id="306">
+				<left>1620</left>
+				<top>80</top>
+				<width>200</width>
+				<height>200</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="310">
+				<description>awayteamshort</description>
+				<posx>1090</posx>
+				<posy>135</posy>
+				<width>550</width>
+				<height>170</height>
+				<label></label>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font45caps_title</font>
+				<align>center</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="308">
+				<description>awayteamshort</description>
+				<posx>300</posx>
+				<posy>145</posy>
+				<width>550</width>
+				<height>60</height>
+				<label>Line Up</label>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font16_title_bold</font>
+				<align>center</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="309">
+				<description>awayteamshort</description>
+				<posx>0</posx>
+				<posy>65</posy>
+				<width>1140</width>
+				<height>170</height>
+				<label></label>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font45caps_title</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<!-- -->
+			<!-- Team Members -->
+			<control type="image">
+				<description>panel to be filled</description>
+				<posx>1060</posx>
+				<posy>290</posy>
+				<width>760</width>
+				<height>610</height>
+				<texture border="5">dialogs/default/inner.png</texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="button" id="8">
+				<top>260</top>
+				<left>1070</left>
+				<label>[COLOR labelheader][CR][B]Squad:[/B][/COLOR]</label>
+				<width>729</width>
+				<include>ShowCaseInfoPanelButtonsValues</include>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="panel" id="32151">
+				<posx>1440</posx>
+				<posy>345</posy>
+				<width>374</width>
+				<height>552</height>
+				<onleft>32150</onleft>
+				<onup>600</onup>
+				<ondown>9027</ondown>
+				<viewtype>icon</viewtype>
+				<pagecontrol>61</pagecontrol>
+				<scrolltime>100</scrolltime>
+				<preloaditems>1</preloaditems>
+				<orientation>vertical</orientation>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+				<itemlayout height="50" width="374">
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>374</width>
+						<height>45</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="label">
+						<description>Team name presented on panel right</description>
+						<posx>45</posx>
+						<posy>12</posy>
+						<width>310</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Label]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16</font>
+						<align>right</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+				</itemlayout>	
+				<focusedlayout height="50" width="374">
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>374</width>
+						<height>45</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>374</width>
+						<height>45</height>
+						<texture border="5">listselect_fo.png</texture>
+					</control>
+					<control type="label">
+						<description>Team name presented on panel right</description>
+						<posx>45</posx>
+						<posy>12</posy>
+						<width>310</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Label]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16</font>
+						<align>right</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="panel" id="32150">
+				<posx>1060</posx>
+				<posy>345</posy>
+				<width>374</width>
+				<height>552</height>
+				<onright>32151</onright>
+				<onup>600</onup>
+				<ondown>9027</ondown>
+				<viewtype>icon</viewtype>
+				<pagecontrol>61</pagecontrol>
+				<scrolltime>100</scrolltime>
+				<preloaditems>1</preloaditems>
+				<orientation>vertical</orientation>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+				<itemlayout height="50" width="374">
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>374</width>
+						<height>45</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="label">
+						<description>Team name presented on panel right</description>
+						<posx>15</posx>
+						<posy>12</posy>
+						<width>330</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Label]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16</font>
+						<align>left</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+				</itemlayout>	
+				<focusedlayout height="50" width="374">
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>374</width>
+						<height>45</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>374</width>
+						<height>45</height>
+						<texture border="5">listselect_fo.png</texture>
+					</control>
+					<control type="label">
+						<description>Team name presented on panel right</description>
+						<posx>15</posx>
+						<posy>12</posy>
+						<width>330</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Label]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16</font>
+						<align>left</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+				</focusedlayout>
+			</control>
+		
+			<control type="button" id="8">
+				<top>260</top>
+				<left>1080</left>
+				<align>right</align>
+				<label>[COLOR labelheader][CR][B]Substitutes:[/B][/COLOR]</label>
+				<width>729</width>
+				<include>ShowCaseInfoPanelButtonsValues</include>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="textbox" id="311">
+				<description>coach</description>
+				<posx>1180</posx>
+				<posy>915</posy>
+				<width>550</width>
+				<height>60</height>
+				<label></label>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font16</font>
+				<align>center</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<!--Tatics -->
+			<!--Tatics -->
+			<control type="image" id="32000">
+				<description>goalkeeper</description>
+				<left>485</left>
+				<top>820</top>
+				<width>160</width>
+				<height>160</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32001">
+				<description>awayteamshort</description>
+				<left>290</left>
+				<top>970</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<!-- 5 defense-->
+			<control type="image" id="32002">
+				<description>goalkeeper</description>
+				<left>130</left>
+				<top>575</top>
+				<width>150</width>
+				<height>150</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32003">
+				<description>awayteamshort</description>
+				<left>-60</left>
+				<top>710</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32004">
+				<description>goalkeeper</description>
+				<left>300</left>
+				<top>610</top>
+				<width>160</width>
+				<height>160</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32005">
+				<description>awayteamshort</description>
+				<left>100</left>
+				<top>760</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32006">
+				<description>goalkeeper</description>
+				<left>490</left>
+				<top>630</top>
+				<width>160</width>
+				<height>160</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32007">
+				<description>awayteamshort</description>
+				<left>300</left>
+				<top>780</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32008">
+				<description>goalkeeper</description>
+				<left>670</left>
+				<top>610</top>
+				<width>160</width>
+				<height>160</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32009">
+				<description>awayteamshort</description>
+				<left>480</left>
+				<top>760</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32010">
+				<description>goalkeeper</description>
+				<left>840</left>
+				<top>575</top>
+				<width>150</width>
+				<height>150</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32011">
+				<description>awayteamshort</description>
+				<left>650</left>
+				<top>710</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<!-- 5 defense-->
+			<control type="image" id="32012">
+				<description>goalkeeper</description>
+				<left>130</left>
+				<top>575</top>
+				<width>150</width>
+				<height>150</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32013">
+				<description>awayteamshort</description>
+				<left>-60</left>
+				<top>710</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32014">
+				<description>goalkeeper</description>
+				<left>300</left>
+				<top>610</top>
+				<width>160</width>
+				<height>160</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32015">
+				<description>awayteamshort</description>
+				<left>110</left>
+				<top>760</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32016">
+				<description>goalkeeper</description>
+				<left>485</left>
+				<top>610</top>
+				<width>160</width>
+				<height>160</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32017">
+				<description>awayteamshort</description>
+				<left>290</left>
+				<top>760</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32018">
+				<description>goalkeeper</description>
+				<left>680</left>
+				<top>610</top>
+				<width>160</width>
+				<height>160</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32019">
+				<description>awayteamshort</description>
+				<left>485</left>
+				<top>760</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32020">
+				<description>goalkeeper</description>
+				<left>840</left>
+				<top>575</top>
+				<width>150</width>
+				<height>150</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32021">
+				<description>awayteamshort</description>
+				<left>650</left>
+				<top>710</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<!-- 4 defense-->
+			<control type="image" id="32022">
+				<description>goalkeeper</description>
+				<left>130</left>
+				<top>575</top>
+				<width>150</width>
+				<height>150</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32023">
+				<description>awayteamshort</description>
+				<left>-60</left>
+				<top>710</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32024">
+				<description>goalkeeper</description>
+				<left>380</left>
+				<top>610</top>
+				<width>160</width>
+				<height>160</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32025">
+				<description>awayteamshort</description>
+				<left>180</left>
+				<top>760</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32026">
+				<description>goalkeeper</description>
+				<left>620</left>
+				<top>610</top>
+				<width>160</width>
+				<height>160</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32027">
+				<description>awayteamshort</description>
+				<left>430</left>
+				<top>760</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32028">
+				<description>goalkeeper</description>
+				<left>840</left>
+				<top>575</top>
+				<width>150</width>
+				<height>150</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32029">
+				<description>awayteamshort</description>
+				<left>650</left>
+				<top>710</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>-->
+			<!-- 3 defense -->
+			<control type="image" id="32030">
+				<description>goalkeeper</description>
+				<left>230</left>
+				<top>590</top>
+				<width>150</width>
+				<height>150</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32031">
+				<description>awayteamshort</description>
+				<left>30</left>
+				<top>730</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32032">
+				<description>goalkeeper</description>
+				<left>490</left>
+				<top>610</top>
+				<width>160</width>
+				<height>160</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32033">
+				<description>awayteamshort</description>
+				<left>290</left>
+				<top>760</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32034">
+				<description>goalkeeper</description>
+				<left>760</left>
+				<top>590</top>
+				<width>150</width>
+				<height>150</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32035">
+				<description>awayteamshort</description>
+				<left>570</left>
+				<top>730</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<!-- 5 midfielders -->
+			<control type="image" id="32036">
+				<description>goalkeeper</description>
+				<left>190</left>
+				<top>360</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32037">
+				<description>awayteamshort</description>
+				<left>-20</left>
+				<top>490</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32038">
+				<description>goalkeeper</description>
+				<left>330</left>
+				<top>395</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32039">
+				<description>awayteamshort</description>
+				<left>120</left>
+				<top>525</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32040">
+				<description>goalkeeper</description>
+				<left>500</left>
+				<top>470</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32041">
+				<description>awayteamshort</description>
+				<left>449</left>
+				<top>555</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32042">
+				<description>goalkeeper</description>
+				<left>670</left>
+				<top>395</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32043">
+				<description>awayteamshort</description>
+				<left>465</left>
+				<top>525</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32044">
+				<description>goalkeeper</description>
+				<left>820</left>
+				<top>360</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32045">
+				<description>awayteamshort</description>
+				<left>620</left>
+				<top>490</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<!-- 4 midfielders -->
+			<control type="image" id="32046">
+				<description>goalkeeper</description>
+				<left>220</left>
+				<top>400</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32047">
+				<description>awayteamshort</description>
+				<left>20</left>
+				<top>530</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32048">
+				<description>goalkeeper</description>
+				<left>400</left>
+				<top>430</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32049">
+				<description>awayteamshort</description>
+				<left>200</left>
+				<top>560</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32050">
+				<description>goalkeeper</description>
+				<left>620</left>
+				<top>430</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32051">
+				<description>awayteamshort</description>
+				<left>420</left>
+				<top>560</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32052">
+				<description>goalkeeper</description>
+				<left>780</left>
+				<top>400</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32053">
+				<description>awayteamshort</description>
+				<left>570</left>
+				<top>530</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>-->
+			<!--3 midfielders -->
+			<control type="image" id="32054">
+				<description>goalkeeper</description>
+				<left>220</left>
+				<top>400</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32055">
+				<description>awayteamshort</description>
+				<left>20</left>
+				<top>530</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32056">
+				<description>goalkeeper</description>
+				<left>500</left>
+				<top>430</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32057">
+				<description>awayteamshort</description>
+				<left>290</left>
+				<top>560</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32058">
+				<description>goalkeeper</description>
+				<left>780</left>
+				<top>400</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32059">
+				<description>awayteamshort</description>
+				<left>570</left>
+				<top>530</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<!-- -->
+			<!-- FORWARDS -->
+			<!-- 1 forward -->
+			<control type="image" id="32060">
+				<description>stricker left</description>
+				<left>510</left>
+				<top>210</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32061">
+				<description>awayteamshort</description>
+				<left>300</left>
+				<top>320</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>-->
+			
+			<!--2 forwards -->
+			<control type="image" id="32062">
+				<description>stricker left</description>
+				<left>370</left>
+				<top>240</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32063">
+				<description>awayteamshort</description>
+				<left>150</left>
+				<top>350</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32064">
+				<description>stricker right</description>
+				<left>640</left>
+				<top>240</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32065">
+				<description>awayteamshort</description>
+				<left>430</left>
+				<top>350</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>-->
+			<!--3 forwards -->
+			<control type="image" id="32066">
+				<description>stricker left</description>
+				<left>320</left>
+				<top>240</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32067">
+				<description>awayteamshort</description>
+				<left>100</left>
+				<top>350</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32068">
+				<description>stricker center</description>
+				<left>510</left>
+				<top>203</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32069">
+				<description>awayteamshort</description>
+				<left>295</left>
+				<top>315</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32070">
+				<description>stricker right</description>
+				<left>700</left>
+				<top>240</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32071">
+				<description>awayteamshort</description>
+				<left>490</left>
+				<top>350</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>-->
+			
+			<!--special cases -->
+			<!--3-2 midfield -->
+			<control type="image" id="32072">
+				<description>stricker left</description>
+				<left>730</left>
+				<top>430</top>
+				<width>130</width>
+				<height>130</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32073">
+				<description>awayteamshort</description>
+				<left>520</left>
+				<top>550</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32074">
+				<description>stricker left</description>
+				<left>500</left>
+				<top>440</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32075">
+				<description>awayteamshort</description>
+				<left>290</left>
+				<top>570</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>			
+			<control type="image" id="32076">
+				<description>stricker left</description>
+				<left>270</left>
+				<top>430</top>
+				<width>130</width>
+				<height>130</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32077">
+				<description>awayteamshort</description>
+				<left>60</left>
+				<top>550</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32078">
+				<description>stricker left</description>
+				<left>310</left>
+				<top>270</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32079">
+				<description>awayteamshort</description>
+				<left>100</left>
+				<top>380</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32080">
+				<description>stricker left</description>
+				<left>690</left>
+				<top>270</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32081">
+				<description>awayteamshort</description>
+				<left>480</left>
+				<top>380</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>-->
+			
+			<!--2-3 midfield -->
+			<control type="image" id="32082">
+				<description>stricker left</description>
+				<left>340</left>
+				<top>440</top>
+				<width>130</width>
+				<height>130</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32083">
+				<description>awayteamshort</description>
+				<left>130</left>
+				<top>560</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32084">
+				<description>stricker left</description>
+				<left>670</left>
+				<top>440</top>
+				<width>130</width>
+				<height>130</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32085">
+				<description>awayteamshort</description>
+				<left>460</left>
+				<top>560</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>			
+			<control type="image" id="32086">
+				<description>stricker left</description>
+				<left>500</left>
+				<top>370</top>
+				<width>130</width>
+				<height>130</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32087">
+				<description>awayteamshort</description>
+				<left>300</left>
+				<top>490</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32088">
+				<description>stricker left</description>
+				<left>310</left>
+				<top>270</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32089">
+				<description>awayteamshort</description>
+				<left>100</left>
+				<top>380</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32090">
+				<description>stricker left</description>
+				<left>690</left>
+				<top>270</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32091">
+				<description>awayteamshort</description>
+				<left>480</left>
+				<top>380</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>-->
+			<!--1-2 midfield -->
+			<control type="image" id="32092">
+				<description>stricker left</description>
+				<left>300</left>
+				<top>410</top>
+				<width>130</width>
+				<height>130</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32093">
+				<description>awayteamshort</description>
+				<left>90</left>
+				<top>530</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32094">
+				<description>stricker left</description>
+				<left>500</left>
+				<top>450</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32095">
+				<description>awayteamshort</description>
+				<left>300</left>
+				<top>580</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32096">
+				<description>stricker left</description>
+				<left>690</left>
+				<top>410</top>
+				<width>130</width>
+				<height>130</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32097">
+				<description>awayteamshort</description>
+				<left>490</left>
+				<top>530</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>-->
+			<!--1-4 midfield -->
+			<control type="image" id="32098">
+				<description>stricker left</description>
+				<left>500</left>
+				<top>450</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32099">
+				<description>awayteamshort</description>
+				<left>290</left>
+				<top>575</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32100">
+				<description>stricker left</description>
+				<left>200</left>
+				<top>345</top>
+				<width>130</width>
+				<height>130</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32101">
+				<description>awayteamshort</description>
+				<left>-10</left>
+				<top>465</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32102">
+				<description>stricker left</description>
+				<left>370</left>
+				<top>320</top>
+				<width>130</width>
+				<height>130</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32103">
+				<description>awayteamshort</description>
+				<left>160</left>
+				<top>435</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32104">
+				<description>stricker left</description>
+				<left>650</left>
+				<top>320</top>
+				<width>130</width>
+				<height>130</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32105">
+				<description>awayteamshort</description>
+				<left>440</left>
+				<top>435</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32106">
+				<description>stricker left</description>
+				<left>820</left>
+				<top>345</top>
+				<width>130</width>
+				<height>130</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32107">
+				<description>awayteamshort</description>
+				<left>620</left>
+				<top>465</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>-->
+			<!--4-4-1-1 1-1 midfielder -->
+			<control type="image" id="32108">
+				<description>stricker left</description>
+				<left>510</left>
+				<top>330</top>
+				<width>130</width>
+				<height>130</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32109">
+				<description>awayteamshort</description>
+				<left>460</left>
+				<top>340</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32110">
+				<description>stricker left</description>
+				<left>515</left>
+				<top>210</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32111">
+				<description>awayteamshort</description>
+				<left>470</left>
+				<top>255</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>-->
+			<!-- 2-1 forward (to 3-4-2-1)-->
+			<control type="image" id="32112">
+				<description>stricker left</description>
+				<left>370</left>
+				<top>300</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32113">
+				<description>awayteamshort</description>
+				<left>10</left>
+				<top>350</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32114">
+				<description>stricker right</description>
+				<left>640</left>
+				<top>300</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32115">
+				<description>awayteamshort</description>
+				<left>590</left>
+				<top>350</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32116">
+				<description>stricker right</description>
+				<left>510</left>
+				<top>220</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32117">
+				<description>awayteamshort</description>
+				<left>440</left>
+				<top>255</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>-->
+			<!-- 1 - 2 forward (for 3-4-1-2) -->
+			<control type="image" id="32118">
+				<description>stricker left</description>
+				<left>320</left>
+				<top>200</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32119">
+				<description>awayteamshort</description>
+				<left>100</left>
+				<top>310</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32120">
+				<description>stricker center</description>
+				<left>510</left>
+				<top>270</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32121">
+				<description>awayteamshort</description>
+				<left>295</left>
+				<top>380</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			<control type="image" id="32122">
+				<description>stricker right</description>
+				<left>700</left>
+				<top>200</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32123">
+				<description>awayteamshort</description>
+				<left>490</left>
+				<top>310</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<!-- 1 forward special 4-5-1 -->
+			<control type="image" id="32124">
+				<description>stricker left</description>
+				<left>515</left>
+				<top>240</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32125">
+				<description>awayteamshort</description>
+				<left>300</left>
+				<top>345</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<!-- 2-1 midfield-->
+			<control type="image" id="32126">
+				<description>stricker left</description>
+				<left>355</left>
+				<top>470</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32127">
+				<description>awayteamshort</description>
+				<left>50</left>
+				<top>525</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32128">
+				<description>stricker left</description>
+				<left>625</left>
+				<top>470</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32129">
+				<description>awayteamshort</description>
+				<left>570</left>
+				<top>525</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32130">
+				<description>stricker left</description>
+				<left>505</left>
+				<top>425</top>
+				<width>130</width>
+				<height>130</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32131">
+				<description>awayteamshort</description>
+				<left>450</left>
+				<top>420</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<!-- 1-3 midfield-->
+			<control type="image" id="32132">
+				<description>stricker left</description>
+				<left>505</left>
+				<top>540</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32133">
+				<description>awayteamshort</description>
+				<left>130</left>
+				<top>555</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32134">
+				<description>stricker left</description>
+				<left>305</left>
+				<top>400</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32135">
+				<description>awayteamshort</description>
+				<left>-20</left>
+				<top>485</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32136">
+				<description>stricker left</description>
+				<left>685</left>
+				<top>400</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32137">
+				<description>awayteamshort</description>
+				<left>630</left>
+				<top>485</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32138">
+				<description>stricker left</description>
+				<left>505</left>
+				<top>380</top>
+				<width>140</width>
+				<height>140</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32139">
+				<description>awayteamshort</description>
+				<left>300</left>
+				<top>500</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<!-- 2-1 midfield for 4-1-2-1-2-->
+			<control type="image" id="32140">
+				<description>stricker right</description>
+				<left>510</left>
+				<top>320</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32141">
+				<description>awayteamshort</description>
+				<left>300</left>
+				<top>430</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32142">
+				<description>stricker right</description>
+				<left>310</left>
+				<top>400</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32143">
+				<description>awayteamshort</description>
+				<left>90</left>
+				<top>510</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32144">
+				<description>stricker right</description>
+				<left>680</left>
+				<top>400</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32145">
+				<description>awayteamshort</description>
+				<left>460</left>
+				<top>510</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<!-- 1-3 midfield for 4-1-3-1-2 -->
+			<control type="image" id="32146">
+				<description>stricker right</description>
+				<left>750</left>
+				<top>400</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32147">
+				<description>awayteamshort</description>
+				<left>680</left>
+				<top>440</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32148">
+				<description>stricker right</description>
+				<left>280</left>
+				<top>400</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32149">
+				<description>awayteamshort</description>
+				<left>-80</left>
+				<top>440</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32200">
+				<description>stricker right</description>
+				<left>510</left>
+				<top>480</top>
+				<width>120</width>
+				<height>120</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32201">
+				<description>awayteamshort</description>
+				<left>440</left>
+				<top>525</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="image" id="32202">
+				<description>stricker right</description>
+				<left>410</left>
+				<top>515</top>
+				<width>130</width>
+				<height>130</height>
+				<texture></texture>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			<control type="textbox" id="32203">
+				<description>awayteamshort</description>
+				<left>30</left>
+				<top>525</top>
+				<width>550</width>
+				<height>60</height>
+				<textbox></textbox>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font14</font>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+			</control>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+
+			<control type="button" id="9027">
+				<top>969</top>
+				<left>1090</left>
+				<label></label>
+				<textoffsetx>0</textoffsetx>
+				<width>300</width>
+				<height>61</height>
+				<align>center</align>
+				<font>font14</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>shadow</shadowcolor>
+				<onup>32150</onup>
+				<onleft>9028</onleft>
+				<onright>9028</onright>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+				<animation type="Visible">
+					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+				<animation type="Hidden">
+					<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+			</control>
+			<control type="button" id="9028">
+				<top>969</top>
+				<left>1480</left>
+				<label>Back to match</label>
+				<textoffsetx>0</textoffsetx>
+				<width>300</width>
+				<height>61</height>
+				<align>center</align>
+				<font>font14</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>shadow</shadowcolor>
+				<onup>32150</onup>
+				<onleft>9027</onleft>
+				<onright>9027</onright>
+				<visible>!IsEmpty(Window(home).Property(lineup))</visible>
+				<animation type="Visible">
+					<effect type="fade" start="0" end="100" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="50" end="100" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+				<animation type="Hidden">
+					<effect type="fade" start="100" end="0" tween="sine" easing="inout" time="300" />
+					<effect type="zoom" start="100" end="50" center="auto" tween="sine" easing="inout" time="300" />
+				</animation>
+			</control>
+			
+			
+			
+
+		</control>
+	</controls>
+</window>

@@ -1,0 +1,862 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+	<onload>setFocus(209)</onload>
+	<defaultcontrol always="true">8</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<include condition="Skin.HasSetting(Enable.TvTunes)">LoadTvTunes</include>
+	<controls>
+		<control type="group">
+			<animation effect="slide" start="-729,0" end="0,0" time="320" tween="quadratic">WindowOpen</animation>
+			<animation effect="slide" end="-729,0" time="320" tween="quadratic">WindowClose</animation>
+			<animation effect="slide" start="-729,0" end="0,0" time="320" tween="quadratic" condition="!Window.IsVisible(script-Actors-DialogVideoInfo.xml)|!Window.IsVisible(script-Actors-DialogInfo.xml)">Conditional</animation>
+			<animation effect="slide" end="-729,0" time="320" tween="quadratic" condition="Window.IsVisible(script-Actors-DialogVideoInfo.xml)|Window.IsVisible(script-Actors-DialogInfo.xml)">Conditional</animation>
+			<control type="image" id="4">
+				<width>729</width>
+				<height>1080</height>
+				<aspectratio aligny="top">scale</aspectratio>
+				<texture background="true" fallback="black.png"></texture>
+			</control>
+			<control type="image">
+				<width>729</width>
+				<height>1080</height>
+				<texture border="4">dialogs/info/info_rightpaneltop.png</texture>
+			</control>
+			<control type="image" id="2">
+            		<posx>220</posx>
+            		<posy>50</posy>
+            		<width>300</width>
+            		<height>300</height>
+            		<texture></texture>
+				<visible>true</visible>
+        		</control>
+        		<control type="label" id="1">
+				<description>competition tag</description>
+				<posx>0</posx>
+				<posy>405</posy>
+				<width>729</width>
+				<height>40</height>
+				<label></label>
+				<font>font_MainMenu</font>
+				<align>center</align>
+				<textcolor>grey2</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+        		<control type="grouplist">
+					<left>0</left>
+					<top>670</top>
+					<width>729</width>
+					<height>804</height>
+					<animation effect="slide" end="0,-170" time="120" condition="!Skin.HasSetting(nohighlist)">Conditional</animation>
+					
+        				<control type="button" id="7">
+						<label></label>
+						<width>729</width>
+						<include>ShowCaseInfoPanelButtonsValues</include>
+						<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
+					</control>
+					<control type="button" id="8">
+						<label></label>
+						<width>729</width>
+						<include>ShowCaseInfoPanelButtonsValues</include>
+						<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
+					</control>
+					<control type="button" id="9">
+						<label></label>
+						<width>729</width>
+						<include>ShowCaseInfoPanelButtonsValues</include>
+						<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
+					</control>
+					<control type="button" id="10">
+						<label></label>
+						<width>729</width>
+						<include>ShowCaseInfoPanelButtonsValues</include>
+						<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
+					</control>
+					<control type="button" id="11">
+						<label></label>
+						<width>729</width>
+						<include>ShowCaseInfoPanelButtonsValues</include>
+						<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
+					</control>
+					<control type="button" id="12">
+						<label></label>
+						<width>729</width>
+						<include>ShowCaseInfoPanelButtonsValues</include>
+						<!--<visible>!IsEmpty(ListItem.Director) + Container.Content(movies)</visible>-->
+					</control>
+			</control>
+        		
+		</control>
+		<control type="group">
+			<animation effect="slide" start="1242,0" end="0,0" time="320" tween="quadratic">WindowOpen</animation>
+			<animation effect="slide" end="1242,0" time="320" tween="quadratic">WindowClose</animation>
+			<animation effect="slide" start="1242,0" end="0,0" time="320" tween="quadratic" condition="!Window.IsVisible(script-Actors-DialogVideoInfo.xml)|!Window.IsVisible(script-Actors-DialogInfo.xml)">Conditional</animation>
+			<animation effect="slide" end="1242,0" time="320" tween="quadratic" condition="Window.IsVisible(script-Actors-DialogVideoInfo.xml)|Window.IsVisible(script-Actors-DialogInfo.xml)">Conditional</animation>
+			<left>729</left>
+			<control type="image">
+				<width>1192</width>
+				<height>1080</height>
+				<texture>black.png</texture>
+				<visible>true</visible>
+			</control>
+			<control type="image" id="3">
+				<width>1192</width>
+				<height>1080</height>
+				<aspectratio align="center">scale</aspectratio>
+				<texture background="true"></texture>
+			</control>
+			<control type="image">
+				<width>1192</width>
+				<height>1080</height>
+				<texture border="4">dialogs/info/info_rightpaneltop.png</texture>
+			</control>
+			<control type="image" id="5">
+            		<posx>850</posx>
+            		<posy>6</posy>
+            		<width>280</width>
+            		<height>110</height>
+            		<texture></texture>
+				<visible>true</visible>
+        		</control>
+        		
+        		<control type="label" id="309">
+				<description>position</description>
+				<posx>80</posx>
+				<posy>280</posy>
+				<width>250</width>
+				<height>20</height>
+				<label></label>
+				<font>font30_title</font>
+				<align>left</align>
+				<textcolor>grey2</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+        		
+        		<control type="image" id="6">
+            		<posx>880</posx>
+            		<posy>230</posy>
+            		<width>250</width>
+            		<height>250</height>
+            		<texture></texture>
+				<visible>true</visible>
+        		</control>
+        		<control type="image" id="30">
+            		<posx>80</posx>
+            		<posy>330</posy>
+            		<width>70</width>
+            		<height>70</height>
+            		<texture></texture>
+				<visible>true</visible>
+        		</control>
+        		<control type="label" id="31">
+				<description>Win</description>
+				<posx>96</posx>
+            		<posy>344</posy>
+				<width>260</width>
+				<height>40</height>
+				<label></label>
+				<font>IconMedium</font>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+        		<control type="image" id="32">
+            		<posx>150</posx>
+            		<posy>330</posy>
+            		<width>70</width>
+            		<height>70</height>
+            		<texture></texture>
+				<visible>true</visible>
+        		</control>
+        		<control type="label" id="33">
+				<description>Win</description>
+				<posx>167</posx>
+            		<posy>344</posy>
+				<width>260</width>
+				<height>40</height>
+				<font>IconMedium</font>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+				<label></label>
+			</control>
+        		<control type="image" id="34">
+            		<posx>220</posx>
+            		<posy>330</posy>
+            		<width>70</width>
+            		<height>70</height>
+            		<texture></texture>
+				<visible>true</visible>
+        		</control>
+        		<control type="label" id="35">
+				<description>Win</description>
+				<posx>237</posx>
+            		<posy>344</posy>
+				<width>260</width>
+				<height>40</height>
+				<label></label>
+				<font>IconMedium</font>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+        		<control type="image" id="36">
+            		<posx>290</posx>
+            		<posy>330</posy>
+            		<width>70</width>
+            		<height>70</height>
+            		<texture></texture>
+				<visible>true</visible>
+        		</control>
+        		<control type="label" id="37">
+				<description>Win</description>
+				<posx>307</posx>
+            		<posy>344</posy>
+				<width>260</width>
+				<height>40</height>
+				<label></label>
+				<font>IconMedium</font>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+        		<control type="image" id="38">
+            		<posx>360</posx>
+            		<posy>330</posy>
+            		<width>70</width>
+            		<height>70</height>
+            		<texture></texture>
+            		<label></label>
+				<visible>true</visible>
+        		</control>
+        		<control type="label" id="39">
+				<description>Win</description>
+				<posx>377</posx>
+            		<posy>344</posy>
+				<width>260</width>
+				<height>40</height>
+				<label></label>
+				<font>IconMedium</font>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			<control type="label" id="309">
+				<description>date</description>
+				<posx>505</posx>
+				<posy>260</posy>
+				<width>300</width>
+				<height>20</height>
+				<label>Coming Next:</label>
+				<font>font15</font>
+				<align>left</align>
+				<textcolor>FFB2D4F5</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			<control type="image" id="40">
+            		<posx>490</posx>
+            		<posy>310</posy>
+            		<width>120</width>
+            		<height>120</height>
+            		<texture></texture>
+				<visible>true</visible>
+        		</control>
+        		<control type="label" id="41">
+				<description>home or away</description>
+				<posx>647</posx>
+            		<posy>324</posy>
+				<width>260</width>
+				<height>40</height>
+				<label></label>
+				<font>IconMedium</font>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			<control type="label" id="46">
+				<description>racelocation</description>
+				<posx>587</posx>
+            		<posy>324</posy>
+				<width>260</width>
+				<height>40</height>
+				<label></label>
+				<font>font30</font>
+				<align>center</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			<control type="label" id="42">
+				<description>date</description>
+				<posx>565</posx>
+				<posy>380</posy>
+				<width>300</width>
+				<height>20</height>
+				<label></label>
+				<font>font15</font>
+				<align>center</align>
+				<textcolor>grey2</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			<control type="label" id="45">
+				<description>date time</description>
+				<posx>563</posx>
+				<posy>420</posy>
+				<width>300</width>
+				<height>20</height>
+				<label></label>
+				<font>font15</font>
+				<align>center</align>
+				<textcolor>grey2</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+        		<control type="progress" id="44">
+				<description>Progressbar</description>
+				<posx>150</posx>
+				<posy>415</posy>
+				<width>180</width>
+				<height>16</height>
+				<colordiffuse>88FFFFFF</colordiffuse>
+				<info>$INFO[ListItem.Property(Progress)]</info>
+				<texturebg border="2">osd/texturebg2.png</texturebg>
+			</control>
+			<control type="label" id="43">
+				<description>winning %</description>
+				<posx>90</posx>
+				<posy>450</posy>
+				<width>300</width>
+				<height>20</height>
+				<label></label>
+				<font>font12_title</font>
+				<align>center</align>
+				<textcolor>FFB2D4F5</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+        		<!--Next and previous matches -->
+        		<control type="group">
+				<left>40</left>
+				<top>20</top>
+				<width>1042</width>
+				<height>854</height>
+				<control type="grouplist">
+					<top>-20</top>
+					<width>1100</width>
+					<height>110</height>
+					<itemgap>0</itemgap>
+					<align>center</align>
+					
+				</control>
+				
+				<control type="image">
+					<left>-37</left>
+					<top>50</top>
+					<width>1188</width>
+					<height>60</height>
+					<texture border="1">separator2.png</texture>
+				</control>
+				<control type="image" id="18">
+					<left>10</left>
+					<top>120</top>
+					<width>60</width>
+					<height>60</height>
+					<texture></texture>
+				</control>
+				<control type="label" id="19">
+					<description>position</description>
+					<posx>80</posx>
+					<posy>140</posy>
+					<width>250</width>
+					<height>20</height>
+					<label></label>
+					<font>font30</font>
+					<align>left</align>
+					<textcolor>grey2</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+				<control type="image">
+					<left>-37</left>
+					<top>130</top>
+					<width>1188</width>
+					<height>60</height>
+					<texture border="1">separator2.png</texture>
+				</control>
+			</control>
+
+			<control type="group">
+				<left>40</left>
+				<top>20</top>
+				<width>1042</width>
+				<height>854</height>
+				<visible>!IsEmpty(Window(home).Property(focusteam_plot))</visible>
+				<control type="grouplist">
+					<top>-20</top>
+					<width>1100</width>
+					<height>110</height>
+					<itemgap>0</itemgap>
+					<align>center</align>	
+				</control>
+				<control type="textbox" id="430">
+					<description>Plot</description>
+					<left>0</left>
+					<top>560</top>
+					<width>1132</width>
+					<height>452</height>
+					<font>font15_textbox</font>
+					<align>left</align>
+					<label></label>
+					<textcolor>white</textcolor>
+					<pagecontrol>60</pagecontrol>
+					<autoscroll time="3000" delay="4000" repeat="5000">Skin.HasSetting(Enable.AutoScroll)</autoscroll>
+					<animation effect="fade" start="100" end="78" time="300" tween="sine" easing="inout" condition="!Control.HasFocus(60)">Conditional</animation>
+				</control>
+				<control type="button" id="4003">
+					<left>0</left>
+					<top>560</top>
+					<width>1132</width>
+					<height>400</height>
+					<onleft>9000</onleft>
+					<onright>9000</onright>
+					<texturefocus>-</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<onup condition="Control.IsVisible(60)">PageUp(60)</onup>
+					<onup condition="!Control.IsVisible(60)">9000</onup>
+					<ondown condition="Control.IsVisible(60)">PageDown(60)</ondown>
+					<ondown condition="!Control.IsVisible(60)">9000</ondown>
+					<onclick>Skin.ToggleSetting(VideoInfoPlotToggle)</onclick>
+				</control>
+				<control type="scrollbar" id="60">
+					<left>1136</left>
+					<top>550</top>
+					<width>14</width>
+					<height>418</height>
+					<onup>9000</onup>
+					<ondown>noop</ondown>
+					<onleft>9000</onleft>
+					<onright>9000</onright>
+					<texturesliderbackground>-</texturesliderbackground>
+					<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
+					<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
+					<showonepage>false</showonepage>
+					<orientation>vertical</orientation>
+				</control>
+			</control>
+			
+			<!-- VIDEOS -->
+			<control type="panel" id="989">
+				<left>30</left>
+				<top>640</top>
+				<width>1140</width>
+				<height>350</height>
+				<onright>66</onright>
+				<onup>9000</onup>
+				<preloaditems>2</preloaditems>
+				<orientation>horizontal</orientation>
+				<visible>!IsEmpty(Window(home).Property(focusteam_youtube))</visible>
+				<scrolltime tween="quadratic" easing="out">300</scrolltime>
+				<itemlayout height="350" width="420">
+					<control type="image">
+						<width>420</width>
+						<height>350</height>
+						<aspectratio>scale</aspectratio>
+						<texture background="true">$INFO[ListItem.Property(thumb)]</texture>
+						<fadetime>400</fadetime>
+						<bordertexture border="2">thumbs/panel_border3.png</bordertexture>
+						<bordersize>2</bordersize>
+						<colordiffuse>BAffffff</colordiffuse>
+					</control>
+					<control type="image">
+						<top>310</top>
+						<width>420</width>
+						<height>50</height>
+						<texture>black.png</texture>
+						<bordersize>2</bordersize>
+						<colordiffuse>88ffffff</colordiffuse>
+					</control>
+					<control type="label">
+						<top>310</top>
+						<width>420</width>
+						<height>40</height>
+						<align>center</align>
+						<textoffsetx>10</textoffsetx>
+						<textcolor>grey2</textcolor>
+						<info>ListItem.Label</info>
+					</control>
+				</itemlayout>
+				<focusedlayout height="350" width="420">
+					<control type="group">
+						<animation type="Focus" reversible="false">
+							<effect type="zoom" start="95" end="100" time="200" tween="sine" easing="inout" center="auto" />
+							<effect type="fade" start="80" end="100" time="200" tween="sine" easing="in" />
+						</animation>
+						<control type="image">
+							<width>420</width>
+							<height>350</height>
+							<aspectratio>scale</aspectratio>
+							<texture background="true">$INFO[ListItem.Property(thumb)]</texture>
+							<fadetime>400</fadetime>
+							<bordertexture border="8">thumbs/thumbnail_focused.png</bordertexture>
+							<bordersize>8</bordersize>
+						</control>
+						<control type="image">
+							<top>310</top>
+							<width>420</width>
+							<height>50</height>
+							<texture>black.png</texture>
+							<bordersize>2</bordersize>
+							<colordiffuse>88ffffff</colordiffuse>
+						</control>
+						<control type="label">
+							<top>310</top>
+							<width>420</width>
+							<height>40</height>
+							<align>center</align>
+							<textoffsetx>10</textoffsetx>
+							<textcolor>grey2</textcolor>
+							<info>ListItem.Label</info>
+						</control>
+					</control>
+				</focusedlayout>
+			</control>
+			
+			<!-- Instagram Images -->
+			<control type="panel" id="985">
+				<left>30</left>
+				<top>640</top>
+				<width>1140</width>
+				<height>350</height>
+				<onup>9000</onup>
+				<preloaditems>2</preloaditems>
+				<orientation>horizontal</orientation>
+				<visible>!IsEmpty(Window(home).Property(focusteam_instagram))</visible>
+				<scrolltime tween="quadratic" easing="out">300</scrolltime>
+				<itemlayout height="350" width="420">
+					<control type="image">
+						<width>420</width>
+						<height>350</height>
+						<aspectratio>scale</aspectratio>
+						<texture background="true">$INFO[ListItem.Property(thumb)]</texture>
+						<fadetime>400</fadetime>
+						<bordertexture border="2">thumbs/panel_border3.png</bordertexture>
+						<bordersize>2</bordersize>
+						<colordiffuse>BAffffff</colordiffuse>
+					</control>
+					<control type="image">
+						<top>310</top>
+						<width>420</width>
+						<height>50</height>
+						<texture>black.png</texture>
+						<bordersize>2</bordersize>
+						<colordiffuse>88ffffff</colordiffuse>
+					</control>
+					<control type="label">
+						<top>310</top>
+						<width>420</width>
+						<height>40</height>
+						<align>center</align>
+						<textoffsetx>10</textoffsetx>
+						<textcolor>grey2</textcolor>
+						<info>ListItem.Label</info>
+					</control>
+				</itemlayout>
+				<focusedlayout height="350" width="420">
+					<control type="group">
+						<animation type="Focus" reversible="false">
+							<effect type="zoom" start="95" end="100" time="200" tween="sine" easing="inout" center="auto" />
+							<effect type="fade" start="80" end="100" time="200" tween="sine" easing="in" />
+						</animation>
+						<control type="image">
+							<width>420</width>
+							<height>350</height>
+							<aspectratio>scale</aspectratio>
+							<texture background="true">$INFO[ListItem.Property(thumb)]</texture>
+							<fadetime>400</fadetime>
+							<bordertexture border="8">thumbs/thumbnail_focused.png</bordertexture>
+							<bordersize>8</bordersize>
+						</control>
+						<control type="image">
+							<top>310</top>
+							<width>420</width>
+							<height>50</height>
+							<texture>black.png</texture>
+							<bordersize>2</bordersize>
+							<colordiffuse>88ffffff</colordiffuse>
+						</control>
+						<control type="label">
+							<top>310</top>
+							<width>420</width>
+							<height>40</height>
+							<align>center</align>
+							<textoffsetx>10</textoffsetx>
+							<textcolor>grey2</textcolor>
+							<info>ListItem.Label</info>
+						</control>
+					</control>
+				</focusedlayout>
+			</control>
+			
+			<!-- Players -->
+			<control type="panel" id="987">
+				<left>30</left>
+				<top>640</top>
+				<width>1140</width>
+				<height>350</height>
+				<onright>66</onright>
+				<onup>9000</onup>
+				<preloaditems>2</preloaditems>
+				<orientation>horizontal</orientation>
+				<visible>!IsEmpty(Window(home).Property(focusteam_players))</visible>
+				<scrolltime tween="quadratic" easing="out">300</scrolltime>
+				<itemlayout height="350" width="350">
+					<control type="image">
+						<width>350</width>
+						<height>350</height>
+						<aspectratio>scale</aspectratio>
+						<texture background="true">$INFO[ListItem.Property(thumb)]</texture>
+						<fadetime>400</fadetime>
+						<bordertexture border="2">thumbs/panel_border3.png</bordertexture>
+						<bordersize>2</bordersize>
+						<colordiffuse>BAffffff</colordiffuse>
+					</control>
+					<control type="image">
+						<top>310</top>
+						<width>350</width>
+						<height>50</height>
+						<texture>black.png</texture>
+						<bordersize>2</bordersize>
+						<colordiffuse>88ffffff</colordiffuse>
+					</control>
+					<control type="label">
+						<top>310</top>
+						<width>350</width>
+						<height>40</height>
+						<align>center</align>
+						<textoffsetx>10</textoffsetx>
+						<textcolor>grey2</textcolor>
+						<info>ListItem.Label</info>
+					</control>
+				</itemlayout>
+				<focusedlayout height="350" width="350">
+					<control type="group">
+						<animation type="Focus" reversible="false">
+							<effect type="zoom" start="95" end="100" time="200" tween="sine" easing="inout" center="auto" />
+							<effect type="fade" start="80" end="100" time="200" tween="sine" easing="in" />
+						</animation>
+						<control type="image">
+							<width>350</width>
+							<height>350</height>
+							<aspectratio>scale</aspectratio>
+							<texture background="true">$INFO[ListItem.Property(thumb)]</texture>
+							<fadetime>400</fadetime>
+							<bordertexture border="8">thumbs/thumbnail_focused.png</bordertexture>
+							<bordersize>8</bordersize>
+						</control>
+						<control type="image">
+							<top>310</top>
+							<width>350</width>
+							<height>50</height>
+							<texture>black.png</texture>
+							<bordersize>2</bordersize>
+							<colordiffuse>88ffffff</colordiffuse>
+						</control>
+						<control type="label">
+							<top>310</top>
+							<width>350</width>
+							<height>40</height>
+							<align>center</align>
+							<textoffsetx>10</textoffsetx>
+							<textcolor>grey2</textcolor>
+							<info>ListItem.Label</info>
+						</control>
+					</control>
+				</focusedlayout>
+			</control>
+			
+			<!-- Events -->
+			<control type="group">
+				<left>40</left>
+				<top>20</top>
+				<width>1042</width>
+				<height>854</height>
+				<visible>!IsEmpty(Window(home).Property(focusteam_events))</visible>
+				<control type="grouplist">
+					<top>-20</top>
+					<width>1100</width>
+					<height>110</height>
+					<itemgap>0</itemgap>
+					<align>center</align>	
+				</control>
+				<control type="label">
+					<description>Latest</description>
+					<left>0</left>
+					<top>590</top>
+					<width>300</width>
+					<height>20</height>
+					<label>Latest:</label>
+					<font>font15</font>
+					<align>left</align>
+					<textcolor>FFB2D4F5</textcolor>
+					<shadowcolor>AA000000</shadowcolor>
+					<visible>!IsEmpty(Window(home).Property(focusteam_events))</visible>
+				</control>
+				<control type="textbox" id="470">
+					<description>Latest</description>
+					<left>0</left>
+					<top>640</top>
+					<width>600</width>
+					<height>452</height>
+					<font>font15_textbox</font>
+					<align>left</align>
+					<label></label>
+					<textcolor>white</textcolor>
+					<pagecontrol>60</pagecontrol>
+					<autoscroll time="3000" delay="4000" repeat="5000">Skin.HasSetting(Enable.AutoScroll)</autoscroll>
+					<animation effect="fade" start="100" end="78" time="300" tween="sine" easing="inout" condition="!Control.HasFocus(60)">Conditional</animation>
+				</control>
+				<control type="label">
+					<description>Latest</description>
+					<left>560</left>
+					<top>590</top>
+					<width>300</width>
+					<height>20</height>
+					<label>Next:</label>
+					<font>font15</font>
+					<align>left</align>
+					<textcolor>FFB2D4F5</textcolor>
+					<shadowcolor>AA000000</shadowcolor>
+					<visible>!IsEmpty(Window(home).Property(focusteam_events))</visible>
+				</control>
+				<control type="textbox" id="471">
+					<description>Future</description>
+					<left>560</left>
+					<top>640</top>
+					<width>600</width>
+					<height>452</height>
+					<font>font15_textbox</font>
+					<align>left</align>
+					<label></label>
+					<textcolor>white</textcolor>
+					<pagecontrol>60</pagecontrol>
+					<autoscroll time="3000" delay="4000" repeat="5000">Skin.HasSetting(Enable.AutoScroll)</autoscroll>
+					<animation effect="fade" start="100" end="78" time="300" tween="sine" easing="inout" condition="!Control.HasFocus(60)">Conditional</animation>
+				</control>
+			</control>
+			
+			
+			
+			
+			<control type="group">
+				<left>3</left>
+				<top>0</top>
+				<control type="image">
+					<top>450</top>
+					<width>594</width>
+					<height>60</height>
+					<texture border="1">separator2.png</texture>
+					<visible>!IntegerGreaterThan(Container(300).NumItems,2)</visible>
+				</control>
+				<control type="image">
+					<left>594</left>
+					<top>450</top>
+					<width>594</width>
+					<height>60</height>
+					<texture border="1">separator2.png</texture>
+					<visible>!IntegerGreaterThan(Container(300).NumItems,5)</visible>
+				</control>
+				<control type="grouplist" id="9000">
+					<left>1</left>
+					<top>510</top>
+					<width>1192</width>
+					<height>60</height>
+					<itemgap>0</itemgap>
+					<onleft>9000</onleft>
+					<onright>9000</onright>
+					<onup>300</onup>
+					<align>left</align>
+					<ondown condition="!IsEmpty(Window(home).Property(focusteam_plot))+!Control.IsVisible(50)">4003</ondown>
+					<ondown condition="!IsEmpty(Window(home).Property(focusteam_plot))+Control.IsVisible(50)">50</ondown>
+					<ondown condition="!IsEmpty(Window(home).Property(focusteam_youtube))">989</ondown>
+					<ondown condition="!IsEmpty(Window(home).Property(focusteam_instagram))">985</ondown>
+					<ondown condition="!IsEmpty(Window(home).Property(focusteam_players))">987</ondown>
+					<orientation>horizontal</orientation>
+					<control type="image" id="200">
+						<width>2</width>
+						<height>58</height>
+						<texture border="1">separator3.png</texture>
+					</control>
+					<control type="togglebutton"id="209">
+						<description>plot</description>
+						<include>ButtonInfoDialogsCommonValues</include>
+						<label>Plot</label>
+					</control>
+					<control type="togglebutton"id="210">
+						<description>stadium</description>
+						<include>ButtonInfoDialogsCommonValues</include>
+						<label>Stadium</label>
+					</control>
+					<control type="togglebutton"id="211">
+						<description>events</description>
+						<include>ButtonInfoDialogsCommonValues</include>
+						<label>Events</label>
+					</control>
+					<control type="togglebutton"id="212">
+						<description>players</description>
+						<include>ButtonInfoDialogsCommonValues</include>
+						<label>Players</label>
+					</control>
+					<control type="image" id="201">
+						<width>2</width>
+						<height>58</height>
+						<texture border="1">separator3.png</texture>
+					</control>
+					<control type="button" id="213">
+						<description>twitter</description>
+						<include>ButtonInfoDialogsCommonValues</include>
+						<label>Tweets</label>
+						<enable>!IsEmpty(Window(home).Property(hasteam_twitter))</enable>
+					</control>
+					<control type="image" id="202">
+						<width>2</width>
+						<height>58</height>
+						<texture border="1">separator3.png</texture>
+					</control>
+					<control type="button" id="214">
+						<description>Videos youtube</description>
+						<include>ButtonInfoDialogsCommonValues</include>
+						<label>Youtube</label>
+						<enable>!IsEmpty(Window(home).Property(hasteam_youtube))</enable>
+					</control>
+					<control type="image" id="203">
+						<width>2</width>
+						<height>58</height>
+						<texture border="1">separator3.png</texture>
+					</control>
+					<control type="button" id="215">
+						<description>Instagram</description>
+						<include>ButtonInfoDialogsCommonValues</include>
+						<label>Instagram</label>
+						<enable>!IsEmpty(Window(home).Property(hasteam_instagram))</enable>
+					</control>
+					<control type="image" id="204">
+						<width>2</width>
+						<height>58</height>
+						<texture border="1">separator3.png</texture>
+					</control>
+					<control type="button" id="216">
+						<description>Art</description>
+						<include>ButtonInfoDialogsCommonValues</include>
+						<label>Art</label>
+					</control>
+					<control type="image" id="205">
+						<width>2</width>
+						<height>58</height>
+						<texture border="1">separator3.png</texture>
+					</control>
+
+		
+
+
+
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>

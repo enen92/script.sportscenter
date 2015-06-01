@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+	<onload>SetProperty(Window.HasSettings,True,home)</onload>
+	<onload>ClearProperty(MediaMenu,Home)</onload>
+	<onunload>ClearProperty(Window.HasSettings,Home)</onunload>
+	<defaultcontrol always="true">980</defaultcontrol>
+	<controls>
+		<!-- Background!-->
+		<control type="group">
+			<control type="image">
+				<left>250</left>
+				<top>83</top>
+				<width>1443</width>
+				<height>974</height>
+				<texture border="40">dialogs/default/bg.png</texture>
+			</control>
+			<control type="label" id="1">
+				<left>350</left>
+				<top>115</top>
+				<width>1308</width>
+				<height>40</height>
+				<font>font48_bold</font>
+				<label></label>
+				<align>center</align>
+				<textcolor>gold</textcolor>
+			</control>
+			<control type="button">
+				<left>270</left>
+				<top>165</top>
+				<label>[COLOR labelheader]TEAM[/COLOR]</label>
+				<height>50</height>
+				<width>740</width>
+				<align>center</align>
+				<include>ShowCaseInfoPanelButtonsValues</include>
+			</control>
+			<control type="label">
+				<description>played label</description>
+				<posx>1055</posx>
+				<posy>175</posy>
+				<width>300</width>
+				<height>20</height>
+				<label>T</label>
+				<font>font15</font>
+				<align>left</align>
+				<textcolor>labelheader</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			<control type="label">
+				<description>Wins</description>
+				<posx>1135</posx>
+				<posy>175</posy>
+				<width>300</width>
+				<height>20</height>
+				<label>W</label>
+				<font>font15</font>
+				<align>left</align>
+				<textcolor>labelheader</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			<control type="label">
+				<description>draws</description>
+				<posx>1225</posx>
+				<posy>175</posy>
+				<width>300</width>
+				<height>20</height>
+				<label>D</label>
+				<font>font15</font>
+				<align>left</align>
+				<textcolor>labelheader</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			<control type="label">
+				<description>Losts</description>
+				<posx>1310</posx>
+				<posy>175</posy>
+				<width>300</width>
+				<height>20</height>
+				<label>L</label>
+				<font>font15</font>
+				<align>left</align>
+				<textcolor>labelheader</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			<control type="label">
+				<description>GS</description>
+				<posx>1370</posx>
+				<posy>175</posy>
+				<width>300</width>
+				<height>20</height>
+				<label>GS</label>
+				<font>font15</font>
+				<align>left</align>
+				<textcolor>labelheader</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			<control type="label">
+				<description>GC</description>
+				<posx>1445</posx>
+				<posy>175</posy>
+				<width>300</width>
+				<height>20</height>
+				<label>GC</label>
+				<font>font15</font>
+				<align>left</align>
+				<textcolor>labelheader</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			<control type="label">
+				<description>GD</description>
+				<posx>1525</posx>
+				<posy>175</posy>
+				<width>300</width>
+				<height>20</height>
+				<label>GD</label>
+				<font>font15</font>
+				<align>left</align>
+				<textcolor>labelheader</textcolor>
+				<shadowcolor>AA000000</shadowcolor>
+			</control>
+			
+			<control type="button">
+				<left>1010</left>
+				<top>165</top>
+				<label>[COLOR labelheader]PTS[/COLOR]</label>
+				<height>50</height>
+				<width>655</width>
+				<align>right</align>
+				<include>ShowCaseInfoPanelButtonsValues</include>
+			</control>
+			
+			<control type="panel" id="980">
+				<posx>268</posx>
+				<posy>210</posy>
+				<width>1400</width>
+				<height>822</height>
+				<onleft>983</onleft>
+				<onright>61</onright>
+				<onup>600</onup>
+				<ondown>500</ondown>
+				<viewtype>icon</viewtype>
+				<pagecontrol>61</pagecontrol>
+				<scrolltime>100</scrolltime>
+				<preloaditems>1</preloaditems>
+				<orientation>vertical</orientation>
+				
+
+				<itemlayout height="90" width="1400">
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>1400</width>
+						<height>90</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="label">
+						<description>W</description>
+						<posx>20</posx>
+						<posy>35</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>[B]$INFO[ListItem.Property(position)][/B]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>left</align>
+						<textcolor>gold</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="image">
+            				<posx>92</posx>
+            				<posy>12</posy>
+            				<width>80</width>
+            				<height>80</height>
+            				<align>left</align>
+            				<texture>$INFO[ListItem.Property(team_logo)]</texture>
+						<visible>true</visible>
+        				</control>
+        				<control type="label">
+						<description>Team name presented on panel right</description>
+						<posx>200</posx>
+						<posy>35</posy>
+						<width>400</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_name)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16_title_bold</font>
+						<align>left</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>played</description>
+						<posx>600</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_played)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>W</description>
+						<posx>680</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_wins)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>D</description>
+						<posx>760</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_draws)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>L</description>
+						<posx>840</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_losts)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>GS</description>
+						<posx>920</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_gs)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>GC</description>
+						<posx>1000</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_gc)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>GD</description>
+						<posx>1080</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_gd)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>Team pontuation</description>
+						<posx>1160</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_points)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+				</itemlayout>	
+				<focusedlayout height="239" width="1400">
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>1400</width>
+						<height>90</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>1400</width>
+						<height>90</height>
+						<texture border="5">listselect_fo.png</texture>
+					</control>
+					<control type="label">
+						<description>W</description>
+						<posx>20</posx>
+						<posy>35</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>[B]$INFO[ListItem.Property(position)][/B]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>left</align>
+						<textcolor>gold</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="image">
+            				<posx>92</posx>
+            				<posy>12</posy>
+            				<width>80</width>
+            				<height>80</height>
+            				<align>left</align>
+            				<texture>$INFO[ListItem.Property(team_logo)]</texture>
+						<visible>true</visible>
+        				</control>
+        				<control type="label">
+						<description>Team name presented on panel right</description>
+						<posx>200</posx>
+						<posy>35</posy>
+						<width>400</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_name)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16_title_bold</font>
+						<align>left</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>played</description>
+						<posx>600</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_played)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>W</description>
+						<posx>680</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_wins)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>D</description>
+						<posx>760</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_draws)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>L</description>
+						<posx>840</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_losts)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>GS</description>
+						<posx>920</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_gs)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>GC</description>
+						<posx>1000</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_gc)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>GD</description>
+						<posx>1080</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_gd)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="label">
+						<description>Team pontuation</description>
+						<posx>1160</posx>
+						<posy>30</posy>
+						<width>220</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(team_points)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font30</font>
+						<align>right</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+				</focusedlayout>
+			</control>
+			
+		</control>
+	</controls>
+</window>

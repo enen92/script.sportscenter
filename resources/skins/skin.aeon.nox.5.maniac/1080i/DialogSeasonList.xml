@@ -1,0 +1,432 @@
+<window>
+	<onload>SetProperty(Window.HasSettings,True,home)</onload>
+	<onload>ClearProperty(MediaMenu,Home)</onload>
+	<onunload>ClearProperty(listview,Home)</onunload>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<!-- Background!-->
+		<control type="group">
+			<!--<animation effect="fade" time="600">WindowOpen</animation>-->
+			<animation effect="fade" time="600">WindowClose</animation>
+			<control type="image" id="907">
+				<width>1920</width>
+				<height>1080</height>
+				<texture></texture>
+			</control>
+			<control type="image" id="912">
+				<width>1920</width>
+				<height>1080</height>
+				<texture></texture>
+			</control>
+			
+		</control>
+		<control type="group">
+			<visible>true</visible>
+			<include>Window_OpenClose_Animation</include>
+			<include>ViewAnimation</include>
+			<animation effect="slide" start="0,0" end="0,80" time="720" tween="cubic" easing="inout" condition="![[Control.isVisible(52) + !Window.IsActive(systeminfo)] | Control.IsVisible(53) | Control.IsVisible(54) | Control.IsVisible(55)  | Control.IsVisible(56) | Control.IsVisible(500) | Control.IsVisible(57)]">Conditional</animation>
+			<animation effect="slide" start="0,0" end="0,-20" time="720" tween="cubic" easing="inout" condition="[Control.IsVisible(58) | Control.IsVisible(510)]">Conditional</animation>
+			<control type="image">
+				<left>0</left>
+				<top>-40</top>
+				<width>696</width>
+				<height>914</height>
+				<texture border="1">vignette.png</texture>
+				<visible>![Control.IsVisible(59) | Control.IsVisible(56) | Control.IsVisible(57)]</visible>
+				<animation effect="slide" tween="cubic" time="720" start="-696" end="0,0">VisibleChange</animation>
+			</control>
+			<control type="image">
+				<left>696r</left>
+				<top>-40</top>
+				<width>696</width>
+				<height>914</height>
+				<texture flipx="true" border="1">vignette.png</texture>
+				<animation effect="slide" tween="cubic" time="720" start="696" end="0,0">VisibleChange</animation>
+				<visible>![Control.IsVisible(59) | Control.IsVisible(56) | Control.IsVisible(57)]</visible>
+			</control>
+			<control type="image">
+				<visible>IsEmpty(Window(home).Property(clearview))</visible>
+				<left>0</left>
+				<top>400</top>
+				<width>1920</width>
+				<height>680</height>
+				<texture>floor.png</texture>
+			</control>
+			<control type="image">
+				<visible>!IsEmpty(Window(home).Property(clearview))</visible>
+				<include>FullscreenDimensions</include>
+				<texture border="1">logo_back.png</texture>
+				<visible>true</visible>
+				<include>ViewAnimation</include>
+			</control>
+		</control>
+		<!--End of background-->
+		<!--Top Bar -->
+		<control type="group">
+			<animation effect="slide" start="0,0" end="0,-90" time="800" tween="cubic" condition="Control.IsVisible(503) + System.IdleTime(2)">Conditional</animation>
+			<animation effect="slide" start="0,-90" end="0,0" delay="800" time="480" condition="Window.Previous(home)">WindowOpen</animation>
+			<animation effect="slide" end="0,-90" start="0,0" time="480" condition="Window.Next(home)">WindowClose</animation>
+			<control type="image">
+				<left>0</left>
+				<top>0</top>
+				<width>1920</width>
+				<height>66</height>
+				<texture border="1">topbar.png</texture>
+			</control>
+			<control type="label" id="333">
+				<width>900</width>
+				<height>90</height>
+				<font>font13_title</font>
+				<textoffsetx>15</textoffsetx>
+				<textcolor>grey2</textcolor>
+				<align>left</align>
+				<aligny>top</aligny>
+				<textoffsety>-2</textoffsety>
+				<label></label>
+			</control>
+			<control type="label" id="334">
+				<left>1020</left>
+				<width>900</width>
+				<height>90</height>
+				<font>font13_title</font>
+				<textoffsetx>15</textoffsetx>
+				<textcolor>grey2</textcolor>
+				<align>right</align>
+				<aligny>top</aligny>
+				<textoffsety>-2</textoffsety>
+				<label></label>
+			</control>
+			<control type="label">
+				<left>0</left>
+				<width>1920</width>
+				<height>90</height>
+				<font>font13_title</font>
+				<textoffsetx>15</textoffsetx>
+				<textcolor>grey2</textcolor>
+				<align>center</align>
+				<aligny>top</aligny>
+				<textoffsety>-2</textoffsety>
+				<label>$INFO[System.Time]</label>
+			</control>
+			<control type="button" id="90022">
+				<label>-</label>
+				<left>-30</left>
+				<onclick condition="IsEmpty(Window(home).Property(MediaMenu))">SetProperty(MediaMenu,True,home)</onclick>
+				<onclick condition="!IsEmpty(Window(home).Property(MediaMenu))">ClearProperty(MediaMenu,Home)</onclick>
+				<texturenofocus>mediamenu_indicator.png</texturenofocus>
+				<texturefocus>mediamenu_indicator.png</texturefocus>
+				<height>32</height>
+				<include>ButtonTopbarCommonvalues</include>
+				<visible>!IsEmpty(Window(home).Property(Window.HasSettings))</visible>
+			</control>
+			<control type="group">
+				<visible>Player.HasMedia + ![Window.IsActive(volumebar)]</visible>
+				<animation effect="slide" start="0,-60" end="0,0" time="200">Visible</animation>
+				<animation effect="slide" start="0,0" end="0,-60" time="200">Hidden</animation>
+				<left>1080</left>
+				<control type="progress">
+					<left>0</left>
+					<top>0</top>
+					<width>500</width>
+					<height>37</height>
+					<texturebg border="2">osd/texturebg.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="2">osd/midtexture_cache.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<info>Player.ProgressCache</info>
+				</control>
+				<control type="progress">
+					<left>0</left>
+					<top>0</top>
+					<width>500</width>
+					<height>35</height>
+					<texturebg border="1">osd/texturebg_cache.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="2">osd/midtexture.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<info>Player.Progress</info>
+				</control>
+				<control type="label">
+					<left>0</left>
+					<top>0</top>
+					<width>500</width>
+					<height>90</height>
+					<font>font13_title</font>
+					<textoffsetx>10</textoffsetx>
+					<textcolor>grey</textcolor>
+					<shadowcolor>shadow</shadowcolor>
+					<align>left</align>
+					<aligny>top</aligny>
+					<textoffsety>-2</textoffsety>
+					<scroll>true</scroll>
+					<label>$INFO[Player.Title]</label>
+				</control>
+			</control>
+		</control>
+		<!-- End of topbar -->		
+		
+		
+		
+		<!-- START LEAGUE LISTVIEW -->
+		<control type="group">
+			<include>ViewAnimation</include>
+			<left>100</left>
+			<top>-40</top>
+			<visible>!IsEmpty(Window(home).Property(listview))</visible>
+			<onload>SetFocus(983)</onload>
+			<control type="image">
+				<description>background image</description>
+				<visible>!IsEmpty(Window(home).Property(listview))</visible>
+				<left>-32</left>
+				<top>1020</top>
+				<width>1204</width>
+				<height>904</height>
+				<texture border="40">panel_reflect.png</texture>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<visible>!IsEmpty(Window(home).Property(listview))</visible>
+				<left>-32</left>
+				<top>148</top>
+				<width>1204</width>
+				<height>904</height>
+				<texture border="40">listpanel_back.png</texture>
+			</control>
+			<control type="list" id="983">
+				<left>0</left>
+				<top>180</top>
+				<width>1140</width>
+				<height>840</height>
+				<onleft>SetProperty(MediaMenu,True,home)</onleft>	
+				<onleft>SetFocus(9050)</onleft>
+				<onright>SetFocus(60)</onright>
+				<onup>983</onup>
+				<ondown>983</ondown>
+				<pagecontrol>60</pagecontrol>
+				<scrolltime tween="quadratic" easing="out">200</scrolltime>
+				<itemlayout height="120" width="1140">
+					<control type="image">
+						<top>60</top>
+						<width>1140</width>
+						<height>60</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+				<control type="image">
+						<left>15</left>
+						<top>8</top>
+						<width>105</width>
+						<height>105</height>
+						<aspectratio>keep</aspectratio>
+						<texture background="true">$INFO[ListItem.Property(trophy)]</texture>
+						<fadetime>IconCrossfadeTime</fadetime>
+					</control>
+					<control type="label">
+						<left>135</left>
+						<width>905</width>
+						<height>70</height>
+						<font>font30</font>
+						<textcolor>grey</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<control type="label">
+						<left>135</left>
+						<top>50</top>
+						<width>905</width>
+						<height>60</height>
+						<font>font15_title</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(season_identifier)]</label>
+						<animation effect="fade" start="100" end="70" time="300" tween="sine" easing="inout" condition="!Control.HasFocus(50)">Conditional</animation>
+					</control>
+				</itemlayout>
+				<focusedlayout height="120" width="1140">
+					<control type="image">
+						<top>60</top>
+						<width>1140</width>
+						<height>60</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="image">
+						<left>0</left>
+						<top>0</top>
+						<width>1140</width>
+						<height>120</height>
+						<texture border="4">listselect_fo.png</texture>
+						<include>VisibleFadeEffect</include>
+					</control>
+					<control type="image">
+						<left>15</left>
+						<top>8</top>
+						<width>105</width>
+						<height>105</height>
+						<aspectratio>keep</aspectratio>
+						<texture background="true">$INFO[ListItem.Property(trophy)]</texture>
+						<fadetime>IconCrossfadeTime</fadetime>
+					</control>
+					<control type="label">
+						<left>135</left>
+						<width>905</width>
+						<height>70</height>
+						<font>font30</font>
+						<textcolor>white</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>			
+					<control type="label">
+						<left>135</left>
+						<top>50</top>
+						<width>905</width>
+						<height>60</height>
+						<font>font15_title</font>
+						<textcolor>white</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(season_identifier)]</label>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="scrollbar" id="60">
+				<visible>!IsEmpty(Window(home).Property(listview))</visible>
+				<left>1140</left>
+				<top>180</top>
+				<width>14</width>
+				<height>840</height>
+				<onup>60</onup>
+				<ondown>60</ondown>
+				<onleft>50</onleft>
+				<onright>SetProperty(MediaMenu,True,home)</onright>
+				<onright>SetFocus(9050)</onright>
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
+				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
+			</control>
+		</control>
+		
+		<control type="group">
+			<left>1308</left>
+			<top>438</top>
+			<include>ViewAnimation</include>
+			<visible>!IsEmpty(Window(home).Property(listview))</visible>
+			<control type="image">
+				<left>-15</left>
+				<top>15</top>
+				<width>550</width>
+				<height>535</height>
+				<texture border="20">thumbs/thumb_shadow.png</texture>
+				<fadetime>IconCrossfadeTime</fadetime>
+			</control>
+			<control type="image" id="938">
+				<include>ViewAnimation</include>
+				<top>20</top>
+				<left>10</left>
+				<width>500</width>
+				<height>500</height>
+				<aspectratio aligny="bottom">keep</aspectratio>
+				<texture border="20" background="true"></texture>
+				<fadetime>IconCrossfadeTime</fadetime>
+			</control>
+			<control type="image" id="939">
+				<include>ViewAnimation</include>
+				<top>535</top>
+				<left>10</left>
+				<width>500</width>
+				<height>500</height>
+				<aspectratio aligny="top">keep</aspectratio>
+				<fadetime>IconCrossfadeTime</fadetime>
+				<texture diffuse="thumbs/thumb_reflect.png" flipy="true" background="true"></texture>
+			</control>
+		</control>
+					
+			<!-- END LEAGUE LISTVIEW -->
+			
+
+		
+		<!-- Control panel -->
+		<control type="group" id="666">
+			<left>-440</left>
+			<animation effect="slide" start="440,0" end="0,0" time="400" tween="quadratic" easing="out" condition="IsEmpty(Window(home).Property(MediaMenu))">Conditional</animation>
+			<animation effect="slide" start="0,0" end="-440,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+			<control type="image">
+				<left>0</left>
+				<top>0</top>
+				<width>432</width>
+				<height>1080</height>
+				<texture border="40">mediamenu_back.png</texture>
+			</control>
+			<control type="button" id="8999">
+				<description>Close Window button</description>
+				<left>350</left>
+				<top>0</top>
+				<width>64</width>
+				<height>48</height>
+				<label></label>
+				<font>CloseButton</font>
+				<textcolor>grey</textcolor>
+				<focusedcolor>themecolor</focusedcolor>
+				<onclick>ClearProperty(MediaMenu,Home)</onclick>
+				<onclick>SetFocus(980)</onclick>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<onleft>2</onleft>
+				<onright>13</onright>
+				<onup>13</onup>
+				<ondown>2</ondown>
+				<align>center</align>
+				<aligny>center</aligny>
+				<visible>system.getbool(input.enablemouse)</visible>
+			</control>
+			<control type="image">
+				<description>LOGO</description>
+				<left>0</left>
+				<top>0</top>
+				<width>400</width>
+				<height>120</height>
+				<aspectratio>keep</aspectratio>
+				<texture>aeon-nox-logo.png</texture>
+			</control>
+			<control type="grouplist" id="9050">
+				<left>0</left>
+				<top>100</top>
+				<width>400</width>
+				<height>1080</height>
+				<onleft>9050</onleft>
+				<onright>ClearProperty(MediaMenu,Home)</onright>
+				<onup>9050</onup>
+				<ondown>9050</ondown>
+				<onback>ClearProperty(MediaMenu,Home)</onback>
+				<itemgap>0</itemgap>
+				<control type="label" id="200">
+					<width>400</width>
+					<height>52</height>
+					<textoffsetx>15</textoffsetx>
+					<font>font13_title</font>
+					<label>31006</label>
+					<textcolor>themecolor</textcolor>
+					<aligny>center</aligny>
+				</control>
+				<control type="button" id="2">
+					<description>View As button</description>
+					<textwidth>352</textwidth>
+					<onright condition="!IsEmpty(Window(home).Property(listview))">983</onright>
+					<onright condition="!IsEmpty(Window(home).Property(listview))">SetFocus(983)</onright>
+					<onright>ClearProperty(MediaMenu,Home)</onright>
+					<label></label>
+				</control>
+			</control>
+		</control>
+		
+	</controls>
+</window>

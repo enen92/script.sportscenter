@@ -1,0 +1,1785 @@
+<window>
+	<onload>SetProperty(Window.HasSettings,True,home)</onload>
+	<onload>ClearProperty(MediaMenu,Home)</onload>
+	<onunload>ClearProperty(biglist,Home)</onunload>
+	<onunload>ClearProperty(bannerview,Home)</onunload>
+	<onunload>ClearProperty(infoview,Home)</onunload>
+	<onunload>ClearProperty(posterview,Home)</onunload>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<!-- Background!-->
+		<control type="group">
+			<!--<animation effect="fade" time="600">WindowOpen</animation>-->
+			<animation effect="fade" time="600">WindowClose</animation>
+			<control type="image" id="907">
+				<width>1920</width>
+				<height>1080</height>
+				<texture></texture>
+			</control>
+			<control type="image" id="912">
+				<width>1920</width>
+				<height>1080</height>
+				<texture></texture>
+			</control>
+			
+		</control>
+		<control type="group">
+			<visible>true</visible>
+			<include>Window_OpenClose_Animation</include>
+			<include>ViewAnimation</include>
+			<animation effect="slide" start="0,0" end="0,80" time="720" tween="cubic" easing="inout" condition="![[Control.isVisible(52) + !Window.IsActive(systeminfo)] | Control.IsVisible(53) | Control.IsVisible(54) | Control.IsVisible(55)  | Control.IsVisible(56) | Control.IsVisible(500) | Control.IsVisible(57)]">Conditional</animation>
+			<animation effect="slide" start="0,0" end="0,-20" time="720" tween="cubic" easing="inout" condition="[Control.IsVisible(58) | Control.IsVisible(510)]">Conditional</animation>
+			<control type="image">
+				<left>0</left>
+				<top>-40</top>
+				<width>696</width>
+				<height>914</height>
+				<texture border="1">vignette.png</texture>
+				<visible>![Control.IsVisible(59) | Control.IsVisible(56) | Control.IsVisible(57)]</visible>
+				<animation effect="slide" tween="cubic" time="720" start="-696" end="0,0">VisibleChange</animation>
+			</control>
+			<control type="image">
+				<left>696r</left>
+				<top>-40</top>
+				<width>696</width>
+				<height>914</height>
+				<texture flipx="true" border="1">vignette.png</texture>
+				<animation effect="slide" tween="cubic" time="720" start="696" end="0,0">VisibleChange</animation>
+				<visible>![Control.IsVisible(59) | Control.IsVisible(56) | Control.IsVisible(57)]</visible>
+			</control>
+			<control type="image">
+				<visible>IsEmpty(Window(home).Property(clearview))</visible>
+				<left>0</left>
+				<top>400</top>
+				<width>1920</width>
+				<height>680</height>
+				<texture>floor.png</texture>
+			</control>
+			<control type="image">
+				<visible>!IsEmpty(Window(home).Property(clearview))</visible>
+				<include>FullscreenDimensions</include>
+				<texture border="1">logo_back.png</texture>
+				<visible>true</visible>
+				<include>ViewAnimation</include>
+			</control>
+		</control>
+		<!--End of background-->
+		<!--Top Bar -->
+		<control type="group">
+			<animation effect="slide" start="0,0" end="0,-90" time="800" tween="cubic" condition="Control.IsVisible(503) + System.IdleTime(2)">Conditional</animation>
+			<animation effect="slide" start="0,-90" end="0,0" delay="800" time="480" condition="Window.Previous(home)">WindowOpen</animation>
+			<animation effect="slide" end="0,-90" start="0,0" time="480" condition="Window.Next(home)">WindowClose</animation>
+			<control type="image">
+				<left>0</left>
+				<top>0</top>
+				<width>1920</width>
+				<height>66</height>
+				<texture border="1">topbar.png</texture>
+			</control>
+			<control type="label" id="333">
+				<width>900</width>
+				<height>90</height>
+				<font>font13_title</font>
+				<textoffsetx>15</textoffsetx>
+				<textcolor>grey2</textcolor>
+				<align>left</align>
+				<aligny>top</aligny>
+				<textoffsety>-2</textoffsety>
+				<label></label>
+			</control>
+			<control type="label" id="334">
+				<left>1020</left>
+				<width>900</width>
+				<height>90</height>
+				<font>font13_title</font>
+				<textoffsetx>15</textoffsetx>
+				<textcolor>grey2</textcolor>
+				<align>right</align>
+				<aligny>top</aligny>
+				<textoffsety>-2</textoffsety>
+				<label></label>
+			</control>
+			<control type="label">
+				<left>0</left>
+				<width>1920</width>
+				<height>90</height>
+				<font>font13_title</font>
+				<textoffsetx>15</textoffsetx>
+				<textcolor>grey2</textcolor>
+				<align>center</align>
+				<aligny>top</aligny>
+				<textoffsety>-2</textoffsety>
+				<label>$INFO[System.Time]</label>
+			</control>
+			<control type="button" id="90022">
+				<label>-</label>
+				<left>-30</left>
+				<onclick condition="IsEmpty(Window(home).Property(MediaMenu))">SetProperty(MediaMenu,True,home)</onclick>
+				<onclick condition="!IsEmpty(Window(home).Property(MediaMenu))">ClearProperty(MediaMenu,Home)</onclick>
+				<texturenofocus>mediamenu_indicator.png</texturenofocus>
+				<texturefocus>mediamenu_indicator.png</texturefocus>
+				<height>32</height>
+				<include>ButtonTopbarCommonvalues</include>
+				<visible>!IsEmpty(Window(home).Property(Window.HasSettings))</visible>
+			</control>
+			<control type="group">
+				<visible>Player.HasMedia + ![Window.IsActive(volumebar)]</visible>
+				<animation effect="slide" start="0,-60" end="0,0" time="200">Visible</animation>
+				<animation effect="slide" start="0,0" end="0,-60" time="200">Hidden</animation>
+				<left>1080</left>
+				<control type="progress">
+					<left>0</left>
+					<top>0</top>
+					<width>500</width>
+					<height>37</height>
+					<texturebg border="2">osd/texturebg.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="2">osd/midtexture_cache.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<info>Player.ProgressCache</info>
+				</control>
+				<control type="progress">
+					<left>0</left>
+					<top>0</top>
+					<width>500</width>
+					<height>35</height>
+					<texturebg border="1">osd/texturebg_cache.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="2">osd/midtexture.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<info>Player.Progress</info>
+				</control>
+				<control type="label">
+					<left>0</left>
+					<top>0</top>
+					<width>500</width>
+					<height>90</height>
+					<font>font13_title</font>
+					<textoffsetx>10</textoffsetx>
+					<textcolor>grey</textcolor>
+					<shadowcolor>shadow</shadowcolor>
+					<align>left</align>
+					<aligny>top</aligny>
+					<textoffsety>-2</textoffsety>
+					<scroll>true</scroll>
+					<label>$INFO[Player.Title]</label>
+				</control>
+			</control>
+		</control>
+		<!-- End of topbar -->		
+		
+		
+		<!-- START EVENT INFOVIEW -->
+		<control type="group">
+			<visible>!IsEmpty(Window(home).Property(infoview))</visible>
+			<include>ViewAnimation</include>
+			<top>-65</top>
+			<onload>SetFocus(980)</onload>
+			<control type="image">
+				<description>background image</description>
+				<left>60</left>
+				<top>1080</top>
+				<width>1790</width>
+				<height>964</height>
+				<texture border="40">panel_reflect.png</texture>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<left>60</left>
+				<top>148</top>
+				<width>1790</width>
+				<height>964</height>
+				<texture border="40">listpanel_back.png</texture>
+			</control>
+			<control type="panel" id="980">
+				<visible>!IsEmpty(Window(home).Property(infoview))</visible>
+				<left>90</left>
+				<top>179</top>
+				<width>1100</width>
+				<height>900</height>
+				<onleft condition="Control.IsVisible(60)">60</onleft>
+				<onleft condition="!Control.IsVisible(60)">SetProperty(MediaMenu,True,home)</onleft>
+				<onleft condition="!Control.IsVisible(60)">SetFocus(9050)</onleft>
+				<onright>61</onright>
+				<onup>51</onup>
+				<ondown>51</ondown>
+				<pagecontrol>60</pagecontrol>
+				<preloaditems>2</preloaditems>
+				<viewtype label="InfoWall">icons</viewtype>
+				<scrolltime tween="quadratic" easing="out">300</scrolltime>
+				<visible>true</visible>
+				<itemlayout height="250" width="1040">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>1040</width>
+						<height>250</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="image">
+            				<posx>10</posx>
+            				<posy>18</posy>
+            				<width>200</width>
+            				<height>200</height>
+            				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
+						<visible>true</visible>
+        				</control>
+        				<control type="textbox">
+						<description>Event name</description>
+						<posx>130</posx>
+						<posy>105</posy>
+						<width>800</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(EventName)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="textbox">
+						<description>home_team_short</description>
+						<posx>220</posx>
+						<posy>105</posy>
+						<width>250</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(HomeTeamShort)]</label>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox">
+						<description>home_team_long</description>
+						<posx>200</posx>
+						<posy>85</posy>
+						<width>250</width>
+						<height>100</height>
+						<label>$INFO[ListItem.Property(HomeTeamLong)]</label>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>vs tag</description>
+						<posx>440</posx>
+						<posy>120</posy>
+						<width>170</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_result)][/B]</label>
+						<font>font48</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>vs tag</description>
+						<posx>440</posx>
+						<posy>120</posy>
+						<width>170</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_vs)][/B]</label>
+						<font>IconMedium</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="image">
+            				<posx>830</posx>
+            				<posy>18</posy>
+            				<width>200</width>
+            				<height>200</height>
+            				<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
+						<visible>true</visible>
+        				</control>
+        				<control type="textbox">
+						<description>away_team_short</description>
+						<posx>595</posx>
+						<posy>105</posy>
+						<width>250</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(AwayTeamShort)]</label>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox">
+						<description>away_team_long</description>
+						<posx>595</posx>
+						<posy>85</posy>
+						<width>250</width>
+						<height>100</height>
+						<label>$INFO[ListItem.Property(AwayTeamLong)]</label>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>league name</description>
+						<posx>130</posx>
+						<posy>30</posy>
+						<width>800</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_league_name)][/B]</label>
+						<font>font12_title</font>
+						<align>center</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>date of the event</description>
+						<posx>120</posx>
+						<posy>210</posy>
+						<width>800</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(date)][/B]</label>
+						<font>font12</font>
+						<align>center</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+				</itemlayout>
+				<focusedlayout height="250" width="1040">
+					<control type="group">
+						<animation type="Focus" reversible="false">
+							<effect type="zoom" start="95" end="100" time="200" tween="sine" easing="inout" center="auto" />
+							<effect type="fade" start="80" end="100" time="200" tween="sine" easing="in" />
+						</animation>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>1040</width>
+						<height>250</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>1040</width>
+						<height>250</height>
+						<texture border="5">listselect_fo.png</texture>
+					</control>
+					<control type="image">
+            				<posx>10</posx>
+            				<posy>18</posy>
+            				<width>200</width>
+            				<height>200</height>
+            				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
+						<visible>true</visible>
+        				</control>
+        				<control type="textbox">
+						<description>Event name</description>
+						<posx>130</posx>
+						<posy>105</posy>
+						<width>800</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(EventName)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="textbox">
+						<description>home_team_short</description>
+						<posx>220</posx>
+						<posy>105</posy>
+						<width>250</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(HomeTeamShort)]</label>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox">
+						<description>home_team_long</description>
+						<posx>200</posx>
+						<posy>85</posy>
+						<width>250</width>
+						<height>100</height>
+						<label>$INFO[ListItem.Property(HomeTeamLong)]</label>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>vs tag</description>
+						<posx>440</posx>
+						<posy>120</posy>
+						<width>170</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_result)][/B]</label>
+						<font>font48</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>vs tag</description>
+						<posx>440</posx>
+						<posy>120</posy>
+						<width>170</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_vs)][/B]</label>
+						<font>IconMedium</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="image">
+            				<posx>830</posx>
+            				<posy>18</posy>
+            				<width>200</width>
+            				<height>200</height>
+            				<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
+						<visible>true</visible>
+        				</control>
+        				<control type="textbox">
+						<description>away_team_short</description>
+						<posx>595</posx>
+						<posy>105</posy>
+						<width>250</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(AwayTeamShort)]</label>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox">
+						<description>away_team_long</description>
+						<posx>595</posx>
+						<posy>85</posy>
+						<width>250</width>
+						<height>100</height>
+						<label>$INFO[ListItem.Property(AwayTeamLong)]</label>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>round</description>
+						<posx>130</posx>
+						<posy>40</posy>
+						<width>800</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_league_name)][/B]</label>
+						<font>font12_title</font>
+						<align>center</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>date of the event</description>
+						<posx>120</posx>
+						<posy>210</posy>
+						<width>800</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(date)][/B]</label>
+						<font>font12</font>
+						<align>center</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="scrollbar" id="60">
+				<left>75</left>
+				<top>178</top>
+				<width>14</width>
+				<height>900</height>
+				<onleft>SetProperty(MediaMenu,True,home)</onleft>
+				<onleft>SetFocus(9050)</onleft>
+				<onright>SetFocus(980)</onright>
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
+				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
+				<animation effect="fade" start="100" end="0" time="500" delay="500" condition="!Control.HasFocus(980) + !Container.Scrolling">Conditional</animation>
+			</control>
+			<control type="image" id="911">
+				<left>1133</left>
+				<top>179</top>
+				<width>685</width>
+				<height>400</height>
+				<texture></texture>
+				<aspectratio>scale</aspectratio>
+				<fadetime>400</fadetime>			
+			</control>
+			<control type="image" id="910">
+				<left>1668</left>
+				<top>617</top>
+				<width>150</width>
+				<height>150</height>
+				<texture></texture>
+			</control>
+			<control type="grouplist">
+				<left>1120</left>
+				<top>630</top>
+				<width>680</width>
+				<height>270</height>
+				<control type="label" id="935">
+					<label></label>
+					<width>680</width>
+					<height>40</height>
+					<include>ShowCaseInfoPanelButtonsValues</include>
+					<visible>true</visible>
+				</control>
+				<control type="label" id="936">
+					<label></label>
+					<width>680</width>
+					<height>40</height>
+					<include>ShowCaseInfoPanelButtonsValues</include>
+				</control>
+				<control type="label" id="937">
+					<label></label>
+					<width>680</width>
+					<height>40</height>
+					<include>ShowCaseInfoPanelButtonsValues</include>
+				</control>
+			</control>
+			<control type="textbox" id="938">
+				<label></label>
+				<top>774</top>
+				<left>1135</left>
+				<width>670</width>
+				<height>302</height>
+				<font>font14_textbox</font>
+				<autoscroll time="3000" delay="4000" repeat="5000">Skin.HasSetting(Enable.AutoScroll)</autoscroll>
+				<pagecontrol>69</pagecontrol>
+				<include>ShowCaseInfoPanelButtonsValues</include>
+			</control>
+			<control type="scrollbar" id="69">
+				<left>1817</left>
+				<top>784</top>
+				<width>14</width>
+				<height>642</height>
+				<onleft>50</onleft>
+				<onright>SetProperty(MediaMenu,True,home)</onright>
+				<onright>SetFocus(9050)</onright>
+				<ondown>noop</ondown>
+				<showonepage>true</showonepage>
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
+				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
+			</control>
+		</control>
+		<!-- END OF EVENT INFOVIEW -->
+
+		<!-- START EVENT BIGLIST -->
+		<control type="group">
+			<visible>!IsEmpty(Window(home).Property(biglist))</visible>
+			<include>ViewAnimation</include>
+			<top>-65</top>
+			<onload>SetFocus(980)</onload>
+			<control type="image">
+				<description>background image</description>
+				<left>60</left>
+				<top>1080</top>
+				<width>1790</width>
+				<height>964</height>
+				<texture border="40">panel_reflect.png</texture>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<left>60</left>
+				<top>148</top>
+				<width>1790</width>
+				<height>964</height>
+				<texture border="40">listpanel_back.png</texture>
+			</control>
+			<control type="panel" id="982">
+				<visible>!IsEmpty(Window(home).Property(biglist))</visible>
+				<left>90</left>
+				<top>179</top>
+				<width>1730</width>
+				<height>900</height>
+				<onleft condition="Control.IsVisible(60)">60</onleft>
+				<onleft condition="!Control.IsVisible(60)">SetProperty(MediaMenu,True,home)</onleft>
+				<onleft condition="!Control.IsVisible(60)">SetFocus(9050)</onleft>
+				<onright>61</onright>
+				<onup>51</onup>
+				<ondown>51</ondown>
+				<pagecontrol>60</pagecontrol>
+				<preloaditems>2</preloaditems>
+				<viewtype label="InfoWall">icons</viewtype>
+				<scrolltime tween="quadratic" easing="out">300</scrolltime>
+				<visible>true</visible>
+				<itemlayout height="260" width="1730">
+					<control type="image">
+            				<posx>10</posx>
+            				<posy>18</posy>
+            				<width>200</width>
+            				<height>200</height>
+            				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
+						<visible>true</visible>
+        				</control>
+        				<control type="textbox">
+						<description>Event name</description>
+						<posx>470</posx>
+						<posy>105</posy>
+						<width>800</width>
+						<height>70</height>
+						<label>$INFO[ListItem.Property(EventName)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font28_title</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="textbox">
+						<description>home_team_short</description>
+						<posx>180</posx>
+						<posy>105</posy>
+						<width>550</width>
+						<height>80</height>
+						<label>[B]$INFO[ListItem.Property(HomeTeamShort)][/B]</label>
+						<font>font28_title</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox">
+						<description>home_team_long</description>
+						<posx>180</posx>
+						<posy>105</posy>
+						<width>550</width>
+						<height>100</height>
+						<label>[B]$INFO[ListItem.Property(HomeTeamLong)][/B]</label>
+						<font>font28_title</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>vs tag</description>
+						<posx>680</posx>
+						<posy>120</posy>
+						<width>370</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_result)][/B]</label>
+						<font>font_MainMenu</font>
+						<align>center</align>
+						<textcolor>gold</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>vs tag</description>
+						<posx>680</posx>
+						<posy>120</posy>
+						<width>370</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_vs)][/B]</label>
+						<font>font_MainMenu</font>
+						<align>center</align>
+						<textcolor>gold</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="image">
+            				<posx>1520</posx>
+            				<posy>18</posy>
+            				<width>200</width>
+            				<height>200</height>
+            				<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
+						<visible>true</visible>
+        				</control>
+        				<control type="textbox">
+						<description>away_team_short</description>
+						<posx>990</posx>
+						<posy>105</posy>
+						<width>550</width>
+						<height>80</height>
+						<label>[B]$INFO[ListItem.Property(AwayTeamShort)][/B]</label>
+						<font>font28_title</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox">
+						<description>away_team_long</description>
+						<posx>990</posx>
+						<posy>105</posy>
+						<width>550</width>
+						<height>100</height>
+						<label>[B]$INFO[ListItem.Property(AwayTeamLong)][/B]</label>
+						<font>font28_title</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>round</description>
+						<posx>470</posx>
+						<posy>40</posy>
+						<width>800</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_league_name)][/B]</label>
+						<font>font12_title</font>
+						<align>center</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>date of the event</description>
+						<posx>465</posx>
+						<posy>210</posy>
+						<width>800</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(date)][/B]</label>
+						<font>font12</font>
+						<align>center</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>1740</width>
+						<height>260</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+				</itemlayout>
+				<focusedlayout height="260" width="1730">
+					<control type="group">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>1740</width>
+						<height>260</height>
+						<texture border="1">separator2.png</texture>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>1740</width>
+						<height>260</height>
+						<texture border="5">listselect_fo.png</texture>
+					</control>
+					<control type="image">
+            				<posx>10</posx>
+            				<posy>18</posy>
+            				<width>200</width>
+            				<height>200</height>
+            				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
+						<visible>true</visible>
+        				</control>
+        				<control type="textbox">
+						<description>Event name</description>
+						<posx>470</posx>
+						<posy>105</posy>
+						<width>800</width>
+						<height>70</height>
+						<label>$INFO[ListItem.Property(EventName)]</label>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font28_title</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="textbox">
+						<description>home_team_short</description>
+						<posx>180</posx>
+						<posy>105</posy>
+						<width>550</width>
+						<height>80</height>
+						<label>[B]$INFO[ListItem.Property(HomeTeamShort)][/B]</label>
+						<font>font28_title</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox">
+						<description>home_team_long</description>
+						<posx>180</posx>
+						<posy>105</posy>
+						<width>550</width>
+						<height>100</height>
+						<label>[B]$INFO[ListItem.Property(HomeTeamLong)][/B]</label>
+						<font>font28_title</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>vs tag</description>
+						<posx>680</posx>
+						<posy>120</posy>
+						<width>370</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_result)][/B]</label>
+						<font>font_MainMenu</font>
+						<align>center</align>
+						<textcolor>gold</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>vs tag</description>
+						<posx>680</posx>
+						<posy>120</posy>
+						<width>370</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_vs)][/B]</label>
+						<font>font_MainMenu</font>
+						<align>center</align>
+						<textcolor>gold</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="image">
+            				<posx>1520</posx>
+            				<posy>18</posy>
+            				<width>200</width>
+            				<height>200</height>
+            				<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
+						<visible>true</visible>
+        				</control>
+        				<control type="textbox">
+						<description>away_team_short</description>
+						<posx>990</posx>
+						<posy>105</posy>
+						<width>550</width>
+						<height>80</height>
+						<label>[B]$INFO[ListItem.Property(AwayTeamShort)][/B]</label>
+						<font>font28_title</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox">
+						<description>away_team_long</description>
+						<posx>990</posx>
+						<posy>105</posy>
+						<width>550</width>
+						<height>100</height>
+						<label>[B]$INFO[ListItem.Property(AwayTeamLong)][/B]</label>
+						<font>font28_title</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>round</description>
+						<posx>470</posx>
+						<posy>40</posy>
+						<width>800</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_league_name)][/B]</label>
+						<font>font12_title</font>
+						<align>center</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>date of the event</description>
+						<posx>465</posx>
+						<posy>210</posy>
+						<width>800</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(date)][/B]</label>
+						<font>font12</font>
+						<align>center</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="scrollbar" id="60">
+				<left>75</left>
+				<top>178</top>
+				<width>14</width>
+				<height>900</height>
+				<onleft>SetProperty(MediaMenu,True,home)</onleft>
+				<onleft>SetFocus(9050)</onleft>
+				<onright>SetFocus(980)</onright>
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
+				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
+				<animation effect="fade" start="100" end="0" time="500" delay="500" condition="!Control.HasFocus(980) + !Container.Scrolling">Conditional</animation>
+			</control>
+		</control>
+		<!-- END OF EVENT BIGLIST -->
+
+		<!-- START EVENT BANNERVIEW -->
+		<control type="group">
+			<visible>!IsEmpty(Window(home).Property(bannerview))</visible>
+			<include>ViewAnimation</include>
+			<top>-65</top>
+			<onload>SetFocus(980)</onload>
+			<control type="image">
+				<description>background image</description>
+				<left>60</left>
+				<top>1080</top>
+				<width>1790</width>
+				<height>964</height>
+				<texture border="40">panel_reflect.png</texture>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<left>60</left>
+				<top>148</top>
+				<width>1790</width>
+				<height>964</height>
+				<texture border="40">listpanel_back.png</texture>
+			</control>
+			<control type="panel" id="983">
+				<visible>!IsEmpty(Window(home).Property(bannerview))</visible>
+				<left>90</left>
+				<top>179</top>
+				<width>1100</width>
+				<height>900</height>
+				<onleft condition="Control.IsVisible(60)">60</onleft>
+				<onleft condition="!Control.IsVisible(60)">SetProperty(MediaMenu,True,home)</onleft>
+				<onleft condition="!Control.IsVisible(60)">SetFocus(9050)</onleft>
+				<onright>61</onright>
+				<onup>51</onup>
+				<ondown>51</ondown>
+				<pagecontrol>60</pagecontrol>
+				<preloaditems>2</preloaditems>
+				<viewtype label="InfoWall">icons</viewtype>
+				<scrolltime tween="quadratic" easing="out">300</scrolltime>
+				<visible>true</visible>
+				<itemlayout height="250" width="1040">
+					<control type="image">
+            				<posx>10</posx>
+            				<posy>18</posy>
+            				<width>200</width>
+            				<height>200</height>
+            				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
+            				<visible>!ListItem.Property(banner)</visible>
+						<visible>true</visible>
+        				</control>
+        				<control type="textbox">
+						<description>Event name</description>
+						<posx>130</posx>
+						<posy>105</posy>
+						<width>800</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(EventName)]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="textbox">
+						<description>home_team_short</description>
+						<posx>220</posx>
+						<posy>105</posy>
+						<width>250</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(HomeTeamShort)]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox">
+						<description>home_team_long</description>
+						<posx>200</posx>
+						<posy>85</posy>
+						<width>250</width>
+						<height>100</height>
+						<label>$INFO[ListItem.Property(HomeTeamLong)]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>vs tag</description>
+						<posx>440</posx>
+						<posy>120</posy>
+						<width>170</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_result)][/B]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>font48</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>vs tag</description>
+						<posx>440</posx>
+						<posy>120</posy>
+						<width>170</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_vs)][/B]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>IconMedium</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="image">
+            				<posx>830</posx>
+            				<posy>18</posy>
+            				<width>200</width>
+            				<height>200</height>
+            				<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
+            				<visible>!ListItem.Property(banner)</visible>
+						<visible>true</visible>
+        				</control>
+        				<control type="textbox">
+						<description>away_team_short</description>
+						<posx>595</posx>
+						<posy>105</posy>
+						<width>250</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(AwayTeamShort)]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox">
+						<description>away_team_long</description>
+						<posx>595</posx>
+						<posy>85</posy>
+						<width>250</width>
+						<height>100</height>
+						<label>$INFO[ListItem.Property(AwayTeamLong)]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>round</description>
+						<posx>130</posx>
+						<posy>40</posy>
+						<width>800</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_league_name)][/B]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>font12_title</font>
+						<align>center</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>date of the event</description>
+						<posx>120</posx>
+						<posy>210</posy>
+						<width>800</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(date)][/B]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>font12</font>
+						<align>center</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="image">
+						<width>1040</width>
+						<height>250</height>
+						<aspectratio>scale</aspectratio>
+						<texture>$INFO[ListItem.Property(banner)]</texture>
+						<visible>ListItem.Property(banner)</visible>
+						<fadetime>400</fadetime>
+						<bordertexture border="2">thumbs/panel_border3.png</bordertexture>
+						<bordersize>2</bordersize>
+						<colordiffuse>BAffffff</colordiffuse>
+					</control>
+					<control type="image">
+						<width>1040</width>
+						<height>250</height>
+						<aspectratio>scale</aspectratio>
+						<texture>transpar.png</texture>
+						<fadetime>400</fadetime>
+						<bordertexture border="2">thumbs/panel_border3.png</bordertexture>
+						<visible>!ListItem.Property(banner)</visible>
+						<bordersize>2</bordersize>
+						<colordiffuse>BAffffff</colordiffuse>
+					</control>
+				</itemlayout>
+				<focusedlayout height="250" width="1040">
+					<control type="group">
+						<animation type="Focus" reversible="false">
+							<effect type="zoom" start="95" end="100" time="200" tween="sine" easing="inout" center="auto" />
+							<effect type="fade" start="80" end="100" time="200" tween="sine" easing="in" />
+						</animation>
+					<control type="image">
+            				<posx>10</posx>
+            				<posy>18</posy>
+            				<width>200</width>
+            				<height>200</height>
+            				<texture>$INFO[ListItem.Property(HomeTeamLogo)]</texture>
+            				<visible>!ListItem.Property(banner)</visible>
+						<visible>true</visible>
+        				</control>
+        				<control type="textbox">
+						<description>Event name</description>
+						<posx>130</posx>
+						<posy>105</posy>
+						<width>800</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(EventName)]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<wrapmultiline>true</wrapmultiline>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="textbox">
+						<description>home_team_short</description>
+						<posx>220</posx>
+						<posy>105</posy>
+						<width>250</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(HomeTeamShort)]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox">
+						<description>home_team_long</description>
+						<posx>200</posx>
+						<posy>85</posy>
+						<width>250</width>
+						<height>100</height>
+						<label>$INFO[ListItem.Property(HomeTeamLong)]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>vs tag</description>
+						<posx>440</posx>
+						<posy>120</posy>
+						<width>170</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_result)][/B]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>font48</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>vs tag</description>
+						<posx>440</posx>
+						<posy>120</posy>
+						<width>170</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_vs)][/B]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>IconMedium</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+        				<control type="image">
+            				<posx>830</posx>
+            				<posy>18</posy>
+            				<width>200</width>
+            				<height>200</height>
+            				<texture>$INFO[ListItem.Property(AwayTeamLogo)]</texture>
+            				<visible>!ListItem.Property(banner)</visible>
+						<visible>true</visible>
+        				</control>
+        				<control type="textbox">
+						<description>away_team_short</description>
+						<posx>595</posx>
+						<posy>105</posy>
+						<width>250</width>
+						<height>40</height>
+						<label>$INFO[ListItem.Property(AwayTeamShort)]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="textbox">
+						<description>away_team_long</description>
+						<posx>595</posx>
+						<posy>85</posy>
+						<width>250</width>
+						<height>100</height>
+						<label>$INFO[ListItem.Property(AwayTeamLong)]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>font16_title_bold</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>round</description>
+						<posx>130</posx>
+						<posy>40</posy>
+						<width>800</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(event_league_name)][/B]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>font12_title</font>
+						<align>center</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+					<control type="label">
+						<description>date of the event</description>
+						<posx>120</posx>
+						<posy>210</posy>
+						<width>800</width>
+						<height>20</height>
+						<label>[B]$INFO[ListItem.Property(date)][/B]</label>
+						<visible>!ListItem.Property(banner)</visible>
+						<font>font12</font>
+						<align>center</align>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>AA000000</shadowcolor>
+					</control>
+						<control type="image">
+							<width>1040</width>
+							<height>250</height>
+							<aspectratio>scale</aspectratio>
+							<texture>$INFO[ListItem.Property(banner)]</texture>
+							<fadetime>400</fadetime>
+							<bordertexture border="8">thumbs/thumbnail_focused.png</bordertexture>
+							<bordersize>8</bordersize>
+						</control>
+						<control type="image">
+							<width>1040</width>
+							<height>250</height>
+							<aspectratio>scale</aspectratio>
+							<texture>transpar.png</texture>
+							<fadetime>400</fadetime>
+							<visible>!ListItem.Property(banner)</visible>
+							<bordertexture border="8">thumbs/thumbnail_focused.png</bordertexture>
+							<bordersize>8</bordersize>
+						</control>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="scrollbar" id="60">
+				<left>75</left>
+				<top>178</top>
+				<width>14</width>
+				<height>900</height>
+				<onleft>SetProperty(MediaMenu,True,home)</onleft>
+				<onleft>SetFocus(9050)</onleft>
+				<onright>SetFocus(980)</onright>
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
+				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
+				<animation effect="fade" start="100" end="0" time="500" delay="500" condition="!Control.HasFocus(980) + !Container.Scrolling">Conditional</animation>
+			</control>
+			<control type="label" id="934">
+				<left>1120</left>
+				<top>580</top>
+				<width>560</width>
+				<height>60</height>
+				<font>font16_title</font>
+				<textcolor>grey</textcolor>
+				<scroll>true</scroll>
+				<label></label>
+				<textoffsetx>15</textoffsetx>
+			</control>
+			<control type="image" id="913">
+					<left>1133</left>
+					<top>179</top>
+					<width>685</width>
+					<height>400</height>
+					<texture></texture>
+					<aspectratio>scale</aspectratio>
+					<fadetime>400</fadetime>			
+			</control>
+			<control type="image" id="954">
+					<left>1668</left>
+					<top>587</top>
+					<width>150</width>
+					<height>150</height>
+					<texture></texture>
+			</control>
+			<control type="grouplist">
+				<left>1120</left>
+				<top>640</top>
+				<width>680</width>
+				<height>270</height>
+				<control type="label" id="935">
+					<label></label>
+					<width>680</width>
+					<height>40</height>
+					<include>ShowCaseInfoPanelButtonsValues</include>
+					<visible>true</visible>
+				</control>
+				<control type="label" id="936">
+					<label></label>
+					<width>680</width>
+					<height>40</height>
+					<include>ShowCaseInfoPanelButtonsValues</include>
+				</control>
+				<control type="label" id="937">
+					<label></label>
+					<width>680</width>
+					<height>40</height>
+					<include>ShowCaseInfoPanelButtonsValues</include>
+				</control>
+			</control>
+			<control type="textbox" id="938">
+				<label></label>
+				<top>774</top>
+				<left>1135</left>
+				<width>670</width>
+				<height>302</height>
+				<font>font14_textbox</font>
+				<autoscroll time="3000" delay="4000" repeat="5000">Skin.HasSetting(Enable.AutoScroll) + !Control.HasFocus(68)</autoscroll>
+				<pagecontrol>68</pagecontrol>
+				<include>ShowCaseInfoPanelButtonsValues</include>
+			</control>
+			<control type="scrollbar" id="68">
+				<left>1817</left>
+				<top>734</top>
+				<width>14</width>
+				<height>642</height>
+				<onleft>50</onleft>
+				<onright>SetProperty(MediaMenu,True,home)</onright>
+				<onright>SetFocus(9050)</onright>
+				<showonepage>false</showonepage>
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
+				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
+			</control>
+		</control>
+		<!-- END OF EVENTLIST BANNERVIEW -->
+		
+		<!-- START POSTER VIEW -->
+		<control type="group">
+			<include>ViewAnimation</include>
+			<visible>!IsEmpty(Window(home).Property(posterview))</visible>
+			<top>0</top>
+			<control type="group">
+				<left>1400</left>
+				<top>136</top>
+				<visible>!IsEmpty(Window(home).Property(posterview))</visible>
+				<control type="image">
+					<description>background image</description>
+					<left>-32</left>
+					<top>780</top>
+					<width>512</width>
+					<height>752</height>
+					<texture border="40">panel_reflect.png</texture>
+				</control>
+				<control type="image">
+					<description>background image</description>
+					<left>-32</left>
+					<top>60</top>
+					<width>512</width>
+					<height>752</height>
+					<texture border="40">listpanel_back.png</texture>
+				</control>
+				<control type="grouplist">
+					<left>0</left>
+					<top>92</top>
+					<width>448</width>
+					<height>270</height>
+					<control type="button" id="958">
+						<label></label>
+						<width>448</width>
+						<include>ShowCaseInfoPanelButtonsValues</include>
+					</control>
+					<control type="button" id="959">
+						<label></label>
+						<width>448</width>
+						<include>ShowCaseInfoPanelButtonsValues</include>
+					</control>
+					<control type="button" id="960">
+						<label></label>
+						<width>448</width>
+						<include>ShowCaseInfoPanelButtonsValues</include>
+					</control>
+					</control>
+				<control type="textbox" id="70">
+					<label>$VAR[VideoPlotVar]</label>
+					<left>15</left>
+					<top>370</top>
+					<width>418</width>
+					<height>402</height>
+					<font>font14_textbox</font>
+					<pagecontrol>62</pagecontrol>
+					<include>ShowCaseInfoPanelButtonsValues</include>
+					<autoscroll time="3000" delay="4000" repeat="5000">Skin.HasSetting(Enable.AutoScroll) + !Control.HasFocus(62)</autoscroll>
+				</control>
+				<control type="scrollbar" id="62">
+					<left>448</left>
+					<top>370</top>
+					<width>14</width>
+					<height>402</height>
+					<onup>PageUp(70)</onup>
+					<ondown>PageUp(70)</ondown>
+					<onleft>50</onleft>
+					<onright>SetProperty(MediaMenu,True,home)</onright>
+					<onright>SetFocus(9050)</onright>
+					<texturesliderbackground>-</texturesliderbackground>
+					<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
+					<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
+					<showonepage>false</showonepage>
+					<orientation>vertical</orientation>
+				</control>
+			</control>
+			<control type="group">
+				<left>846</left>
+				<top>154</top>
+				<visible>!IsEmpty(Window(home).Property(posterview))</visible>
+				<control type="image" id="956">
+					<width>550</width>
+					<height>815</height>
+					<aspectratio aligny="bottom" align="right">scale</aspectratio>
+					<texture></texture>
+					<fadetime>IconCrossfadeTime</fadetime>
+				</control>
+				<control type="image" id="957">
+					<left>30</left>
+					<top>797</top>
+					<width>550</width>
+					<height>815</height>
+					<aspectratio aligny="top" align="right">scale</aspectratio>
+					<fadetime>IconCrossfadeTime</fadetime>
+					<texture diffuse="thumbs/thumb_reflect.png" flipy="true"></texture>
+					<texture></texture>
+				</control>
+				<control type="image">
+					<left>550</left>
+					<top>58</top>
+					<width>80</width>
+					<height>720</height>
+					<texture flipx="true" border="1">side_shadow.png</texture>
+				</control>
+			</control>
+			<control type="group">
+				<left>76</left>
+				<top>60</top>
+				<visible>!IsEmpty(Window(home).Property(posterview))</visible>
+				<control type="image">
+					<description>background image</description>
+					<left>-32</left>
+					<top>932</top>
+					<width>870</width>
+					<height>904</height>
+					<texture border="40">panel_reflect.png</texture>
+				</control>
+				<control type="image">
+					<description>background image</description>
+					<left>-32</left>
+					<top>60</top>
+					<width>870</width>
+					<height>904</height>
+					<texture border="40">listpanel_back.png</texture>
+				</control>
+				<control type="list" id="984">
+					<left>0</left>
+					<top>92</top>
+					<visible>!IsEmpty(Window(home).Property(posterview))</visible>
+					<width>806</width>
+					<height>840</height>
+					<onleft>SetProperty(MediaMenu,True,home)</onleft>
+					<onleft>SetFocus(9050)</onleft>
+					<onright condition="Control.IsVisible(60)">60</onright>
+					<onright condition="!Control.IsVisible(60)">62</onright>
+					<onup>55</onup>
+					<ondown>55</ondown>
+					<viewtype label="31078">list</viewtype>
+					<pagecontrol>60</pagecontrol>
+					<preloaditems>2</preloaditems>
+					<scrolltime tween="quadratic" easing="out">200</scrolltime>
+					<itemlayout height="70" width="806">
+						<control type="image">
+							<top>12</top>
+							<width>806</width>
+							<height>60</height>
+							<texture border="1">separator2.png</texture>
+						</control>
+						<control type="label">
+							<left>15</left>
+							<width>90</width>
+							<height>68</height>
+							<font>font15</font>
+							<textcolor>labelheader</textcolor>
+							<selectedcolor>selected</selectedcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label fallback="• • • •">$INFO[ListItem.Property(event_year)]</label>
+						</control>
+						<control type="label">
+							<left>110</left>
+							<width>620</width>
+							<height>68</height>
+							<font>font15</font>
+							<textcolor>grey2</textcolor>
+							<selectedcolor>selected</selectedcolor>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</itemlayout>
+					<focusedlayout height="70" width="806" condition="Container.Content(movies)">
+						<control type="image">
+							<top>12</top>
+							<width>806</width>
+							<height>60</height>
+							<texture border="1">separator2.png</texture>
+						</control>
+						<control type="image">
+							<width>806</width>
+							<height>70</height>
+							<texture border="4">listselect_fo.png</texture>
+							<include>VisibleFadeEffect</include>
+						</control>
+						<control type="label">
+							<left>15</left>
+							<width>90</width>
+							<height>68</height>
+							<font>font15</font>
+							<selectedcolor>selected</selectedcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label fallback="• • • •">$INFO[ListItem.Property(event_year)]</label>
+							<animation effect="fade" start="100" end="70" time="300" tween="sine" easing="inout" condition="!Control.HasFocus(55)">Conditional</animation>
+						</control>
+						<control type="label">
+							<left>110</left>
+							<width>620</width>
+							<height>68</height>
+							<font>font15</font>
+							<selectedcolor>selected</selectedcolor>
+							<label>$INFO[ListItem.Label]</label>
+							<animation effect="fade" start="100" end="70" time="300" tween="sine" easing="inout" condition="!Control.HasFocus(55)">Conditional</animation>
+						</control>
+					</focusedlayout>
+				</control>
+			</control>
+		</control>
+		
+		
+		
+		
+		
+		
+		
+		
+
+
+	
+		<!-- Control panel -->
+		<control type="group" id="666">
+			<left>-440</left>
+			<animation effect="slide" start="440,0" end="0,0" time="400" tween="quadratic" easing="out" condition="IsEmpty(Window(home).Property(MediaMenu))">Conditional</animation>
+			<animation effect="slide" start="0,0" end="-440,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+			<control type="image">
+				<left>0</left>
+				<top>0</top>
+				<width>432</width>
+				<height>1080</height>
+				<texture border="40">mediamenu_back.png</texture>
+			</control>
+			<control type="button" id="8999">
+				<description>Close Window button</description>
+				<left>350</left>
+				<top>0</top>
+				<width>64</width>
+				<height>48</height>
+				<label></label>
+				<font>CloseButton</font>
+				<textcolor>grey</textcolor>
+				<focusedcolor>themecolor</focusedcolor>
+				<onclick>ClearProperty(MediaMenu,Home)</onclick>
+				<onclick>SetFocus(980)</onclick>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<onleft>2</onleft>
+				<onright>13</onright>
+				<onup>13</onup>
+				<ondown>2</ondown>
+				<align>center</align>
+				<aligny>center</aligny>
+				<visible>system.getbool(input.enablemouse)</visible>
+			</control>
+			<control type="image">
+				<description>LOGO</description>
+				<left>0</left>
+				<top>0</top>
+				<width>400</width>
+				<height>120</height>
+				<aspectratio>keep</aspectratio>
+				<texture>aeon-nox-logo.png</texture>
+			</control>
+			<control type="grouplist" id="9050">
+				<left>0</left>
+				<top>100</top>
+				<width>400</width>
+				<height>1080</height>
+				<onleft>9050</onleft>
+				<onright>ClearProperty(MediaMenu,Home)</onright>
+				<onup>9050</onup>
+				<ondown>9051</ondown>
+				<onback>ClearProperty(MediaMenu,Home)</onback>
+				<itemgap>0</itemgap>
+				<control type="label" id="200">
+					<width>400</width>
+					<height>52</height>
+					<textoffsetx>15</textoffsetx>
+					<font>font13_title</font>
+					<label>31006</label>
+					<textcolor>themecolor</textcolor>
+					<aligny>center</aligny>
+				</control>
+				<control type="button" id="2">
+					<description>View As button</description>
+					<textwidth>352</textwidth>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">980</onright>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">SetFocus(980)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">983</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">SetFocus(983)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">982</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">SetFocus(982)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">984</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">SetFocus(984)</onright>
+					<onright>ClearProperty(MediaMenu,Home)</onright>
+					<ondown>9051</ondown>
+					<onup>5</onup>
+					<label></label>
+				</control>
+			</control>
+			<control type="grouplist" id="9051">
+				<left>0</left>
+				<top>240</top>
+				<width>400</width>
+				<height>1080</height>
+				<onleft>9050</onleft>
+				<onright>ClearProperty(MediaMenu,Home)</onright>
+				<onup>9050</onup>
+				<ondown>9052</ondown>
+				<onback>ClearProperty(MediaMenu,Home)</onback>
+				<itemgap>0</itemgap>
+				<control type="label" id="200">
+					<width>400</width>
+					<height>52</height>
+					<textoffsetx>15</textoffsetx>
+					<font>font13_title</font>
+					<label>Filter:</label>
+					<textcolor>themecolor</textcolor>
+					<aligny>center</aligny>
+				</control>
+				<control type="button" id="6">
+					<description>View As button</description>
+					<textwidth>352</textwidth>
+					<onup>9050</onup>
+					<ondown>7</ondown>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">980</onright>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">SetFocus(980)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">983</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">SetFocus(983)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">982</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">SetFocus(982)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">984</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">SetFocus(984)</onright>
+					<onright>ClearProperty(MediaMenu,Home)</onright>
+					<label>Season</label>
+				</control>
+				<control type="button" id="7">
+					<description>View As button</description>
+					<textwidth>352</textwidth>
+					<onup>6</onup>
+					<ondown>5</ondown>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">980</onright>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">SetFocus(980)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">983</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">SetFocus(983)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">982</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">SetFocus(982)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">984</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">SetFocus(984)</onright>
+					<onright>ClearProperty(MediaMenu,Home)</onright>
+					<label>Team</label>
+				</control>
+				<control type="button" id="5">
+					<description>View As button</description>
+					<textwidth>352</textwidth>
+					<onup>7</onup>
+					<ondown>8</ondown>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">980</onright>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">SetFocus(980)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">983</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">SetFocus(983)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">982</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">SetFocus(982)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">984</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">SetFocus(984)</onright>
+					<onright>ClearProperty(MediaMenu,Home)</onright>
+					<label>League</label>
+				</control>
+				<control type="button" id="8">
+					<description>View As button</description>
+					<textwidth>352</textwidth>
+					<onup>5</onup>
+					<ondown>8</ondown>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">980</onright>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">SetFocus(980)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">983</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">SetFocus(983)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">982</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">SetFocus(982)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">984</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">SetFocus(984)</onright>
+					<onright>ClearProperty(MediaMenu,Home)</onright>
+					<label>Reset</label>
+				</control>
+			</control>
+			<control type="grouplist" id="9052">
+				<left>0</left>
+				<top>550</top>
+				<width>400</width>
+				<height>1080</height>
+				<onleft>9050</onleft>
+				<onright>ClearProperty(MediaMenu,Home)</onright>
+				<onup>9051</onup>
+				<ondown>9050</ondown>
+				<onback>ClearProperty(MediaMenu,Home)</onback>
+				<itemgap>0</itemgap>
+				<control type="label" id="200">
+					<width>400</width>
+					<height>52</height>
+					<textoffsetx>15</textoffsetx>
+					<font>font13_title</font>
+					<label>Order:</label>
+					<textcolor>themecolor</textcolor>
+					<aligny>center</aligny>
+				</control>
+				<control type="button" id="9">
+					<description>order label is set and controled in python</description>
+					<textwidth>352</textwidth>
+					<onup>9051</onup>
+					<ondown>9050</ondown>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">980</onright>
+					<onright condition="!IsEmpty(Window(home).Property(infoview))">SetFocus(980)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">983</onright>
+					<onright condition="!IsEmpty(Window(home).Property(bannerview))">SetFocus(983)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">982</onright>
+					<onright condition="!IsEmpty(Window(home).Property(biglist))">SetFocus(982)</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">984</onright>
+					<onright condition="!IsEmpty(Window(home).Property(posterview))">SetFocus(984)</onright>
+					<onright>ClearProperty(MediaMenu,Home)</onright>
+					<label></label>
+				</control>
+			</control>
+		</control>
+		
+	</controls>
+</window>
